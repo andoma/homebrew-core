@@ -1,17 +1,18 @@
 class Tcpflow < Formula
   desc "TCP/IP packet demultiplexer"
   homepage "https://github.com/simsong/tcpflow"
-  url "https://downloads.digitalcorpora.org/downloads/tcpflow/tcpflow-1.6.1.tar.gz"
+  url "https://corp.digitalcorpora.org/downloads/tcpflow/tcpflow-1.6.1.tar.gz"
   sha256 "436f93b1141be0abe593710947307d8f91129a5353c3a8c3c29e2ba0355e171e"
   license "GPL-3.0-only"
 
   livecheck do
-    url "https://downloads.digitalcorpora.org/downloads/tcpflow/"
+    url "https://corp.digitalcorpora.org/downloads/tcpflow/"
     regex(/href=.*?tcpflow[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
     rebuild 2
+    sha256 cellar: :any,                 arm64_sequoia:  "173cfbc01371f93960738b1c9d0a7fc46f4ee1ea3f3932710c7f7359e7b80c3a"
     sha256 cellar: :any,                 arm64_sonoma:   "b3a8fb517ef2d283b4e669ad14f65e9d6bd5c15eeeba306cc92b396adb9f0d2b"
     sha256 cellar: :any,                 arm64_ventura:  "1f2a7ca46614781861f8c1f9a9d6af8b13320bf9ff03f830fa199ad250a094a3"
     sha256 cellar: :any,                 arm64_monterey: "a41756ac3931a3f64fba3000f2b86a02f844b69bdd41907ced290b9855f97aec"

@@ -1,4 +1,6 @@
 class FortranLanguageServer < Formula
+  include Language::Python::Virtualenv
+
   desc "Language Server for Fortran"
   homepage "https://github.com/hansec/fortran-language-server"
   url "https://files.pythonhosted.org/packages/72/46/eb2c733e920a33409906aa145bde93b015f7f77c9bb8bdf65faa8c823998/fortran-language-server-1.12.0.tar.gz"
@@ -7,39 +9,28 @@ class FortranLanguageServer < Formula
   head "https://github.com/hansec/fortran-language-server.git", branch: "master"
 
   bottle do
-    rebuild 3
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dc6059f065b7349e8ef9a16353b1dc00fd0ad8098b8f17baeaec78282d724d8a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "852a215082283f21b6723ec4ad7825da570c65e50a016739ec22ee0258d4e9a1"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "026fef2556b938306ec1452acd1c3f6cd9eb1e23db80daece43f124fb4b59781"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5fe11043b1ae19be5670267c3e85c3a04513ff24be7b804f075def020bc3bb1f"
-    sha256 cellar: :any_skip_relocation, ventura:        "8a489566e13d9f57750543b1d57be7b90f4be1e5307c6975a0860d02d94868cb"
-    sha256 cellar: :any_skip_relocation, monterey:       "c46faba5b9c41ebdce74d6fbdce64cf8a05c035d0e60d68c8dc684bf6b7cc32c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2e62186facb38b3fe9430b8b8890d47364eacba02947b85c41c62e9f707cb6b7"
+    rebuild 5
+    sha256 cellar: :any_skip_relocation, all: "7f545be88d71155c02f3022ca7c63f8c75f9010d1ac84f89353d96b15f3b0551"
   end
 
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   conflicts_with "fortls", because: "both install `fortls` binaries"
 
-  def python3
-    "python3.12"
-  end
-
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
   end
 
   test do
     assert_equal version.to_s, shell_output("#{bin}/fortls --version").strip
     # test file taken from main repository
-    (testpath/"test.f90").write <<~EOS
+    (testpath/"test.f90").write <<~FORTRAN
       PROGRAM myprog
       USE test_free, ONLY: scaled_vector
       TYPE(scaled_vector) :: myvec
       CALL myvec%set_scale(scale)
       END PROGRAM myprog
-    EOS
+    FORTRAN
     expected_output = <<~EOS
       Testing parser
         File = "#{testpath}/test.f90"

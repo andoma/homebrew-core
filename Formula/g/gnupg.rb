@@ -1,9 +1,10 @@
 class Gnupg < Formula
   desc "GNU Pretty Good Privacy (PGP) package"
   homepage "https://gnupg.org/"
-  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.4.tar.bz2"
-  sha256 "67ebe016ca90fa7688ce67a387ebd82c6261e95897db7b23df24ff335be85bc6"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.5.tar.bz2"
+  sha256 "f68f7d75d06cb1635c336d34d844af97436c3f64ea14bcb7c869782f96f44277"
   license "GPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url "https://gnupg.org/ftp/gcrypt/gnupg/"
@@ -11,13 +12,14 @@ class Gnupg < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "eead9f697214f8c9245ca7cb24aecff0ca3e8f46322ddf890c89146396782bc0"
-    sha256 arm64_ventura:  "e096a8063b3cfbb76deb3afcba2ab5556a6403ca4c31bc1d1683edd3ad77fb70"
-    sha256 arm64_monterey: "8e7c0ff2b1a73454e093b384aafb71a021c31049219dd4b55fd188a6574fa51e"
-    sha256 sonoma:         "10a786c7b9f9eac5c960d303076ea31e1b62e6dd03168948ac6ee32752f97967"
-    sha256 ventura:        "5bf0ac220534eb57328b643cefc17b31d3457e5a3bc0fbad53587e86412c4caa"
-    sha256 monterey:       "6491443b90accbc12ad485d13025fc60d4d5a56e4f4d09e99fe3767f53c3d2b5"
-    sha256 x86_64_linux:   "2701069f114e5a3b6b10ce4e6a34bb6df0edcbafdc4a4a7edc69208983d9109f"
+    sha256 arm64_sequoia:  "e83617dfd24a26f898c858886429a9cc22cdff98b65212821af9d6140113c99f"
+    sha256 arm64_sonoma:   "bcb60ed535c0e2e5ac97bc49977246d94455d5b6a74ed9366377249f78e782fb"
+    sha256 arm64_ventura:  "fc5d5508f278f822b57e1e05fc4a1cee1116fb3f6521fbc523669e6862d104fe"
+    sha256 arm64_monterey: "ada53b5a636355f354ff11584e2f488bf167ef7ba1d3e20ce742ee286b47cc6c"
+    sha256 sonoma:         "45ad3a0750e638402ecd6135219ba4592b847d2c5e5a27c3e05657d3433bf5ec"
+    sha256 ventura:        "acb0a737a9f5c10a50348b3aaa0f247ea578c7b84d86ccdaafb22c818d7b7426"
+    sha256 monterey:       "23a18b638018bb3ee5339dbb00d16b4ef58047a351903ebeef72335e9565e4b8"
+    sha256 x86_64_linux:   "9a7d57f7e335fd7b506848fa15ee1be52d8940b8c5dfc0c6a3c8d9f406fbeb93"
   end
 
   depends_on "pkg-config" => :build
@@ -28,11 +30,11 @@ class Gnupg < Formula
   depends_on "libksba"
   depends_on "libusb"
   depends_on "npth"
-  depends_on "openldap"
   depends_on "pinentry"
   depends_on "readline"
 
   uses_from_macos "bzip2"
+  uses_from_macos "openldap"
   uses_from_macos "sqlite", since: :catalina
   uses_from_macos "zlib"
 

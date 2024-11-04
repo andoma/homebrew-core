@@ -1,19 +1,18 @@
 class Brpc < Formula
   desc "Better RPC framework"
   homepage "https://brpc.apache.org/"
-  url "https://dlcdn.apache.org/brpc/1.8.0/apache-brpc-1.8.0-src.tar.gz"
-  sha256 "fa640c55c2770aaf0e80ddb3a9bef423d1f377129662367133d46efb005955b2"
+  url "https://dlcdn.apache.org/brpc/1.11.0/apache-brpc-1.11.0-src.tar.gz"
+  sha256 "7076b564bf3d4e1f9ed248ba7051ae42e9c63340febccea5005efc89d068f339"
   license "Apache-2.0"
   head "https://github.com/apache/brpc.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "6de038c2039d9696686b8ae0c4537b542e5a99b0e63b1d24101c6ecc07eadb87"
-    sha256 cellar: :any,                 arm64_ventura:  "84411de2a816ca7677f8c007a4921170bbd734c734b8c078e37678c142d7581e"
-    sha256 cellar: :any,                 arm64_monterey: "78daf50f94516aaee1561bad22d029897b7f9177abeec628d75f5d3df5e2cf00"
-    sha256 cellar: :any,                 sonoma:         "7749290e638894259a3cc283f6533a12862732f40f4633228ddd4ff3ace925e3"
-    sha256 cellar: :any,                 ventura:        "59fb019ffbd6ffdf3ea9a9240d3d824856fa5598a253f2f166b5e9eb2fbf9c29"
-    sha256 cellar: :any,                 monterey:       "a4c72f4aef9371c7364600712c21b5c68d2e1197f5c9ef5237025f7c1160bf57"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2177ee46bbea06ee6b738ee9109b472cc3a4124d411fed290f879645a56314f2"
+    sha256 cellar: :any,                 arm64_sequoia: "82032bd16d682bc0a4ac13e4ed8e049b8eb6aba3eaff0bbcd8093f73351055f8"
+    sha256 cellar: :any,                 arm64_sonoma:  "84457078b35b3b2a39795603b7ddbb74a0f3e3ab31f6a483f5242db4bae380d9"
+    sha256 cellar: :any,                 arm64_ventura: "7fd8f2b4e848758970a85c3b96f1130776866f1fac7a4230336568d3e98f54d1"
+    sha256 cellar: :any,                 sonoma:        "24952c34f4b63c8223c4835a71f89f6d71066897744baa975781ad26601d8b73"
+    sha256 cellar: :any,                 ventura:       "750b019abdf60ed6bf8cea613bed38ce50af6cdec99913a088fafd9cac9ca7e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fc416fd5a6eeb21558e746e52543efebf91536633ae38c149b36898d5f98bfc7"
   end
 
   depends_on "cmake" => :build
@@ -46,7 +45,7 @@ class Brpc < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
 
       #include <brpc/channel.h>
@@ -72,7 +71,7 @@ class Brpc < Formula
         std::cout << cntl.http_response().status_code();
         return 0;
       }
-    EOS
+    CPP
     protobuf = Formula["protobuf@21"]
     gperftools = Formula["gperftools"]
     flags = %W[

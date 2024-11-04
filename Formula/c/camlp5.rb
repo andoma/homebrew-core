@@ -1,10 +1,9 @@
 class Camlp5 < Formula
   desc "Preprocessor and pretty-printer for OCaml"
   homepage "https://camlp5.github.io/"
-  url "https://github.com/camlp5/camlp5/archive/refs/tags/8.02.01.tar.gz"
-  sha256 "58d4bce0c20fa1151fc2c15f172f5884472e2044a4b0da22aababf46c361e515"
+  url "https://github.com/camlp5/camlp5/archive/refs/tags/8.03.01.tar.gz"
+  sha256 "057b8e06590cf29a1bd22b6c83aa5daa816d5cbb2ba2548409d474d7dc10c5b8"
   license "BSD-3-Clause"
-  revision 1
   head "https://github.com/camlp5/camlp5.git", branch: "master"
 
   livecheck do
@@ -13,13 +12,12 @@ class Camlp5 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "b759ee090fbf543cdc3fc06316f6e49688031dadc5f596dcb7d202c5e9b6259d"
-    sha256 arm64_ventura:  "fecb24a088b59346812faa716de555a939e6ff0efd38cec825ce4178834c3ba7"
-    sha256 arm64_monterey: "6b9fb48113e2cb84683f72fa3744da3bbe00f483df59ea1e07016a2e06352a9f"
-    sha256 sonoma:         "23da0a4d852c4d00da8523d2a2303b482dbddd40a9eb8d674f87907d9f718937"
-    sha256 ventura:        "07d9c205a10282211954729926982a14215def6e5ebf511bba15a39d0f77adf4"
-    sha256 monterey:       "582c31c1fd609b1904515b878ce4a2f886391a042ae6b9de6d595dabf832fda9"
-    sha256 x86_64_linux:   "6dbd19efdc0c99cd9fb94ee55ce1b8d5f6ee12e73ae93a3146c5bdec602e04d3"
+    sha256 arm64_sequoia: "8eb1bd182dff1a1f93c7cad292a550a0ff6a7700dd383d344e605661413b1f73"
+    sha256 arm64_sonoma:  "2b7feece68d3595e22218a9532a50cad7a835bf55555b8ae2acbe0aa001b206a"
+    sha256 arm64_ventura: "baac175d9fc1d95967bbd534fe163ed06461993f1fffa2a601c5a2daeb960942"
+    sha256 sonoma:        "32bedf850db730633846714e007e702464370f6bfe5018bc387ee3e55744466e"
+    sha256 ventura:       "b42b8272468115f0bc0fc793937a41f965dd09bf2cabd548d7fcbd974433042c"
+    sha256 x86_64_linux:  "40fdc0d4a01d13250fc2dfa8b8c1d7feaac99894e6deecd74b662d0dca58b812"
   end
 
   depends_on "ocaml-findlib" => :build
@@ -51,7 +49,9 @@ class Camlp5 < Formula
       # ocaml files are in sync with the camlp5 files.  If camlp5 has been
       # compiled with an older version of the ocaml compiler, then an error
       # "interface mismatch" will occur.
-      shell_output("#{bin}/camlp5 #{lib}/ocaml/camlp5/pa_o.cmo #{lib}/ocaml/camlp5/pr_o.cmo " \
+      shell_output("#{bin}/camlp5 #{lib}/ocaml/camlp5/pa_o.cmo " \
+                   "#{lib}/ocaml/camlp5/o_keywords.cmo " \
+                   "#{lib}/ocaml/camlp5/pr_o.cmo " \
                    "#{ocaml.opt_lib}/ocaml/str/str.cma hi.ml")
   end
 end

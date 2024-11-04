@@ -1,27 +1,26 @@
 class Trufflehog < Formula
   desc "Find and verify credentials"
   homepage "https://trufflesecurity.com/"
-  url "https://github.com/trufflesecurity/trufflehog/archive/refs/tags/v3.68.2.tar.gz"
-  sha256 "f3dd504742cbe1730cca28be858a1b77c85077c67c3599be3b8a466825413c72"
+  url "https://github.com/trufflesecurity/trufflehog/archive/refs/tags/v3.83.2.tar.gz"
+  sha256 "f825f0801ef2f6d29331bab20496b9b370c08f5bd1575e1799986b392f100a01"
   # upstream license ask, https://github.com/trufflesecurity/trufflehog/issues/1446
   license "AGPL-3.0-only"
   head "https://github.com/trufflesecurity/trufflehog.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "615c0b72326db7abd65e5ed3bdb215b4cc8f4c277697af541d44548d524cf14e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "added3aa5af19b6681a134d18d95349c62bd08f80a070207a243be92a188c9b2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d4fd62ad3944dad97ba22bcd4aee957392908a2555d010579d3b01fd7ba86f59"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a969ce154c721b776a9a12dfad0956baaf7f47d62c1c82d93bddeb9213bf4f35"
-    sha256 cellar: :any_skip_relocation, ventura:        "bdf06fa6ce7b33be6492a02cdae3b4f9073d4291fb0aec593c8d0d5a29be30e7"
-    sha256 cellar: :any_skip_relocation, monterey:       "abb9e8e2b4b87b6f09f38d5da8860ee96359dbad30fb62f76227e503457ffa6a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e194c58b9daa0ef4370c7016ced5695c79ee333dcc4e0d01654a46e776b59312"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "371f97b643c8f29669bec14b0ea2ab57bec9fbe0b65072eb850b370c12014cae"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9b681ecb36b6902120cf43eae059b45186b354a66584992c9af965667f4c2a18"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f532b778f743bf9404f6c672a665e415d77dbe6b5aa76be02d4ad0f817fc2b8d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "92eacbbc45f1b9e99336463790903a11b1e54bb68c1317d7bfef82e034ab1aa0"
+    sha256 cellar: :any_skip_relocation, ventura:       "0183ad5ea71d5b942fcf42f7769413232ac09001a3d1026aa49a13ffb284a8ee"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "59d6b5ade99880478906dbb8b5285ef6bc974d6f33601b062fbcc1dcfdc66a89"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X github.com/trufflesecurity/trufflehog/v3/pkg/version.BuildVersion=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

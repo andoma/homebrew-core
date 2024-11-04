@@ -1,24 +1,24 @@
 class I2pd < Formula
   desc "Full-featured C++ implementation of I2P client"
   homepage "https://i2pd.website/"
-  url "https://github.com/PurpleI2P/i2pd/archive/refs/tags/2.50.2.tar.gz"
-  sha256 "ae2ec4732c38fda71b4b48ce83624dd8b2e05083f2c94a03d20cafb616f63ca5"
+  url "https://github.com/PurpleI2P/i2pd/archive/refs/tags/2.54.0.tar.gz"
+  sha256 "5c3f703417bb5f3e5dda642d39c5d30593a5dcf69d5a5ecfe82d5e8a7d454aaf"
   license "BSD-3-Clause"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "9aed2654ae1637f7fbad14d15934b0b2d6b493754757b8e23fe874b41e3a5e54"
-    sha256 cellar: :any,                 arm64_ventura:  "12ae507e36270f6a462438ed280fcd9d80a307960c4c60757f5d6f0cdc54cc42"
-    sha256 cellar: :any,                 arm64_monterey: "cec83c1cbbf0b254aefb3144b2149de2bba4350b9ab52faea5902a5dfac3c730"
-    sha256 cellar: :any,                 sonoma:         "cf42a80b575916054c67944a595af7c5d3b12485aa157acb955ee41c070735bf"
-    sha256 cellar: :any,                 ventura:        "5f3c01c424667d5a7ba5abb06fc56bfaeb2ce29791a2e843fe52defa93c13bc7"
-    sha256 cellar: :any,                 monterey:       "011718a59238f9909be43e638de8ff8873e7d246ada30c7ee6ff9e375995a251"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8a685392ff70e6e08ccbe5b6cc5f41570ae40ad12b097292261b96e9f350ea9e"
+    sha256 cellar: :any,                 arm64_sequoia: "8cf3af75a10a5b7a03054b3ef0c90e3ba39337a06f8a6325f2476c1cbebdccd6"
+    sha256 cellar: :any,                 arm64_sonoma:  "52a22137f9fab8fe91a767490b672fa04e3018abdcba29b223c0c100252aaaf7"
+    sha256 cellar: :any,                 arm64_ventura: "3835e6ec875545c06531550bdc09edd6c23d5a0774550b20ae35f962b833ff6d"
+    sha256 cellar: :any,                 sonoma:        "bf628805328fe1b0683a63b1ac4139b6c333a281c113db6919a717fa8c4abe6a"
+    sha256 cellar: :any,                 ventura:       "156e5a4e93c57c42ee35a0e078a0804671631f22c736e3804cfe496380e26511"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f96bed143d8206efd421c611f31313288d0d2c916ff45174d5a569fbe88caea2"
   end
 
   depends_on "boost"
   depends_on "miniupnpc"
   depends_on "openssl@3"
+
+  uses_from_macos "zlib"
 
   def install
     args = %W[
@@ -35,7 +35,7 @@ class I2pd < Formula
 
     # preinstall to prevent overwriting changed by user configs
     confdir = etc/"i2pd"
-    rm_rf prefix/"etc"
+    rm_r(prefix/"etc")
     confdir.install doc/"i2pd.conf", doc/"subscriptions.txt", doc/"tunnels.conf"
   end
 

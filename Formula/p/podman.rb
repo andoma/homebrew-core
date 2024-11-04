@@ -2,28 +2,27 @@ class Podman < Formula
   desc "Tool for managing OCI containers and pods"
   homepage "https://podman.io/"
   url "https://github.com/containers/podman.git",
-      tag:      "v4.9.3",
-      revision: "8d2b55ddde1bc81f43d018dfc1ac027c06b26a7f"
+      tag:      "v5.2.5",
+      revision: "10c5aa720d59480bc7edad347c1f5d5b75d4424f"
   license all_of: ["Apache-2.0", "GPL-3.0-or-later"]
   head "https://github.com/containers/podman.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "caa8b1c2158c4ea953fad9af9518cf6e45eb63148d94e7811dc7958bb557dbba"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c9a11c88a840d7fbcee519131a14fab5a937793a995f18656aff7a665d4e397a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e2f7ac3a9c85792e71944ac0438853bc3b9025e8f38d95e9059fd6c2b5376234"
-    sha256 cellar: :any_skip_relocation, sonoma:         "37090270d1b5a337335bb0ba902206b3ffba1be263c1a842546bce1aa78abd96"
-    sha256 cellar: :any_skip_relocation, ventura:        "fa275c02f0bd0498f386db232125ba92cb0b7f01e50e4a92d155abf1129452a7"
-    sha256 cellar: :any_skip_relocation, monterey:       "ec7d8e801449c19fcca858e43c23966f78b22460337fd6f501f6004aca4d1738"
-    sha256                               x86_64_linux:   "4791cc5e867224c7eff7ef8cccf697cc6a8f614aca112345947797f05ab33322"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ac94dc1c563d02a0bff2ee1b72720a207ff5b58b8dd40b60461329d878036052"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "cc692591abd0f7581618274bf3d44efd6e454b97c8d1ff3bdf203c3015de0d1e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "775e4287f61fb491a3bb76e51d5a5fd1ca9345a8ff54974809d4acf06adedb14"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1495291500314de9a7b7839399868d50d40358efa0d1c9d0ea0cde8770dd53d6"
+    sha256 cellar: :any_skip_relocation, ventura:       "1ddfd9b34625874ff3715837cf1878d23e5a376f3d3185d47d45a1fc0fe10f38"
+    sha256                               x86_64_linux:  "0fba95d8e320e61c319c558df0602f8c33255e8a97c704f5e3deab2ac4df7ce4"
   end
 
   depends_on "go" => :build
   depends_on "go-md2man" => :build
+  depends_on macos: :ventura # see discussions in https://github.com/containers/podman/issues/22121
   uses_from_macos "python" => :build
 
   on_macos do
     depends_on "make" => :build
-    depends_on "qemu"
   end
 
   on_linux do
@@ -38,14 +37,15 @@ class Podman < Formula
     depends_on "fuse-overlayfs"
     depends_on "gpgme"
     depends_on "libseccomp"
+    depends_on "passt"
     depends_on "slirp4netns"
     depends_on "systemd"
   end
 
   resource "gvproxy" do
     on_macos do
-      url "https://github.com/containers/gvisor-tap-vsock/archive/refs/tags/v0.7.3.tar.gz"
-      sha256 "851ed29b92e15094d8eba91492b6d7bab74aff4538dae0c973eb7d8ff48afd8a"
+      url "https://github.com/containers/gvisor-tap-vsock/archive/refs/tags/v0.7.5.tar.gz"
+      sha256 "d635bc55dbb97cf2a469427fb84b7a90f37540f14b090c21356cce2e549b46e0"
     end
   end
 
@@ -65,15 +65,15 @@ class Podman < Formula
 
   resource "netavark" do
     on_linux do
-      url "https://github.com/containers/netavark/archive/refs/tags/v1.10.3.tar.gz"
-      sha256 "fdc3010cb221f0fcef0302f57ef6f4d9168a61f9606238a3e1ed4d2e348257b7"
+      url "https://github.com/containers/netavark/archive/refs/tags/v1.12.2.tar.gz"
+      sha256 "d1e5a7e65b825724fd084b0162084d9b61db8cda1dad26de8a07be1bd6891dbc"
     end
   end
 
   resource "aardvark-dns" do
     on_linux do
-      url "https://github.com/containers/aardvark-dns/archive/refs/tags/v1.10.0.tar.gz"
-      sha256 "b3e77b3ff4eb40f010c78ca00762761e8c639c47e1cb67686d1eb7f522fbc81e"
+      url "https://github.com/containers/aardvark-dns/archive/refs/tags/v1.12.2.tar.gz"
+      sha256 "19317d97525c19135b31f76101b9c13bf2b009cecfc11f467b2ab30fb2641867"
     end
   end
 
@@ -182,21 +182,21 @@ class Podman < Formula
     assert_match "Cannot connect to Podman", out
 
     if OS.mac?
-      out = shell_output("#{bin}/podman-remote machine init --image-path fake-testi123 fake-testvm 2>&1", 125)
-      assert_match "Error: open fake-testi123: no such file or directory", out
+      # This test will fail if VM images are not built yet. Re-run after VM images are built if this is the case
+      # See https://github.com/Homebrew/homebrew-core/pull/166471
+      out = shell_output("#{bin}/podman-remote machine init homebrew-testvm")
+      assert_match "Machine init complete", out
+      system bin/"podman-remote", "machine", "rm", "-f", "homebrew-testvm"
     else
-      assert_equal %W[
-        #{bin}/podman
-        #{bin}/podman-remote
-        #{bin}/podmansh
-      ].sort, Dir[bin/"*"].sort
+      assert_equal %w[podman podman-remote podmansh]
+        .map { |binary| File.join(bin, binary) }.sort, Dir[bin/"*"]
       assert_equal %W[
         #{libexec}/podman/catatonit
         #{libexec}/podman/netavark
         #{libexec}/podman/aardvark-dns
         #{libexec}/podman/quadlet
         #{libexec}/podman/rootlessport
-      ].sort, Dir[libexec/"podman/*"].sort
+      ].sort, Dir[libexec/"podman/*"]
       out = shell_output("file #{libexec}/podman/catatonit")
       assert_match "statically linked", out
     end

@@ -1,18 +1,12 @@
 class Xmount < Formula
   desc "Convert between multiple input & output disk image types"
-  homepage "https://www.pinguin.lu/xmount/"
-  url "https://files.pinguin.lu/xmount-0.7.6.tar.gz"
-  sha256 "76e544cd55edc2dae32c42a38a04e11336f4985e1d59cec9dd41e9f9af9b0008"
+  homepage "https://www.sits.lu/xmount"
+  url "https://code.sits.lu/foss/xmount/-/archive/1.2.0/xmount-1.2.0.tar.bz2"
+  sha256 "07c261e54e1e4cbcd4f7eaaf4f62efcbbbc68c76797ddca704592d99ebed3d10"
   license "GPL-3.0-or-later"
-  revision 3
-
-  livecheck do
-    url "https://deb.debian.org/debian/pool/main/x/xmount/"
-    regex(/href=.*?xmount[._-]v?(\d+(?:\.\d+)+)\.orig\.t/i)
-  end
 
   bottle do
-    sha256 x86_64_linux: "c61ddafea43cbd071198031f80f4893a2fc90266a9daf1999e78a1b6211d748a"
+    sha256 x86_64_linux: "7693dc80c9ce82caf5cf123dac6bbe8b94be092e1e1c3dcc1c7715deeb40c41e"
   end
 
   depends_on "cmake" => :build

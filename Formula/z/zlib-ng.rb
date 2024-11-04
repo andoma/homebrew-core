@@ -1,18 +1,25 @@
 class ZlibNg < Formula
   desc "Zlib replacement with optimizations for next generation systems"
   homepage "https://github.com/zlib-ng/zlib-ng"
-  url "https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.1.6.tar.gz"
-  sha256 "a5d504c0d52e2e2721e7e7d86988dec2e290d723ced2307145dedd06aeb6fef2"
+  url "https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.2.tar.gz"
+  sha256 "fcb41dd59a3f17002aeb1bb21f04696c9b721404890bb945c5ab39d2cb69654c"
   license "Zlib"
 
+  # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
+  # labeled as "pre-release" on GitHub before the version is released, so it's
+  # necessary to use the `GithubLatest` strategy.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "bec24ea3f719139dbd06cc28874257b69bbb921ac9d7b405db416a0ac004ad7f"
-    sha256 cellar: :any,                 arm64_ventura:  "d0a07260a51bd3d13e2a92c0d3f59153d349e805728ef7450cbf9769af770319"
-    sha256 cellar: :any,                 arm64_monterey: "61b6f04ca4f1870d6dba8d8062fb2d2ac3710958b9c343ad287962a354eeb8aa"
-    sha256 cellar: :any,                 sonoma:         "b13e667f51e3a68104985c5305d741bd6d989d548b6d944dd9f7d4a715c8c793"
-    sha256 cellar: :any,                 ventura:        "e8fe49b1be8cbaaa27f201882776c5bdfa46a6dc20a8a99089a37fb779ed105a"
-    sha256 cellar: :any,                 monterey:       "915d8b23591e4e7581930d3b36102b2396a168a39d8ccccbff17bbaf0478e43e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d57997eda0dd7a5e7e4003465002ff957009de1489f6ff72d9297e157aefb9f0"
+    sha256 cellar: :any,                 arm64_sequoia: "bc1a40efd791c95a4f89cf7130143af0f55cb60293bcba7e898274ce1d6072f8"
+    sha256 cellar: :any,                 arm64_sonoma:  "ab11bbbef94c89230de768f2ce3ee4ff0fc1c0b6a6e6bd502a9ed63987c1f07f"
+    sha256 cellar: :any,                 arm64_ventura: "ed5838db3f194af31af706bdb83479f9ab58e97d591255da69a243f54e0d63bf"
+    sha256 cellar: :any,                 sonoma:        "490cc436f9bd223ba9bfe652dde27f8b57e49c3062c91fd4455be1b249e21631"
+    sha256 cellar: :any,                 ventura:       "3186ce97b2be07dd0a4dfd2f4dafbcd7c0cae2da506ff67c363394426b783471"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7cbfac94e97c9cc5a8518002b3e2baa090cf034a38023aefc292fdb479e3f608"
   end
 
   # https://zlib.net/zlib_how.html

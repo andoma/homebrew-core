@@ -1,18 +1,17 @@
 class Gitsign < Formula
   desc "Keyless Git signing using Sigstore"
   homepage "https://github.com/sigstore/gitsign"
-  url "https://github.com/sigstore/gitsign/archive/refs/tags/v0.8.1.tar.gz"
-  sha256 "659f5ab28f760b2449a6e1903f24332a33f994f0518934878846a98678c26a46"
+  url "https://github.com/sigstore/gitsign/archive/refs/tags/v0.11.0.tar.gz"
+  sha256 "5c3d6aaf54cc482638756d32f8a201f65ddb88885368e29a9a2ebd20c9c5f00b"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7c0f2482a268ca03f6dd96db998ee1206d7d80a8d6ab20732ad1a404a361c83a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7014ebd6b189aa2704103fe9f0a5ad9f9f2ad9af674f4c3755ccfec25f8ae4cf"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cd10d50fde1362f754f543ff35f8e32fc18364674940c72b12b9cbcc0e0ced5d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "488696f08371f9a9ff126134781df5c9ce44746db7c2b4d58963f99caa56785b"
-    sha256 cellar: :any_skip_relocation, ventura:        "71973db5e6e0eba68a34a52cafa7b46227ea55e9c9e2f1b3c20b37ac7cc61a29"
-    sha256 cellar: :any_skip_relocation, monterey:       "41b9d4eb9115f295b331f00bb32b93ed147f6348cce7f8286ec8aca87037739f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2f8fbadad12de8e3217d064e8df19a2e504b8f6a3c937b3947535a7848c9cf37"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ab494ff5ee1a8285de439b716caa7583921d7306f31ea728363897b8d64027f4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ab494ff5ee1a8285de439b716caa7583921d7306f31ea728363897b8d64027f4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ab494ff5ee1a8285de439b716caa7583921d7306f31ea728363897b8d64027f4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "556b44958ae647b69db84b6fcc0e1585b9e208efd60cd04a72e6048f3114c9e5"
+    sha256 cellar: :any_skip_relocation, ventura:       "ff7316b17434f076950a74a5f55fbbec46b31b6c7dd0081a596bff5be33729d9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a9b208e65656564acdc4651a3a3f78dc5d52accee7bbc2efd92c7fc99c86579"
   end
 
   depends_on "go" => :build
@@ -22,7 +21,7 @@ class Gitsign < Formula
       -s -w
       -X github.com/sigstore/gitsign/pkg/version.gitVersion=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"gitsign", "completion")
   end

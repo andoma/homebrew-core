@@ -1,18 +1,19 @@
 class Glibmm < Formula
   desc "C++ interface to glib"
   homepage "https://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/glibmm/2.78/glibmm-2.78.1.tar.xz"
-  sha256 "f473f2975d26c3409e112ed11ed36406fb3843fa975df575c22d4cb843085f61"
+  url "https://download.gnome.org/sources/glibmm/2.82/glibmm-2.82.0.tar.xz"
+  sha256 "38684cff317273615c67b8fa9806f16299d51e5506d9b909bae15b589fa99cb6"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "f83307531539a19cacebe0a9fa292bc335908ad8caa15f5e615bdcce006d1ac9"
-    sha256 cellar: :any, arm64_ventura:  "657b75bb9dc8f49e32aa80a0223f7cbbbaa32c0f47e067474c7a5ae3ca6314fb"
-    sha256 cellar: :any, arm64_monterey: "81df6b89b112dc0df48361cbc21ee3ec14ff2bfa2bd19759e72e1571669ebb78"
-    sha256 cellar: :any, sonoma:         "ea2bca4d30436517689806bc5df8edc8d45c37ea0826a81a20672560fbfc3d78"
-    sha256 cellar: :any, ventura:        "96fa56c126f7e27f6be30b833e95d57df854b50f017746d1503a27e70ba1d083"
-    sha256 cellar: :any, monterey:       "dafa558d5a56ecce6b183b8c6e64d85a2176fa99e9a2a606c2311c4d002f836d"
-    sha256               x86_64_linux:   "04316ee77bc16c00f5aebbf2d637061fb7963304592c164acb898f3ed6e480f0"
+    sha256 cellar: :any, arm64_sequoia:  "c51a02b0a35290b41affb9625ac4a707b0889cdfd2e82cf1375879012c1d9025"
+    sha256 cellar: :any, arm64_sonoma:   "31b6a6d43227bdcbf922bd03dd765ff39817541ecd1324138cacf617fbb73d36"
+    sha256 cellar: :any, arm64_ventura:  "2a7e0a5d72958812e3feb2062b4aa7529850734ec4899bebfb2e78f9d185ee32"
+    sha256 cellar: :any, arm64_monterey: "f6b90279a5bf2898894ff0846b5d63329387e31ad42a5ff0d82392b630de87da"
+    sha256 cellar: :any, sonoma:         "392106bcc37463c4d69ac2bd2351bd07f84d88fc3a4ac183ccc86ccdaa7cb211"
+    sha256 cellar: :any, ventura:        "b06828a53ca82f10ccfc9e599a6c9cf25f9bd6cd53015fbfd1a671cc8ad313c2"
+    sha256 cellar: :any, monterey:       "565e8660106b4538fa72246f03f2f0a127ccae72a555a39d55c8d7936ca17fd4"
+    sha256               x86_64_linux:   "0255438ede1898f8160b8566f377dc033f24a7c1b8eedbf1f6eddd51fdc4958c"
   end
 
   depends_on "meson" => :build
@@ -27,10 +28,16 @@ class Glibmm < Formula
     system "meson", "setup", "build", "-Dbuild-examples=false", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
+
+    return unless OS.mac?
+
+    inreplace lib/"glibmm-2.68/proc/gmmproc",
+              "#{HOMEBREW_LIBRARY}/Homebrew/shims/mac/super/m4",
+              "#{HOMEBREW_PREFIX}/bin/m4"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <glibmm.h>
 
       int main(int argc, char *argv[])
@@ -38,7 +45,7 @@ class Glibmm < Formula
          Glib::ustring my_string("testing");
          return 0;
       }
-    EOS
+    CPP
     flags = shell_output("pkg-config --cflags --libs glibmm-2.68").chomp.split
     system ENV.cxx, "-std=c++17", "test.cpp", "-o", "test", *flags
     system "./test"

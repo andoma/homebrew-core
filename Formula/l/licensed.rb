@@ -2,19 +2,17 @@ class Licensed < Formula
   desc "Cache and verify the licenses of dependencies"
   homepage "https://github.com/github/licensed"
   url "https://github.com/github/licensed.git",
-      tag:      "4.4.0",
-      revision: "0f5e5a1d289665e8a3d7133cba6c6f3a15359ecb"
+      tag:      "v5.0.0",
+      revision: "20ccab13f3e8738cf12543ef78da3469bf63c249"
   license "MIT"
-  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "b06b95564adc540d4aafc43a2a46168771d2e6b3a748b2c95cc71a79b28b4047"
-    sha256 cellar: :any,                 arm64_ventura:  "133d5a34b52686ea4625c9603e3186b3d85fc899dec2a8fc3e8c081554710806"
-    sha256 cellar: :any,                 arm64_monterey: "adddccc7895034261c83e2118b66350c17f91cdcc76474149dba1f1505feb299"
-    sha256 cellar: :any,                 sonoma:         "a44f7dd570c1ecd7552ced29e76ffcf3e8158b109f767b82c9c793f0451741b9"
-    sha256 cellar: :any,                 ventura:        "6e06f31113b06e5ccaa02383fc07d4830dcb03b3d1555e0adccb1a32370948a5"
-    sha256 cellar: :any,                 monterey:       "2118b973e3ce647acfb3b1f71f7c51a01e6de9b3f6cc02591cd29183c888e50c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "159f68bb6f915b6b3c1cdafe24b8f3c304149b70dc508dc3945ece03120019a7"
+    sha256 cellar: :any,                 arm64_sequoia: "990ad6b8f14675784a86be75e7b9f21be512f96e9730629b25fcfe505955bdbe"
+    sha256 cellar: :any,                 arm64_sonoma:  "4f6aadedd0c21c9020adefe0afe9e04a2c86a4462ce171624b25f98a61e65e52"
+    sha256 cellar: :any,                 arm64_ventura: "53e1e619abf7a41e12b4577e5ad797d0a9fb9c1d7ab4cb53dd233d4bd1622619"
+    sha256 cellar: :any,                 sonoma:        "17b2447ccfac484d354e9b46b36b4d800c1b342cf4109f5f1b7b8c920a3b752c"
+    sha256 cellar: :any,                 ventura:       "7c0e78d953be402d8a7591fc514d38eb24dfdb6c4489e423b569c81e9825e56a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6efb61e7c4ea635c3307aa38fc200af81299fedc3907fb66d33f2f2f84783626"
   end
 
   depends_on "cmake" => :build
@@ -44,7 +42,10 @@ class Licensed < Formula
       libexec/"gems/rugged-*/vendor/libgit2/build/CMakeCache.txt",
       libexec/"gems/rugged-*/vendor/libgit2/build/**/CMakeFiles/**/*",
     ].select { |f| File.file? f }
-    inreplace shims_references, Superenv.shims_path.to_s, "<**Reference to the Homebrew shims directory**>", false
+    inreplace shims_references,
+              Superenv.shims_path.to_s,
+              "<**Reference to the Homebrew shims directory**>",
+              audit_result: false
   end
 
   test do

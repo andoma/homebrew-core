@@ -1,8 +1,10 @@
 class OpenAdventure < Formula
+  include Language::Python::Virtualenv
+
   desc "Colossal Cave Adventure, the 1995 430-point version"
   homepage "http://www.catb.org/~esr/open-adventure/"
-  url "http://www.catb.org/~esr/open-adventure/advent-1.18.tar.gz"
-  sha256 "9c2b71b8b44c96ac30cfc3ebacda5e35dab724ec2d63e91e3aebcaf25f852c05"
+  url "http://www.catb.org/~esr/open-adventure/advent-1.20.tar.gz"
+  sha256 "88166db3356da1a11d6c5b9faa0137f046e6eb761333c8d40cb3bcab9fa03e4a"
   license "BSD-2-Clause"
   head "https://gitlab.com/esr/open-adventure.git", branch: "master"
 
@@ -12,18 +14,18 @@ class OpenAdventure < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a63d7f1a240537727d295907a4923a7ebbf0d68c4d47b1a7d3d3b9ec4b9fd95d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5e024181cba453672dc901576ae313f53760bbaf2b2a236e0c611fc47f008bac"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e87e0434ae6409afd4dc0f11cd493621e74789efc9bb3b463ac6b3c2ea0d379f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1b229a6abf4e09c078d9a79ba6912da1c4b2113f0aa93bd99649cfdc99012e17"
-    sha256 cellar: :any_skip_relocation, ventura:        "2839076eede9bd947187276a3c9885d9080d666f8ecb6a2291377d93533db0f9"
-    sha256 cellar: :any_skip_relocation, monterey:       "a9a999beb6a0499ae9ef64f093ef47a3ea1e712542260a4aee54b414f471daaa"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "590ea3f268a787c2eb7d021693e3260f044959bd96767a64d63d787d19a7a8cb"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6eec5f4234610108d0981675069e9cb399629b5583375e8a3646cf40106ce84e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b79ead7a8777908582bbae02d996718401ad1e8ac590bc67acb9f47e90f6bdf0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "37eb08a624d5b0bed4316bdf8cbd41a32d61a47aa1049d6f14102b26cd3a7f8b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "29b1fc41c2bafbc1d51339ff08dfb7368014c747ed611230760e41007885dca3"
+    sha256 cellar: :any_skip_relocation, ventura:       "48635b97a030dc943aa46c63ffc9d2577364d2c9b228361b3dc699db76d68976"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cdd8abc0993bac8839ef252f7e567b40760072687fb0fd982967c599c19e758b"
   end
 
   depends_on "asciidoc" => :build
-  depends_on "python@3.12" => :build
-  depends_on "pyyaml" => :build
+  depends_on "libyaml" => :build
+  depends_on "python@3.13" => :build
 
   uses_from_macos "libxml2" => :build
   uses_from_macos "libedit"
@@ -32,12 +34,17 @@ class OpenAdventure < Formula
     depends_on "pkg-config" => :build
   end
 
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+  end
+
   def install
-    python = Formula["python@3.12"].opt_bin/"python3.12"
-    system python, "./make_dungeon.py"
+    venv = virtualenv_create(buildpath, "python3.13")
+    venv.pip_install resources
+    system venv.root/"bin/python", "./make_dungeon.py"
     system "make"
     bin.install "advent"
-    system "make", "advent.6"
     man6.install "advent.6"
   end
 

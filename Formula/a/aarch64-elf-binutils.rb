@@ -1,24 +1,24 @@
 class Aarch64ElfBinutils < Formula
   desc "GNU Binutils for aarch64-elf cross development"
   homepage "https://www.gnu.org/software/binutils/"
-  url "https://ftp.gnu.org/gnu/binutils/binutils-2.41.tar.bz2"
-  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.41.tar.bz2"
-  sha256 "a4c4bec052f7b8370024e60389e194377f3f48b56618418ea51067f67aaab30b"
+  url "https://ftp.gnu.org/gnu/binutils/binutils-2.43.1.tar.bz2"
+  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.43.1.tar.bz2"
+  sha256 "becaac5d295e037587b63a42fad57fe3d9d7b83f478eb24b67f9eec5d0f1872f"
   license "GPL-3.0-or-later"
-  revision 1
 
   livecheck do
     formula "binutils"
   end
 
   bottle do
-    sha256 arm64_sonoma:   "4f3f3c2d79ef87cf5a38af1417ddd66d80d8df4ead19e1bcf66b81a5b169228a"
-    sha256 arm64_ventura:  "bca2b0a9229c30435a5275559c2ddc323311f4423e4e73e7bf2e1924bb087f25"
-    sha256 arm64_monterey: "ac6fff6622a52b2de718c279e5cdba37d53ae440d230546ef3602f30f144ae5b"
-    sha256 sonoma:         "225f3236297b34ba5c66ab0c782e6a86005b23013535cd33ae81193474503367"
-    sha256 ventura:        "21bccf5541e89a06490634df099ace243cf25d775d166af499755a23cc583d12"
-    sha256 monterey:       "db1189c824be7ae6fbfd64027bc974ef92761c9bb775a677370c47cccef8cb2c"
-    sha256 x86_64_linux:   "926d81ed3cc4cd9948e45d06279f278f6c6ae16128cd90d2d5e9ef253378879f"
+    sha256 arm64_sequoia:  "a12b1c38987aced539910d0d5bcc803999f3783e4c640f366e75f3ffdf9640da"
+    sha256 arm64_sonoma:   "d58aeae4ea9f3f1016c401588502c0f5908693ec904334ebcb4505564cfba1c3"
+    sha256 arm64_ventura:  "4504615ff3eab4d10e2d4ea2c27e7dcf48ae6eed1f98b36869ecf42d7eafdd83"
+    sha256 arm64_monterey: "fc33b4a2f5f4e7a93ea4017b1fa629ded1f4dacbb4072d9c0912ebaecf4d27a2"
+    sha256 sonoma:         "c0f977599a2aedab5da2baa19e42813658143bfc11f6fbe082bb858564b21789"
+    sha256 ventura:        "3509ff0abd672d5dd9f1e822f2da8815ce3a5d12dced44e68b66d8929103f55c"
+    sha256 monterey:       "99158042d186229a5c35dbf47b7bbf54ed279d0195fc989412d450f3e6056124"
+    sha256 x86_64_linux:   "2b9af0cd8bdfa3f67fd1bb431bef2e3507d379922d4a63864d6be56a257d1082"
   end
 
   depends_on "pkg-config" => :build
@@ -52,7 +52,7 @@ class Aarch64ElfBinutils < Formula
           mov x16, #1
           svc #0x80
     EOS
-    system "#{bin}/aarch64-elf-as", "-o", "test-s.o", "test-s.s"
+    system bin/"aarch64-elf-as", "-o", "test-s.o", "test-s.s"
     assert_match "file format elf64-littleaarch64",
                  shell_output("#{bin}/aarch64-elf-objdump -a test-s.o")
     assert_match "f()", shell_output("#{bin}/aarch64-elf-c++filt _Z1fv")

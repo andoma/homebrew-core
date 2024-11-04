@@ -1,8 +1,8 @@
 class Sdl2 < Formula
   desc "Low-level access to audio, keyboard, mouse, joystick, and graphics"
   homepage "https://www.libsdl.org/"
-  url "https://github.com/libsdl-org/SDL/releases/download/release-2.30.0/SDL2-2.30.0.tar.gz"
-  sha256 "36e2e41557e0fa4a1519315c0f5958a87ccb27e25c51776beb6f1239526447b0"
+  url "https://github.com/libsdl-org/SDL/releases/download/release-2.30.9/SDL2-2.30.9.tar.gz"
+  sha256 "24b574f71c87a763f50704bbb630cbe38298d544a1f890f099a4696b1d6beba4"
   license "Zlib"
 
   livecheck do
@@ -12,13 +12,12 @@ class Sdl2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "ad1ffd46cba06c78f3c86bc14204b5b59fa398efaff22b607fe120fc38f58ca4"
-    sha256 cellar: :any,                 arm64_ventura:  "6a76804280556b101c42ddbdb40d32cc615c1c95c7de1f8159741cb3eedd0511"
-    sha256 cellar: :any,                 arm64_monterey: "e546a0b6fe940072b0a157902a1f7ac16b3f532bb0e58c816c0c58fa7dedae82"
-    sha256 cellar: :any,                 sonoma:         "d936a473c17225d608e1921b844138570f255f944872b96b6681606762db7139"
-    sha256 cellar: :any,                 ventura:        "24d2c375fa1e365fdf649c0d8cb0670391629625f98c4c73a37d352025289cf1"
-    sha256 cellar: :any,                 monterey:       "b73113c66e97db1a3ee04fc1d85d0c830270654ca0c8996b83bc0f6fcb5a41b7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1bb38b26116a723d5e9f4ab8bd22bce67a06bbd818553c315bf0650a5140faf7"
+    sha256 cellar: :any,                 arm64_sequoia: "cbff6c079fb44cb4b568dddb0a69c5da08b396fe6f6a4c90618f2fe8486456ea"
+    sha256 cellar: :any,                 arm64_sonoma:  "84704c6ab26482890a172d9da912fbe51656de29caea75e46e287397f60461e0"
+    sha256 cellar: :any,                 arm64_ventura: "a8168508bbddc2439d5434b85b3fd4fec4f8b5cbbfeb11dc4c4b33faadaaabff"
+    sha256 cellar: :any,                 sonoma:        "e0e36f68524a09d5f0b9318b8ce905a4d3a87408eea94a238084075e55bd1176"
+    sha256 cellar: :any,                 ventura:       "7726275e371a832296395ce5e0d3988ccca358d1ddba82d384be5a9dbdc4c23b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ebc21173917029b88754e65099236a393bf42e5f3b07f100977140ba4b7f71cf"
   end
 
   head do

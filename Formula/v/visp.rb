@@ -4,7 +4,7 @@ class Visp < Formula
   url "https://visp-doc.inria.fr/download/releases/visp-3.6.0.tar.gz"
   sha256 "eec93f56b89fd7c0d472b019e01c3fe03a09eda47f3903c38dc53a27cbfae532"
   license "GPL-2.0-or-later"
-  revision 3
+  revision 6
 
   livecheck do
     url "https://visp.inria.fr/download/"
@@ -12,28 +12,41 @@ class Visp < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "d93518ea5414c4aa840a7907fb7d95cba0d59a395fcc60750e839933be88e4a6"
-    sha256 cellar: :any,                 arm64_ventura:  "c85a167caf67cd5656ee083daff897a7c321f3e0e8012a66c0eabec48df83fc2"
-    sha256 cellar: :any,                 arm64_monterey: "439dcf5a4c9708c2e6e3fc9900ede114918029de72f7e80dd987508f65091863"
-    sha256 cellar: :any,                 sonoma:         "1ae8fd8777454c15cb1228348773ea4c2bf66d8d705e171f5b2edb5cd29a1f21"
-    sha256 cellar: :any,                 ventura:        "ee54db90499d8344e29ed206aeb469aefb0b78e10f2854cca13e0fc61cbe7428"
-    sha256 cellar: :any,                 monterey:       "9cb2ee515990c573f6a134659b1ade1214f389baef6790589bd4f78c386a3579"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1a57aaf636d683040f9dc92d074f6e5dd78e1945a6f754930a347d362d67eb5e"
+    sha256 cellar: :any,                 arm64_sonoma:   "aa2ae8cfa6a139b9789cff6b0c91a10cea7b1c854d4d23073bbca8ac53bbb4b4"
+    sha256 cellar: :any,                 arm64_ventura:  "afa24d7d2774a8a53ef166bb1d00cdf81b56b4ad6f71441fc9660f67af93a698"
+    sha256 cellar: :any,                 arm64_monterey: "1a0a7b8cd994f5d302d2f5693071a6c17ec93a4edab19691867e12dc20278911"
+    sha256 cellar: :any,                 sonoma:         "fee41cb44c0c51d1942ae451d8bb2079d2c96e994f341f201fb1b403faf4c274"
+    sha256 cellar: :any,                 ventura:        "a4a5b98f1546f90c563ca8ffef2cf86912a92acdd39965fa8c81a3b1ba52898d"
+    sha256 cellar: :any,                 monterey:       "754fccdcd34b588341ae8a6d846bd500f443a23f3485910a301b2af62dcf0d5f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8ae66b7767af5ceb8ad682c3328aa9dc6bca569e4705641d45c161e199ff0a55"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => [:build, :test]
+
   depends_on "eigen"
   depends_on "gsl"
   depends_on "jpeg-turbo"
   depends_on "libdc1394"
   depends_on "libpng"
+  depends_on "openblas"
   depends_on "opencv"
   depends_on "pcl"
+  depends_on "vtk"
   depends_on "zbar"
 
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "boost"
+    depends_on "flann"
+    depends_on "glew"
+    depends_on "libomp"
+    depends_on "libpcap"
+    depends_on "qhull"
+    depends_on "qt"
+  end
 
   on_linux do
     depends_on "libnsl"

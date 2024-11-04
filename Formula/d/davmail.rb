@@ -1,17 +1,18 @@
 class Davmail < Formula
   desc "POP/IMAP/SMTP/Caldav/Carddav/LDAP exchange gateway"
   homepage "https://davmail.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/davmail/davmail/6.2.1/davmail-6.2.1-3496.zip"
-  sha256 "907ca9e460b8f3f0748461c740e6cc29e26ee8b5b6e613484fee79f357a5f792"
+  url "https://downloads.sourceforge.net/project/davmail/davmail/6.2.2/davmail-6.2.2-3546.zip"
+  version "6.2.2"
+  sha256 "e39a5a1b2e927d41572babd8f0be2d1c56228a8d7fe5a87dbd3c86226760c072"
   license "GPL-2.0-or-later"
 
   livecheck do
     url "https://sourceforge.net/projects/davmail/rss?path=/davmail"
-    regex(%r{url=.*?/davmail[._-]v?(\d+(?:[.-]\d+)+)\.(?:t|zip)}i)
+    regex(%r{url=.*?/davmail[._-]v?(\d+(?:\.\d+)+)(?:-\d+)?\.(?:t|zip)}i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "271f080df21290dfd41194a31058d24f59cfa7578cce644f85d213a381c10ade"
+    sha256 cellar: :any_skip_relocation, all: "c55c26e3679337482c014409c4fec1ba607af4e644a47063c3d81785f30bf3b0"
   end
 
   depends_on "openjdk"

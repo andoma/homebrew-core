@@ -1,18 +1,19 @@
 class Menhir < Formula
   desc "LR(1) parser generator for the OCaml programming language"
   homepage "http://cristal.inria.fr/~fpottier/menhir"
-  url "https://gitlab.inria.fr/fpottier/menhir/-/archive/20231231/menhir-20231231.tar.bz2"
-  sha256 "fb76a37b84e28acd3ecf58efea3abc8c7a9a70987a44915837e81093a7853d3a"
+  url "https://gitlab.inria.fr/fpottier/menhir/-/archive/20240715/menhir-20240715.tar.bz2"
+  sha256 "b986cfb9f30d4955e52387b37f56bc642b0be8962b1f64b134e878b30a3fe640"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "182247d95722654249f03821183168020c5fd2c8dfc2cb537f7849113d55077f"
-    sha256 cellar: :any,                 arm64_ventura:  "a6f67e1df35d4958923fae7e847f799d81710ac298b618bd08f4a643b8a03b89"
-    sha256 cellar: :any,                 arm64_monterey: "77285973f5aff863fe702d1b6e57eb32528718e17da0cbfebc8f88da88f00674"
-    sha256 cellar: :any,                 sonoma:         "8cb64eaf45aeed6fa2a9f13b7d88a749efb47e79fad18647a7b9525161e536c5"
-    sha256 cellar: :any,                 ventura:        "30f0b2a803560c18bebeb851c222c1a8352e7130045a02e3680f7aff40d5d180"
-    sha256 cellar: :any,                 monterey:       "51b8a1f0d7873e4f578f75e1102ac09f6026c264b52add86d9ec8c25fa9a5348"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e9da631e1b1809bb851303ab71ebeb80319064d1672e0511d605869c29686339"
+    sha256 cellar: :any,                 arm64_sequoia:  "14dd16a69a570a455240d296e6f44805c9ae87eeb98b54daf50d5201a3b031eb"
+    sha256 cellar: :any,                 arm64_sonoma:   "981738a0ed04e59a302c4195b157870e59dc8f7be663f1bb0bd9493cbdcf9277"
+    sha256 cellar: :any,                 arm64_ventura:  "83193b946be4684240e7ccfdf7cb722fb1791e0dfbea95bc47f7afa2c347f61c"
+    sha256 cellar: :any,                 arm64_monterey: "a32cf574977558f2dfa79b986e7a20f7340a32b0d998d65759e7b7db45d1d5c0"
+    sha256 cellar: :any,                 sonoma:         "5c51478563460c4bf57f48a599f4f6d3cec0374734e163f1b05dcaf1a2d14acd"
+    sha256 cellar: :any,                 ventura:        "ff8d04832ebadaec926d1ceffb2188a32e5ed8dfa500175af6afdd338b0be10d"
+    sha256 cellar: :any,                 monterey:       "8548accbcc37dbf510d010b5a664c6645b9407af5995be09a8ef24c1653bf5f2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b59171d340c6db652b67aaa74357024684510313d81be23b6298b0d6cd5c61e3"
   end
 
   depends_on "dune" => :build
@@ -42,7 +43,7 @@ class Menhir < Formula
                 | TIMES { fun x y -> x * y }
     EOS
 
-    system "#{bin}/menhir", "--dump", "--explain", "--infer", "test.mly"
+    system bin/"menhir", "--dump", "--explain", "--infer", "test.mly"
     assert_predicate testpath/"test.ml", :exist?
     assert_predicate testpath/"test.mli", :exist?
   end

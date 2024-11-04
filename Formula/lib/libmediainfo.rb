@@ -1,27 +1,30 @@
 class Libmediainfo < Formula
   desc "Shared library for mediainfo"
   homepage "https://mediaarea.net/en/MediaInfo"
-  url "https://mediaarea.net/download/source/libmediainfo/24.01/libmediainfo_24.01.tar.xz"
-  sha256 "a02dfc6689f485cec06fa12a3414c3c3aa2853b4dde18aeab4b54a56c8316259"
+  url "https://mediaarea.net/download/source/libmediainfo/24.06/libmediainfo_24.06.tar.xz"
+  sha256 "0683f28a2475dc2417205ba528debccc407da4d9fa6516eb4b75b3ff7244e96e"
   license "BSD-2-Clause"
   head "https://github.com/MediaArea/MediaInfoLib.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "3e7ab4f05ac90dd3a88986779f84157b879f08aaa741f66c50cea5b4b6189e82"
-    sha256 cellar: :any,                 arm64_ventura:  "4901566d0f75cdf103c90977f431292792cc951caf3550072f07bbbceaff61bc"
-    sha256 cellar: :any,                 arm64_monterey: "767ef1cb0fd344a1aa21e99cdeb9510c16681112dee93126846bbe9f33666ddd"
-    sha256 cellar: :any,                 sonoma:         "eb41f8a74b45bf1ad8fd8d1fe7587e06d9de5bc9e2fb130b145a09a664bf1a2c"
-    sha256 cellar: :any,                 ventura:        "a69785ba460faa89fa342711db3d270e624716eee7a8035fda0024978fbac4aa"
-    sha256 cellar: :any,                 monterey:       "1eca8bea89651178ba0fb05516b7477f5c94a302eefc34a3aaf907cff59e59e1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b0f046854043aa8a8036e756d7d734d4e297e9e07aee3dee1c9d3fbb2d6e2c4b"
+    sha256 cellar: :any,                 arm64_sequoia:  "8f26919e56c446426bea8abe9f8bbb51c6487d2599ad853ce74a90268d590478"
+    sha256 cellar: :any,                 arm64_sonoma:   "dfb00a983d0b7a1691aafef218b6417b82605ba291e0367b901b921a23e8d114"
+    sha256 cellar: :any,                 arm64_ventura:  "14266e079f02a52815d0938b9b84bbd2afda5f21a1441d0de3b85f716bed763d"
+    sha256 cellar: :any,                 arm64_monterey: "4c07f5c3894ea2f267b22ff4bc4b97faad97991a631a45a3e0f48e0c812b21f8"
+    sha256 cellar: :any,                 sonoma:         "3e7bd62f61786ac2bf331d385a151f84f72f4ba7f7946f931cc1d7a3965eaba4"
+    sha256 cellar: :any,                 ventura:        "1de25cceecfa0fa85dfe280e72b1c7701278bb3f59e510cf37c85774004b1eca"
+    sha256 cellar: :any,                 monterey:       "864a8a489f88391f991d3ddcf1d276f143545049970e32da6d1f8cc82d1e30ed"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c80fc58fa1bc432f8661261873bb431c25ef6c85fc6b46fe5eb665334c179879"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+
   depends_on "libmms"
   depends_on "libzen"
 
   uses_from_macos "curl"
+  uses_from_macos "zlib"
 
   # These files used to be distributed as part of the media-info formula
   link_overwrite "include/MediaInfo/*"
@@ -36,7 +39,7 @@ class Libmediainfo < Formula
   end
 
   test do
-    (testpath/"test.cc").write <<~EOS
+    (testpath/"test.cc").write <<~CPP
       #define _UNICODE
       #include <iostream>
       #include <string>
@@ -64,7 +67,7 @@ class Libmediainfo < Formula
           media_info.Close();
           return 1;
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++17", "test.cc", "-I#{include}", "-L#{lib}", "-lmediainfo", "-o", "test"
     system "./test", test_fixtures("test.m4a")
   end

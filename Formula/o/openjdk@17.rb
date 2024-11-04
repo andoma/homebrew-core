@@ -1,8 +1,8 @@
 class OpenjdkAT17 < Formula
   desc "Development kit for the Java programming language"
   homepage "https://openjdk.java.net/"
-  url "https://github.com/openjdk/jdk17u/archive/refs/tags/jdk-17.0.10-ga.tar.gz"
-  sha256 "fac2539384ba8d86cdcf3553e69aaf4001a3cec1134bbf6f5f04f64f0acbc055"
+  url "https://github.com/openjdk/jdk17u/archive/refs/tags/jdk-17.0.13-ga.tar.gz"
+  sha256 "84e84382a412525c9e4c606164ef5a300db7ebc6ebab004e27c88520065c2add"
   license "GPL-2.0-only" => { with: "Classpath-exception-2.0" }
 
   livecheck do
@@ -11,20 +11,21 @@ class OpenjdkAT17 < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "0a5a6b5abdecc42b5fa0260bb4532c08258e573a78e2b392922c7d7bb0087e67"
-    sha256 cellar: :any, arm64_ventura:  "11eee3320c53d8d7cc72fb764db4060205cbbad48e34759a470c5ccc6727b42b"
-    sha256 cellar: :any, arm64_monterey: "866e1c2b5f7b17023eb755efd39a8ffb662a064493d0144f73e98b6504f2f3d0"
-    sha256 cellar: :any, sonoma:         "988141c3caae5ae4e6170e9c0802e5cc1d79cd422bbcc56c45670b7eb872c33b"
-    sha256 cellar: :any, ventura:        "cb1d251fbbf9f9011a83f9ade0faab224b4ae6485563a35a5e8c8accac1e4467"
-    sha256 cellar: :any, monterey:       "98a4060d9ba7814c7dc8776ce26d1214b74f70c3d881a2ce66bd8a1407f19f1e"
-    sha256               x86_64_linux:   "b80fc3c1aab44d0b6cd0f0a6cd9f68e4045ee3611db2e659525f8147c0ef6c2d"
+    sha256 cellar: :any, arm64_sequoia: "0f65b5758b71b8d9b609569de9ab91509991decb4ef6faa5e79db4bdb893732e"
+    sha256 cellar: :any, arm64_sonoma:  "8050bbd2df38506af3b16b72dc118c22b75d7bd43a50cfe633bc2bf946724a34"
+    sha256 cellar: :any, arm64_ventura: "053e93c7049e5260836d5ff0711afe9163f95c812950ce864b83cc3ce7f8095a"
+    sha256 cellar: :any, sonoma:        "46fcc960a49a2658ab56bce058ede6a7323cf4a40a7599cc8fa0163c2b61c9b1"
+    sha256 cellar: :any, ventura:       "80538c99e1d6e1077f596d12d1ddd14179a70ba3cf6add7ec8a4bd4e13c22fa3"
+    sha256               x86_64_linux:  "d4cc9eade3f9694004d6c992c729d59d56f492f58f6f90b49f7f76cf2cb64453"
   end
 
   keg_only :versioned_formula
 
   depends_on "autoconf" => :build
   depends_on "pkg-config" => :build
-  depends_on xcode: :build
+  depends_on xcode: :build # for metal
+
+  depends_on "freetype"
   depends_on "giflib"
   depends_on "harfbuzz"
   depends_on "jpeg-turbo"
@@ -36,12 +37,22 @@ class OpenjdkAT17 < Formula
   uses_from_macos "zip"
   uses_from_macos "zlib"
 
+  on_macos do
+    if DevelopmentTools.clang_build_version == 1600
+      depends_on "llvm" => :build
+
+      fails_with :clang do
+        cause "fatal error while optimizing exploded image for BUILD_JIGSAW_TOOLS"
+      end
+    end
+  end
+
   on_linux do
     depends_on "alsa-lib"
     depends_on "fontconfig"
-    depends_on "freetype"
     depends_on "libx11"
     depends_on "libxext"
+    depends_on "libxi"
     depends_on "libxrandr"
     depends_on "libxrender"
     depends_on "libxt"
@@ -75,6 +86,16 @@ class OpenjdkAT17 < Formula
   end
 
   def install
+    if DevelopmentTools.clang_build_version == 1600
+      ENV.llvm_clang
+      ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
+      # ptrauth.h is not available in brew LLVM
+      inreplace "src/hotspot/os_cpu/bsd_aarch64/pauth_bsd_aarch64.inline.hpp" do |s|
+        s.sub! "#include <ptrauth.h>", ""
+        s.sub! "return ptrauth_strip(ptr, ptrauth_key_asib);", "return ptr;"
+      end
+    end
+
     boot_jdk = buildpath/"boot-jdk"
     resource("boot-jdk").stage boot_jdk
     boot_jdk /= "Contents/Home" if OS.mac?
@@ -95,6 +116,7 @@ class OpenjdkAT17 < Formula
       --with-version-build=#{revision}
       --without-version-opt
       --without-version-pre
+      --with-freetype=system
       --with-giflib=system
       --with-harfbuzz=system
       --with-lcms=system
@@ -107,8 +129,13 @@ class OpenjdkAT17 < Formula
     args += if OS.mac?
       ldflags << "-headerpad_max_install_names"
 
+      # Allow unbundling `freetype` on macOS
+      inreplace "make/autoconf/lib-freetype.m4", '= "xmacosx"', '= ""'
+
       %W[
         --enable-dtrace
+        --with-freetype-include=#{Formula["freetype"].opt_include}
+        --with-freetype-lib=#{Formula["freetype"].opt_lib}
         --with-sysroot=#{MacOS.sdk_path}
       ]
     else
@@ -116,7 +143,6 @@ class OpenjdkAT17 < Formula
         --with-x=#{HOMEBREW_PREFIX}
         --with-cups=#{HOMEBREW_PREFIX}
         --with-fontconfig=#{HOMEBREW_PREFIX}
-        --with-freetype=system
         --with-stdc++lib=dynamic
       ]
     end

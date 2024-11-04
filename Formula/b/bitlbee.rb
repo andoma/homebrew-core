@@ -3,7 +3,7 @@ class Bitlbee < Formula
   homepage "https://www.bitlbee.org/"
   url "https://get.bitlbee.org/src/bitlbee-3.6.tar.gz"
   sha256 "9f15de46f29b46bf1e39fc50bdf4515e71b17f551f3955094c5da792d962107e"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
   head "https://github.com/bitlbee/bitlbee.git", branch: "master"
 
   livecheck do
@@ -13,6 +13,7 @@ class Bitlbee < Formula
 
   bottle do
     rebuild 1
+    sha256 arm64_sequoia:  "b657d232b9e5c995bad586bebabccbf58cab67a71f81dcc20ef65ba7685c7c5c"
     sha256 arm64_sonoma:   "5405ccb44de475193bc30f0c57d9794ede440f7c3d8e608404cd2aee0431713b"
     sha256 arm64_ventura:  "d5abbf75f2d71752b48051f6072394422a338650a187b53f0bcb528981da9e3a"
     sha256 arm64_monterey: "6c291e3c2ef13b1e766bbfa75f7732f273cacdd6eb98bfdd474db446a8ae0137"
@@ -26,10 +27,14 @@ class Bitlbee < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "gettext"
   depends_on "glib"
   depends_on "gnutls"
   depends_on "libgcrypt"
+  depends_on "libgpg-error"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     args = %W[

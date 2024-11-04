@@ -1,23 +1,22 @@
 class SonarqubeLts < Formula
   desc "Manage code quality"
   homepage "https://www.sonarqube.org/"
-  url "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.4.87374.zip"
-  sha256 "d1c0b5cde64280a6e0f015dde53687b6d63c8a7e2d6780a879cb0dc23b3a75b7"
+  url "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.7.96285.zip"
+  sha256 "82eb93a1380dac4725ad24fd94a11917fb2e0ac6b9a9c98b20e436ed2a50f351"
   license "LGPL-3.0-or-later"
 
   livecheck do
     url "https://www.sonarsource.com/page-data/products/sonarqube/downloads/page-data.json"
-    regex(/SonarQube\s+v?\d+(?:\.\d+)+\s+LTS.*?sonarqube[._-]v?(\d+(?:\.\d+)+)\.zip/im)
+    regex(/SonarQube\s+v?\d+(?:\.\d+)+\s+LT[AS].*?sonarqube[._-]v?(\d+(?:\.\d+)+)\.zip/im)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4a4dcd48e90eb407defccb3d7afef0610a8fada0cea043552bf871b2ad904f56"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4a4dcd48e90eb407defccb3d7afef0610a8fada0cea043552bf871b2ad904f56"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4a4dcd48e90eb407defccb3d7afef0610a8fada0cea043552bf871b2ad904f56"
-    sha256 cellar: :any_skip_relocation, sonoma:         "4a4dcd48e90eb407defccb3d7afef0610a8fada0cea043552bf871b2ad904f56"
-    sha256 cellar: :any_skip_relocation, ventura:        "4a4dcd48e90eb407defccb3d7afef0610a8fada0cea043552bf871b2ad904f56"
-    sha256 cellar: :any_skip_relocation, monterey:       "4a4dcd48e90eb407defccb3d7afef0610a8fada0cea043552bf871b2ad904f56"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ede8d2ff66a69f9cec98c6c7ab5f74388974244c82db081408ed4405c0afed33"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "df554724c5b9f1dd155b25910662f7fec4b9c3d5c80109b324a83db7ee591885"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "df554724c5b9f1dd155b25910662f7fec4b9c3d5c80109b324a83db7ee591885"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "df554724c5b9f1dd155b25910662f7fec4b9c3d5c80109b324a83db7ee591885"
+    sha256 cellar: :any_skip_relocation, sonoma:        "df554724c5b9f1dd155b25910662f7fec4b9c3d5c80109b324a83db7ee591885"
+    sha256 cellar: :any_skip_relocation, ventura:       "df554724c5b9f1dd155b25910662f7fec4b9c3d5c80109b324a83db7ee591885"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6d88fe51f712ae92afc9d01a408d93aa8075fd47ed794dc166b7addc361686f9"
   end
 
   depends_on "openjdk@17"
@@ -32,7 +31,7 @@ class SonarqubeLts < Formula
       ["macosx", "linux-x86"]
     end
 
-    rm_rf Dir["bin/{#{remove},windows}-*"]
+    rm_r(Dir["bin/{#{remove},windows}-*"])
 
     libexec.install Dir["*"]
 

@@ -1,19 +1,18 @@
 class Jj < Formula
   desc "Git-compatible distributed version control system"
   homepage "https://github.com/martinvonz/jj"
-  url "https://github.com/martinvonz/jj/archive/refs/tags/v0.14.0.tar.gz"
-  sha256 "33bea9014f53db520d2983830f3da75b7124c44a16b75850a1dd781355aeff5b"
+  url "https://github.com/martinvonz/jj/archive/refs/tags/v0.22.0.tar.gz"
+  sha256 "ed49b1c01ee6086bb782a465a4437e2f1b66f43bcf39c231df2b261091ab114b"
   license "Apache-2.0"
   head "https://github.com/martinvonz/jj.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "209536d5e2d4caf8b1856358a2c1974cf2c1e8fde3c7edd4adf74b6c9edee0fc"
-    sha256 cellar: :any,                 arm64_ventura:  "ca887ca640c7ce42e70e0eb5148f18b19cfe82b8f15d43b191ef30e3541f553a"
-    sha256 cellar: :any,                 arm64_monterey: "0e8f585dd7d92e7b30db3f06bc774c5914acb1763b1c48bd8e21bef081e75136"
-    sha256 cellar: :any,                 sonoma:         "3d8503aef92e5a4ca8f07ebfe39e8a5757713c75c0f115118a2418f38c8e5ecf"
-    sha256 cellar: :any,                 ventura:        "01d88f7b0f8c0ae7a545f957d1052a969e242118a8bb1ee4a2f655ac7997235e"
-    sha256 cellar: :any,                 monterey:       "bf7e2b1c6c09328f351690d5da37d8ef97115a7ee796961b827b747cac2cc41e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b3787f960a8d5883a188e97a433aa392a770af3934776a8e6393d7988af6a2d9"
+    sha256 cellar: :any,                 arm64_sequoia: "ca729c593b4de7a68bf601cf4791f5f62283437e3e2c3ccbf1cc3b62c7492962"
+    sha256 cellar: :any,                 arm64_sonoma:  "b8bf2630482af0134bc6d54e6dd542da452aad6767031bc19e02d139df789c37"
+    sha256 cellar: :any,                 arm64_ventura: "3a3274b55153eee0a1afb592169814dac795f47aa18698c483a7acd211e9a123"
+    sha256 cellar: :any,                 sonoma:        "48d5223024f8212ab0d8fdd7b0298a9689c7b45ad598d7ee298ba569ac83be98"
+    sha256 cellar: :any,                 ventura:       "013f3f483794574d33c3f21d3f24149af3440585dc997cb7a6116cf46b87bf70"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4ce97b379ce2939ab3f4125e7b4ef6efeca7890d1f84b11c329ed8c6c584611c"
   end
 
   depends_on "pkg-config" => :build
@@ -25,7 +24,7 @@ class Jj < Formula
   def install
     ENV["LIBGIT2_NO_VENDOR"] = "1"
 
-    system "cargo", "install", "--no-default-features", "--bin", "jj", *std_cargo_args(path: "cli")
+    system "cargo", "install", *std_cargo_args(path: "cli")
 
     generate_completions_from_executable(bin/"jj", "util", "completion", shell_parameter_format: :flag)
     (man1/"jj.1").write Utils.safe_popen_read(bin/"jj", "util", "mangen")

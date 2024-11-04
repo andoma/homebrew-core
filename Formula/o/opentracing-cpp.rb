@@ -6,6 +6,7 @@ class OpentracingCpp < Formula
   license "Apache-2.0"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "e30de6dd8cd5968ca9e06daa0f2e6bc3f750f55adf8a7b70c981e79df7704932"
     sha256 cellar: :any,                 arm64_sonoma:   "7da4222d346f9ea96d1fbf8d89662250c82876a1f5cccbf2a335af1e6cf9ae71"
     sha256 cellar: :any,                 arm64_ventura:  "ccbb5e255e5f6708324c7d8853e5d9e16e6409d061d465628fa876f0371454bc"
     sha256 cellar: :any,                 arm64_monterey: "50677ac8a2082e88324b45764c2f2d46dd70df23261c13e4e4fdfe4577505635"
@@ -19,6 +20,8 @@ class OpentracingCpp < Formula
     sha256 cellar: :any,                 high_sierra:    "7747ffc077d879fbbbf4509e65fcfc154f238c9c92482bf94d1fb176156be563"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "77f61d48bdd3ed6cc866a9a1da22fa9ca861a67b3aa253e7bd38416eec8b9f42"
   end
+
+  deprecate! date: "2024-03-09", because: :repo_archived
 
   depends_on "cmake" => :build
 

@@ -11,6 +11,7 @@ class Pianod < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "77c82ba532faeb21102c31fdfce889654bc128c39ee918e53065d80fa68c2360"
     sha256 arm64_sonoma:   "54a50ee4b3ccdce33beada794a379f5709e5523f6bdb9fe6317bf8f199e035f2"
     sha256 arm64_ventura:  "61d74b10d6f05abb5d67d2227458a1203cc9ecc812add4210ad4567aa137b8a7"
     sha256 arm64_monterey: "0eeff011708a6f207220675fea7182ecc3c3e8da436f6f0c206400ece8136907"
@@ -21,15 +22,20 @@ class Pianod < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "glib"
   depends_on "gstreamer"
   depends_on "json-c"
   depends_on "libao"
   depends_on "libgcrypt"
+  depends_on "taglib"
 
   uses_from_macos "curl"
   uses_from_macos "libxcrypt"
+  uses_from_macos "zlib"
 
   on_macos do
+    depends_on "gettext"
+    depends_on "gnutls"
     depends_on "ncurses"
   end
 
@@ -42,11 +48,11 @@ class Pianod < Formula
 
   def install
     ENV["OBJCXXFLAGS"] = "-std=c++14"
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 
   test do
-    system "#{bin}/pianod", "-v"
+    system bin/"pianod", "-v"
   end
 end

@@ -1,8 +1,8 @@
 class ClawsMail < Formula
   desc "User-friendly, lightweight, and fast email client"
   homepage "https://www.claws-mail.org/"
-  url "https://www.claws-mail.org/releases/claws-mail-4.2.0.tar.gz"
-  sha256 "446c89f27c2205277f08e776b53d9d151be013211d91e7d9da006bc95c051c60"
+  url "https://www.claws-mail.org/releases/claws-mail-4.3.0.tar.gz"
+  sha256 "24a4d024c36f98add0e0b935cfa03cc6df01bc1b3f479a7a9d6df57705b04b2f"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,35 +11,48 @@ class ClawsMail < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "dc82ecd9048716b1887d8d9f26d232f1f552a19051aac50934e4f21174897b1f"
-    sha256 arm64_ventura:  "70b19b515fbe5601dace57bab913a27ff1a0fdd5b2822447a943a0be04eb6eb1"
-    sha256 arm64_monterey: "b0679bfc922e144669028b3a1b4ef30c73252d4fdcfeea3a09b5906491826cb9"
-    sha256 sonoma:         "fab6a7990fe0bbddd628c25bd0876fbeb359c87faf3142c44d6ff14f60eff598"
-    sha256 ventura:        "8dc1cf763265e2a64f9a4a2eac8128a00c0b101a14717e40b2f751afa30bbd3c"
-    sha256 monterey:       "c0fd26b3606755c94be9e5e859b3100e362d78b786c92cec17393fd4c2091ee3"
+    rebuild 1
+    sha256 arm64_sequoia: "eb436dc59303f44da3ab375d860a40a778ca8c42cf9433d3154de49a1155a5df"
+    sha256 arm64_sonoma:  "56ee41c9c2477cee478bb0ee5af18780c54b430ef4277630d98399a015fab8af"
+    sha256 arm64_ventura: "4da3da8b0fa9a94f764ff5729ccefe866bd2e2cdd37900a46d596b3b607468e0"
+    sha256 sonoma:        "defbe49f59b83d9d7dddd419ce018c6d3e40b0f57d3df3b5e2f8022fa6a9238e"
+    sha256 ventura:       "1c35e345b1267be409074f4d15c18a5cd94fed8eb315e640528928bb635afd72"
+    sha256 x86_64_linux:  "6d08c23e20dc8679ed712a4709e976bbd722d7e0030114e43e322c88c0b39356"
   end
 
   depends_on "pkg-config" => :build
   depends_on "cairo"
+  depends_on "gdk-pixbuf"
   depends_on "glib"
   depends_on "gnutls"
   depends_on "gtk+3"
   depends_on "libetpan"
   depends_on "nettle"
+  depends_on "pango"
 
-  # Backport fix for building on non-X11 systems.
-  patch do
-    url "https://git.claws-mail.org/?p=claws.git;a=patch;h=dd4c4e5152235f9f4f319cc9fdad9227ebf688c9"
-    sha256 "883c30d0aa0a6450051c9452475ecc0e106297d0765facc07cacf96cde4a4556"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "at-spi2-core"
+    depends_on "gettext"
+    depends_on "harfbuzz"
+  end
+
+  on_linux do
+    depends_on "libice"
+    depends_on "libsm"
   end
 
   def install
-    ENV.append "LDFLAGS", "-Wl,-framework -Wl,Security" if OS.mac?
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules",
+    if OS.mac?
+      ENV["LIBETPAN_CFLAGS"] = "-I#{Formula["libetpan"].opt_include}"
+      ENV["LIBETPAN_LIBS"] = "-F#{Formula["libetpan"].opt_frameworks} -framework libetpan"
+    end
+    system "./configure", "--disable-silent-rules",
                           "--disable-archive-plugin",
                           "--disable-dillo-plugin",
-                          "--disable-notification-plugin"
+                          "--disable-notification-plugin",
+                          *std_configure_args
     system "make", "install"
   end
 

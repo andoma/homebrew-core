@@ -1,19 +1,20 @@
 class Trafficserver < Formula
-  desc "HTTP/1.1 compliant caching proxy server"
+  desc "HTTP/1.1 and HTTP/2 compliant caching proxy server"
   homepage "https://trafficserver.apache.org/"
-  url "https://downloads.apache.org/trafficserver/trafficserver-9.2.3.tar.bz2"
-  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-9.2.3.tar.bz2"
-  sha256 "49686bf788f48f24f9db3454125856564a847cdc4520cde43dcdd5fed105fbf4"
+  url "https://downloads.apache.org/trafficserver/trafficserver-9.2.5.tar.bz2"
+  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-9.2.5.tar.bz2"
+  sha256 "c502b2c26756b104ce3114639abbe3fd8fb2c7cbd481f633f9bc1d7b1513a8ab"
   license "Apache-2.0"
 
   bottle do
-    sha256 arm64_sonoma:   "2e07c59461fe5eab8499d209dd9bafce7c0820d4d34de416cc0704dc9bade81d"
-    sha256 arm64_ventura:  "0f7d16861f8df411de0ebafdebe40b08d8913c36aea679aa8d9748c42046c553"
-    sha256 arm64_monterey: "e612b006d7e6f33b43268c11b09f06180bd96b5e3460d293b9bfa467b285119d"
-    sha256 sonoma:         "e45d25f0c65506398365acebfd416ec0838e4aa0a8dbfa22b437e7b371d5ed09"
-    sha256 ventura:        "173be953d453943f1551f3a4318534ff64a38ca4b75afbe07babf804e1e8705d"
-    sha256 monterey:       "0e5329615db9b88b19ae7b8c3a0b9891226facfdb0ca5227c4bc1fa0b5c3795e"
-    sha256 x86_64_linux:   "ffdaff4b79923b4c4898730e31cbba3ed24244dde6e43b7125195f3f68ce5be8"
+    sha256 arm64_sequoia:  "1f0d8a25462ed5eec7f678df11ba5632898866a9c5a7d447c114c3c2b1c039d8"
+    sha256 arm64_sonoma:   "d47a61ccdcbef9f123fb6a6a8492249caae35749cb2bfbfbcc32751a14352101"
+    sha256 arm64_ventura:  "e4029c3e5c6a223351211525993e8e29cbaea96d21d62f6b329e892153121129"
+    sha256 arm64_monterey: "56e3716e6389aa87ae1e551b81ea647ae3d2d61a11a023eb5c81e24f06386f5a"
+    sha256 sonoma:         "dc7ca3c2c3b97b9a941c78b9224711c8aa5edda6a4794da1220a7e7cba51e8f5"
+    sha256 ventura:        "1b624a60a4188923dde5ba0400a1e90d556e7743f6823965a381628035dd4af5"
+    sha256 monterey:       "7d2b4c72f8a943f388266177551ecdc74c3982e6393773c7d33749cea7480d2c"
+    sha256 x86_64_linux:   "f5d0bd9a32ec12c38a583411b4a14d59c896db2aa599ad762baf86fac805c6c5"
   end
 
   head do
@@ -30,6 +31,9 @@ class Trafficserver < Formula
   depends_on "openssl@3"
   depends_on "pcre" # PCRE2 issue: https://github.com/apache/trafficserver/issues/8780
   depends_on "yaml-cpp"
+
+  uses_from_macos "ncurses"
+  uses_from_macos "zlib"
 
   on_macos do
     # Need to regenerate configure to fix macOS 11+ build error due to undefined symbols

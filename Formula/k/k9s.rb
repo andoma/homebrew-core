@@ -2,8 +2,8 @@ class K9s < Formula
   desc "Kubernetes CLI To Manage Your Clusters In Style!"
   homepage "https://k9scli.io/"
   url "https://github.com/derailed/k9s.git",
-      tag:      "v0.31.9",
-      revision: "f2f4077b592dcbb4162cbfe07bd99546d47d9955"
+      tag:      "v0.32.5",
+      revision: "1440643e8d1a101a38d9be1933131ddf5c863940"
   license "Apache-2.0"
   head "https://github.com/derailed/k9s.git", branch: "master"
 
@@ -13,13 +13,14 @@ class K9s < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1e454f07e37c92b5618f97deb1ea2fcd1c9c9339641b58a85560c3b34336ad64"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b4001d9ba9a3088dad323d318236180e521be97490af574c8073c27b8f2cb3df"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5efc8b847b8469fcb9d70464a2dc17490f4ab50156c8d5f598949a34cad5ce08"
-    sha256 cellar: :any_skip_relocation, sonoma:         "faf398a2a654cddc640536e503dea84b9500eb3b2cd445586718d6991517d60d"
-    sha256 cellar: :any_skip_relocation, ventura:        "f4528a68e5d421f34f9081c1d4417577b9c6caeae170f9c8f99cb55bf5c70f8f"
-    sha256 cellar: :any_skip_relocation, monterey:       "d16052f484b8c087c00937bad0d268365e0ca8bf8f4f0e116bff8ed645f6df3e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fde7b9ea4b5cff262bcc4d51679349f5f5cb81190b754dfa84fdec2a69605b95"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "71834a17a7a0cfb4855553c7c99217cd39434c756a420a57e47b01128cfadd97"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b96fe20b0004ed9f2a6733043d65bfdcbdbfff5470ea8531c6f49888819f48e0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4dc659225c3b753e87eedd2d19d2f5d54db55b4c504924095fce8c182bbe044e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8bccb8d9998a875cab724bd11e7510e5a930cbc0b1ade3f1522b0127427adc01"
+    sha256 cellar: :any_skip_relocation, sonoma:         "1f4bf7e0ecf3cc4414e491403d5e24be996fe525f52aba1509c8579cbfd120c3"
+    sha256 cellar: :any_skip_relocation, ventura:        "5387789b43544fdd2328cfa5d9a332f620e1b0daa9e753f9eb6780f20fc5c0a2"
+    sha256 cellar: :any_skip_relocation, monterey:       "a76ab5bed463ad3cb0729d4363641debd25a324016dbe77c31014abb61d87c0f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7976a912773c66e26bac3c89e5886dc369f2d23f34efc916f76ec28a16e5c5cf"
   end
 
   depends_on "go" => :build
@@ -30,7 +31,7 @@ class K9s < Formula
       -X github.com/derailed/k9s/cmd.version=#{version}
       -X github.com/derailed/k9s/cmd.commit=#{Utils.git_head}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"k9s", "completion")
   end

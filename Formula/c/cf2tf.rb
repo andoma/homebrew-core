@@ -3,27 +3,26 @@ class Cf2tf < Formula
 
   desc "Cloudformation templates to Terraform HCL converter"
   homepage "https://github.com/DontShaveTheYak/cf2tf"
-  url "https://files.pythonhosted.org/packages/ea/3f/c1861f5f8f6c8430c34b3cac46aa7c8723a403a5bffec448a8acf1cfd23c/cf2tf-0.6.2.tar.gz"
-  sha256 "7b2ec09154279d247a3dada67b82c571143805ff7e9bb6d7ebada8fa6908a773"
+  url "https://files.pythonhosted.org/packages/52/00/94c12acc1ed644df1c3ee658068929c33863fccfdd2f8ab9236d58eb4496/cf2tf-0.8.0.tar.gz"
+  sha256 "f36bbf5abacdf70baeb12529a7ae4ba1c5f748112c240bef4a5ed0e0e654f44c"
   license "GPL-3.0-only"
-  revision 1
+  revision 2
   head "https://github.com/DontShaveTheYak/cf2tf.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sonoma:   "df0d3bf9b718cce6a8fc3a4fb05ee12de49862dd9335b56c7b88e17c2b11dd3c"
-    sha256 cellar: :any,                 arm64_ventura:  "10290a607e41aaf70a2a02c121087c5d4b1294f64743e2667277ac27550e64e4"
-    sha256 cellar: :any,                 arm64_monterey: "7fac1e703b99ccfe24c9b42adde0ff97d514b6b7107cdc0dbf3578e3d55ae5fd"
-    sha256 cellar: :any,                 sonoma:         "20714d888eed9723e677411c3ab86f0f86d4adc9382a3a51c829b91fda15327b"
-    sha256 cellar: :any,                 ventura:        "89892644d42acf27c4447dd1451620279cc4b41366a09eb2a9f515fdbbe201de"
-    sha256 cellar: :any,                 monterey:       "0cdf4031dde5287b98eb30756d7c83c33430bb11d24f9707c2849fd68cf83363"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3df5297101aaa43f465baa03e116b33e442193187d46eed3e8013ddd96d4564e"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "fdf7e3468b13c630f1800649353a4ed8b78ce1c595b9acc748e2d63bbca67c84"
+    sha256 cellar: :any,                 arm64_sonoma:  "62f2649d42fe4e42597d6f8135aa3f5cc851d59d477240724c034286ffdb211d"
+    sha256 cellar: :any,                 arm64_ventura: "2f4439a21605763fd2e9fe7d8c283d5d13b467dc060f409673d6fd5b8e0aa942"
+    sha256 cellar: :any,                 sonoma:        "bdd998c6cf8fdc351cb65918f8eb45b72da43026dddd3b54dc5a18c93a71e2a6"
+    sha256 cellar: :any,                 ventura:       "97e99e2dc3b98b3da83c1a881385649be0cf326a06b1bf0967c2dea50641a163"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0bc8b1c28a76c27344d84ea60cd25611eea17143634864f2f54de5f2511c0cc7"
   end
 
   depends_on "cmake" => :build
+  depends_on "certifi"
   depends_on "libyaml"
-  depends_on "python-certifi"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "cfn-flip" do
     url "https://files.pythonhosted.org/packages/ca/75/8eba0bb52a6c58e347bc4c839b249d9f42380de93ed12a14eba4355387b4/cfn_flip-1.3.0.tar.gz"
@@ -31,8 +30,8 @@ class Cf2tf < Formula
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
-    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "click" do
@@ -51,13 +50,13 @@ class Cf2tf < Formula
   end
 
   resource "gitpython" do
-    url "https://files.pythonhosted.org/packages/8f/12/71a40ffce4aae431c69c45a191e5f03aca2304639264faf5666c2767acc4/GitPython-3.1.42.tar.gz"
-    sha256 "2d99869e0fef71a73cbd242528105af1d6c1b108c60dfabd994bf292f76c3ceb"
+    url "https://files.pythonhosted.org/packages/b6/a1/106fd9fa2dd989b6fb36e5893961f82992cf676381707253e0bf93eb1662/GitPython-3.1.43.tar.gz"
+    sha256 "35f314a9f878467f5453cc1fee295c3e18e52f1b99f10f6cf5b1682e968a9e7c"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
-    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "iniconfig" do
@@ -66,33 +65,33 @@ class Cf2tf < Formula
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "pluggy" do
-    url "https://files.pythonhosted.org/packages/54/c6/43f9d44d92aed815e781ca25ba8c174257e27253a94630d21be8725a2b59/pluggy-1.4.0.tar.gz"
-    sha256 "8c85c2876142a764e5b7548e7d9a0e0ddb46f5185161049a79b7e974454223be"
+    url "https://files.pythonhosted.org/packages/96/2d/02d4312c973c6050a18b314a5ad0b3210edb65a906f868e31c111dede4a6/pluggy-1.5.0.tar.gz"
+    sha256 "2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1"
   end
 
   resource "pytest" do
-    url "https://files.pythonhosted.org/packages/80/1f/9d8e98e4133ffb16c90f3b405c43e38d3abb715bb5d7a63a5a684f7e46a3/pytest-7.4.4.tar.gz"
-    sha256 "2cf0005922c6ace4a3e2ec8b4080eb0d9753fdc93107415332f50ce9e7994280"
+    url "https://files.pythonhosted.org/packages/8b/6c/62bbd536103af674e227c41a8f3dcd022d591f6eed5facb5a0f31ee33bbc/pytest-8.3.3.tar.gz"
+    sha256 "70b98107bd648308a7952b06e6ca9a50bc660be218d53c257cc1fc94fda10181"
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "rapidfuzz" do
-    url "https://files.pythonhosted.org/packages/d4/f4/039e35e99c967100d73616ec08d4c02325f67e0d5c32a6d5a49a7f620942/rapidfuzz-3.6.1.tar.gz"
-    sha256 "35660bee3ce1204872574fa041c7ad7ec5175b3053a4cb6e181463fc07013de7"
+    url "https://files.pythonhosted.org/packages/81/43/ce16df67029b8e4f528fd1b3fbe5e9fcfc6fcc16823c66349260dd93750e/rapidfuzz-3.10.0.tar.gz"
+    sha256 "6b62af27e65bb39276a66533655a2fa3c60a487b03935721c45b7809527979be"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "six" do
@@ -106,13 +105,13 @@ class Cf2tf < Formula
   end
 
   resource "thefuzz" do
-    url "https://files.pythonhosted.org/packages/75/e1/9859c094bb47674c2e9b3f51518f488d665941422352f9f7880b72bc86f4/thefuzz-0.20.0.tar.gz"
-    sha256 "a25e49786b1c4603c7fc6e2d69e6bc660982a2919698b536ff8354e0631cc40d"
+    url "https://files.pythonhosted.org/packages/81/4b/d3eb25831590d6d7d38c2f2e3561d3ba41d490dc89cd91d9e65e7c812508/thefuzz-0.22.1.tar.gz"
+    sha256 "7138039a7ecf540da323792d8592ef9902b1d79eb78c147d4f20664de79f3680"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/e2/cc/abf6746cc90bc52df4ba730f301b89b3b844d6dc133cb89a01cfe2511eb9/urllib3-2.2.0.tar.gz"
-    sha256 "051d961ad0c62a94e50ecf1af379c3aba230c66c710493493560c0c223c49f20"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install

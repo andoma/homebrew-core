@@ -1,8 +1,8 @@
 class Sonarqube < Formula
   desc "Manage code quality"
   homepage "https://www.sonarsource.com/products/sonarqube/"
-  url "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.4.0.87286.zip"
-  sha256 "aa68c159173d84d8f6ea82fc72e38a9f5b8cade079905bbaf343940187633ee8"
+  url "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.7.0.96327.zip"
+  sha256 "4a5e5f0d7581e287cff4f02f7588dae499e2aa81fce37b88612acadfb4ba4518"
   license "LGPL-3.0-or-later"
 
   livecheck do
@@ -11,13 +11,12 @@ class Sonarqube < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f2c049ff83548a9dddd1a530268d657ea6bfd1d4e93a28d574e85ee1d2ade424"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f2c049ff83548a9dddd1a530268d657ea6bfd1d4e93a28d574e85ee1d2ade424"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f2c049ff83548a9dddd1a530268d657ea6bfd1d4e93a28d574e85ee1d2ade424"
-    sha256 cellar: :any_skip_relocation, sonoma:         "f2c049ff83548a9dddd1a530268d657ea6bfd1d4e93a28d574e85ee1d2ade424"
-    sha256 cellar: :any_skip_relocation, ventura:        "f2c049ff83548a9dddd1a530268d657ea6bfd1d4e93a28d574e85ee1d2ade424"
-    sha256 cellar: :any_skip_relocation, monterey:       "f2c049ff83548a9dddd1a530268d657ea6bfd1d4e93a28d574e85ee1d2ade424"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c692309c296891e000387ee023f2ffa47aa005b5b239d0fc353954be78106cd6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "de22b2e0479df6d4d431bbc24a17f19b944b1dda3874842ea3d4845b4a3926c2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "de22b2e0479df6d4d431bbc24a17f19b944b1dda3874842ea3d4845b4a3926c2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "de22b2e0479df6d4d431bbc24a17f19b944b1dda3874842ea3d4845b4a3926c2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "de22b2e0479df6d4d431bbc24a17f19b944b1dda3874842ea3d4845b4a3926c2"
+    sha256 cellar: :any_skip_relocation, ventura:       "de22b2e0479df6d4d431bbc24a17f19b944b1dda3874842ea3d4845b4a3926c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b1d4892c75139995b6b73e1538d1493acd4cb91856286a0c0b9a57afe1300860"
   end
 
   depends_on "openjdk@17"

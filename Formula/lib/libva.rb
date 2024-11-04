@@ -1,8 +1,8 @@
 class Libva < Formula
   desc "Hardware accelerated video processing library"
   homepage "https://github.com/intel/libva"
-  url "https://github.com/intel/libva/releases/download/2.20.0/libva-2.20.0.tar.bz2"
-  sha256 "f72bdb4f48dfe71ad01f1cbefe069672a2c949a6abd51cf3c4d4784210badc49"
+  url "https://github.com/intel/libva/releases/download/2.22.0/libva-2.22.0.tar.bz2"
+  sha256 "e3da2250654c8d52b3f59f8cb3f3d8e7fb1a2ee64378dbc400fbc5663de7edb8"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,7 @@ class Libva < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "e47a3480fdda223904d0786f50141d6189e694d24a8f99a908400bc6868edca0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "f09fc392caac089c8689d89ccbfd9bea27689afd747313e84ff59ca21f339b78"
   end
 
   depends_on "pkg-config" => [:build, :test]
@@ -40,14 +40,14 @@ class Libva < Formula
     %w[libva libva-drm libva-wayland libva-x11].each do |name|
       assert_match "-I#{include}", shell_output("pkg-config --cflags #{name}")
     end
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <va/va.h>
       int main(int argc, char *argv[]) {
         VADisplay display;
         vaDisplayIsValid(display);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-o", "test", "-I#{include}", "-L#{lib}", "-lva"
     system "./test"
   end

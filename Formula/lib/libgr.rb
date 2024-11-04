@@ -1,38 +1,47 @@
 class Libgr < Formula
   desc "GR framework: a graphics library for visualisation applications"
   homepage "https://gr-framework.org/"
-  url "https://github.com/sciapp/gr/archive/refs/tags/v0.73.2.tar.gz"
-  sha256 "87dbf0bbd671de33dbb931dac412bdef35bd5697ce2d0ec7e557b8395912b8d7"
+  url "https://github.com/sciapp/gr/archive/refs/tags/v0.73.8.tar.gz"
+  sha256 "1eb9f15096f839f6cd8581cf8b4a427de3dcdcd1d2d76dbc3e7d933e637ccd71"
   license "MIT"
 
   bottle do
-    sha256 arm64_sonoma:   "0167b73e5be6a02604869e66677c3b1a9e5856e8025f406e2848cfe1d057e6f8"
-    sha256 arm64_ventura:  "bc5163474748b43d66c460bcf8062b70432c54f9d627b57e24b63c2400f9320a"
-    sha256 arm64_monterey: "8bb45a480fd1557ee7fb1a04fa2751ffa3277bd755dfb60f66db956a6d578656"
-    sha256 sonoma:         "f0bdcca6e7cd3377da7d9d7484dafc25d8e7e48a2cc5f5dc34eb97d15e7e8164"
-    sha256 ventura:        "0f0af7a63154956e9f6026164123a0e127d3edee350436cce1353c5de041aeed"
-    sha256 monterey:       "d3817d2929acd3c35b1e2db0e8764ff587705d17dd3f51bcbff07d340dfdeef6"
-    sha256 x86_64_linux:   "9fb9f79a8391585f3e3559faf1bf445318eb7f6139d263eaaa8809a5b0859750"
+    sha256 arm64_sonoma:  "8b62829c85bdadaa6e580778908cc35f77cc2c77ad8d087b24faa3e63809278a"
+    sha256 arm64_ventura: "028634a8e7da865ba9c30f56ec4db6464c68f5c6d02de0a83bc20ddb0c9efd78"
+    sha256 sonoma:        "911929b594cd54ca72270cc27aa58496662d885b27eb290973cfe37815f9c985"
+    sha256 ventura:       "90343b750d2dc752fa579f0d34135e8681b313bc17a07c4d580219aac3a0b943"
+    sha256 x86_64_linux:  "970e8d4f63b3d6a1b0ad4f151669f5c3844ae2e0cdaed99c298bd83263cc54ab"
   end
 
   depends_on "cmake" => :build
   depends_on "cairo"
+  depends_on "ffmpeg"
+  depends_on "freetype"
   depends_on "glfw"
+  depends_on "jpeg-turbo"
+  depends_on "libpng"
   depends_on "libtiff"
+  depends_on "pixman"
   depends_on "qhull"
   depends_on "qt"
   depends_on "zeromq"
 
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "libx11"
+    depends_on "libxt"
+    depends_on "mesa"
+  end
+
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <gr.h>
 
@@ -48,7 +57,7 @@ class Libgr < Formula
           gr_emergencyclosegks();
           return 0;
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-o", "test", "-I#{include}", "-L#{lib}", "-lGR"
     system "./test"

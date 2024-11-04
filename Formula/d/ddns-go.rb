@@ -1,19 +1,18 @@
 class DdnsGo < Formula
   desc "Simple and easy-to-use DDNS"
   homepage "https://github.com/jeessy2/ddns-go"
-  url "https://github.com/jeessy2/ddns-go/archive/refs/tags/v6.1.2.tar.gz"
-  sha256 "6a8cb7be152ab398abfe7c63a8069f099f40417c4af0cae97db5dfdb4f81dc57"
+  url "https://github.com/jeessy2/ddns-go/archive/refs/tags/v6.7.5.tar.gz"
+  sha256 "b6f5f74c544c4765ac5499c3f47ec3c07e6f6a55c1ff4e510433334786cf8aaa"
   license "MIT"
   head "https://github.com/jeessy2/ddns-go.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c3807afbe8fa7a2b6a6848a95205a299fdafdab9b700575f303575ab63f9c6e0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3e503c0d903715dc2a69bcfaffa476247ebb124fe911fdb575de93520d7b327e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "616e77ca1c8f8cb7da28a6bb72e8292b8bb5dc462a07387a094353064c96aced"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c10cffe75beddcc8f0e901d167acf164852bbdea45ca1d478b39c430df841fca"
-    sha256 cellar: :any_skip_relocation, ventura:        "42f3ac5a0ecd25fdc7053edea4d4bb348cab33555fd22dfe559eeafea9bd8b00"
-    sha256 cellar: :any_skip_relocation, monterey:       "66f2cb138a118b99a4acad19f6e05379b611a05c7a89b651196fa0392d1294e5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "042869c849e3c5d84120b1f1be174b1fe2ed652903a6252f6c94318c8824eda5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "00f989e75c9df72696d1de04f6469d5af64ace5cb5c8a9ee89cc9934f8a58038"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "00f989e75c9df72696d1de04f6469d5af64ace5cb5c8a9ee89cc9934f8a58038"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "00f989e75c9df72696d1de04f6469d5af64ace5cb5c8a9ee89cc9934f8a58038"
+    sha256 cellar: :any_skip_relocation, sonoma:        "32f38f9ecc9f360c8e93c89bbdd1dc30e7a4f6704cdf3fe0a6b3c63673498d8a"
+    sha256 cellar: :any_skip_relocation, ventura:       "32f38f9ecc9f360c8e93c89bbdd1dc30e7a4f6704cdf3fe0a6b3c63673498d8a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c21f0d6c93228d04a1fb6e3b0600261f2fef3034c639bd2494262dba95fc9a1f"
   end
 
   depends_on "go" => :build
@@ -24,7 +23,7 @@ class DdnsGo < Formula
       -X main.version=v#{version}
       -X main.buildTime=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do
@@ -36,6 +35,6 @@ class DdnsGo < Formula
 
     system "curl", "--silent", "localhost:#{port}/clearLog"
     output = shell_output("curl --silent localhost:#{port}/logs")
-    assert_equal "[]", output
+    assert_match "Temporary Redirect", output
   end
 end

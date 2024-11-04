@@ -3,35 +3,40 @@ class SshMitm < Formula
 
   desc "SSH server for security audits and malware analysis"
   homepage "https://docs.ssh-mitm.at"
-  url "https://files.pythonhosted.org/packages/dc/15/b3b4189bcd5ba6a86e65d72689a980eb66a67a4a6bccdc1639b9251cd29a/ssh_mitm-4.1.1.tar.gz"
-  sha256 "db61c3d33e4515bde82118e9f62dd3d25dbf35718005af16b30316dfa0be7b4f"
+  url "https://files.pythonhosted.org/packages/65/22/d5a7a153b1f40f31e1a7e15439e4e3a2aad1413a486aa69c2f0be6482295/ssh_mitm-5.0.0.tar.gz"
+  sha256 "0c3ad0e925c7144e1c95efa08ab183100fcb8257068ae0729fb19493e3a45d60"
   license "GPL-3.0-only"
   head "https://github.com/ssh-mitm/ssh-mitm.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "f21792bfbeaee9b9ff96109ab752aa6bca5df810c43b458ecc93b39f63c95fe4"
-    sha256 cellar: :any,                 arm64_ventura:  "4cc740d48ddf5c968a886b5ef0f5eeb27c870430b9b48c319ac833e2a9cdec8f"
-    sha256 cellar: :any,                 arm64_monterey: "8779406a86c59c3002b6e355c94393408bb95f7512a8f5aec250c809a95ce666"
-    sha256 cellar: :any,                 sonoma:         "4a5935359b2db1f3302c4b5bf32122622d9eb3eade481518bad440e3fe23696c"
-    sha256 cellar: :any,                 ventura:        "6315931222509d6c8f665427c8672c776b639c5aaf3602f276b4df730c04fb77"
-    sha256 cellar: :any,                 monterey:       "139e94e4c37bbc8aab8048296da3338cb747f1ab60f0ef0014a0ea980ca3f054"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d77b94035bfe5afe302d0191841c602a897cd59beb6eec5c3b2391090be87c7f"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sequoia: "45b617ec5165aaa7ee90bbd55d84e5d4d2c5d6d45f9e981d5bc67661d29067a8"
+    sha256 cellar: :any,                 arm64_sonoma:  "f8773df78248f061b570f36462197ce1204ad0495cc480531a01930bcf429313"
+    sha256 cellar: :any,                 arm64_ventura: "96241fca6a95b8941284996b11cc70a3428bff31fb80199a87f08329ba0a1fc2"
+    sha256 cellar: :any,                 sonoma:        "8d953e30a1ba698d02939524c056859792aecc77b29f4259d6abd38a8974f37b"
+    sha256 cellar: :any,                 ventura:       "5fe6697f827617e56f21e57cadadc45744de62ccef3483c9a123a3ea8e3f6cb8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7b9dc80395106c70b3cd444a83c5d8634d3c1a30c4a7fa1b823c932ef6155793"
   end
 
   depends_on "rust" => :build # for bcrypt
+  depends_on "cryptography"
+  depends_on "libsodium" # for pynacl
   depends_on "libyaml"
-  depends_on "python-cryptography"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
+
+  resource "appimage" do
+    url "https://files.pythonhosted.org/packages/58/30/625bf3d9cbb7b8736ea053b725bf72e55415cbe5ce4bf4c8971537fb5720/appimage-1.0.0.tar.gz"
+    sha256 "75933b9df5cd77dcdc8187fda3142dd84ea63ffc40712369ecc19652ea1ef3ac"
+  end
 
   resource "argcomplete" do
-    url "https://files.pythonhosted.org/packages/f0/a2/ce706abe166457d5ef68fac3ffa6cf0f93580755b7d5f883c456e94fab7b/argcomplete-3.2.2.tar.gz"
-    sha256 "f3e49e8ea59b4026ee29548e24488af46e30c9de57d48638e24f54a1ea1000a2"
+    url "https://files.pythonhosted.org/packages/5f/39/27605e133e7f4bb0c8e48c9a6b87101515e3446003e0442761f6a02ac35e/argcomplete-3.5.1.tar.gz"
+    sha256 "eb1ee355aa2557bd3d0145de7b06b2a45b0ce461e1e7813f5d066039ab4177b4"
   end
 
   resource "bcrypt" do
-    url "https://files.pythonhosted.org/packages/72/07/6a6f2047a9dc9d012b7b977e4041d37d078b76b44b7ee4daf331c1e6fb35/bcrypt-4.1.2.tar.gz"
-    sha256 "33313a1200a3ae90b75587ceac502b048b840fc69e7f7a0905b5f87fac7a1258"
+    url "https://files.pythonhosted.org/packages/e4/7e/d95e7d96d4828e965891af92e43b52a4cd3395dc1c1ef4ee62748d0471d0/bcrypt-4.2.0.tar.gz"
+    sha256 "cf69eaf5185fd58f268f805b505ce31f9b9fc2d64b376642164e9244540c1221"
   end
 
   resource "colored" do
@@ -40,8 +45,8 @@ class SshMitm < Formula
   end
 
   resource "ecdsa" do
-    url "https://files.pythonhosted.org/packages/ff/7b/ba6547a76c468a0d22de93e89ae60d9561ec911f59532907e72b0d8bc0f1/ecdsa-0.18.0.tar.gz"
-    sha256 "190348041559e21b22a1d65cee485282ca11a6f81d503fddb84d5017e9ed1e49"
+    url "https://files.pythonhosted.org/packages/5e/d0/ec8ac1de7accdcf18cfe468653ef00afd2f609faf67c423efbd02491051b/ecdsa-0.19.0.tar.gz"
+    sha256 "60eaad1199659900dd0af521ed462b793bbdf867432b3948e87416ae4caf6bf8"
   end
 
   resource "markdown-it-py" do
@@ -55,18 +60,18 @@ class SshMitm < Formula
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "paramiko" do
-    url "https://files.pythonhosted.org/packages/44/03/158ae1dcb950bd96f04038502238159e116fafb27addf5df1ba35068f2d6/paramiko-3.3.1.tar.gz"
-    sha256 "6a3777a961ac86dbef375c5f5b8d50014a1a96d0fd7f054a43bc880134b0ff77"
+    url "https://files.pythonhosted.org/packages/0b/6a/1d85cc9f5eaf49a769c7128039074bbb8127aba70756f05dfcf4326e72a1/paramiko-3.4.1.tar.gz"
+    sha256 "8b15302870af7f6652f2e038975c1d2973f06046cb5d7d65355668b3ecbece0c"
   end
 
   resource "pygments" do
-    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
-    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
   end
 
   resource "pynacl" do
@@ -80,18 +85,18 @@ class SshMitm < Formula
   end
 
   resource "pytz" do
-    url "https://files.pythonhosted.org/packages/90/26/9f1f00a5d021fff16dee3de13d43e5e978f3d58928e129c3a62cf7eb9738/pytz-2024.1.tar.gz"
-    sha256 "2a29735ea9c18baf14b448846bde5a48030ed267578472d8955cd0e7443a9812"
+    url "https://files.pythonhosted.org/packages/3a/31/3c70bf7603cc2dca0f19bdc53b4537a797747a58875b552c8c413d963a3f/pytz-2024.2.tar.gz"
+    sha256 "2aa355083c50a0f93fa581709deac0c9ad65cca8a9e9beac660adcbd493c798a"
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/a7/ec/4a7d80728bd429f7c0d4d51245287158a1516315cadbb146012439403a9d/rich-13.7.0.tar.gz"
-    sha256 "5cb5123b5cf9ee70584244246816e9114227e0b98ad9176eede6ad54bf5403fa"
+    url "https://files.pythonhosted.org/packages/aa/9e/1784d15b057b0075e5136445aaea92d23955aad2c93eaede673718a40d95/rich-13.9.2.tar.gz"
+    sha256 "51a2c62057461aaf7152b4d611168f93a9fc73068f8ded2790f29fe2b5366d0c"
   end
 
   resource "six" do
@@ -110,10 +115,15 @@ class SshMitm < Formula
   end
 
   def install
+    ENV["SODIUM_INSTALL"] = "system"
     virtualenv_install_with_resources
   end
 
   test do
+    # supress CryptographyDeprecationWarning warning,
+    # upstream bug report https://github.com/ssh-mitm/ssh-mitm/issues/177
+    ENV["PYTHONWARNINGS"] = "ignore"
+
     require "pty"
     port = free_port
 

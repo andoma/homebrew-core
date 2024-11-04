@@ -18,7 +18,7 @@ class Arangodb < Formula
 
   # Vendors deps, has a low download count, build always breaks
   # https://github.com/Homebrew/homebrew-core/pull/135487#issuecomment-1616018628
-  deprecate! date: "2023-07-05", because: :does_not_build
+  disable! date: "2024-07-05", because: :does_not_build
 
   depends_on "cmake" => :build
   depends_on "go" => :build
@@ -108,7 +108,7 @@ class Arangodb < Formula
         -X main.projectVersion=#{resource("starter").version}
         -X main.projectBuild=#{Utils.git_head}
       ]
-      system "go", "build", *std_go_args(ldflags: ldflags)
+      system "go", "build", *std_go_args(ldflags:)
     end
 
     system "cmake", "-S", ".", "-B", "build", *cmake_args
@@ -141,7 +141,7 @@ class Arangodb < Formula
     assert_equal "it works!", output.chomp
 
     ohai "#{bin}/arangodb --starter.instance-up-timeout 1m --starter.mode single"
-    PTY.spawn("#{bin}/arangodb", "--starter.instance-up-timeout", "1m",
+    PTY.spawn(bin/"arangodb", "--starter.instance-up-timeout", "1m",
               "--starter.mode", "single", "--starter.disable-ipv6",
               "--server.arangod", "#{sbin}/arangod",
               "--server.js-dir", "#{share}/arangodb3/js") do |r, _, pid|

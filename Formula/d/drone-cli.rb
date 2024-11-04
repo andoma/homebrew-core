@@ -8,6 +8,7 @@ class DroneCli < Formula
   head "https://github.com/harness/drone-cli.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "32169cc3c88c8673a10a0667ad401d8ec22cc38873044b6da6dcf5ebe92d9d9a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8fc8dfba68da80112f85551c3dce05fc6cb269a6ae4a4f4aa7a1732d8098a85e"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "8fc8dfba68da80112f85551c3dce05fc6cb269a6ae4a4f4aa7a1732d8098a85e"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "8fc8dfba68da80112f85551c3dce05fc6cb269a6ae4a4f4aa7a1732d8098a85e"
@@ -22,7 +23,7 @@ class DroneCli < Formula
   def install
     ENV["CGO_ENABLED"] = "0"
     ldflags = "-s -w -X main.version=#{version}"
-    system "go", "build", *std_go_args(output: bin/"drone", ldflags: ldflags), "drone/main.go"
+    system "go", "build", *std_go_args(output: bin/"drone", ldflags:), "drone/main.go"
   end
 
   test do

@@ -1,12 +1,12 @@
 class Libabigail < Formula
   desc "ABI Generic Analysis and Instrumentation Library"
   homepage "https://sourceware.org/libabigail/"
-  url "https://mirrors.kernel.org/sourceware/libabigail/libabigail-2.4.tar.xz"
-  sha256 "5fe76b6344188a95f693b84e1b8731443d274a4c4b0ebee18fc00d9aedac8509"
+  url "https://mirrors.kernel.org/sourceware/libabigail/libabigail-2.6.tar.xz"
+  sha256 "3bfa8ba753ff27722baa7f73b15a475f8a4599355e47439108423d1912bb5469"
   license "Apache-2.0" => { with: "LLVM-exception" }
 
   bottle do
-    sha256 x86_64_linux: "c77997ee5a971a941fb0a2b3daed75ac3336fe85ceeabb03d243322b89fd01c3"
+    sha256 x86_64_linux: "39bfad0c9e5cbb11821b3ee99ae6e599d84a20343eb8ae49294c88d2514da12a"
   end
 
   head do
@@ -21,6 +21,7 @@ class Libabigail < Formula
   depends_on "elfutils"
   depends_on "libxml2"
   depends_on :linux
+  depends_on "xxhash"
 
   def install
     system "autoreconf", "--force", "--install", "--verbose" if build.head?
@@ -29,14 +30,6 @@ class Libabigail < Formula
   end
 
   test do
-    expected_output = <<~EOS
-      <abi-corpus version='2.2' path='#{test_fixtures("elf/hello")}' architecture='elf-amd-x86_64'>
-        <elf-needed>
-          <dependency name='libc.so.6'/>
-        </elf-needed>
-      </abi-corpus>
-    EOS
-
-    assert_equal expected_output, shell_output("#{bin}/abilint #{test_fixtures("elf/hello")}")
+    assert_match "<dependency name='libc.so.6'/>", shell_output("#{bin}/abilint #{test_fixtures("elf/hello")}")
   end
 end

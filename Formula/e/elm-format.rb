@@ -7,12 +7,8 @@ class ElmFormat < Formula
   license "BSD-3-Clause"
   head "https://github.com/avh4/elm-format.git", branch: "main"
 
-  livecheck do
-    url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
-  end
-
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "39551d3762854b22e3db540e1eb0187484cf50ce30233a70289ae0d6d29e1c27"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "25f339b466676ecaa1be5b3d5fa0d49a1ea6c4a8593be06837e85695a93bebff"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "81d3cdebad68b53ebe6d615e9362359a433c371804e38c9ac274a6657ab4a972"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "d95da1452e810b7b381ae898269325caa6da8a3224de231479a515ad9e8aaf6f"
@@ -23,6 +19,9 @@ class ElmFormat < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "a0f4b8bde75fc24c1e8a3ab6693581a210f9c8a8886de800835c5623261e4fc1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c6b1ec84983f60bd9a7834c03074931a6f7a1c78ac640a4c6b94cbc1a10bb968"
   end
+
+  # Has been using pre-built GHC due to needing specific patch version of GHC
+  deprecate! date: "2024-07-27", because: :does_not_build
 
   depends_on "cabal-install" => :build
   depends_on "haskell-stack" => :build

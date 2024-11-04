@@ -1,33 +1,28 @@
 class Mpi4py < Formula
   desc "Python bindings for MPI"
   homepage "https://mpi4py.github.io/"
-  url "https://github.com/mpi4py/mpi4py/releases/download/3.1.5/mpi4py-3.1.5.tar.gz"
-  sha256 "a706e76db9255135c2fb5d1ef54cb4f7b0e4ad9e33cbada7de27626205f2a153"
-  license "BSD-2-Clause"
-  revision 1
+  url "https://github.com/mpi4py/mpi4py/releases/download/4.0.1/mpi4py-4.0.1.tar.gz"
+  sha256 "f3174b245775d556f4fddb32519a2066ef0592edc810c5b5a59238f9a0a40c89"
+  license "BSD-3-Clause"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any, arm64_sonoma:   "17f84b39f8d35ba4ed6922d604e599769a211690d6f1a25d185ed415af1ab524"
-    sha256 cellar: :any, arm64_ventura:  "131d931b6f5bb7a56fc04da4308efdca7415fc370c1f98efbb4ba0fc4742359f"
-    sha256 cellar: :any, arm64_monterey: "3705c65aa4f31e42af91c04233811e22a7823dc72f75735889f2a5a254438de3"
-    sha256 cellar: :any, sonoma:         "5419bda7e546158301027a7e95be0bffe62d1f8bd0bcdcb1c028600342e189c8"
-    sha256 cellar: :any, ventura:        "0f8b048146a510c545ec1c5b6563d348f1dfeaf4fdf7314a41efa7a171056bc7"
-    sha256 cellar: :any, monterey:       "a955b0e4e4379e2884f75954093675e17f8001ae2bcf2c0ee7fc0f6d7f1e9e09"
-    sha256               x86_64_linux:   "bf9015e5340ba63c8053f3266a9ead0f984723c9df9dc6a37dfed19b8cdd99d7"
+    sha256 cellar: :any, arm64_sequoia: "557a93e747f7b13041f6104ecb537616e6d6080bc485e6964d8b6ab7699e7af1"
+    sha256 cellar: :any, arm64_sonoma:  "2d6bba0738377bf1c10bf44a51de01c4fe125f25ff30277a85150f7c62f1932f"
+    sha256 cellar: :any, arm64_ventura: "6087645f1f222cd2a5efe80274895f5da76190f7fdae53c19a41442a4ea26372"
+    sha256 cellar: :any, sonoma:        "c6df8310a13fdf5f75d7d3dac7e5696d643fcdb487182185d77fcc3aaa897138"
+    sha256 cellar: :any, ventura:       "8a5f05db2cc8ddf8dd771a04001b324e1d148610f7cf18134cfb08dd9fc72a07"
+    sha256               x86_64_linux:  "d5850a6a3d6c4cc24c46f1d6054c71aaa1773f377b6887794761d2eca9467a96"
   end
 
-  depends_on "libcython" => :build
-  depends_on "python-setuptools" => :build
   depends_on "open-mpi"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
   end
 
   test do

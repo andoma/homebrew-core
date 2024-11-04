@@ -1,23 +1,24 @@
 class Faircamp < Formula
   desc "Static site generator for audio producers"
   homepage "https://codeberg.org/simonrepp/faircamp"
-  url "https://codeberg.org/simonrepp/faircamp/archive/0.13.0.tar.gz"
-  sha256 "e49469b6706ce607e1f0f83db4db1e102528a5b9f8a1111c4b503d7d727e74f0"
+  url "https://codeberg.org/simonrepp/faircamp/archive/0.19.0.tar.gz"
+  sha256 "828aa9a069e71fb5613785f7cd0995c568e0f6dd0933f1510e6ae46a20bf0a03"
   license "AGPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "8e889e61386ae16e9e4e7554b67f10bb9e825e16e24aa2f34d860151190b7f13"
-    sha256 cellar: :any, arm64_ventura:  "64d9ea8e938980213d224320bb3b68296beb68021dce5f99df1ca2faee4e31d1"
-    sha256 cellar: :any, arm64_monterey: "899d6462ed0be1f8156c5da3cf7b93362a616d650eb36ff6b2e6fa1201daa8b7"
-    sha256 cellar: :any, sonoma:         "18b1c53bad1f6d920b9d2301045bb7215e1d13184a1c10f8eebc99a51de08bdf"
-    sha256 cellar: :any, ventura:        "ff370093b09e14ffe56fc4fe1b5b7e9df88c1bb7c9944705616b83c48318beb5"
-    sha256 cellar: :any, monterey:       "36f46ee163c5943fe324690390fb3a79a16d7b8a7032aeee4d9bbf3d6d69d71c"
+    sha256 cellar: :any, arm64_sequoia: "bca8dba578ae518a763db1ee7f16a700d5bc1fea99ba7fe3f2cfba57c9603530"
+    sha256 cellar: :any, arm64_sonoma:  "66cfdfca710af89746097abbe864fa7e213b9c7b7c06361f40fcb6a2e8d9122e"
+    sha256 cellar: :any, arm64_ventura: "299f14748e29823b721e0cf3c5325db74e32c3a42d23f744beb6e20f0ad1a741"
+    sha256 cellar: :any, sonoma:        "049174f5239bf2b51fe23e20fe5e4c247282eece48e87449ff7f5165cd19135e"
+    sha256 cellar: :any, ventura:       "f4033029030264bc5241e63324d339b6b7cae75ad547b800ab42750f0734afe8"
   end
 
   depends_on "opus" => :build
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
   depends_on "ffmpeg"
+  depends_on "gettext"
+  depends_on "glib"
   # Brew's libopus behaves differently in linux compared to macOS and
   # results in runtime errors. Further investigation and work on this
   # formulae is needed to support linux builds. The upstream project

@@ -3,25 +3,24 @@ class Uhdm < Formula
 
   desc "Universal Hardware Data Model, modeling of the SystemVerilog Object Model"
   homepage "https://github.com/chipsalliance/UHDM"
-  url "https://github.com/chipsalliance/UHDM/archive/refs/tags/v1.82.tar.gz"
-  sha256 "f33d62a1ae0381389b4bc89f639e127bb04557bfdd2f8ff4f57e2f7b5df2e80f"
+  url "https://github.com/chipsalliance/UHDM/archive/refs/tags/v1.84.tar.gz"
+  sha256 "bb2acbdd294dd05660c78ba34704440032935b8bc77cae352c853533b5a7c583"
   license "Apache-2.0"
-  revision 1
   head "https://github.com/chipsalliance/UHDM.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "8f91d05e4ec4b72199008297cb73d651d218e9b5b7b4a2b5c51a7de0e864c7eb"
-    sha256 cellar: :any,                 arm64_ventura:  "ce41d2ab687f45b38ea6d5408d0560690e52a68e248bd01158fb0038f361f172"
-    sha256 cellar: :any,                 arm64_monterey: "9d9feb7a7b6d3017db91a306319776866db63333d8a86380178542df7c00ed51"
-    sha256 cellar: :any,                 sonoma:         "a6a74475a3975b6c6e3b4151e20c65597c6457026bc8c0571ca3acfadd5e1d8f"
-    sha256 cellar: :any,                 ventura:        "6a3095c1789ded384ff74e025193686746ca2fcdb654048c1fede1c4fc5a5da8"
-    sha256 cellar: :any,                 monterey:       "2d07d5f6f63a84a517df15863a310f86a2582e3ba861acde3b6910184e4b30ec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cb024b76fa50e900926b02667f7bae9fa85c35d6490a22f7f1390d05d12d3a07"
+    sha256 cellar: :any,                 arm64_sequoia:  "0cc479f9f9c9d2b4e6fb196ab0baf48dbbccea8ea125ff7796507746b4387973"
+    sha256 cellar: :any,                 arm64_sonoma:   "b5658a0a15d3f14adcd0d110c7cbe6525428882c69d696704f1fa9aad1aca607"
+    sha256 cellar: :any,                 arm64_ventura:  "b4f50710bff48e2cac91711af294791839eaf95c754e99e7caf4f780f1eafbab"
+    sha256 cellar: :any,                 arm64_monterey: "251b2278f62ad38d87f27f61a673e7dff0424fd648fbad2906bf6135db5f42a6"
+    sha256 cellar: :any,                 sonoma:         "9be120ce9adcfa44e75420b6d0bdf5a7400279579463c5ef5f007ad5792c4699"
+    sha256 cellar: :any,                 ventura:        "480c5e193ddd04d5ffa9e6c26f62cfdc85ec1e467028af964651691717ad1e57"
+    sha256 cellar: :any,                 monterey:       "f3c38678bb2e4b58e80c25602f1f9d0b23dacd4315c5c83fadef545b73198303"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9d9ee21ce3cfd7826139998d9b89f5530bf2673b9c9bc54bf2b4562336e8674e"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.12" => :build
-  depends_on "six" => :build
+  depends_on "python@3.13" => :build
   depends_on "pkg-config" => :test
   depends_on "capnp"
 
@@ -30,23 +29,27 @@ class Uhdm < Formula
     sha256 "04070bbb5e87291cc9bfa51df413677faf2141c73c61d2a5f7b26bea3cd882ad"
   end
 
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+  end
+
   def python3
-    which("python3.12")
+    which("python3.13")
   end
 
   def install
     venv = virtualenv_create(buildpath/"venv", python3)
-    resources.each do |r|
-      venv.pip_install r
-    end
-    # Build shared library
+    venv.pip_install resources
+
     system "cmake", "-S", ".", "-B", "build_shared",
-      "-DBUILD_SHARED_LIBS=ON",
-      "-DUHDM_BUILD_TESTS=OFF",
-      "-DUHDM_USE_HOST_GTEST=ON",
-      "-DUHDM_USE_HOST_CAPNP=ON",
-      "-DCMAKE_INSTALL_RPATH=#{rpath}",
-      "-DPython3_EXECUTABLE=#{buildpath}/venv/bin/python", *std_cmake_args
+                    "-DBUILD_SHARED_LIBS=ON",
+                    "-DUHDM_BUILD_TESTS=OFF",
+                    "-DUHDM_USE_HOST_GTEST=ON",
+                    "-DUHDM_USE_HOST_CAPNP=ON",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    "-DPython3_EXECUTABLE=#{buildpath}/venv/bin/python",
+                    *std_cmake_args
     system "cmake", "--build", "build_shared"
     system "cmake", "--install", "build_shared"
   end
@@ -78,8 +81,7 @@ class Uhdm < Formula
     EOS
 
     flags = shell_output("pkg-config --cflags --libs UHDM").chomp.split
-    system ENV.cxx, testpath/"test.cpp", "-o", "test",
-      "-fPIC", "-std=c++17", *flags
+    system ENV.cxx, "test.cpp", "-o", "test", "-fPIC", "-std=c++17", *flags
     system testpath/"test"
   end
 end

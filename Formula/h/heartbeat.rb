@@ -2,30 +2,29 @@ class Heartbeat < Formula
   desc "Lightweight Shipper for Uptime Monitoring"
   homepage "https://www.elastic.co/beats/heartbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.12.2",
-      revision: "0b71acf2d6b4cb6617bff980ed6caf0477905efa"
+      tag:      "v8.15.3",
+      revision: "bbed3ae55602e83f57c62de85b57a3593aa49efa"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c39f59954338ded5750cf3667d3a8f9c25c7b0c6786fd24a8c6955749d9a0d44"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a8e7f5b739fb64817a23262cdf5e516f096d9486ef04177b57765a0764b18c9d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d8e95c4f8c3d728720fbc358b29edc662f8f7f372409679af1b98958dda836e2"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2937bae0dcf4709591cc7736f20ba1bf0dd5abad85d449213f180e2319372ca1"
-    sha256 cellar: :any_skip_relocation, ventura:        "5056906973299a2c4bb971900f2d0c283b54b3701ed3ac5983c0e2caa0b98995"
-    sha256 cellar: :any_skip_relocation, monterey:       "93d29dde3d62f8d73760a121d7e2726aa08315bbdff4f62c5641743bdc1ae59c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f74ec663ac3ef89448614b907549dacd61409ba850dd8312c1f96640465e30b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d6113519f910332309fb639e2b7b03bc99b1b9b6a3f3a76040d879249449c568"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ad1a4dad8aad9407f5cfc54b03d72c7d65abc3652047d141e81f2c23545c7c8b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "eb9e0bc1f034c0c7f1a4914747892bba65d20edf7059ef4be28fe41f1a004687"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bddf58fac8536bed40493d19fe6b783fc1a8b94a7f07d781d9f2100f2ba506cb"
+    sha256 cellar: :any_skip_relocation, ventura:       "343dc7dd42afc4577e924a5cfeafe76b9f67cf8fd034da3a4f819c75a30f30d6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ad795c28f00b925ecd571b2da11050d1a6ae9418efa39f27457c96ce1ba5620a"
   end
 
   depends_on "go" => :build
   depends_on "mage" => :build
+  depends_on "python@3.12" => :build
 
-  uses_from_macos "python" => :build
   uses_from_macos "netcat" => :test
 
   def install
     # remove non open source files
-    rm_rf "x-pack"
+    rm_r("x-pack")
 
     cd "heartbeat" do
       # prevent downloading binary wheels during python setup

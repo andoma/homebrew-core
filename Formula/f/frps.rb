@@ -1,30 +1,27 @@
 class Frps < Formula
   desc "Server app of fast reverse proxy to expose a local server to the internet"
   homepage "https://github.com/fatedier/frp"
-  url "https://github.com/fatedier/frp.git",
-      tag:      "v0.54.0",
-      revision: "d689f0fc531604b78b510c2f5f182831a2b5bee5"
+  url "https://github.com/fatedier/frp/archive/refs/tags/v0.61.0.tar.gz"
+  sha256 "c06a11982ef548372038ec99a6b01cf4f7817a9b88ee5064e41e5132d0ccb7e1"
   license "Apache-2.0"
+  head "https://github.com/fatedier/frp.git", branch: "dev"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2fd7a94afc73f550e605f1cbeee5d477c3e59f8cb112c708985d92f9b5a99a40"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2fd7a94afc73f550e605f1cbeee5d477c3e59f8cb112c708985d92f9b5a99a40"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2fd7a94afc73f550e605f1cbeee5d477c3e59f8cb112c708985d92f9b5a99a40"
-    sha256 cellar: :any_skip_relocation, sonoma:         "105cf04d3c9859477b629b4b73a01fef9869686f5ee40c761d2ac0deada624b0"
-    sha256 cellar: :any_skip_relocation, ventura:        "105cf04d3c9859477b629b4b73a01fef9869686f5ee40c761d2ac0deada624b0"
-    sha256 cellar: :any_skip_relocation, monterey:       "105cf04d3c9859477b629b4b73a01fef9869686f5ee40c761d2ac0deada624b0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc7aacee1d87c3771d1c152314cc48b8cf187d284e581e6f7dce0a5e66c95b18"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "40b4760a745d5f37ad33b77b032dde5ae75ca57210d2d6599a5ff58e4a88b2de"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "40b4760a745d5f37ad33b77b032dde5ae75ca57210d2d6599a5ff58e4a88b2de"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "40b4760a745d5f37ad33b77b032dde5ae75ca57210d2d6599a5ff58e4a88b2de"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fb7ef84acace3c8b6ed7f29e2ac1825d93bd13218c18b2838229f61447411e55"
+    sha256 cellar: :any_skip_relocation, ventura:       "fb7ef84acace3c8b6ed7f29e2ac1825d93bd13218c18b2838229f61447411e55"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c646175538841f0efd668178c350db92d759ef83022cd9ac2ba638e44343711d"
   end
 
   depends_on "go" => :build
 
   def install
-    (buildpath/"bin").mkpath
-    (etc/"frp").mkpath
+    ENV["CGO_ENABLED"] = "0"
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "-tags=frps", "./cmd/frps"
 
-    system "make", "frps"
-    bin.install "bin/frps"
-    etc.install "conf/frps.toml" => "frp/frps.toml"
+    (etc/"frp").install "conf/frps.toml"
   end
 
   service do

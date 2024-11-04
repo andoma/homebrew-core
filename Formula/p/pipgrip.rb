@@ -3,22 +3,22 @@ class Pipgrip < Formula
 
   desc "Lightweight pip dependency resolver"
   homepage "https://github.com/ddelange/pipgrip"
-  url "https://files.pythonhosted.org/packages/ff/d5/ddf2f6edc7a6da2e31071340c38b2d71c3a8b99ffccf3652bb6965a8ab52/pipgrip-0.10.12.tar.gz"
-  sha256 "4ff9bee6158eed27fe5b609c3504eaaea57709401592057e88656663457fc9d7"
+  url "https://files.pythonhosted.org/packages/fb/dc/f89b89e72e541bb5ffa25cbaf1f9c92d2c2187644c8972772aafb7bf0009/pipgrip-0.10.13.tar.gz"
+  sha256 "f481ef054c37036d334ca6f4b8608c1ca8a113e02e011276b540f1558dc394ba"
   license "BSD-3-Clause"
+  revision 2
+  head "https://github.com/ddelange/pipgrip.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8e2545baeb5169e14787bcde0e2ca4692dffad5236d1eac5ef2c6bb4e66e9e94"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ac2738df7ab4c8d9cdc151653a53f77a4f22983471fe34fd7495f65408baf2ff"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "82e35ef1395ce034390b3e27d1b5b7aaef7952f136fa41267892af32f86539d3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "040b93ee65392e66b4748e0b6fd0320d1e19e3a4e0bd8ca35efc5b412bc15dfb"
-    sha256 cellar: :any_skip_relocation, ventura:        "7d4623510e536d8993c24a67755a35976ecb6f230ecb1506800234d67802aec7"
-    sha256 cellar: :any_skip_relocation, monterey:       "664881b65b793f9b36ebaa1d25e6be956140192b22fab607eb54ab38ade6814e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c4628af5dd00a834ee26483c9d89f2d7d6150a2a64379ed2a81ea55fa2df1866"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "426d23066076ebb711fa9e77801de7fef0b5b01dd5fffd0ea4ca5677f4c21073"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "426d23066076ebb711fa9e77801de7fef0b5b01dd5fffd0ea4ca5677f4c21073"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "426d23066076ebb711fa9e77801de7fef0b5b01dd5fffd0ea4ca5677f4c21073"
+    sha256 cellar: :any_skip_relocation, sonoma:        "dde391216cf4a1970104656ff5121675a4dd3884e4ee9a05357fb17d7d9565c2"
+    sha256 cellar: :any_skip_relocation, ventura:       "dde391216cf4a1970104656ff5121675a4dd3884e4ee9a05357fb17d7d9565c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fdd2b4e3eb1406b98ae66d6cd22ec0e8d1cd18361043160554ec23f36ae478e5"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "anytree" do
     url "https://files.pythonhosted.org/packages/f9/44/2dd9c5d0c3befe899738b930aa056e003b1441bfbf34aab8fce90b2b7dea/anytree-2.12.1.tar.gz"
@@ -31,13 +31,13 @@ class Pipgrip < Formula
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/c9/3d/74c56f1c9efd7353807f8f5fa22adccdba99dc72f34311c30a69627a0fad/setuptools-69.1.0.tar.gz"
-    sha256 "850894c4195f09c4ed30dba56213bf7c3f21d86ed6bdaafb5df5972593bfc401"
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
   end
 
   resource "six" do
@@ -46,8 +46,8 @@ class Pipgrip < Formula
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/b0/b4/bc2baae3970c282fae6c2cb8e0f179923dceb7eaffb0e76170628f9af97b/wheel-0.42.0.tar.gz"
-    sha256 "c45be39f7882c9d34243236f2d63cbd58039e360f85d0913425fbd7ceea617a8"
+    url "https://files.pythonhosted.org/packages/b7/a0/95e9e962c5fd9da11c1e28aa4c0d8210ab277b1ada951d2aee336b505813/wheel-0.44.0.tar.gz"
+    sha256 "a29c3f2817e95ab89aa4660681ad547c0e9547f20e75b0562fe7723c9a2a9d49"
   end
 
   def install

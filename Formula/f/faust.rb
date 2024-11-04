@@ -1,9 +1,10 @@
 class Faust < Formula
   desc "Functional programming language for real time signal processing"
   homepage "https://faust.grame.fr"
-  url "https://github.com/grame-cncm/faust/releases/download/2.70.3/faust-2.70.3.tar.gz"
-  sha256 "3ac3aab87d60257b3fff03ffeb42e190480fb9828266fa1c35574b6cbf6a13bb"
+  url "https://github.com/grame-cncm/faust/releases/download/2.72.14/faust-2.72.14.tar.gz"
+  sha256 "dcd5aaf263c59d34c385e65c4f4c5b85b0e9435e57cbfd79bb67a01e5780acf0"
   license "GPL-2.0-or-later"
+  revision 2
 
   # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
   # labeled as "pre-release" on GitHub before the version is released, so it's
@@ -14,20 +15,18 @@ class Faust < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "eb80027791a9a88978d3e64c467d6e7718524e89d64aa7315ccdd109b561a529"
-    sha256 cellar: :any,                 arm64_ventura:  "a29d3c653a1674940f1c42bebd879f71dee0f0821776a1577e680b0a0ee3e530"
-    sha256 cellar: :any,                 arm64_monterey: "fba2363e03d06a3386e104cedbac2a5b87f7701af818656024c05f93dc0a3bf2"
-    sha256 cellar: :any,                 sonoma:         "4d1d2c7e8ad13d1043c440566bf698d6a004086d4db375934706388ffb4ba862"
-    sha256 cellar: :any,                 ventura:        "ad66428f47798ffcf2ee1dd53c6350e8738bb47d30d509a74be5f533b1b1b821"
-    sha256 cellar: :any,                 monterey:       "b651c15f3f8acb299ad5927ba2d6626e321bb39649be6e8a6a3ae2655d6d5130"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2387d3a3de1d331a73253aaa5161295fcad5b9d58e748fca892c7aa5d421568b"
+    sha256 cellar: :any, arm64_sequoia: "7722859fde12c41f92196bcc9b4925cb69f4b5455b5c65714cbfa8ad329d4f2a"
+    sha256 cellar: :any, arm64_sonoma:  "7e80c8851f8d42da0e709a35c3da65ec70c230c875a8e09cc4436ca4d840d6d4"
+    sha256 cellar: :any, arm64_ventura: "fe765dd3e97eba9c63b943c65db2ae9a11a79ebe2cd1dd01c02daaf54be5d2d6"
+    sha256 cellar: :any, sonoma:        "5138e86243892021eb49290bb60fd4d095c6c8852551aee39859224b91ff575a"
+    sha256 cellar: :any, ventura:       "16e35bfd4838ac328996ddf5d44bb674961af25b5328c1869faf60f87cdf91d2"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "libmicrohttpd"
   depends_on "libsndfile"
-  depends_on "llvm"
+  depends_on "llvm@18"
 
   fails_with gcc: "5"
 

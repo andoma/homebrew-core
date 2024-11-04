@@ -4,10 +4,11 @@ class Dvorak7min < Formula
   url "https://deb.debian.org/debian/pool/main/d/dvorak7min/dvorak7min_1.6.1+repack.orig.tar.gz"
   version "1.6.1"
   sha256 "4cdef8e4c8c74c28dacd185d1062bfa752a58447772627aded9ac0c87a3b8797"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f3a4344484d832af72a35d2759a70018fce691d9269a6c4161a7da74bae7fea0"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b1bf4bd048107bae98d33859486f996dcf0a7cf7a9053414c243d060960c3938"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "f581243f32da61dd063a2ef9c4e8c2297b4bd556f7905d4a520009a8bf865b73"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "f38e077e0ee68158e8b287d8bf9b679378cfb03a496afd2049f9b36e840ba2c8"
@@ -23,6 +24,9 @@ class Dvorak7min < Formula
     sha256 cellar: :any_skip_relocation, el_capitan:     "d4bf1a053028f0712193e33911c2af3fb4f0a71b37480969b5c03b798d4930ae"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "88198e60fed089e8dcc4c8bb9fb955428cecd480578fd1a339e177b1c1e748df"
   end
+
+  # source is a copy from debian
+  deprecate! date: "2024-05-04", because: :repo_removed
 
   uses_from_macos "ncurses"
 

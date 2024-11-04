@@ -1,8 +1,8 @@
 class Byteman < Formula
   desc "Java bytecode manipulation tool for testing, monitoring and tracing"
   homepage "https://byteman.jboss.org/"
-  url "https://downloads.jboss.org/byteman/4.0.22/byteman-download-4.0.22-bin.zip"
-  sha256 "2f7e5db3d51b9ae8497a7255da2465d9501c6cb2f55ab954ba6e43152d23ec3b"
+  url "https://downloads.jboss.org/byteman/4.0.23/byteman-download-4.0.23-bin.zip"
+  sha256 "5b6dda957ba86d1ac83713a93d54956adb171f51ace31dd7fb857400bd77765b"
   license "LGPL-2.1-or-later"
   head "https://github.com/bytemanproject/byteman.git", branch: "main"
 
@@ -12,13 +12,14 @@ class Byteman < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "f08c5658f72ec1cf550c83af45cdcb1b346499db993d1d7feba063943f9ded2a"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "e65f5c3531d3c1f3de8fbbf2722d236c0bcc3dcf02e803587896ab6457ce619b"
   end
 
   depends_on "openjdk"
 
   def install
-    rm_rf Dir["bin/*.bat"]
+    rm_r(Dir["bin/*.bat"])
     doc.install Dir["docs/*"], "README"
     libexec.install ["bin", "lib", "contrib"]
     pkgshare.install ["sample"]

@@ -1,22 +1,23 @@
 class Lesspipe < Formula
   desc "Input filter for the pager less"
   homepage "https://www-zeuthen.desy.de/~friebel/unix/lesspipe.html"
-  url "https://github.com/wofr06/lesspipe/archive/refs/tags/v2.11.tar.gz"
-  sha256 "8e8eebf80f8a249c49b31e775728f4d3062f0a97ff7ef7363ccba522f51ffa3c"
-  license "GPL-2.0-only"
+  url "https://github.com/wofr06/lesspipe/archive/refs/tags/v2.15.tar.gz"
+  sha256 "dd65d211f0f817b4c361c434fd09ecbcd4a642636f3dc0fc1c575f2fa88506ac"
+  license all_of: [
+    "GPL-2.0-only",
+    "GPL-2.0-or-later", # sxw2txt
+    "MIT", # code2color
+    any_of: ["Artistic-1.0-Perl", "GPL-1.0-or-later"], # vimcolor
+  ]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9ff0fe23926dc0e7bdb4aa7b9ba15ae4526a34408485a6961dff10e28c851441"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9ff0fe23926dc0e7bdb4aa7b9ba15ae4526a34408485a6961dff10e28c851441"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9ff0fe23926dc0e7bdb4aa7b9ba15ae4526a34408485a6961dff10e28c851441"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9ff0fe23926dc0e7bdb4aa7b9ba15ae4526a34408485a6961dff10e28c851441"
-    sha256 cellar: :any_skip_relocation, ventura:        "9ff0fe23926dc0e7bdb4aa7b9ba15ae4526a34408485a6961dff10e28c851441"
-    sha256 cellar: :any_skip_relocation, monterey:       "9ff0fe23926dc0e7bdb4aa7b9ba15ae4526a34408485a6961dff10e28c851441"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd1aa232c8507c9ab1e20628bc7f51cbe7e653c8921e078c04141acb1659c78a"
+    sha256 cellar: :any_skip_relocation, all: "be6cc23028f51b8d31017e3c22acb6ea86c799fe96271c37cf9588b386e2db3a"
   end
 
+  uses_from_macos "perl"
+
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--all-completions", "--prefix=#{prefix}"
     man1.mkpath
     system "make", "install"
   end

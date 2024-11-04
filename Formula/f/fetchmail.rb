@@ -1,8 +1,8 @@
 class Fetchmail < Formula
   desc "Client for fetching mail from POP, IMAP, ETRN or ODMR-capable servers"
   homepage "https://www.fetchmail.info/"
-  url "https://downloads.sourceforge.net/project/fetchmail/branch_6.4/fetchmail-6.4.38.tar.xz"
-  sha256 "a6cb4ea863ac61d242ffb2db564a39123761578d3e40d71ce7b6f2905be609d9"
+  url "https://downloads.sourceforge.net/project/fetchmail/branch_6.5/fetchmail-6.5.0.tar.xz"
+  sha256 "42611aea4861a5311e5116843f01c203dceadf440bf2eb1b4a43a445f2977668"
   license all_of: [
     "LGPL-2.1-or-later",
     "ISC",
@@ -17,13 +17,12 @@ class Fetchmail < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "2d775ce9c19eccdfeb58d46cc2aab3ecd47bf87a05c23fefb541f117a5b40aa1"
-    sha256 cellar: :any, arm64_ventura:  "c33370a7017a00672e7f0577a6390db772510b663610fcdca10b6442775eb72c"
-    sha256 cellar: :any, arm64_monterey: "e8e16009d132a00fffe6b2ab0622236dccd1bbaa64a58a5fbfe015cc89dbff91"
-    sha256 cellar: :any, sonoma:         "d542f2329397590e1a9657cc57065b35b8a3cc4d33d2de0ed8088a0aad894e9f"
-    sha256 cellar: :any, ventura:        "87a1c760bb79b966bd9bf49fba80acaabc2f86d3f0ac8c3f195bc05a981e7523"
-    sha256 cellar: :any, monterey:       "6690cb4dee60fab79eee8527e7aa3e12e439b2077abd4b588e326ac680faa004"
-    sha256               x86_64_linux:   "bc14e4efa6cf22c862f38082fd58a8dc3149c3fdf2d5f26bb92a2c465bb4afcc"
+    sha256 cellar: :any, arm64_sequoia: "b76509619fe246396587c9803f98bfbef6462a7b9a06b5b0a32e234811d31656"
+    sha256 cellar: :any, arm64_sonoma:  "7c195c68726a64d224126e5430233cc6458ec80c1fb905c7e305bc18bec704aa"
+    sha256 cellar: :any, arm64_ventura: "bd350d81590e440f7bd507e35d2cf9447c571f54580d25a4fa06acfa33e38eb5"
+    sha256 cellar: :any, sonoma:        "abb7e44d3200d2a6f0f9b5fed7bef9f235fa366b736a9c1cb991f9abc63e166a"
+    sha256 cellar: :any, ventura:       "c02640540d7246853572eb0b478823e2cd8facb085bb0f9dabdb536921b2c1fa"
+    sha256               x86_64_linux:  "8480cfc2b3f6ea0090c6ece015bba18b356be0ea024c39c7956f3e8aa44a27a4"
   end
 
   depends_on "openssl@3"
@@ -36,6 +35,6 @@ class Fetchmail < Formula
   end
 
   test do
-    system "#{bin}/fetchmail", "--version"
+    system bin/"fetchmail", "--version"
   end
 end

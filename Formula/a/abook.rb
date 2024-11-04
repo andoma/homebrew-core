@@ -12,6 +12,7 @@ class Abook < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "aecfb31d48ba2a09945e883238d39f657fb3999b2f5419514445686aca65cf11"
     sha256 arm64_sonoma:   "c0b9ae72d7b4b319def0cc4f65051a392a3cd9318d607d736b6d80eb5eee3210"
     sha256 arm64_ventura:  "dbcc8ffc1eb5ee674721acec2fc715030ba3c53553f0b419c71994f72925e298"
     sha256 arm64_monterey: "24854522e2901befeb323be066c744ab4471920495b7a91280e9d05c9bc3b9e7"
@@ -28,22 +29,25 @@ class Abook < Formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "gettext"
+  depends_on "gettext" => :build
   depends_on "readline"
+
+  uses_from_macos "ncurses"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     # fix "undefined symbols" error caused by C89 inline behaviour
     inreplace "database.c", "inline int", "int"
 
-    system "autoreconf", "-ivf"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 
   test do
-    system "#{bin}/abook", "--formats"
+    system bin/"abook", "--formats"
   end
 end

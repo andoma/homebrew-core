@@ -1,30 +1,24 @@
-require "language/node"
-
 class Lerna < Formula
   desc "Tool for managing JavaScript projects with multiple packages"
   homepage "https://lerna.js.org"
-  url "https://registry.npmjs.org/lerna/-/lerna-8.1.2.tgz"
-  sha256 "269041891d18502be115f34f96af966f74fcceeb8750e1addde49d68541cbfdc"
+  url "https://registry.npmjs.org/lerna/-/lerna-8.1.9.tgz"
+  sha256 "46ceaeb4be5db0bda1faba4ec236edc04c94e6945d6805877b17ce9b5f28e810"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "5c71bb2e2ac9b417802e4080524648810494334e65f592b6b96042d60234ab44"
-    sha256 cellar: :any,                 arm64_ventura:  "5c71bb2e2ac9b417802e4080524648810494334e65f592b6b96042d60234ab44"
-    sha256 cellar: :any,                 arm64_monterey: "5c71bb2e2ac9b417802e4080524648810494334e65f592b6b96042d60234ab44"
-    sha256 cellar: :any,                 sonoma:         "1d7dece6b2bcb119bdff3efeb24e6e817f87708509b0f69d0c9579a13a13f045"
-    sha256 cellar: :any,                 ventura:        "1d7dece6b2bcb119bdff3efeb24e6e817f87708509b0f69d0c9579a13a13f045"
-    sha256 cellar: :any,                 monterey:       "1d7dece6b2bcb119bdff3efeb24e6e817f87708509b0f69d0c9579a13a13f045"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b30fb2b78c628c706a7886f110bfaa9ae95dfcc7480480e5ece785d98e151317"
+    sha256 cellar: :any,                 arm64_sequoia: "5fa117222b25d1345ff99518fdfb31f7c9b650ebdc57597aa08d6a744cf4a617"
+    sha256 cellar: :any,                 arm64_sonoma:  "5fa117222b25d1345ff99518fdfb31f7c9b650ebdc57597aa08d6a744cf4a617"
+    sha256 cellar: :any,                 arm64_ventura: "5fa117222b25d1345ff99518fdfb31f7c9b650ebdc57597aa08d6a744cf4a617"
+    sha256 cellar: :any,                 sonoma:        "ae501da933f2f810b7556cf98fafc2bfb2207c19da116b07c29e978adb1f83d6"
+    sha256 cellar: :any,                 ventura:       "ae501da933f2f810b7556cf98fafc2bfb2207c19da116b07c29e978adb1f83d6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ce88ab2b08db367035ef6575dfc5a6e6a37f3423d6c79fe87fd755ed59b65bd2"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
-
-    node_modules = libexec/"lib/node_modules/lerna/node_modules"
-    (node_modules/"@nx/nx-linux-x64-musl/nx.linux-x64-musl.node").unlink if OS.linux?
 
     # Replace universal binaries with native slices
     deuniversalize_machos

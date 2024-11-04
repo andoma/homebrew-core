@@ -1,18 +1,19 @@
 class Libucl < Formula
   desc "Universal configuration library parser"
   homepage "https://github.com/vstakhov/libucl"
-  url "https://github.com/vstakhov/libucl/archive/refs/tags/0.9.0.tar.gz"
-  sha256 "87b233048bca7d307b14cffb882d3c198dc3fff96b19e0c3515428f027b3ebfe"
+  url "https://github.com/vstakhov/libucl/archive/refs/tags/0.9.2.tar.gz"
+  sha256 "f63ddee1d7f5217cac4f9cdf72b9c5e8fe43cfe5725db13f1414b0d8a369bbe0"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "9939f684c190af0b9c4b35ca741570a01cd95d02165bc74a09e3e4d41db6ccfc"
-    sha256 cellar: :any,                 arm64_ventura:  "e98cc86fda69c097ea47a05f6dfaab052860bc5d53e41bea51ec125208c20475"
-    sha256 cellar: :any,                 arm64_monterey: "95e6c12559afd25611c8adfae612753b464ff8c2be205ba954f8c463e8e3213a"
-    sha256 cellar: :any,                 sonoma:         "38b8fcaf828f33014fea25fdf1e8e38cc9f1bcb6cb8068cfcf2f457aa0551fbd"
-    sha256 cellar: :any,                 ventura:        "983880e9b298a75a20bb0d05dbc5574cf36313f99f383974debf189faee58664"
-    sha256 cellar: :any,                 monterey:       "39722b87bbedc6d98d4efdc0e0714da0b5aa3c43a10dec12b51f98a79c09441e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "94f634b3a3a932fa2a74c11b3e79c07ce7f4bc97a74c3b6c8682eedfa6ab0700"
+    sha256 cellar: :any,                 arm64_sequoia:  "7fb7a6da5d226f44461cc63016b2b0254ec73ee5506772c98d2c9c12eb5be185"
+    sha256 cellar: :any,                 arm64_sonoma:   "00ca25427fee2390ea39e75173ae8c844b816a21bad5b205d76d7961dc81614e"
+    sha256 cellar: :any,                 arm64_ventura:  "04ee73714b6d52de15235224a1a4fd72ca07d7e39fc5324e6fcc630a27ecc84f"
+    sha256 cellar: :any,                 arm64_monterey: "64174ea202ba8d56e10a61a2835800ad180ae649613184b7e55b801b0a3f260d"
+    sha256 cellar: :any,                 sonoma:         "404849ecb35a31bc40df771fca0bfe75da4d1b552e1073526d645ad25094f8b6"
+    sha256 cellar: :any,                 ventura:        "28caf0f7502a50965881748e9d6f66fa0481be2ca8d3bcf75a296621aebfe805"
+    sha256 cellar: :any,                 monterey:       "b349883d0fdfccac70c706f8a9cf439bb528f59c9f2dbc89a2d3c80d2dfcdcaa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c28950d57c3275bddb3df7ee14c7ca99f94e49e0baa58be832a17b9928d0ed0d"
   end
 
   depends_on "autoconf" => :build
@@ -36,7 +37,7 @@ class Libucl < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <ucl++.h>
       #include <string>
       #include <cassert>
@@ -49,7 +50,7 @@ class Libucl < Formula
         assert(obj[std::string("foo")].string_value() == "bar");
         assert(obj[std::string("section")][std::string("flag")].bool_value());
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++11", "test.cpp", "-L#{lib}", "-lucl", "-o", "test"
     system "./test"
   end

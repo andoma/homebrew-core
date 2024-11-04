@@ -12,6 +12,7 @@ class Libodfgen < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "7f42c8f3db9efee29ccd3acfdbb58e401cff658eb20c77284acdcd1220770249"
     sha256 cellar: :any,                 arm64_sonoma:   "f8c8b108ac222308245eef3d268c4eeeb84b2a73f2410c45568f304a142471e0"
     sha256 cellar: :any,                 arm64_ventura:  "ee37bbec363199abddeafcd3c185add551b115ccbcf2d175be4e3372321be7dc"
     sha256 cellar: :any,                 arm64_monterey: "ba4d7f22c5590a4190cb043deb158860d752c6b517463deffbcf047f11b4abdf"
@@ -43,12 +44,12 @@ class Libodfgen < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <libodfgen/OdfDocumentHandler.hxx>
       int main() {
         return ODF_FLAT_XML;
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-o", "test",
       "-lrevenge-0.0",
       "-I#{Formula["librevenge"].include}/librevenge-0.0",

@@ -1,32 +1,26 @@
 class Gfold < Formula
   desc "Help keep track of your Git repositories, written in Rust"
   homepage "https://github.com/nickgerace/gfold"
-  # TODO: check if we can use unversioned `libgit2` at version bump.
-  # See comments below for details.
-  url "https://github.com/nickgerace/gfold/archive/refs/tags/4.4.1.tar.gz"
-  sha256 "bdcbebd543f7222e253e4324677a5c524f90543cbf859a448359ac426b9453d9"
+  url "https://github.com/nickgerace/gfold/archive/refs/tags/4.5.0.tar.gz"
+  sha256 "ba5afe509ef17f5cdde8540cfd9321001cbb10d49dd6324f22562d65dbae8738"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/nickgerace/gfold.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "60e83410cdd305ee8696a31edde64ab86770a3cf68ac24d9e32323699554b6b4"
-    sha256 cellar: :any,                 arm64_ventura:  "4e55b07619facfe9f0f610613cf690787eca71c05b938a7b8d7451e516adb768"
-    sha256 cellar: :any,                 arm64_monterey: "ba0e3c374183fc5a9cb6d23c5033c5445e33cdc41a2a7b0d071ed58116906381"
-    sha256 cellar: :any,                 sonoma:         "a9c83046b56ab7e0948e5d54c6705eafd73d4000e294be5ccab9f987a52a4d43"
-    sha256 cellar: :any,                 ventura:        "08d4b28d38323c445deea7c5e67eecd8c2e7bf0c81f20c5eb0a7dec1dc1713f6"
-    sha256 cellar: :any,                 monterey:       "e7d97f4db17eb4f5b2ebace9124c0268bfbfcb75fd83d8655b373a24cdeefb3f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bf60815db0ec9cbb2daa8b67b688a40d873263937a5e09099e45059aab82341c"
+    sha256 cellar: :any,                 arm64_sequoia:  "9c1e32de1fb5c0b0519676f8fa0fc580e49e5e6bb38c5fa58f183dc9e8364a82"
+    sha256 cellar: :any,                 arm64_sonoma:   "0d109f301a6394c733cd864995e29d6df6bb3b4030486d0550eb55d834d77d1d"
+    sha256 cellar: :any,                 arm64_ventura:  "9088a4563e6ceba052130a219e850a586b74675d1a6c294eb5e9495422f4e5ec"
+    sha256 cellar: :any,                 arm64_monterey: "f9dd5818d8c8940160aa3764d1f48da7619d15aef6fb85c8c9132f5e2cf8853f"
+    sha256 cellar: :any,                 sonoma:         "5d59da37a6aa405fc8d34ca9ada77e3cbaa275aeccecc55c604ee6caebe7854d"
+    sha256 cellar: :any,                 ventura:        "168ebebd1ae9754b2e06fa9865d1728cb22da5b07610a467e20951e6e705423b"
+    sha256 cellar: :any,                 monterey:       "7b58c51fac765551a1e364f7c78fe87e1a9da6b923c0f974272f24999384eff9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3179fe94817048eb453d9d6750cb5eb946ed207277fbce5424e6dade6b6f04af"
   end
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
-  # To check for `libgit2` version:
-  # 1. Search for `libgit2-sys` version at https://github.com/nickgerace/gfold/blob/#{version}/Cargo.lock
-  # 2. If the version suffix of `libgit2-sys` does not match the `libgit2` formula, then:
-  #    - Migrate to the corresponding `libgit2` formula.
-  #    - Change the `LIBGIT2_NO_VENDOR` env var below to `LIBGIT2_SYS_USE_PKG_CONFIG`.
-  #      See: https://github.com/rust-lang/git2-rs/commit/59a81cac9ada22b5ea6ca2841f5bd1229f1dd659.
-  depends_on "libgit2"
+  depends_on "libgit2@1.7"
 
   uses_from_macos "zlib"
 
@@ -54,7 +48,7 @@ class Gfold < Formula
     linkage_with_libgit2 = (bin/"gfold").dynamically_linked_libraries.any? do |dll|
       next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
 
-      File.realpath(dll) == (Formula["libgit2"].opt_lib/shared_library("libgit2")).realpath.to_s
+      File.realpath(dll) == (Formula["libgit2@1.7"].opt_lib/shared_library("libgit2")).realpath.to_s
     end
 
     assert linkage_with_libgit2, "No linkage with libgit2! Cargo is likely using a vendored version."

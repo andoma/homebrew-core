@@ -1,9 +1,8 @@
 class Clusterctl < Formula
   desc "Home for the Cluster Management API work, a subproject of sig-cluster-lifecycle"
   homepage "https://cluster-api.sigs.k8s.io"
-  url "https://github.com/kubernetes-sigs/cluster-api.git",
-      tag:      "v1.6.2",
-      revision: "da795db4c7da093866fc5b4c4648f795714bc0c3"
+  url "https://github.com/kubernetes-sigs/cluster-api/archive/refs/tags/v1.8.4.tar.gz"
+  sha256 "ae3e103dc2f42d0dbc0ea88448cc3fd0642fe8c2bd9e051241c1a4ec48fed1ed"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/cluster-api.git", branch: "main"
 
@@ -18,29 +17,32 @@ class Clusterctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "512a35c895c0a52e115114e630d8f052f1959650bef7d021baebc16f885569c2"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "56a7a884d09fc80abe6d087ae80b999078e21ff22cd82218af76ebb8a2520568"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "067b097ca92c874d432ea7fe1043223c5a8327864814d5671d64ef196be0a022"
-    sha256 cellar: :any_skip_relocation, sonoma:         "10c47b8c73205ef6b9619c79d2be06171e2255740e59d657eab0a651a689a686"
-    sha256 cellar: :any_skip_relocation, ventura:        "62661ce17d39d1e5608515922b0f2b302753db78dcee75f4070281a617adce6c"
-    sha256 cellar: :any_skip_relocation, monterey:       "a85292361bc787b1fb53386f45b89af462440156efd95cdea7b2ec109297609e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "03a90cc5e5c611f64a850854b46da7ec32e692654e33738579d4bbf3e9f1ef40"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b5848283087bba7bbb2c97febdb23730dbfaa0ad505e60f86a900d61c3f9d78f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3e613b6b2510ce25213350b9abc1f8554f79851a22d6ebbcba73bc3222974f55"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "19557563e1846c90bf2cf723201d9a67f59a5115a815815199458c8c235b4b69"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2185c494c00f88068d89c7ba58005bee9e77965bbe809dba6a89a8db6f4538e6"
+    sha256 cellar: :any_skip_relocation, ventura:       "453ea6630c0a8fd1339422867f8bf4de3c937fbe536330957e80f18b6fbe6720"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f45ee044824aa5d7fc7d72372d2bcd7ea5c5a9fa94208bddd5c22506b27e610a"
   end
 
   depends_on "go" => :build
 
   def install
-    # Don't dirty the git tree
-    rm_rf ".brew_home"
+    ldflags = %W[
+      -s -w
+      -X sigs.k8s.io/cluster-api/version.gitVersion=#{version}
+      -X sigs.k8s.io/cluster-api/version.gitCommit=brew
+      -X sigs.k8s.io/cluster-api/version.gitTreeState=clean
+      -X sigs.k8s.io/cluster-api/version.buildDate=#{time.iso8601}
+    ]
+    system "go", "build", *std_go_args(ldflags:), "./cmd/clusterctl"
 
-    system "make", "clusterctl"
-    prefix.install "bin"
-
-    generate_completions_from_executable(bin/"clusterctl", "completion", shells: [:bash, :zsh])
+    generate_completions_from_executable(bin/"clusterctl", "completion", shells: [:bash, :zsh, :fish])
   end
 
   test do
     output = shell_output("KUBECONFIG=/homebrew.config  #{bin}/clusterctl init --infrastructure docker 2>&1", 1)
-    assert_match "Error: invalid kubeconfig file; clusterctl requires a valid kubeconfig", output
+    assert_match "clusterctl requires either a valid kubeconfig or in cluster config to connect to " \
+                 "the management cluster", output
   end
 end

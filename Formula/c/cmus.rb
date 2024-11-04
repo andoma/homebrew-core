@@ -1,20 +1,18 @@
 class Cmus < Formula
   desc "Music player with an ncurses based interface"
   homepage "https://cmus.github.io/"
-  url "https://github.com/cmus/cmus/archive/refs/tags/v2.10.0.tar.gz"
-  sha256 "ff40068574810a7de3990f4f69c9c47ef49e37bd31d298d372e8bcdafb973fff"
+  url "https://github.com/cmus/cmus/archive/refs/tags/v2.12.0.tar.gz"
+  sha256 "44b96cd5f84b0d84c33097c48454232d5e6a19cd33b9b6503ba9c13b6686bfc7"
   license "GPL-2.0-or-later"
-  revision 3
   head "https://github.com/cmus/cmus.git", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:   "ac3667bf52b88fe2cf1a91aee7444333eecbd1ee62ff2a1d35a696d286f7b555"
-    sha256 arm64_ventura:  "7ecb43c204b78e089e1d5086667d098a35e764f234a89745c20bb59b13903e04"
-    sha256 arm64_monterey: "8b7ad68e7c6559663e11a2e013f33967a97b084d2e8aa6b596bad4e78c951d03"
-    sha256 sonoma:         "a82a68671e957b955646335ec35dcaeab4a7613d0c508dd112e0fb0d293bb89d"
-    sha256 ventura:        "4beb90ae9a2dbb54575eb0bf8f7b4d6083a664d7f6d13f740281a40d449fed75"
-    sha256 monterey:       "ed1c0cd1c55495510d62bb1b1132a28d0dc9ea80dc31224040c5ec8c502c8a42"
-    sha256 x86_64_linux:   "2ba70e8f48e65519ffa546286baaf90e40b1ed573b2827456ae9145d4cd314f2"
+    sha256 arm64_sequoia: "8b1739fd6bd6dce2b68c3f86b4587bd501e4d9559d978c1c1b9df5581c0a709b"
+    sha256 arm64_sonoma:  "ce5bba497d1288d378ab93c8947b305928f7306bfdf46a938e5c43ad4e8f13ea"
+    sha256 arm64_ventura: "fe14820def68e642197f8b7c6c0615edc9887b536083a69bd311aefe8c4c6c9b"
+    sha256 sonoma:        "68cc3746e9c2f4f31357685474d76c565e7d28f3f4502b82427f0ee45eb02e5f"
+    sha256 ventura:       "c18386b2327143c996a9b821118884bd511ed47cfc74742894659d1afc460faf"
+    sha256 x86_64_linux:  "36afb0eb6672a1734b4c9cdfcb128b8c21ac925b69c854b6e7a8175bf21d2d20"
   end
 
   depends_on "pkg-config" => :build
@@ -32,6 +30,7 @@ class Cmus < Formula
 
   on_linux do
     depends_on "alsa-lib"
+    depends_on "pulseaudio"
   end
 
   def install

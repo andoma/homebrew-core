@@ -1,8 +1,8 @@
 class MysqlClientAT80 < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/8.0/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.36.tar.gz"
-  sha256 "429c5f69f3722e31807e74119d157a023277af210bfee513443cae60ebd2a86d"
+  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.40.tar.gz"
+  sha256 "eb34a23d324584688199b4222242f4623ea7bca457a3191cd7a106c63a7837d9"
   license "GPL-2.0-only" => { with: "Universal-FOSS-exception-1.0" }
 
   livecheck do
@@ -10,13 +10,12 @@ class MysqlClientAT80 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "110504674c88fc1a39cda6a31e5bf5c4c566fd82f78fe4ce9c705e66e3778705"
-    sha256 arm64_ventura:  "c8bee79f7b75434bef2beea4047d77f4a4b59ede8dbd0eabd5f1d67329242f49"
-    sha256 arm64_monterey: "b48e9e9b4357094de72a5c5eb3b2a2fd6f883b3ee8baabfa6972e148d8aae2ea"
-    sha256 sonoma:         "9aa3740259fc5d8451df2361f5d0dcd1ed6249a55b925d896528a98fe37338f5"
-    sha256 ventura:        "42eec55ce4144c45233bc51902f8c35c4a0bc280769b6e0acfd416719bde4397"
-    sha256 monterey:       "6f61b9192445ae4397a98097b452058930cbe41b8b3bc97d319e23c32749c10f"
-    sha256 x86_64_linux:   "acae2fe099359280c03a7555ce0386aff54094e58b6327e3ff7088309b1bee25"
+    sha256 arm64_sequoia: "66cd479cef8a0979a134fc6dc75b1ed0b6d210e96d5199a3727e1d83f696f0dd"
+    sha256 arm64_sonoma:  "e1849e4bd1c7546d473a3cc59d0f8dbdb35239057979488e159987576be1fd56"
+    sha256 arm64_ventura: "a22a65c2c1ca6425a62cb12a602a2398fc49298a18a22c5b53ced9e71accd7bd"
+    sha256 sonoma:        "c524071d6eabb6b16b17e8ee417f43e8147b9bf196774f9deb272b4eb1ba12b4"
+    sha256 ventura:       "530ebc9494e8affdc5408dde06a7f7214d828a90df23b825a8194a7c22b693d5"
+    sha256 x86_64_linux:  "1eeb1576f77d5c82bed931566dda39b99e2f3e14a5cf494d626748ca671c9ef2"
   end
 
   keg_only :versioned_formula
@@ -29,7 +28,7 @@ class MysqlClientAT80 < Formula
   # GCC is not supported either, so exclude for El Capitan.
   depends_on macos: :sierra if DevelopmentTools.clang_build_version < 900
   depends_on "openssl@3"
-  depends_on "zlib" # Zlib 1.2.12+
+  depends_on "zlib" # Zlib 1.2.13+
   depends_on "zstd"
 
   uses_from_macos "libedit"

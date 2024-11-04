@@ -1,8 +1,8 @@
 class Uuu < Formula
   desc "Universal Update Utility, mfgtools 3.0. NXP I.MX Chip image deploy tools"
   homepage "https://github.com/nxp-imx/mfgtools"
-  url "https://github.com/nxp-imx/mfgtools/releases/download/uuu_1.5.125/uuu_source-uuu_1.5.125.tar.gz"
-  sha256 "085d7f6308ee6b77dfb131fac40704575525adf6da45cdc446c00a0b29e4c21a"
+  url "https://github.com/nxp-imx/mfgtools/releases/download/uuu_1.5.182/uuu_source-uuu_1.5.182.tar.gz"
+  sha256 "723d3da358e6af974a056e3adbcb105fac9dad4b87544de0d22b8c974a8037aa"
   license "BSD-3-Clause"
   head "https://github.com/nxp-imx/mfgtools.git", branch: "master"
 
@@ -13,13 +13,14 @@ class Uuu < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "842f691b7008044ea148fe7eef2523c9ba7b3605b180afae67a3f7e999917dc6"
-    sha256 arm64_ventura:  "0ba2aebd7f7f39b0d9df102ce95051c4adab45a4833a2eeef82d05559ca24371"
-    sha256 arm64_monterey: "11fd2b6a778f22dd94a65c726dcd1bf0c3c67ee54588ad56145bbee562e717af"
-    sha256 sonoma:         "af7f755a7bfaf7806fe495f0dac19c0d5d0f6da710367218ea4ac6aa2adf5feb"
-    sha256 ventura:        "7025c7bf54ac4d3226df3d89de5f59ad2a5d66017b5d6f00b82298bbc1ef08a9"
-    sha256 monterey:       "bc28bec39757b22282a1ae4434135250b2a28bde0c27f3617f407d321151faa9"
-    sha256 x86_64_linux:   "5fd35e71f42c6723b10763e61957955946379f9e7da4092ca4207a6f7c9c5064"
+    sha256 arm64_sequoia:  "7bfe2010f69a821f75edc985e15696b22a8fcab1adf829d0da05b1ff88c7fe29"
+    sha256 arm64_sonoma:   "2d0b798240aa95ac17d48010de1eacf4115b7cfbe3c30a216fee81ac52210716"
+    sha256 arm64_ventura:  "be2915e1eb0d229e66cc94e18873863af4d23d04194a266e95850ba08435b7df"
+    sha256 arm64_monterey: "ba7c3dd03436445bb5405d73d53c0631b323b5021fb845906009e24274c45f9b"
+    sha256 sonoma:         "a77873946eb1b54f22f61e7d8f3a1d33fee09e72bcf50ec86f474532a5ac233b"
+    sha256 ventura:        "7e06483006d74914e337b98add7df1a38e9f79cd97d3eb05695df5968f6dd9cf"
+    sha256 monterey:       "50935214e4b33cf3d80dae31ec529e32e5c02ed4ef7efd86c45e87eb31faaa2d"
+    sha256 x86_64_linux:   "19e6bebfc3fdb36ef5b0ee3c517e294c75a2ebc9460501a104c00d7586239616"
   end
 
   depends_on "cmake" => :build
@@ -28,6 +29,11 @@ class Uuu < Formula
   depends_on "libusb"
   depends_on "libzip"
   depends_on "openssl@3"
+  depends_on "tinyxml2"
+  depends_on "zstd"
+
+  uses_from_macos "bzip2"
+  uses_from_macos "zlib"
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args

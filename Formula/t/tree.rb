@@ -1,19 +1,19 @@
 class Tree < Formula
   desc "Display directories as trees (with optional color/HTML output)"
   homepage "https://oldmanprogrammer.net/source.php?dir=projects/tree"
-  url "https://github.com/Old-Man-Programmer/tree/archive/refs/tags/2.1.1.tar.gz"
-  sha256 "1b70253994dca48a59d6ed99390132f4d55c486bf0658468f8520e7e63666a06"
+  url "https://github.com/Old-Man-Programmer/tree/archive/refs/tags/2.1.3.tar.gz"
+  sha256 "3ffe2c8bb21194b088ad1e723f0cf340dd434453c5ff9af6a38e0d47e0c2723b"
   license "GPL-2.0-or-later"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2d1c490c83719c983ec360085e9d0049418ff424259bc00122869f8acf68ed63"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "13b597dcee0eec0e8d3a7f864dfb5713d812605092bf1e417c765e788d0c0d31"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0bd195b460f491c6e71b0277efb3c4cdbab8b6d814072519ade39e5ca257b048"
-    sha256 cellar: :any_skip_relocation, sonoma:         "af3d14eb91e4bf756bb5ef5f6a489aeb33e6cf5fc4f72c99d70352bec364e282"
-    sha256 cellar: :any_skip_relocation, ventura:        "da304661d82c58ee3d4a14f80479d15d3405ca4c1be78b6085f7c62e67f79412"
-    sha256 cellar: :any_skip_relocation, monterey:       "13a0875d7da74de5ccfd1c6d3bd6167d2c4c0d7d4d747cc3ebb377fad60df365"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "48bf95e7ef6c5f14db8a551b3ba22db93613f39ad04985f2edd3d34754daf89e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4f39e10fb168ba78da684d3341b9de003cc75de0fe69654816d24eda6d7d834f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f0ff7ec061de0b347ca0c735aa199f30c57439134cc6ea1d8e66243986656924"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b2c2977827a57759b2661878fe661284c4c72ddc0c6a7f8d49e2814392b4f976"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0ef85c4b4b00b63b41159241eefb3f0712326b03f4a3a0f92468fdf339916c98"
+    sha256 cellar: :any_skip_relocation, sonoma:         "fe9c14383700f0f5d8a170be81d9f344006e3a33ca5d14e7a9c6349e414ebac4"
+    sha256 cellar: :any_skip_relocation, ventura:        "3a7806b8309c92599eaeb275b11d872048dd19d572f461c1fe28005873fb9389"
+    sha256 cellar: :any_skip_relocation, monterey:       "3b617ca01cbcfff57c659b7678eeafd02893f8d82945325f3d21fb645db3ed3c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d57629617283034eb02db149a2f441dab0872fe4b96547999ff0e7376f0c99a"
   end
 
   def install
@@ -30,6 +30,6 @@ class Tree < Formula
   end
 
   test do
-    system "#{bin}/tree", prefix
+    system bin/"tree", prefix
   end
 end

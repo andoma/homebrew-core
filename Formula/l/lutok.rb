@@ -1,12 +1,13 @@
 class Lutok < Formula
   desc "Lightweight C++ API for Lua"
-  homepage "https://github.com/jmmv/lutok"
-  url "https://github.com/jmmv/lutok/releases/download/lutok-0.4/lutok-0.4.tar.gz"
+  homepage "https://github.com/freebsd/lutok"
+  url "https://github.com/freebsd/lutok/releases/download/lutok-0.4/lutok-0.4.tar.gz"
   sha256 "2cec51efa0c8d65ace8b21eaa08384b77abc5087b46e785f78de1c21fb754cd5"
   license "BSD-3-Clause"
   revision 2
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "6a4eec6e3e6a84abafd6eca59316e4e4637f16a1618b5031494c86ce3849604e"
     sha256 cellar: :any,                 arm64_sonoma:   "e97f0fa9ac92630fe607079cf1d65836e756bc2bb7779400f4193296609a4c96"
     sha256 cellar: :any,                 arm64_ventura:  "3303d39bfed8576c90cdc019ab9b6984f90e57b5e5a7facc955dc06fc0664d02"
     sha256 cellar: :any,                 arm64_monterey: "22ff0adc8a95ee3329f51de5b49dfa78ea41651b449877317b1ad631f6c1a210"

@@ -1,8 +1,8 @@
 class Omega < Formula
   desc "Packaged search engine for websites, built on top of Xapian"
   homepage "https://xapian.org/"
-  url "https://oligarchy.co.uk/xapian/1.4.24/xapian-omega-1.4.24.tar.xz"
-  sha256 "d08756e4f33b18916cc8a2493d311f1cbeb8ed4357bd40fa5c1744adc080ebff"
+  url "https://oligarchy.co.uk/xapian/1.4.26/xapian-omega-1.4.26.tar.xz"
+  sha256 "a5b2386e1b04df84d1149a9e9c5bcfc5e4726a69a69da641b86c68d79967dae4"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,13 +11,14 @@ class Omega < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "78053bee0bfaae7ca4b024ea2b2ba55beecdcab633301f2215e71b144ec347c3"
-    sha256 arm64_ventura:  "13a27fb21c060e3affd40d2b33c2054b8a2cf7c196eeadd24ef0dc35381c5d51"
-    sha256 arm64_monterey: "e98055a9f13a6aa1b2ef9a3d87929455fdb805510cea88aa854290965bfe63ed"
-    sha256 sonoma:         "3df1c75bea66c589ade64758ffe254802d3598a871a41a77f365e782f7a994c7"
-    sha256 ventura:        "b9dbeb020adf71ac697af7d3907a0bf89f0cf736dc2961d1da2bcc233193c085"
-    sha256 monterey:       "1f8bb0bae492373d9a997439c0d514f83da354c11b5ef1a5193ec11ba979420c"
-    sha256 x86_64_linux:   "88b0c2f104398f6d4947476b19240d5c45008440355da8e011ce79b86d617385"
+    sha256 arm64_sequoia:  "b3dc3285f23afa9b07481e9f1e92914e248db29a9336bf69a6d9b9a4ebaa5a01"
+    sha256 arm64_sonoma:   "caedc24dd693d1375fc62fda463055d5e65482760170f9f7872d4dc9be7c82db"
+    sha256 arm64_ventura:  "4bcee3d5ac1960b6dd54e564886c2fa0235d1f06dce0f603041e86b370a7653c"
+    sha256 arm64_monterey: "5c13bd254c537f35dc21bd7ef2bebbbc687e43110ac252a0851403591b9ee0f7"
+    sha256 sonoma:         "39b00ec930aef79e7d886efdf1b94616c393d2accee31f1ef09a65fc53cef914"
+    sha256 ventura:        "58dc62467f3385fc5098d6cbb76d1cd5354242662643ca47b0e69ae5a9167e9d"
+    sha256 monterey:       "404b0f3b269f1327267ace1688a6399b88914d3a60594b6d3b5bb9d945762e14"
+    sha256 x86_64_linux:   "8c5d3d4f9b8456a19cff0b0d47f3662734cac29a69a07ece8bdc840fd5a6b253"
   end
 
   depends_on "pkg-config" => :build
@@ -25,8 +26,11 @@ class Omega < Formula
   depends_on "pcre2"
   depends_on "xapian"
 
+  uses_from_macos "zlib"
+
   def install
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    system "./configure", "--disable-silent-rules",
+                          *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"
   end
 

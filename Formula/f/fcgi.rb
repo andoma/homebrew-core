@@ -7,6 +7,7 @@ class Fcgi < Formula
   license "OML"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "a79a999a6f844c409d74bfe3a565c087a34efa16531a9a51bf68c9b7cd946e1c"
     sha256 cellar: :any,                 arm64_sonoma:   "01edfb9feb557c8a45a559064590c132cf84a1448c3eafdaf581cd5871e30d30"
     sha256 cellar: :any,                 arm64_ventura:  "687f04ecaf81ae2c95d0e9cfa6a2502f848e596de4f6e2ebb83e8f507aa7717f"
     sha256 cellar: :any,                 arm64_monterey: "5434ce533ae7898eaabbf035d9a03b6b232913d66f5fb687981954d618fc15f4"
@@ -33,14 +34,14 @@ class Fcgi < Formula
   end
 
   test do
-    (testpath/"testfile.c").write <<~EOS
+    (testpath/"testfile.c").write <<~C
       #include "fcgi_stdio.h"
       #include <stdlib.h>
       int count = 0;
       int main(void){
         while (FCGI_Accept() >= 0){
         printf("Request number %d running on host %s", ++count, getenv("SERVER_HOSTNAME"));}}
-    EOS
+    C
     system ENV.cc, "testfile.c", "-L#{lib}", "-lfcgi", "-o", "testfile"
     assert_match "Request number 1 running on host", shell_output("./testfile")
   end

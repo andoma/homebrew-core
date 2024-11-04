@@ -7,6 +7,7 @@ class CargoAllFeatures < Formula
   head "https://github.com/frewsxcv/cargo-all-features.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a3230194ce2a1aaf67cf633477a254f8bea2e1661c6849598c31e1e9dee4866a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b12a3968ae8ee10062526525c6cc07c5d288529204b51696e9f3ea104dffb1f3"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "d72b4b7f454143ec36fbaa284c2564c60c97ed8eb0de568e634c18dc485284c8"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "d399885e0cc2a32003b98de866fc80c9c74b3aeac8a8254ad9c40d1d617a36fd"
@@ -19,7 +20,7 @@ class CargoAllFeatures < Formula
   end
 
   depends_on "rust" => :build
-  depends_on "rustup-init" => :test
+  depends_on "rustup" => :test
 
   def install
     system "cargo", "install", *std_cargo_args
@@ -28,24 +29,23 @@ class CargoAllFeatures < Formula
   test do
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
-    ENV["RUSTUP_INIT_SKIP_PATH_CHECK"] = "yes"
-    rustup_init = Formula["rustup-init"].bin/"rustup-init"
-    system rustup_init, "-y", "--profile", "minimal", "--default-toolchain", "beta", "--no-modify-path"
-    ENV.prepend_path "PATH", HOMEBREW_CACHE/"cargo_cache/bin"
+    ENV.prepend_path "PATH", Formula["rustup"].bin
+    system "rustup", "default", "beta"
+    system "rustup", "set", "profile", "minimal"
 
     crate = testpath/"demo-crate"
     mkdir crate do
-      (crate/"src/main.rs").write <<~EOS
+      (crate/"src/main.rs").write <<~RUST
         fn main() {
           println!("Hello BrewTestBot!");
         }
-      EOS
-      (crate/"Cargo.toml").write <<~EOS
+      RUST
+      (crate/"Cargo.toml").write <<~TOML
         [package]
         name = "demo-crate"
         version = "0.1.0"
         license = "MIT"
-      EOS
+      TOML
 
       output = shell_output("cargo build-all-features")
       assert_match "Building crate=demo-crate features=[]", output

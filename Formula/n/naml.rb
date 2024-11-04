@@ -1,12 +1,13 @@
 class Naml < Formula
   desc "Convert Kubernetes YAML to Golang"
-  homepage "https://github.com/kris-nova/naml"
-  url "https://github.com/kris-nova/naml/archive/refs/tags/v1.0.3.tar.gz"
+  homepage "https://github.com/krisnova/naml"
+  url "https://github.com/krisnova/naml/archive/refs/tags/v1.0.3.tar.gz"
   sha256 "0842633268b06be82db4dd10c3c938f756f613c44c15c2d935b933409da8c4bd"
   license "Apache-2.0"
-  head "https://github.com/kris-nova/naml.git", branch: "main"
+  head "https://github.com/krisnova/naml.git", branch: "main"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9419a7e317f004467aa1ce33906f4fcb74d33d5ea29e4b5959173f69a1e95117"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2d2757a3ba04823d969e9298bebf32444870a24d94e47e9db8ce8ab80cec512c"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "c77699304de1696f3c92d571ff1665310464ffd6b737bcaef0c90c68c624408f"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "8620c41653aff4870bcc091d644b0f6845a38cb344c18ba61673fe4ef6bd04a0"
@@ -27,7 +28,7 @@ class Naml < Formula
       -X github.com/kris-nova/naml.Version=#{version}
     ]
 
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd"
+    system "go", "build", *std_go_args(ldflags:), "./cmd"
   end
 
   test do

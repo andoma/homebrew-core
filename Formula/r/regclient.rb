@@ -1,20 +1,20 @@
 class Regclient < Formula
   desc "Docker and OCI Registry Client in Go and tooling using those libraries"
   homepage "https://github.com/regclient/regclient"
-  url "https://github.com/regclient/regclient/archive/refs/tags/v0.5.7.tar.gz"
-  sha256 "0b39f10b7b67d14e355ce6980f69d595dd0572981d5877580eaa9fb39a3ddfb7"
+  url "https://github.com/regclient/regclient/archive/refs/tags/v0.7.1.tar.gz"
+  sha256 "17042a6f8b5d5bf25ce916347a0b314f7dd91a6c06f78761a4e5fe21f5eb9632"
   license "Apache-2.0"
   head "https://github.com/regclient/regclient.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "20ab870ceae6867470a3516c20f67e6d6f5d28622e04d4f169c4f7d5063e1a32"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "dde61df5bc145c429a90be9fdcc9b88ff10dd45f6b45e6b6fbd0c87874e93bf6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6629c61bd01f6ebb090b84ac9ec7b7067bde3dc7c5dcc354e9c9572cd514d8e6"
-    sha256 cellar: :any_skip_relocation, sonoma:         "455bf06adedcbd147efb2d462fba441426b8a653a900758ed6ec7fe1f88c0981"
-    sha256 cellar: :any_skip_relocation, ventura:        "a71391a7306a2395592a50676763b96803d56bc9194191dc925cb4b5a2aba656"
-    sha256 cellar: :any_skip_relocation, monterey:       "28050f61b77ad1b3c7148350c3a43a0deea6b4bdfe89b505e9ed172427fe0a17"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5e42858d0038f19e35dd2a3879cdbcbdd99555520ece15b19f70351e2e63a343"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ca7fa78e26d67310edf9b7cc05ec983d482b10a55380dab15986957c272bf6c2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ccc8589896360f67f531d8dabc0a5866c6212d541429d08355cbca3a08f36efe"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "606e9cf5ab33c8581eb121bf2a11ab188e34c9f900cd326ccbcf27a6836224e3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9aec13a3b0031fa746d9e4c83573a77616424dfd1abecf35ea100767891fd7c9"
+    sha256 cellar: :any_skip_relocation, sonoma:         "f92f19447dc4d2cc4d6144b7e6ee1191ae92aea794d15dc0f6240ab1feecfad8"
+    sha256 cellar: :any_skip_relocation, ventura:        "252ca40cc735e7400ba2bda2013c7d44a04a320d1a2889cc867ac862b6dd2e36"
+    sha256 cellar: :any_skip_relocation, monterey:       "cf4be119832a9e790217e99955077785d511b347fe419905873673429a23abf7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f442b906bb0c4c7ab062cc53fda6609853c23f78e649cc300811edcc72dddc49"
   end
 
   depends_on "go" => :build
@@ -22,7 +22,7 @@ class Regclient < Formula
   def install
     ldflags = "-s -w -X github.com/regclient/regclient/internal/version.vcsTag=#{version}"
     ["regbot", "regctl", "regsync"].each do |f|
-      system "go", "build", *std_go_args(ldflags: ldflags, output: bin/f), "./cmd/#{f}"
+      system "go", "build", *std_go_args(ldflags:, output: bin/f), "./cmd/#{f}"
 
       generate_completions_from_executable(bin/f, "completion", base_name: f)
     end

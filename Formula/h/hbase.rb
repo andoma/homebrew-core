@@ -1,20 +1,19 @@
 class Hbase < Formula
   desc "Hadoop database: a distributed, scalable, big data store"
   homepage "https://hbase.apache.org"
-  url "https://www.apache.org/dyn/closer.lua?path=hbase/2.5.7/hbase-2.5.7-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/hbase/2.5.7/hbase-2.5.7-bin.tar.gz"
-  sha256 "8d1608da5c7c2e811218cd5a881da0061e47d228c061146278404a03ef3f40ac"
+  url "https://www.apache.org/dyn/closer.lua?path=hbase/2.6.1/hbase-2.6.1-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/hbase/2.6.1/hbase-2.6.1-bin.tar.gz"
+  sha256 "76e6eeff822593cd8db4d11c2adf2e2db707f27f351277313af9193b09369150"
   # We bundle hadoop-lzo which is GPL-3.0-or-later
   license all_of: ["Apache-2.0", "GPL-3.0-or-later"]
 
   bottle do
-    sha256 arm64_sonoma:   "0ad4320e5cc69c14dd6d41aa1525dba4602ca0874bfc901215b84177f74db7f3"
-    sha256 arm64_ventura:  "28a2baefb6eecdb983cc3c6bd8925fda859203dd1995058affff5cd73f260484"
-    sha256 arm64_monterey: "e6284aecdbcc4216c7bbd03e9a5fb2228b1a0d96c71a00aef7f35fa9d88600c4"
-    sha256 sonoma:         "0e4f2596118b5e785161868df422135eaafe6ef40258da4f64db48df3400a70b"
-    sha256 ventura:        "fa0c25fb8eed82a1fbc6cfd2a697148308fae8b0cd1b2451ab26c2a6105b9674"
-    sha256 monterey:       "000abc73f37c55a70a090a697c03d4878a2f6d2088affdbad95e36918b8e2be7"
-    sha256 x86_64_linux:   "156eb5b009297a495bbe61c1810e7da31a6122658d7e54a0eba2472d53eb173f"
+    sha256 arm64_sequoia: "ef9abda0df4a73dc7dc79fc84bafb0458a28bd9214152f2c94724b40ebb3a6b5"
+    sha256 arm64_sonoma:  "2e29b17434154655014f2748b84333fade9c3a147ad0283cbe2dae9ec90659b6"
+    sha256 arm64_ventura: "29e6c268eae626c43cf0c0e56ade1fbbdf30a69368f05dc3c615db1a3164c431"
+    sha256 sonoma:        "47438928d3738dc6e906ea0665bc851d1795ffa865fb66b5938395cde0833ea4"
+    sha256 ventura:       "c33cf0818f374ef77bcfc09ce58a1eb7ccaea69dadf24aaeebdd99e79a8ec043"
+    sha256 x86_64_linux:  "d779413909edc9803f495fcb53eee1414e0f98f8b4496761df4350fdb6e4e767"
   end
 
   depends_on "ant" => :build
@@ -42,7 +41,7 @@ class Hbase < Formula
 
   def install
     java_home = Language::Java.java_home("11")
-    rm_f Dir["bin/*.cmd", "conf/*.cmd"]
+    rm(Dir["bin/*.cmd", "conf/*.cmd"])
     libexec.install %w[bin conf lib hbase-webapps]
 
     # Some binaries have really generic names (like `test`) and most seem to be
@@ -161,12 +160,12 @@ class Hbase < Formula
     ENV["HBASE_CONF_DIR"] = testpath/"conf"
     ENV["HBASE_PID_DIR"]  = testpath/"pid"
 
-    system "#{bin}/start-hbase.sh"
+    system bin/"start-hbase.sh"
     sleep 15
     begin
       assert_match "Zookeeper", pipe_output("nc 127.0.0.1 #{port} 2>&1", "stats")
     ensure
-      system "#{bin}/stop-hbase.sh"
+      system bin/"stop-hbase.sh"
     end
   end
 end

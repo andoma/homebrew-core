@@ -1,8 +1,8 @@
 class Toml11 < Formula
   desc "TOML for Modern C++"
   homepage "https://github.com/ToruNiina/toml11"
-  url "https://github.com/ToruNiina/toml11/archive/refs/tags/v3.8.1.tar.gz"
-  sha256 "6a3d20080ecca5ea42102c078d3415bef80920f6c4ea2258e87572876af77849"
+  url "https://github.com/ToruNiina/toml11/archive/refs/tags/v4.2.0.tar.gz"
+  sha256 "9287971cd4a1a3992ef37e7b95a3972d1ae56410e7f8e3f300727ab1d6c79c2c"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,7 @@ class Toml11 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "4503636fc24fc772d4f8f32907f0de27150901ad024eadc207290bb4fba1be86"
+    sha256 cellar: :any_skip_relocation, all: "84bfa4e70fe6d9776c51d72cde650db44fa61e1a930bc1256263d233e6689559"
   end
 
   depends_on "cmake" => :build
@@ -24,11 +24,11 @@ class Toml11 < Formula
   end
 
   test do
-    (testpath/"test.toml").write <<~EOS
+    (testpath/"test.toml").write <<~TOML
       test_str = "a test string"
-    EOS
+    TOML
 
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include "toml.hpp"
       #include <iostream>
 
@@ -38,7 +38,7 @@ class Toml11 < Formula
           std::cout << "test_str = " << test_str << std::endl;
           return 0;
       }
-    EOS
+    CPP
 
     system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", "-I#{include}"
     assert_equal "test_str = a test string\n", shell_output("./test")

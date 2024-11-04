@@ -1,20 +1,17 @@
 class Easyengine < Formula
   desc "Command-line control panel to manage WordPress sites"
   homepage "https://easyengine.io/"
-  url "https://github.com/EasyEngine/easyengine/releases/download/v4.6.6/easyengine.phar"
-  sha256 "4831c9bd224b1dca1cb40d1a519c3578d2c508cb55fb8464f3d1e5224aef5583"
+  url "https://github.com/EasyEngine/easyengine/releases/download/v4.7.5/easyengine.phar"
+  sha256 "917db51ea1accb1dda7ee9a558925e2a769754723d5a66cb5291ec29d97ebfb2"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e2312f368f0a628c919bd03158f6089c84dc7b8e6ff45997e401491f428c8840"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "082306fcc2974440b5d709e6d21b39c8f1f435ef7540c87826425fade1100c2c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "082306fcc2974440b5d709e6d21b39c8f1f435ef7540c87826425fade1100c2c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "082306fcc2974440b5d709e6d21b39c8f1f435ef7540c87826425fade1100c2c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "d93fc9c2c357998d3e9eec42c8a4ac09da9f3867952fac9355d4d97e40b0c549"
-    sha256 cellar: :any_skip_relocation, ventura:        "d2ab3a3af702e3c2ae9424cdf5deb6f991782db76d2d47b2046fe2f57cb45b8a"
-    sha256 cellar: :any_skip_relocation, monterey:       "d2ab3a3af702e3c2ae9424cdf5deb6f991782db76d2d47b2046fe2f57cb45b8a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d2ab3a3af702e3c2ae9424cdf5deb6f991782db76d2d47b2046fe2f57cb45b8a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "082306fcc2974440b5d709e6d21b39c8f1f435ef7540c87826425fade1100c2c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "44f663af02201672cfc783ae40a52689b30e986bbe1adec575e6b38adc5ec19f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "44f663af02201672cfc783ae40a52689b30e986bbe1adec575e6b38adc5ec19f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "44f663af02201672cfc783ae40a52689b30e986bbe1adec575e6b38adc5ec19f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "45605433322b11f53114776623fd1907f26112962cd75b98af760f575a298185"
+    sha256 cellar: :any_skip_relocation, ventura:       "45605433322b11f53114776623fd1907f26112962cd75b98af760f575a298185"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ce0c4704ffe272b25eb890cd9f93f06cc3c42f40294f0f4ed1e27d6d73c50e25"
   end
 
   depends_on "dnsmasq"

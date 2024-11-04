@@ -1,18 +1,22 @@
 class Wazero < Formula
   desc "Zero dependency WebAssembly runtime"
   homepage "https://wazero.io"
-  url "https://github.com/tetratelabs/wazero/archive/refs/tags/v1.6.0.tar.gz"
-  sha256 "10c79ae33c927f6e9003b054a7768b7bf20f1470b9984a62969428448cba3abf"
+  url "https://github.com/tetratelabs/wazero/archive/refs/tags/v1.8.1.tar.gz"
+  sha256 "228e2d5b19e9de83f583c723b54a00b7cd751db44a44ffb0964957326b10d7a0"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1d957b85035512488340e3d3f71dbd35b7f89044778815d504cce1d0b7f8891a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a269ea061ce6d047a78fa6a59fda006b75f8d4aaa79c10d640fd8facd7b31aca"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "756efe6b1bfdf37801a2ed2057e78dbb634e19cfa7b666ebfecc1d4b19531928"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e00e514342ec508bce1ade36cb8aa24ceff500f247f1aa46d47c637a56fd8e06"
-    sha256 cellar: :any_skip_relocation, ventura:        "24841a4a0d4f6b10ef1e5e57edac75acc8cf43d1f74914fcf8e9468d02baf2a1"
-    sha256 cellar: :any_skip_relocation, monterey:       "eefc8f2836feb5aa28ec5faf5b02ed325205c819e79c7de32d072d8cd1fd9041"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ff173fe459488cef0e99b47ed6f21e386334b4c8b355560afbbc3f57272b336a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e42061077c9c88ee8017d07ad49d77b02bc63d33be890ebb65cfcc6632252b79"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e42061077c9c88ee8017d07ad49d77b02bc63d33be890ebb65cfcc6632252b79"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e42061077c9c88ee8017d07ad49d77b02bc63d33be890ebb65cfcc6632252b79"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8cbfed9906f15f5a73ce09aba01946014539a6d19b379181f16359c47c79056c"
+    sha256 cellar: :any_skip_relocation, ventura:       "8cbfed9906f15f5a73ce09aba01946014539a6d19b379181f16359c47c79056c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c9358e7efc73332d64c9edf09acdea0a787befdc6141ce269f9261bdda96c07b"
   end
 
   depends_on "go" => :build
@@ -23,7 +27,7 @@ class Wazero < Formula
       -s -w
       -X github.com/tetratelabs/wazero/internal/version.version=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/wazero"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/wazero"
   end
 
   test do

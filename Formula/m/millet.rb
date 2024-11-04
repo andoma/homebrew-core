@@ -1,19 +1,18 @@
 class Millet < Formula
   desc "Language server for Standard ML (SML)"
   homepage "https://github.com/azdavis/millet"
-  url "https://github.com/azdavis/millet/archive/refs/tags/v0.14.3.tar.gz"
-  sha256 "072568064cd45e40820071f804effd3499704535e93581c5125cded329cba307"
+  url "https://github.com/azdavis/millet/archive/refs/tags/v0.14.7.tar.gz"
+  sha256 "5971d48101549ceeb2cdee4e3863c52821fd438c1e27a40dd8892220f447f4b6"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/azdavis/millet.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "801863f0b88a656c7a35c22a0f8cd39871b96fe1006677cd3bdb82a2f4dfd3b4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2748d87aaecd66e5c166d654e70eb2dab1c2307287e3e97b584dec115f2e814a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f84c0e76515019fb81520901d1ca462ac56d5f360537a8b41c257492906b4ea1"
-    sha256 cellar: :any_skip_relocation, sonoma:         "4edf330cf968827d88859ece30639958373dc06d92c6a4ca2a4012d5cf77cc48"
-    sha256 cellar: :any_skip_relocation, ventura:        "70c7babc7fd3f98bfaebcb15261b72eef6294283fa7356bf717ab226511d365e"
-    sha256 cellar: :any_skip_relocation, monterey:       "b2fecd02fad27d7aba9c0bd602fea6615c621419ff02122fd1167284250e1d6a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1a36a0683046334958d49b6b2b876c362adb2d638e5b3e537f4a70260863cb89"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6f28322be48cbcab756a89b808173b794070b574e7d1bee162848cb1e4155967"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "469d45f934becf09462d6f5a24970eab07b142ee95d591813870819f6d5ed985"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a81e0d2237392a1a8fa19f9cf0127eec2b119dfc266c836b74de7047202be89d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "183a1eaa2cca28c6e5ea44cdde478c691504dbbb4ca8f017f4cc670557984f42"
+    sha256 cellar: :any_skip_relocation, ventura:       "29169df7ccdaf3422f073d9a771c999eaa5fc0e2018ad867bfe3eac9e6793e4e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "96064a8f9bbfe20287b0c8e122f9df0dd67bb91f81dcea4e7e69c16345449885"
   end
 
   depends_on "rust" => :build
@@ -68,7 +67,7 @@ class Millet < Formula
       pipe.write(json_rpc_message.call(msg))
     }
 
-    IO.popen("#{bin}/millet-ls", "r+") do |pipe|
+    IO.popen(bin/"millet-ls", "r+") do |pipe|
       pipe.sync = true
 
       # send initialization request

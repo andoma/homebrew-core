@@ -1,8 +1,8 @@
 class Systemc < Formula
   desc "Core SystemC language and examples"
   homepage "https://accellera.org/"
-  url "https://github.com/accellera-official/systemc/archive/refs/tags/2.3.4.tar.gz"
-  sha256 "bfb309485a8ad35a08ee78827d1647a451ec5455767b25136e74522a6f41e0ea"
+  url "https://github.com/accellera-official/systemc/archive/refs/tags/3.0.1.tar.gz"
+  sha256 "d07765d0d2ffd6c01767880d0c6aaf53cd9487975f898c593ffffd713258fcbb"
   license "Apache-2.0"
 
   livecheck do
@@ -11,14 +11,12 @@ class Systemc < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "eb785658f39fe25281c632a1e51daab687a0705730170884c4e997173d6125c5"
-    sha256 cellar: :any,                 arm64_ventura:  "989d49220f52b3987baba507e649a30b4db40c1a8e9c55aef2678b47eb1672c0"
-    sha256 cellar: :any,                 arm64_monterey: "689cae280d1d412ecf168b3b731b11433ad6dcbaa24b019d4949858922adf4f2"
-    sha256 cellar: :any,                 sonoma:         "f352320837fc33c56ce5532f353192b2837b384ea9579f98553efc1757aebdc9"
-    sha256 cellar: :any,                 ventura:        "c548bd356b7239e94e1a90fbbd4827dd344837e5326a0730d0f0b7fffe6f824e"
-    sha256 cellar: :any,                 monterey:       "79ff38f4d5e532c70f095dee78f582b7d26c99ef220eecf358c7378ae925b249"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f39ae4a52ab5bef51937c31c5237c3040438d889eb0ccda412cd259b38debd8"
+    sha256 cellar: :any,                 arm64_sequoia: "441b9e5eeeb6d385c2cfcf2c6500d24c42b67d3bd4ed37b3d8eff2499b71f061"
+    sha256 cellar: :any,                 arm64_sonoma:  "3a0cde321c4507f2167a85f007b41f746428892da203926ec36349bd3772b32e"
+    sha256 cellar: :any,                 arm64_ventura: "0318c7fe56225d68c28f70aced8caf7e29481bd54b143abd2e8c1979e6046a9c"
+    sha256 cellar: :any,                 sonoma:        "cce974365677a77f35b9e9210c458fc3983c24bd2f71607cac18acd43d718491"
+    sha256 cellar: :any,                 ventura:       "dba48d318338030082a310813e68f3708029a7fb9a69a323bc18355db12b5cbf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6db51dd6f15d86564a1d9a5758497d514b1328222c0635fa9b20ccc86b0a9716"
   end
 
   depends_on "cmake" => :build

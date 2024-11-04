@@ -2,23 +2,22 @@ class Cbmc < Formula
   desc "C Bounded Model Checker"
   homepage "https://www.cprover.org/cbmc/"
   url "https://github.com/diffblue/cbmc.git",
-      tag:      "cbmc-5.95.1",
-      revision: "731338d5d82ac86fc447015e0bd24cdf7a74c442"
+      tag:      "cbmc-6.3.1",
+      revision: "d2b4455a109383562735cfb8b52ed8a6d2b6e197"
   license "BSD-4-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4a93a74b6ceacd62465a7c0c27a8451c775e8a69923a2b9388aaa0a51257b249"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c625b851133a25efc6d180cee609e29eaf85984f831f97034906487fa6c937ee"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "512b4480b1068442f73548499c5ba0f58c3db012dffda2a72a7f3a3ac57f83d9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ba108b3ea344f31e8a5b78080be1987f9bc19af1abaf1818d5ae5fa82f912e58"
-    sha256 cellar: :any_skip_relocation, ventura:        "bc1e610ac17d864e3a400638bed661252ac2f027bb7b29e25950ee10571dcee0"
-    sha256 cellar: :any_skip_relocation, monterey:       "2a2ca2db14350b20b4eaa012eda5cc147abc6f6253833bd030a202658ffea7bb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "635f7f7b776288dbec70f66b3665393a5fe03e5ea8bf0ddeb372dfff25f1d6f2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1e50e314bf1f1ddaa9253d40c4dc70f3770232308dcab4295337661437b1460f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "133d3d72f113fcb12292e08a39d2449f16fb4510567e52d35e384142fe659db5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c06dea047e5c78eb95354b17dcc40cc59abcf9db38680d9ead760202501540cf"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c45b99b6975d0f2fa78b5aed64751e58f12367aaa91edd06b34b86782b3b5c10"
+    sha256 cellar: :any_skip_relocation, ventura:       "de04d1c43dc85344c103d79b1f7d143593122d86793b759328d57160b5d8a30b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bdcfa01760c11979adb3ee153bd3dd67ea2df230e171ced004473999b05ce936"
   end
 
   depends_on "cmake" => :build
   depends_on "maven" => :build
-  depends_on "openjdk" => :build
+  depends_on "openjdk@21" => :build
   depends_on "rust" => :build
 
   uses_from_macos "bison" => :build
@@ -27,6 +26,11 @@ class Cbmc < Formula
   fails_with gcc: "5"
 
   def install
+    # Fixes: *** No rule to make target 'bin/goto-gcc',
+    # needed by '/tmp/cbmc-20240525-215493-ru4krx/regression/goto-gcc/archives/libour_archive.a'.  Stop.
+    ENV.deparallelize
+    ENV["JAVA_HOME"] = Formula["openjdk@21"].opt_prefix
+
     system "cmake", "-S", ".", "-B", "build", "-Dsat_impl=minisat2;cadical", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
@@ -37,13 +41,13 @@ class Cbmc < Formula
 
   test do
     # Find a pointer out of bounds error
-    (testpath/"main.c").write <<~EOS
+    (testpath/"main.c").write <<~C
       #include <stdlib.h>
       int main() {
         char *ptr = malloc(10);
         char c = ptr[10];
       }
-    EOS
+    C
     assert_match "VERIFICATION FAILED",
                  shell_output("#{bin}/cbmc --pointer-check main.c", 10)
   end

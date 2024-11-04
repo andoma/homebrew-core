@@ -1,9 +1,9 @@
 class TomcatAT9 < Formula
   desc "Implementation of Java Servlet and JavaServer Pages"
   homepage "https://tomcat.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=tomcat/tomcat-9/v9.0.86/bin/apache-tomcat-9.0.86.tar.gz"
-  mirror "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.86/bin/apache-tomcat-9.0.86.tar.gz"
-  sha256 "24c493727d8a5e4aa83ff65a952834c7f828c478c5adbe88d0bfd15e9883999a"
+  url "https://www.apache.org/dyn/closer.lua?path=tomcat/tomcat-9/v9.0.96/bin/apache-tomcat-9.0.96.tar.gz"
+  mirror "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.96/bin/apache-tomcat-9.0.96.tar.gz"
+  sha256 "bf4ad04955457ad663157876461015437a7479546aec9a38840d736b3d70151f"
   license "Apache-2.0"
 
   livecheck do
@@ -11,7 +11,7 @@ class TomcatAT9 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "5d6a909bb48203c5a2a73c339cbf732d06adc355f55ef1a3ec3f4c75417bdfac"
+    sha256 cellar: :any_skip_relocation, all: "6e82f6709d51e9a8d9ccceca2f6b70c286597058b1c8ce038fa6bc0c247c7fa4"
   end
 
   keg_only :versioned_formula
@@ -20,7 +20,7 @@ class TomcatAT9 < Formula
 
   def install
     # Remove Windows scripts
-    rm_rf Dir["bin/*.bat"]
+    rm_r(Dir["bin/*.bat"])
 
     # Install files
     prefix.install %w[NOTICE LICENSE RELEASE-NOTES RUNNING.txt]

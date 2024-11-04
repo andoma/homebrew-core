@@ -1,8 +1,8 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-6.1.1.tar.xz"
-  sha256 "8684f4b00f94b85461884c3719382f1261f0d9eb3d59640a1f4ac0873616f968"
+  url "https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz"
+  sha256 "40973d44970dbc83ef302b0609f2e74982be2d85916dd2ee7472d30678a7abe6"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
@@ -15,13 +15,12 @@ class Ffmpeg < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "56f1280cb31c1958cb015d4fc8e9e813a6e4ef1bf3356e21e675758af157a96f"
-    sha256 arm64_ventura:  "ac8c0cd2a6c230f43ccae2b10471161ccafc4d1779dd237b7fb8d1b480c7e914"
-    sha256 arm64_monterey: "c3b81f61e2c7618c208c047253f1f866a403dea0dc3373f5454b600509fdd4c9"
-    sha256 sonoma:         "38af3c855780f2597f5532cce028da9165b633d707fc9aa415bf843b94ce4023"
-    sha256 ventura:        "b909984563e9089391c675937edea33f0099935b55477763065b17ab5b3c6075"
-    sha256 monterey:       "3b5705fb8736151c8c18a74d6cc55333629c83ea138b3428113a24827e427ce2"
-    sha256 x86_64_linux:   "f83ead85e924d8680b43df44a7b826abd13944ccfb09e5beda6d9a053b44a7ca"
+    sha256 arm64_sequoia: "c96ab5cd19aa5b31eef4b8ffeeaca8d73fa22056fa69d15b81174561c8c2e316"
+    sha256 arm64_sonoma:  "83c29276528929abf4eb48d5d14248a1a9cf773675261732df12933a472ac89b"
+    sha256 arm64_ventura: "5006a6b45280faaa8107faa266fe70381507d1ab17b5b9ddb723d7fe4f265df5"
+    sha256 sonoma:        "157f5eebd4da29f998197c8319b76777a044c4a762bb6a65d852977355cc14bb"
+    sha256 ventura:       "66d7b586260df1b33f54221ac5223525d95701c3f9c8dcd7a51ea315e9bfe14f"
+    sha256 x86_64_linux:  "d3a29d2c867df86335af5f7d3643c830782d8323bbe45cc2c9a067caef651136"
   end
 
   depends_on "pkg-config" => :build
@@ -44,9 +43,10 @@ class Ffmpeg < Formula
   depends_on "libvmaf"
   depends_on "libvorbis"
   depends_on "libvpx"
+  depends_on "libx11"
+  depends_on "libxcb"
   depends_on "opencore-amr"
   depends_on "openjpeg"
-  depends_on "openvino"
   depends_on "opus"
   depends_on "rav1e"
   depends_on "rubberband"
@@ -69,8 +69,15 @@ class Ffmpeg < Formula
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "libarchive"
+    depends_on "libogg"
+    depends_on "libsamplerate"
+  end
+
   on_linux do
     depends_on "alsa-lib"
+    depends_on "libxext"
     depends_on "libxv"
   end
 
@@ -136,7 +143,6 @@ class Ffmpeg < Formula
       --enable-libopencore-amrnb
       --enable-libopencore-amrwb
       --enable-libopenjpeg
-      --enable-libopenvino
       --enable-libspeex
       --enable-libsoxr
       --enable-libzmq
@@ -154,10 +160,8 @@ class Ffmpeg < Formula
 
     # Build and install additional FFmpeg tools
     system "make", "alltools"
-    bin.install Dir["tools/*"].select { |f| File.executable? f }
-
-    # Fix for Non-executables that were installed to bin/
-    mv bin/"python", pkgshare/"python", force: true
+    bin.install (buildpath/"tools").children.select { |f| f.file? && f.executable? }
+    pkgshare.install buildpath/"tools/python"
   end
 
   test do

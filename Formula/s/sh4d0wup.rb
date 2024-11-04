@@ -1,30 +1,46 @@
 class Sh4d0wup < Formula
   desc "Signing-key abuse and update exploitation framework"
   homepage "https://github.com/kpcyrd/sh4d0wup"
-  url "https://github.com/kpcyrd/sh4d0wup/archive/refs/tags/v0.9.1.tar.gz"
-  sha256 "5f74ad2cfc4babf0a718003e9940892250715f413efa321e0c53aedaed568f65"
+  url "https://github.com/kpcyrd/sh4d0wup/archive/refs/tags/v0.9.3.tar.gz"
+  sha256 "7a1258a5dfc48c54cea1092adddb6bcfb1fcf19c7272c0a6a9e1d2d7daee6e12"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "13ff5c3264c8f0f0aa7346187878c106cf0cfdeb22a71073bfe9f079a1d34b5b"
-    sha256 cellar: :any,                 arm64_monterey: "ead75ff629bb3cb07de41b95217f339197ae801d30c01ba15b5e62f20a3043e0"
-    sha256 cellar: :any,                 arm64_big_sur:  "2f5a4688a8812b7ba813e5e1cd6dbf78047aa343b9f6cf45fe56eef2035a8402"
-    sha256 cellar: :any,                 ventura:        "faeb7450ab29de66331ad4959b09db604d48655431e190a32f90dd0eb4a7e563"
-    sha256 cellar: :any,                 monterey:       "93750a112ed06d0cdf94e57ae34a252bf328af8e51263e3ae5ecd6232ff32dc0"
-    sha256 cellar: :any,                 big_sur:        "df3e6dc8f5fdbc83c8da9a7acc11b59b21db5bfadc6d82b5413c2a787c20951b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6ce00ce216375ef4eef7f499ff6d0ea0639923dd3e46df43d5e661c86e2ac80"
+    sha256 cellar: :any,                 arm64_sequoia:  "d271b4e7d8e501547f5f005334678566e0ef29ddea9ace526c46a1fba236e461"
+    sha256 cellar: :any,                 arm64_sonoma:   "6400ac5b11c6bd5e7a057940a73a05824cbe3546ca57f7760f66862975d4dffe"
+    sha256 cellar: :any,                 arm64_ventura:  "9b734ee54116c4288b832c79d3e722c057570e39129ba54163242a74bc0a089d"
+    sha256 cellar: :any,                 arm64_monterey: "3ab07c4272e04dd6625f1c5071f903e3f98334e0055adbb32170df5ae307c565"
+    sha256 cellar: :any,                 sonoma:         "cbb5c0144089d7ade097def6c84e0787a4df4ab567fa9fb4e63ace6e98d6af4d"
+    sha256 cellar: :any,                 ventura:        "6d5f820f18c6fd2c8aace97b28279b6ee73c2a972d62b1a9457beff582b52acb"
+    sha256 cellar: :any,                 monterey:       "0d0abae2ec6ca3d4db3920e3d6b9263100a3092abaea545daefca656d1ef29c3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "35560cb4308848c78775629660947cb2a49dc473fc605797ea0132458ec058ee"
   end
 
-  depends_on "llvm" => :build # for libclang
+  depends_on "llvm" => :build
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
   depends_on "pgpdump" => :test
+
+  depends_on "gmp"
   depends_on "nettle"
   depends_on "openssl@3"
   depends_on "pcsc-lite"
+  depends_on "xz"
   depends_on "zstd"
 
+  uses_from_macos "bzip2"
+
+  # rust 1.80 build patch, upstream pr ref, https://github.com/kpcyrd/sh4d0wup/pull/32
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/31f5e08b1c7df4025d7042dafe756e5326151158/sh4d0wup/rust-1.80.patch"
+    sha256 "24f3fc3919ead47c6e38c68a55d8fed0370cfddd92738519de4bd41e4da71e93"
+  end
+
   def install
+    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
+    # libunwind due to it being present in a library search path.
+    ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib if DevelopmentTools.clang_build_version >= 15
+
     # Ensure that the `openssl` crate picks up the intended library.
     ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
     ENV["OPENSSL_NO_VENDOR"] = "1"

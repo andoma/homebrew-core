@@ -6,24 +6,28 @@ class Twtxt < Formula
   url "https://files.pythonhosted.org/packages/fc/4c/cff74642212dbca8d4d9059119555cd335324b3da0b52990a414a0257756/twtxt-1.3.1.tar.gz"
   sha256 "f15e580f8016071448b24048402b939b9e8dec07eabacd84b1f2878d751b71ff"
   license "MIT"
-  revision 2
+  revision 4
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "11099e31eda64bfbbffe9d641c99ba61b0a4d0c64e35208a746f522903bc9c67"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "99686846cccb2bcaab43e8d511480642d94f381a0ea1ccaa8f245e8970196f35"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "48f19af25e4f32a6601e7af4b97225984bbe3e945b89e9fec31d20c0b7e27dcc"
-    sha256 cellar: :any_skip_relocation, sonoma:         "f2f15efa1646b457a653ea1fcd0d49ee7802104ef2cb8a4aededddd8d5e7a7e5"
-    sha256 cellar: :any_skip_relocation, ventura:        "57dab2134cb30bb3ba6b1e77f8e3a99647b283de019d763fa8acad8173f9bab7"
-    sha256 cellar: :any_skip_relocation, monterey:       "9bf64b27b4cb772a4b8d84058d4f766c05f0d1a108215d6e75b104f6f97d7a29"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c08642d6c760fb99b05644dd848e79c0dfcf3427e84662e92aced0ea86f43871"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d4f590cb712a3df1920c24f4eab27a5775e01702bef740e6cd3dbf5d3596eaa4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8202e4442858187e3e78a0ead54890f0f6e8c681f8d1e91cbe9aeb65d115b2c8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "6d3f2b6c60aec97df3908b7b48ce711188ca04623d126153a720577a20087cdf"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a4bf94444aa2abc531ca49e18f5ad989d88bdaab09b16b40f73922ad85ff0933"
+    sha256 cellar: :any_skip_relocation, ventura:       "bd61d7a65299a58049997b26c0c1850c755bc8038522553db783d7b0789a3a39"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c620715d8bf674f13d752dc56fef8dbfe5db2d51ed51012fe289917772c72a1c"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
+
+  resource "aiohappyeyeballs" do
+    url "https://files.pythonhosted.org/packages/bc/69/2f6d5a019bd02e920a3417689a89887b39ad1e350b562f9955693d900c40/aiohappyeyeballs-2.4.3.tar.gz"
+    sha256 "75cf88a15106a5002a8eb1dab212525c00d1f4c0fa96e551c9fbe6f09a621586"
+  end
 
   resource "aiohttp" do
-    url "https://files.pythonhosted.org/packages/18/93/1f005bbe044471a0444a82cdd7356f5120b9cf94fe2c50c0cdbf28f1258b/aiohttp-3.9.3.tar.gz"
-    sha256 "90842933e5d1ff760fae6caca4b2b3edba53ba8f4b71e95dacf2818a2aca06f7"
+    url "https://files.pythonhosted.org/packages/17/7e/16e57e6cf20eb62481a2f9ce8674328407187950ccc602ad07c685279141/aiohttp-3.10.10.tar.gz"
+    sha256 "0631dd7c9f0822cc61c88586ca76d5b5ada26538097d0f1df510b082bad3411a"
   end
 
   resource "aiosignal" do
@@ -32,8 +36,8 @@ class Twtxt < Formula
   end
 
   resource "attrs" do
-    url "https://files.pythonhosted.org/packages/e3/fc/f800d51204003fa8ae392c4e8278f256206e7a919b708eef054f5f4b650d/attrs-23.2.0.tar.gz"
-    sha256 "935dc3b529c262f6cf76e50877d35a4bd3c1de194fd41f47a2b7ae8f19971f30"
+    url "https://files.pythonhosted.org/packages/fc/0f/aafca9af9315aee06a89ffde799a10a582fe8de76c563ee80bbcdc08b3fb/attrs-24.2.0.tar.gz"
+    sha256 "5cfb1b9148b5b086569baec03f20d7b6bf3bcacc9a42bebf87ffaaca362f6346"
   end
 
   resource "click" do
@@ -47,28 +51,28 @@ class Twtxt < Formula
   end
 
   resource "humanize" do
-    url "https://files.pythonhosted.org/packages/76/21/7a0b24fae849562397efd79da58e62437243ae0fd0f6c09c6bc26225b75c/humanize-4.9.0.tar.gz"
-    sha256 "582a265c931c683a7e9b8ed9559089dea7edcf6cc95be39a3cbc2c5d5ac2bcfa"
+    url "https://files.pythonhosted.org/packages/6a/40/64a912b9330786df25e58127194d4a5a7441f818b400b155e748a270f924/humanize-4.11.0.tar.gz"
+    sha256 "e66f36020a2d5a974c504bd2555cf770621dbdbb6d82f94a6857c0b1ea2608be"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
-    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "multidict" do
-    url "https://files.pythonhosted.org/packages/4a/15/bd620f7a6eb9aa5112c4ef93e7031bcd071e0611763d8e17706ef8ba65e0/multidict-6.0.4.tar.gz"
-    sha256 "3666906492efb76453c0e7b97f2cf459b0682e7402c0489a95484965dbc1da49"
+    url "https://files.pythonhosted.org/packages/d6/be/504b89a5e9ca731cd47487e91c469064f8ae5af93b7259758dcfc2b9c848/multidict-6.1.0.tar.gz"
+    sha256 "22ae2ebf9b0c69d206c003e2f6a914ea33f0a932d4aa16f236afc049d9958f4a"
+  end
+
+  resource "propcache" do
+    url "https://files.pythonhosted.org/packages/a9/4d/5e5a60b78dbc1d464f8a7bbaeb30957257afdc8512cbb9dfd5659304f5cd/propcache-0.2.0.tar.gz"
+    sha256 "df81779732feb9d01e5d513fad0122efb3d53bbc75f61b2a4f29a020bc985e70"
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
-  end
-
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/c9/3d/74c56f1c9efd7353807f8f5fa22adccdba99dc72f34311c30a69627a0fad/setuptools-69.1.0.tar.gz"
-    sha256 "850894c4195f09c4ed30dba56213bf7c3f21d86ed6bdaafb5df5972593bfc401"
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
   end
 
   resource "six" do
@@ -77,8 +81,14 @@ class Twtxt < Formula
   end
 
   resource "yarl" do
-    url "https://files.pythonhosted.org/packages/e0/ad/bedcdccbcbf91363fd425a948994f3340924145c2bc8ccb296f4a1e52c28/yarl-1.9.4.tar.gz"
-    sha256 "566db86717cf8080b99b58b083b773a908ae40f06681e87e589a976faf8246bf"
+    url "https://files.pythonhosted.org/packages/46/fe/2ca2e5ef45952f3e8adb95659821a4e9169d8bbafab97eb662602ee12834/yarl-1.14.0.tar.gz"
+    sha256 "88c7d9d58aab0724b979ab5617330acb1c7030b79379c8138c1c8c94e121d1b3"
+  end
+
+  # Drop setuptools dep: https://github.com/buckket/twtxt/pull/178
+  patch do
+    url "https://github.com/buckket/twtxt/commit/12bdd3670bff339fd27a7cd71c8ec64086b4ae5b.patch?full_index=1"
+    sha256 "e206e7d18040d2b6c0d93ef2d7e4770c3e24448621bc6b5e0f206e193c6298ad"
   end
 
   def install

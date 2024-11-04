@@ -21,7 +21,18 @@ class Gerbv < Formula
   depends_on "gettext" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
+
+  depends_on "cairo"
+  depends_on "gdk-pixbuf"
+  depends_on "glib"
   depends_on "gtk+" # GTK3/GTK4 issue: https://github.com/gerbv/gerbv/issues/71
+
+  on_macos do
+    depends_on "at-spi2-core"
+    depends_on "gettext"
+    depends_on "harfbuzz"
+    depends_on "pango"
+  end
 
   def install
     ENV.append "CPPFLAGS", "-DQUARTZ" if OS.mac?
@@ -43,16 +54,16 @@ class Gerbv < Formula
 
   test do
     # executable (GUI) test
-    system "#{bin}/gerbv", "--version"
+    system bin/"gerbv", "--version"
     # API test
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <gerbv.h>
 
       int main(int argc, char *argv[]) {
         double d = gerbv_get_tool_diameter(2);
         return 0;
       }
-    EOS
+    C
     atk = Formula["atk"]
     cairo = Formula["cairo"]
     fontconfig = Formula["fontconfig"]

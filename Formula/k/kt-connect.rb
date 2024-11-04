@@ -20,14 +20,14 @@ class KtConnect < Formula
   end
 
   # upstream go1.20 support report, https://github.com/alibaba/kt-connect/issues/398
-  deprecate! date: "2023-08-20", because: :unmaintained
+  disable! date: "2024-08-24", because: :unmaintained
 
   # https://github.com/alibaba/kt-connect/issues/398
   depends_on "go@1.19" => :build
 
   def install
     ldflags = "-s -w -X main.version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags, output: bin/"ktctl"), "./cmd/ktctl"
+    system "go", "build", *std_go_args(ldflags:, output: bin/"ktctl"), "./cmd/ktctl"
 
     generate_completions_from_executable(bin/"ktctl", "completion", base_name: "ktctl")
   end

@@ -2,18 +2,17 @@ class Argo < Formula
   desc "Get stuff done with container-native workflows for Kubernetes"
   homepage "https://argoproj.io"
   url "https://github.com/argoproj/argo-workflows.git",
-      tag:      "v3.5.4",
-      revision: "960af331a8c0a3f2e263c8b90f1daf4303816ba8"
+      tag:      "v3.5.12",
+      revision: "8fe8de2e16ec39a5477df17586a3d212ec63a4bd"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "17fc0d0c48dea3a309fcb91f8af61fc948c50fe318994a1e239b937b85d90a31"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "044e6fda003d8a153972c6624570459f134647f0d0d6239600afee37d0a91d54"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "212f24b464949816bba8a25a369fceb30aa7d19f6c17070f7f459b73d5ce0b0c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "424aaf69294b731718ff2e82d56c2493fddde06a19385e2c17fee7d9e6155845"
-    sha256 cellar: :any_skip_relocation, ventura:        "b71b308216ea2181747d3ff334776bb67a2501432e560541347bed236ecab3e0"
-    sha256 cellar: :any_skip_relocation, monterey:       "6f662bf07c814ad62850a2ccec5e9f9e93dc7925c85f92b68b6380496f64e6c9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ce268696e79e925826c43c28c5dd50e8b026fbc5b938ee48e23fe8fcdc4db6ac"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "14cf8c0aa5509140bf337acbdcaf04a2369dd89ff9f820e86cf36abfb18c467a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8fb431233f0d858b2f62e67d6c67285808d25fcae7002467d38968740265aa30"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2cfcbe3ccb3edbf04e06a448d292e9439a66891c20703354a00c0f1a2ebd8ff6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4c6a7c4eb22147511e02ffb080193ad3e8d2cce451fd3e3c0b6700b8e69a9670"
+    sha256 cellar: :any_skip_relocation, ventura:       "0436ee08f82cfe503aea8e1c7e2e4a8afaef32651ac0b853e97b458b31eaf1ae"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6eb83572c88fe05671446888b4374dffd40574e150a28c712dc254ef7b3c98b5"
   end
 
   depends_on "go" => :build

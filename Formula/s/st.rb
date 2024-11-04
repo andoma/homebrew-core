@@ -13,6 +13,7 @@ class St < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a3d3897d2bddfdd53f91432d4c120f008714cca367ffd2d2eae56fa9fb323873"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1d70d18294a3082b4989f85232bbef32f80369c3cb93465fba6773efa17d3d8e"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "f20438559cde61b3e7c973fa7aaa300782095b1134853eb8b1c6a61f0222723d"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "f20438559cde61b3e7c973fa7aaa300782095b1134853eb8b1c6a61f0222723d"
@@ -25,6 +26,8 @@ class St < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "a405a6128674652c728e7af64d751388b6ecea693d780efc2ebcfa62ec8e0f6a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9bd7167b97a64e85a91f23a1b3597d7c65e4819d8c23993bd78a071c16376ca6"
   end
+
+  conflicts_with "schemathesis", because: "both install `st` binaries"
 
   def install
     ENV.prepend_create_path "PERL5LIB", lib/"perl5/"

@@ -2,18 +2,19 @@ class ArgocdVaultPlugin < Formula
   desc "Argo CD plugin to retrieve secrets from Secret Management tools"
   homepage "https://argocd-vault-plugin.readthedocs.io"
   url "https://github.com/argoproj-labs/argocd-vault-plugin.git",
-      tag:      "v1.17.0",
-      revision: "b393c7afa63a43197c084a99959a78d0d26e5e74"
+      tag:      "v1.18.1",
+      revision: "fc452cdd8d4727b412ce3de61ee0416efd75050d"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "751d8825ad59355be8be07aa151a0636b51b3f36244c9dc4b43196924f481354"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "751d8825ad59355be8be07aa151a0636b51b3f36244c9dc4b43196924f481354"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "751d8825ad59355be8be07aa151a0636b51b3f36244c9dc4b43196924f481354"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e8a39a9ec1e919f7931e586ab7d17c09a5ef7dc252de0aa60d4e1aa87a368149"
-    sha256 cellar: :any_skip_relocation, ventura:        "e8a39a9ec1e919f7931e586ab7d17c09a5ef7dc252de0aa60d4e1aa87a368149"
-    sha256 cellar: :any_skip_relocation, monterey:       "e8a39a9ec1e919f7931e586ab7d17c09a5ef7dc252de0aa60d4e1aa87a368149"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "75ec9163c119d670352008b558f1c6d96d651dcc804bad145f068021751ee70d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "16c6f66c3a9728fb32b1098e4ac611c9e7f85d3da8fd59c464ec6662d8f472a7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e7dcbaa4f8fea11cbc2bff01602fe23caece755107e78213214a490423315938"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e7dcbaa4f8fea11cbc2bff01602fe23caece755107e78213214a490423315938"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e7dcbaa4f8fea11cbc2bff01602fe23caece755107e78213214a490423315938"
+    sha256 cellar: :any_skip_relocation, sonoma:         "e5b3dae256fd58870d8257ad93bb990e01c59847de737cf6e11328568c07a518"
+    sha256 cellar: :any_skip_relocation, ventura:        "e5b3dae256fd58870d8257ad93bb990e01c59847de737cf6e11328568c07a518"
+    sha256 cellar: :any_skip_relocation, monterey:       "e5b3dae256fd58870d8257ad93bb990e01c59847de737cf6e11328568c07a518"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dea50d0a56408e8c396cb0bfc6534f025bc2e8acefb125f59a32a0fecc9eee89"
   end
 
   depends_on "go" => :build
@@ -28,7 +29,7 @@ class ArgocdVaultPlugin < Formula
       -X github.com/argoproj-labs/argocd-vault-plugin/version.CommitSHA=#{Utils.git_head}
     ]
 
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"argocd-vault-plugin", "completion")
   end

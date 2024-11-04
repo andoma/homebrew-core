@@ -4,38 +4,41 @@ class AzureStorageCpp < Formula
   url "https://github.com/Azure/azure-storage-cpp/archive/refs/tags/v7.5.0.tar.gz"
   sha256 "446a821d115949f6511b7eb01e6a0e4f014b17bfeba0f3dc33a51750a9d5eca5"
   license "Apache-2.0"
-  revision 8
+  revision 10
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "301f9864ac4d274fea2f67679ded8c0a9f4ddf8cab26eb94c9733923ae19af3e"
-    sha256 cellar: :any,                 arm64_ventura:  "1fb69b507f673e6044199b6947d275517f867a476d3f2e1f4beea0298489b7f3"
-    sha256 cellar: :any,                 arm64_monterey: "037c261fc9350737b6e614d34c9c7afc9afea7a9a31493148eda8e6a29099e09"
-    sha256 cellar: :any,                 sonoma:         "810e5a5e3cfc8b13989bba7c792b6ec9625f82c06ac7e34b9794a97819ef2a1b"
-    sha256 cellar: :any,                 ventura:        "f008fdef4dad1e636b2888f88cf3fbaaed5381caa3c6b415da06bb4e4334cd4f"
-    sha256 cellar: :any,                 monterey:       "b29137dc6b6792c4e7c8a8d075e02010fac775a85cdd7129df1a53d7881e480b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b86271a4086bec9af65ffb841a9f0e4d2ceebba5852903306cf6109cf1c1935f"
+    sha256 cellar: :any,                 arm64_sequoia:  "715929b7bf9be66a120d8daaadef336fc4e69cc10b98bf57b1db566ed74c43ae"
+    sha256 cellar: :any,                 arm64_sonoma:   "88c8ce8dd3036ecb8d825e45e4f540d3f85812a5551adbdff2f3e633a14971b2"
+    sha256 cellar: :any,                 arm64_ventura:  "0980769654725aabfdaaf9fd7f5141bc3a80d283bd2926dd44271a96153b43ab"
+    sha256 cellar: :any,                 arm64_monterey: "3c46568d7f4eb00aae073edb010631672d09ddf104aa58575d6e04717238d349"
+    sha256 cellar: :any,                 sonoma:         "e84fce7243f0ec1b8d896c2534046348d28c50a67f44f37291a7e583f62025a6"
+    sha256 cellar: :any,                 ventura:        "85412de563c1d2c57cd1dadf6ecc66eb18d3e0f051d5331771e7d593d144f169"
+    sha256 cellar: :any,                 monterey:       "f5114b4ae18ac1ea2b3ee3c1a24618d910583b83dd848ff059414ecdff91aff9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b3c89ec4ddedce0b55bbf1f97de363abf7e2778b39a4363284a642f6215f116c"
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on "cpprestsdk"
-  depends_on "gettext"
   depends_on "openssl@3"
+
+  uses_from_macos "libxml2"
 
   on_linux do
     depends_on "util-linux"
   end
 
   def install
-    system "cmake", "Microsoft.WindowsAzure.Storage",
+    system "cmake", "-S", "Microsoft.WindowsAzure.Storage", "-B", "build",
                     "-DBUILD_SAMPLES=OFF",
                     "-DBUILD_TESTS=OFF",
                     *std_cmake_args
-    system "make", "install"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <was/common.h>
       #include <was/storage_account.h>
       using namespace azure;
@@ -47,7 +50,7 @@ class AzureStorageCpp < Formula
         }
         catch(...){ return 1; }
       }
-    EOS
+    CPP
     flags = ["-std=c++11", "-I#{include}",
              "-I#{Formula["boost"].include}",
              "-I#{Formula["openssl@3"].include}",

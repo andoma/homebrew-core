@@ -1,21 +1,21 @@
 class Spdlog < Formula
   desc "Super fast C++ logging library"
   homepage "https://github.com/gabime/spdlog"
-  url "https://github.com/gabime/spdlog/archive/refs/tags/v1.12.0.tar.gz"
-  sha256 "4dccf2d10f410c1e2feaff89966bfc49a1abb29ef6f08246335b110e001e09a9"
+  url "https://github.com/gabime/spdlog/archive/refs/tags/v1.14.1.tar.gz"
+  sha256 "1586508029a7d0670dfcb2d97575dcdc242d3868a259742b69f100801ab4e16b"
   license "MIT"
+  revision 1
   head "https://github.com/gabime/spdlog.git", branch: "v1.x"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "65a9e01ffa151f110a87beca645ecd09aeaa6c4f9be28545fd46724c85bc07d9"
-    sha256 cellar: :any,                 arm64_ventura:  "79c8ea7065e0350056c24504ffb9a3cee0591e931b51f88f051ef7c4661a491a"
-    sha256 cellar: :any,                 arm64_monterey: "4e7c54a1932489df9f033c6ff38265c9561c749ae70ea8cc5c34b5a58d6d7ba7"
-    sha256 cellar: :any,                 arm64_big_sur:  "a9be7e4e477200f9991fdf83fb40da314dd4fbedbd7dc4b6305f8951d9d49e57"
-    sha256 cellar: :any,                 sonoma:         "9f1d3dc3d86fa87bfe2e9fb77332451acfc5c64b74a7531533c81a77772e89ed"
-    sha256 cellar: :any,                 ventura:        "ef21f4e8f5977e10cca1ee2b747a40810fcaac67695e72f564df8bb6b1455938"
-    sha256 cellar: :any,                 monterey:       "9d58adf3aabf5788f74938cd445d0129e458dbe7a238c88741e634f31debff0c"
-    sha256 cellar: :any,                 big_sur:        "585a56f831fe23ca1f8137e6344a8469fe2f5e411c6a994615ff585be4574ee6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fa1ba7fb7b814469c81c5eae8a607da65a4e6725a90b610a658e24d26ca037e8"
+    sha256 cellar: :any,                 arm64_sequoia:  "294c2eacc174d2112dcb7d43a3b952c6051da94b1c835f61859d3673c97571ea"
+    sha256 cellar: :any,                 arm64_sonoma:   "94a51165d021eedd4262d15dad7c14c83f0f33eeda096d86ee762f08f831bbba"
+    sha256 cellar: :any,                 arm64_ventura:  "fa3a2b18afd9c0b6211a2315d253360a9ba5bcc3256303cc8ad6cce5ebd3586c"
+    sha256 cellar: :any,                 arm64_monterey: "d0c4e6684ca59fa4859bd412003c25847f9e377f1151404ce293d5aeb5d13980"
+    sha256 cellar: :any,                 sonoma:         "6ffe5ad092446c9c74b4a72e10b1f77daf4ea21d6fe5fa29cbeead408be37210"
+    sha256 cellar: :any,                 ventura:        "3186075434c83929ac6d41bfd2d48edd6bafa7e84c03600c6718f4c606068e47"
+    sha256 cellar: :any,                 monterey:       "044d54b7073502383bb0776f545dde9a98178ba4da6e40e7d2a62adf1e799ac5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "89a7b397614d329f87cdc031c3b6842e0526827f4a5b6de2ee4f06d369068766"
   end
 
   depends_on "cmake" => :build
@@ -36,6 +36,7 @@ class Spdlog < Formula
     args = std_cmake_args + %W[
       -Dpkg_config_libdir=#{lib}
       -DSPDLOG_BUILD_BENCH=OFF
+      -DSPDLOG_BUILD_EXAMPLE=OFF
       -DSPDLOG_BUILD_TESTS=OFF
       -DSPDLOG_FMT_EXTERNAL=ON
     ]

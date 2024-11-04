@@ -7,6 +7,7 @@ class KubeLinter < Formula
   head "https://github.com/stackrox/kube-linter.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c509bed9270c2d7e850af0bf01a929957680c04ffd2108a370c7fc8a22b81a67"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "051386ab60886bdf547bcbb69aa9c87f73e476f1fd47e653ea58f9275a4c87c7"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "051386ab60886bdf547bcbb69aa9c87f73e476f1fd47e653ea58f9275a4c87c7"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "051386ab60886bdf547bcbb69aa9c87f73e476f1fd47e653ea58f9275a4c87c7"
@@ -21,7 +22,7 @@ class KubeLinter < Formula
   def install
     ENV["CGO_ENABLED"] = "0"
     ldflags = "-s -w -X golang.stackrox.io/kube-linter/internal/version.version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/kube-linter"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/kube-linter"
 
     generate_completions_from_executable(bin/"kube-linter", "completion")
   end

@@ -9,6 +9,7 @@ class Cmt < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7c4312c62896766f5c5de69f30689cec1baea9b91154ed2f980e0d20265c66ae"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d945a981f841441e0acf9c519e4efddb1d75c143bc3e17fd54b672a67852f197"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "e470479ac38df0931dfbc279eb13d1534f8b9568c0ff07a26719721a8696c055"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "bd8742e482d7e247250d6fb0ea34acaedf547eb5f5436fa56aff4f62531fb25b"
@@ -21,6 +22,8 @@ class Cmt < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "ee763541c32889f0840a7c143972ba194eeafdbbbfa38008a8dd2e851f2382b8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b6a48e225aa97777da3fb586c4908417e8690d1b0346c7691122287b3848bddb"
   end
+
+  deprecate! date: "2024-04-05", because: :repo_archived
 
   depends_on "cabal-install" => :build
   depends_on "ghc" => :build

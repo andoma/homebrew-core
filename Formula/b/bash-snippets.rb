@@ -6,6 +6,8 @@ class BashSnippets < Formula
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4f7f21982073b861f41be1d1e33f8b3e8ee6148d86886e2d48d1a684182c36b7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "19f0ab97648f7c63aa1145c9486beccfe70408e1952513e544a111dae51a2fd8"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "8e38f6d39c157dcf604f1ac774a16afe66472de96ebf612a7f409689a7074282"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "8e38f6d39c157dcf604f1ac774a16afe66472de96ebf612a7f409689a7074282"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8e38f6d39c157dcf604f1ac774a16afe66472de96ebf612a7f409689a7074282"
@@ -19,6 +21,9 @@ class BashSnippets < Formula
   end
 
   conflicts_with "cheat", because: "both install a `cheat` executable"
+  conflicts_with "expect", because: "both install `weather` binaries"
+  conflicts_with "pwned", because: "both install `pwned` binaries"
+  conflicts_with "todoman", because: "both install `todo` binaries"
 
   def install
     system "./install.sh", "--prefix=#{prefix}", "all"

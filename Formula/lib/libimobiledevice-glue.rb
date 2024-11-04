@@ -1,19 +1,18 @@
 class LibimobiledeviceGlue < Formula
   desc "Library with common system API code for libimobiledevice projects"
   homepage "https://libimobiledevice.org/"
-  url "https://github.com/libimobiledevice/libimobiledevice-glue/releases/download/1.1.0/libimobiledevice-glue-1.1.0.tar.bz2"
-  sha256 "e7f93c1e6ceacf617ed78bdca92749d15a9dac72443ccb62eb59e4d606d87737"
+  url "https://github.com/libimobiledevice/libimobiledevice-glue/releases/download/1.3.1/libimobiledevice-glue-1.3.1.tar.bz2"
+  sha256 "6e2849f221e6ab970566a115d42f3c20f8848e4d40c2ed61ac20dc85f40fa54f"
   license "LGPL-2.1-or-later"
   head "https://github.com/libimobiledevice/libimobiledevice-glue.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "7b74bcad7552e908d4316003e45cc73c78044d731dba62f3b001f40071af929c"
-    sha256 cellar: :any,                 arm64_ventura:  "433268545b39dc520f40bea9a91008a1fffda62a07b89cd48c2428b687da25af"
-    sha256 cellar: :any,                 arm64_monterey: "6475e64862a87b0d00bc8802431a749500338ee6f9f29ae1bd8687cd6a0dc35a"
-    sha256 cellar: :any,                 sonoma:         "b0b2a8a38b9d914c104c9c3605bc6ea1a024691454fc516b235f61b1be020ec8"
-    sha256 cellar: :any,                 ventura:        "a2892bbecd5d4749d4033aa1b6cb32c3ead41501d3e78c30df0f0c52a43f69e2"
-    sha256 cellar: :any,                 monterey:       "908985a605303768e061d3b9a0459545f1507b75010f6d837683dfb42e50d07f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "099ed15275491d9cf7cf96a0f501c037af6bd1a393f7631def24d3c05275eb69"
+    sha256 cellar: :any,                 arm64_sequoia: "b64aec0201f725ffa387c7624dc8690ffafd802e01117dcdda3f335b349b99ce"
+    sha256 cellar: :any,                 arm64_sonoma:  "131bac1d6f7a2f4044b445e956ad7f5fa82d0e3a6b9a6a0230393d7f1c45c910"
+    sha256 cellar: :any,                 arm64_ventura: "a3d210d9d3d98e8919561754030ff00a6735275aefa65be7d0ece3b29a62164a"
+    sha256 cellar: :any,                 sonoma:        "393c65ff96685188dc9b646e1342379988af3494297052fb23c8f5e49aa5d8d7"
+    sha256 cellar: :any,                 ventura:       "a2022bc720c9aa8caf0c61d4bd9429be8ecc009ac1eaf4dcb5c0ece40be2e7b2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "91fd81b54b2c9d6eee333204b752b95aa05ac95779355a573a03bc12632e3daf"
   end
 
   depends_on "autoconf" => :build
@@ -32,14 +31,14 @@ class LibimobiledeviceGlue < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include "libimobiledevice-glue/utils.h"
 
       int main(int argc, char* argv[]) {
         char *uuid = generate_uuid();
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-limobiledevice-glue-1.0", "-o", "test"
     system "./test"
   end

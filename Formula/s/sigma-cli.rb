@@ -3,29 +3,30 @@ class SigmaCli < Formula
 
   desc "CLI based on pySigma"
   homepage "https://github.com/SigmaHQ/sigma-cli"
-  url "https://files.pythonhosted.org/packages/93/d9/1f9b9129b722fe4127b3749d427ec0f2e0966858e204743c068446b532f0/sigma_cli-1.0.1.tar.gz"
-  sha256 "a65dd949dd9812a4380332bacd6cf0c229647404fa31b766fae1596b6bf5e208"
+  url "https://files.pythonhosted.org/packages/70/e8/6a4e6aa2875494af43483a37c1715039d42a0ba54cb1353db5c3ebfded69/sigma_cli-1.0.4.tar.gz"
+  sha256 "30db40f7b6ea1cff8da5c03668ee37326fa371fa343129455741a6b8b68d81b2"
   license "LGPL-2.1-or-later"
   head "https://github.com/SigmaHQ/sigma-cli.git", branch: "main"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "b0d1bf55184f27d7260d279abd3a233570a705042d8dc26e250e769539a9c661"
-    sha256 cellar: :any,                 arm64_ventura:  "63145732aba087d02dbd5d70cb127a92477bf45f6a6b7eaa961042a7f02f1116"
-    sha256 cellar: :any,                 arm64_monterey: "5a3a35fd45142cca9514afd3b0ceb42d8b5ee0c48389b17f6be47947f835ff63"
-    sha256 cellar: :any,                 sonoma:         "5bec61ae0d5065ddf7842fdce8b2cedf8ddca6f144a13a688e0553fa3526c28c"
-    sha256 cellar: :any,                 ventura:        "4370fbaabc52b435c5aa71236bc5042e67726ddb5d0f779dc0b0b0c320e49aff"
-    sha256 cellar: :any,                 monterey:       "1d590893e3c00651a3cb2bc8176c3d10e684e95ffd97d7ab6ddd0e74672ea8af"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "46a330842148ed94606f922d6f6b4ea910b1f2662b67427c8decd1cc1628f309"
+    sha256 cellar: :any,                 arm64_sequoia: "e85d81944db241d8ab8e7c1cfd14e68f501d13f2980c9c0c38cac75bee9fdf9e"
+    sha256 cellar: :any,                 arm64_sonoma:  "c7f506585c2e8fd7ef33e3e0cf372d185e64725d4af627965c8f70a31c128368"
+    sha256 cellar: :any,                 arm64_ventura: "1ce2f22d39f1aeae70e408ec3bafdd420cfa517d7cc70c15fdf741040c6f7c80"
+    sha256 cellar: :any,                 sonoma:        "9d81f30515267b4ae2b4a5295bc176e8ce562228f2d73bc6458ecc59d7f8203f"
+    sha256 cellar: :any,                 ventura:       "d3cb323471d15418cb3feb3c979726598d0130d2caf9fc728a0cf470dac06dd3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dcc4edecab2c8758382e38ed3fd3ac6d0690f1448b8f09f2f63f053baf3b4ebe"
   end
 
+  depends_on "certifi"
   depends_on "libyaml"
-  depends_on "python-certifi"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
+
+  conflicts_with "open-simh", because: "both install `sigma` binaries"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
-    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "click" do
@@ -39,38 +40,38 @@ class SigmaCli < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
-    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/b2/5e/3a21abf3cd467d7876045335e681d276ac32492febe6d98ad89562d1a7e1/Jinja2-3.1.3.tar.gz"
-    sha256 "ac8bd6544d4bb2c9792bf3a159e80bba8fda7f07e81bc3aed565432d5925ba90"
+    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
+    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
   end
 
   resource "markupsafe" do
-    url "https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz"
-    sha256 "d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b"
+    url "https://files.pythonhosted.org/packages/b4/d2/38ff920762f2247c3af5cbbbbc40756f575d9692d381d7c520f45deb9b8f/markupsafe-3.0.1.tar.gz"
+    sha256 "3e683ee4f5d0fa2dde4db77ed8dd8a876686e3fc417655c2ece9a90576905344"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "prettytable" do
-    url "https://files.pythonhosted.org/packages/19/d3/7cb826e085a254888d8afb4ae3f8d43859b13149ac8450b221120d4964c9/prettytable-3.10.0.tar.gz"
-    sha256 "9665594d137fb08a1117518c25551e0ede1687197cf353a4fdc78d27e1073568"
+    url "https://files.pythonhosted.org/packages/28/57/0a642bec16d5736b9baaac7e830bedccd10341dc2858075c34d5aec5c8b6/prettytable-3.11.0.tar.gz"
+    sha256 "7e23ca1e68bbfd06ba8de98bf553bf3493264c96d5e8a615c0471025deeba722"
   end
 
   resource "pyparsing" do
-    url "https://files.pythonhosted.org/packages/37/fe/65c989f70bd630b589adfbbcd6ed238af22319e90f059946c26b4835e44b/pyparsing-3.1.1.tar.gz"
-    sha256 "ede28a1a32462f5a9705e07aea48001a08f7cf81a021585011deba701581a0db"
+    url "https://files.pythonhosted.org/packages/83/08/13f3bce01b2061f2bbd582c9df82723de943784cf719a35ac886c652043a/pyparsing-3.1.4.tar.gz"
+    sha256 "f86ec8d1a83f11977c9a6ea7598e8c27fc5cddfa5b07ea2241edbbde1d7bc032"
   end
 
   resource "pysigma" do
-    url "https://files.pythonhosted.org/packages/39/5b/0605372257fde328cba8d65c0030a2bc2a71bd2ad65fca57c03cc840b626/pysigma-0.11.3.tar.gz"
-    sha256 "ed68af1c4150fdd55d0bc1f228fb512088162530a0410f9239deca09ec06942b"
+    url "https://files.pythonhosted.org/packages/4c/aa/430bb16b481d321cd6a25ef0e132a95d34ec9b6352718c738799ef12f674/pysigma-0.11.14.tar.gz"
+    sha256 "89f202580684f775af25127a647e883dbce54cc177a3c5a203233cb47c20e08f"
   end
 
   resource "pysigma-backend-sqlite" do
@@ -79,18 +80,18 @@ class SigmaCli < Formula
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   resource "wcwidth" do

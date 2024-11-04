@@ -1,9 +1,9 @@
 class Objfw < Formula
   desc "Portable, lightweight framework for the Objective-C language"
   homepage "https://objfw.nil.im/"
-  url "https://objfw.nil.im/downloads/objfw-1.0.10.tar.gz"
-  sha256 "8963b9d2bc7bb7e1b7b5890eca2ee2e193a6036512ad72cc9244d40da3a19c67"
-  license any_of: ["QPL-1.0", "GPL-2.0-only", "GPL-3.0-only"]
+  url "https://objfw.nil.im/downloads/objfw-1.2.tar.gz"
+  sha256 "f1d92b64f524a1aaf8e8b572a0edf5817d589c3d3c60cab9bb182ccbac3ee405"
+  license "LGPL-3.0-only"
   head "https://objfw.nil.im/", using: :fossil
 
   livecheck do
@@ -12,13 +12,12 @@ class Objfw < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "72f9126a5f8f7e296fe01e452fe29e79c6088c4c98c52a0fad3b1bea93d56c57"
-    sha256 arm64_ventura:  "f82b6d751c6ddd8a16eef0ed25b0562f6153313c70f7d119f834b80db5b45fe3"
-    sha256 arm64_monterey: "9f328e4283b6bf0edaca8598abaef248ef85fd3b5b76c9d37d7a3e693d2fbd5b"
-    sha256 sonoma:         "554ec5e972ba9b136a289f7b1cb8bad74714465fdf430143fa21eb736000fb4f"
-    sha256 ventura:        "bc42dc4625060b10dfd630a4af8b7e121f74940601432a8732b4faeff851fa45"
-    sha256 monterey:       "202b34cab76f76a62ee772c37c48a33083ad1f60cdee4d8f2c19bb0084c1b2e3"
-    sha256 x86_64_linux:   "f957bfd7b433ee125ed53eb40a725f9f8b3dc67457036176c03781c3ddb0f0ba"
+    sha256 arm64_sequoia: "47f3542d55c88fe3814fef0770059a2c5dafa9bed4060ee283bd13c4be17673b"
+    sha256 arm64_sonoma:  "af3776fc09836185045ac1d9ac767945523f2150f3a66c5d62b08e04ff8da015"
+    sha256 arm64_ventura: "02ce2d9299728f681bbb4bc8384c9879fe9b7274fc4b0218845d5bcf20400d75"
+    sha256 sonoma:        "4c22f8dcc3753f8dffc12a95b3044c3d4f929e042e7132dec3e6f7db3cd90e58"
+    sha256 ventura:       "786ae0a9259752bb37ea14211841552a3d1be9ac92baae042bfc66a1b0d65b23"
+    sha256 x86_64_linux:  "df96821dd3276bc14fdc2452466255eb018ed8774521fa3071f1a856f46a6c3d"
   end
 
   depends_on "autoconf" => :build
@@ -26,6 +25,7 @@ class Objfw < Formula
 
   on_linux do
     depends_on "llvm"
+    depends_on "openssl@3"
   end
 
   fails_with :gcc
@@ -40,8 +40,8 @@ class Objfw < Formula
   end
 
   test do
-    system "#{bin}/objfw-new", "--app", "Test"
-    system "#{bin}/objfw-compile", "-o", "t", "Test.m"
+    system bin/"objfw-new", "--app", "Test"
+    system bin/"objfw-compile", "-o", "t", "Test.m"
     system "./t"
   end
 end

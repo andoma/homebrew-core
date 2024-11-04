@@ -1,8 +1,8 @@
 class Dlib < Formula
   desc "C++ library for machine learning"
   homepage "http://dlib.net/"
-  url "https://github.com/davisking/dlib/archive/refs/tags/v19.24.2.tar.gz"
-  sha256 "0f5c7e3de6316a513635052c5f0a16a84e1cef26a7d233bf00c21348462b6d6f"
+  url "https://github.com/davisking/dlib/archive/refs/tags/v19.24.6.tar.gz"
+  sha256 "22513c353ec9c153300c394050c96ca9d088e02966ac0f639e989e50318c82d6"
   license "BSL-1.0"
   head "https://github.com/davisking/dlib.git", branch: "master"
 
@@ -12,13 +12,14 @@ class Dlib < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "22eab3f6edb254c1d4e2ded48f795bad876f130f03d81edbc4679ec66136820c"
-    sha256 cellar: :any,                 arm64_ventura:  "6d6cae37f9439f4bbaa534412c3ec957ed8da0c9a14febdc387eae7d8e9a96dd"
-    sha256 cellar: :any,                 arm64_monterey: "773966ac744aada4490deba607795cbbf4a506af2a3fa4196045f613fffcbb55"
-    sha256 cellar: :any,                 sonoma:         "3882169b190fd2f7eda3d39c4f1fd9800f2e610ee5e058a91e0613574eea85db"
-    sha256 cellar: :any,                 ventura:        "f0a79ecbfd60fba3650eb41c2abe5d93a3dae2a1756102bcc0b524cab2dbd91c"
-    sha256 cellar: :any,                 monterey:       "8c67247601b0b4d2824e0eaac979c7f22d1ac43ab3b1cb55d765775b1e90d27d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "548d76fa95dc4639132aef2f2637db129f6c0a94d8e15f57db34b8fe4c580345"
+    sha256 cellar: :any,                 arm64_sequoia:  "81ea4ab8b5ebdc18921b8b4dac89c043a16d3eb49055c6d8e98cb8cdccca5041"
+    sha256 cellar: :any,                 arm64_sonoma:   "d19cac41cc5094b91fe62eda9bb6aec0b1c07d44ab9a13f85615f05d864b8df5"
+    sha256 cellar: :any,                 arm64_ventura:  "19cd0cbae5086be45a52545ba0c902349a48bec3584b096544af783febf28fcd"
+    sha256 cellar: :any,                 arm64_monterey: "d36c2a0183d5ac011c6e1f4d2e001ec2cabebef683665d067b79eb3bddeabdc2"
+    sha256 cellar: :any,                 sonoma:         "57cf219d4134fe9c33e0742e10ba85b75d1cc9bc56c4b8e184658899ba726db3"
+    sha256 cellar: :any,                 ventura:        "0ef2313efb429a44df22d991a675b1ea8e160228df93236c84777c915b6b26ab"
+    sha256 cellar: :any,                 monterey:       "c0cf0849334b7dac93a78c7614072fc780263fb58765deb87e036ee399d2d043"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "08a170e4b2d2b3623710824c31c0673c82d75ace2b8f1a542532a31fc6b746f1"
   end
 
   depends_on "cmake" => :build
@@ -33,6 +34,7 @@ class Dlib < Formula
       -Dcblas_lib=#{Formula["openblas"].opt_lib/shared_library("libopenblas")}
       -Dlapack_lib=#{Formula["openblas"].opt_lib/shared_library("libopenblas")}
       -DDLIB_NO_GUI_SUPPORT=ON
+      -DDLIB_LINK_WITH_SQLITE3=OFF
       -DBUILD_SHARED_LIBS=ON
     ]
 
@@ -47,14 +49,14 @@ class Dlib < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <dlib/logger.h>
       dlib::logger dlog("example");
       int main() {
         dlog.set_level(dlib::LALL);
         dlog << dlib::LINFO << "The answer is " << 42;
       }
-    EOS
+    CPP
     system ENV.cxx, "-pthread", "-std=c++14", "test.cpp", "-o", "test", "-I#{include}",
                     "-L#{lib}", "-ldlib"
     assert_match(/INFO.*example: The answer is 42/, shell_output("./test"))

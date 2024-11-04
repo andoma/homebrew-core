@@ -1,37 +1,37 @@
 class Tbb < Formula
   desc "Rich and complete approach to parallelism in C++"
   homepage "https://github.com/oneapi-src/oneTBB"
-  url "https://github.com/oneapi-src/oneTBB/archive/refs/tags/v2021.11.0.tar.gz"
-  sha256 "782ce0cab62df9ea125cdea253a50534862b563f1d85d4cda7ad4e77550ac363"
+  url "https://github.com/oneapi-src/oneTBB/archive/refs/tags/v2022.0.0.tar.gz"
+  sha256 "e8e89c9c345415b17b30a2db3095ba9d47647611662073f7fbf54ad48b7f3c2a"
   license "Apache-2.0"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "c24bd15b42e0ae13e2cb12ac655a48719925625160e881ebe3f7106abe3c080d"
-    sha256 cellar: :any,                 arm64_ventura:  "a648bac2b48fe462ccba3ba5791d753b01ecc5ec8ee84fa4b86f2e34e2d7442e"
-    sha256 cellar: :any,                 arm64_monterey: "e9ff0aba06130659e53186ff76c843e922eeba909c19ccb9d1c4274cc51dcc38"
-    sha256 cellar: :any,                 sonoma:         "ac700eb4d553a63441a0b493aa30cd1b5b82d0d740293ae74e10d6f1f61c119d"
-    sha256 cellar: :any,                 ventura:        "b467ab5ad3cc9139e861a3d40059e83cbbcc5cfdddf7b8474a866cdbc9fe3bb5"
-    sha256 cellar: :any,                 monterey:       "757139751fed233518ed43992f0427b87cdf461459fd4ff2f6dabc759855acee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e3d73744e801e49bedfc00ad68838cd6299a50563bf69c270f2808ad51bd7562"
+    sha256 cellar: :any,                 arm64_sequoia: "38fdf780cbe726dfd23dc3f44a8404e493dd15a25f789192eb07078c424315b8"
+    sha256 cellar: :any,                 arm64_sonoma:  "395ce725fdf9f2729a6dfc987bfbd6593252c3052e93ec739d8b2f28b257214b"
+    sha256 cellar: :any,                 arm64_ventura: "c2d23d00a088900e6d6ec91a75ec2f3b972740790ef4156ac28cbbf4d187f3a4"
+    sha256 cellar: :any,                 sonoma:        "a273e031b766bc13c5203afd089a92a97147bd6ffe9eccc8c4b11b58e69b4d8e"
+    sha256 cellar: :any,                 ventura:       "fed7b2e7350ce93f50338acaa44258efd637800f97eae90af0fad84533d848fa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "92e0fbee4d1f60809fb238ccaf5bd89a9b97c08afc93378f083dace474521ef4"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "python-setuptools" => :build
-  depends_on "python@3.12" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
   depends_on "swig" => :build
   depends_on "hwloc"
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
-    # Prevent `setup.py` from installing tbb4py directly into HOMEBREW_PREFIX.
+    # Prevent `setup.py` from installing tbb4py as a deprecated egg directly into HOMEBREW_PREFIX.
     # We need this due to our Python patch.
     site_packages = Language::Python.site_packages(python3)
-    inreplace "python/CMakeLists.txt", "install --prefix build -f", "\\0 --install-lib build/#{site_packages}"
+    inreplace "python/CMakeLists.txt",
+              "install --prefix build -f",
+              "\\0 --install-lib build/#{site_packages} --single-version-externally-managed --record=RECORD"
 
     tbb_site_packages = prefix/site_packages/"tbb"
     ENV.append "LDFLAGS", "-Wl,-rpath,#{rpath},-rpath,#{rpath(source: tbb_site_packages)}"
@@ -55,10 +55,6 @@ class Tbb < Formula
                     *args, *std_cmake_args
     system "cmake", "--build", "build/static"
     lib.install buildpath.glob("build/static/*/libtbb*.a")
-
-    ENV.append_path "CMAKE_PREFIX_PATH", prefix.to_s
-    ENV["TBBROOT"] = prefix
-    system python3, "-m", "pip", "install", *std_pip_args, "./python"
   end
 
   test do

@@ -6,7 +6,8 @@ class Immer < Formula
   license "BSL-1.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "e1dc5c791931d0887a5f7ba54e96d8f36f6b2dd63dea423432953f996025c325"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "b7829748b93385f0e75c14f6b04502c943d7ca8b3530b6d3715cfb1c00fbd401"
   end
 
   depends_on "cmake" => :build
@@ -24,7 +25,7 @@ class Immer < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <immer/vector.hpp>
       int main()
       {
@@ -35,7 +36,7 @@ class Immer < Formula
           const auto v2 = v1.set(0, 42);
           assert(v1[0] == 13 && v2[0] == 42);
       }
-    EOS
+    CPP
 
     system ENV.cxx, "-std=c++14", "-I#{include}", "test.cpp", "-o", "test"
     system "./test"

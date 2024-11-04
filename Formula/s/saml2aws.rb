@@ -1,26 +1,24 @@
 class Saml2aws < Formula
   desc "Login and retrieve AWS temporary credentials using a SAML IDP"
   homepage "https://github.com/Versent/saml2aws"
-  url "https://github.com/Versent/saml2aws.git",
-      tag:      "v2.36.13",
-      revision: "580933599476ee52f911bbb2293cfec77382f326"
+  url "https://github.com/Versent/saml2aws/archive/refs/tags/v2.36.18.tar.gz"
+  sha256 "df31cff6e82558869133b9d6621cd5719719df02e3df645f4831c671ef23e63d"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "279804432ba3b62b1929a11a1296a2ba2a5dd0f6eec3f9b25849e17c69e5747e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "217cb205692c52beb5b595c80fa7ba6a2bbda4e13592458e9495aa831dc67023"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "aeab8c87fc95df5cda133e6ceab8efe368c766bd959b906b7adb142c1e883826"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ad75b5ccc7d2148d2f6f9293e33826ad8b86ac2c7e37a3e896a37b53a612cb91"
-    sha256 cellar: :any_skip_relocation, ventura:        "c95a6a7d454b32cdb9f909a73ab249c03cf710a86b71d25553483524a2c843e2"
-    sha256 cellar: :any_skip_relocation, monterey:       "4e66753ab2767a72ad4fe581b23b0cc67033db55406e1b39b3cc75ed59d7e3fb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "59ae063cae4b22e0c1607495f43c55ec7ec14f02dbc1753d187ce1d91fa5f5fa"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "76b5e3fed843e898d9bee13f7775893b68097b6bdf2910e1e6ea4c5053a8729c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5950ee47a6cde9792bb1e8323165dc7315fe42202db86e7c164b4e8d36cd984a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "88624f47b35bca83e11ffa00728d9cb9f284f0810403e6ac9ed222d15328b2db"
+    sha256 cellar: :any_skip_relocation, sonoma:        "db41aeaf178c51adaf9f92bf1a5e8b442d1c963d411163bb3bd16191a0ea1356"
+    sha256 cellar: :any_skip_relocation, ventura:       "fee75a7348f7ef8267250ecfd5ce3fc526893aee4ff52af0bbed1022281ce7f2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b3e7acd082bd09209a3a4b58a72a32564da050ab19c1b669b21e07d0f8a77ba9"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X main.Version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/saml2aws"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/saml2aws"
     (zsh_completion/"_saml2aws").write <<~EOS
       #compdef saml2aws
 
@@ -39,5 +37,7 @@ class Saml2aws < Formula
   test do
     assert_match "error building login details: Failed to validate account.: URL empty in idp account",
       shell_output("#{bin}/saml2aws script 2>&1", 1)
+
+    assert_match version.to_s, shell_output("#{bin}/saml2aws --version 2>&1")
   end
 end

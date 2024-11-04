@@ -1,8 +1,8 @@
 class RubyAT32 < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/3.2/ruby-3.2.3.tar.gz"
-  sha256 "af7f1757d9ddb630345988139211f1fd570ff5ba830def1cc7c468ae9b65c9ba"
+  url "https://cache.ruby-lang.org/pub/ruby/3.2/ruby-3.2.6.tar.gz"
+  sha256 "d9cb65ecdf3f18669639f2638b63379ed6fbb17d93ae4e726d4eb2bf68a48370"
   license "Ruby"
 
   livecheck do
@@ -11,13 +11,12 @@ class RubyAT32 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "1445fbdd16e45a1eca5f47e0a38e6c331fae04fe4d8a1470130a859caa65fd38"
-    sha256 arm64_ventura:  "46888ecbe0985500a85db3dd631489805587fe12e4c74e62e3e93c123af32229"
-    sha256 arm64_monterey: "9c3fbd0cbde9b0e115c0f9b8543e6a4f75f853f4c3d5187603cc19f3fe8a78f3"
-    sha256 sonoma:         "0ed634d20884d5a3e2aa9173384b186f087966623eaf9c32259ac093ccf9daa5"
-    sha256 ventura:        "19740667b89e5f0b315f78754bc60c9affa6e238440b81e1ed261f2c590e5259"
-    sha256 monterey:       "23d90b0ff513b4a1fcee5895f5010f4089d25d25fabe82c88e17a342c4a1af97"
-    sha256 x86_64_linux:   "06e811f2514673defb6b29206db3797715b37fc0acb20b645dc4e6cde58d73a6"
+    sha256 arm64_sequoia: "1699f819bfb77774b7c71e7cabe2d22f57d98bcf0d253e6ee78a6e254289e60d"
+    sha256 arm64_sonoma:  "974759f22b4c526a89fecfb6fe7271457465f9a46f65ffb26b788a2ea6a2e086"
+    sha256 arm64_ventura: "6c494ee006260a9b517f3d9c7b516dfd849eb2971d96fb7e472e36fb93326e8c"
+    sha256 sonoma:        "daf8990e96ce6e294a833f54c3459f0627b8bc8ac07abffd8bccddd88b0c1026"
+    sha256 ventura:       "3b4e1265fa4d15d6b09c27812b848fed3f7aa5a97d08e697effaa32167fad377"
+    sha256 x86_64_linux:  "f2ba2e3b24093a1f1ad2783615cab5b28d6bf135d05bfb44f1025e7c12135806"
   end
 
   keg_only :versioned_formula
@@ -33,14 +32,20 @@ class RubyAT32 < Formula
   uses_from_macos "gperf"
   uses_from_macos "libffi"
   uses_from_macos "libxcrypt"
+  uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
   # Should be updated only when Ruby is updated (if an update is available).
   # The exception is Rubygem security fixes, which mandate updating this
   # formula & the versioned equivalents and bumping the revisions.
   resource "rubygems" do
-    url "https://rubygems.org/rubygems/rubygems-3.5.5.tgz"
-    sha256 "12b2ac28c204bece2803c792f6fd4049faa530e24ec5e4d57c203df4021c4e1d"
+    url "https://rubygems.org/rubygems/rubygems-3.5.22.tgz"
+    sha256 "229c8e393a412e99d6a0fe2a22fb98f7d2e2d79cdbc48e5a8dcca6fa9a356c87"
+
+    livecheck do
+      url "https://rubygems.org/pages/download"
+      regex(/href=.*?rubygems[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    end
   end
 
   def api_version
@@ -101,7 +106,7 @@ class RubyAT32 < Formula
     resource("rubygems").stage do
       ENV.prepend_path "PATH", bin
 
-      system "#{bin}/ruby", "setup.rb", "--prefix=#{buildpath}/vendor_gem"
+      system bin/"ruby", "setup.rb", "--prefix=#{buildpath}/vendor_gem"
       rg_in = lib/"ruby/#{api_version}"
       rg_gems_in = lib/"ruby/gems/#{api_version}"
 
@@ -128,11 +133,11 @@ class RubyAT32 < Formula
     # Since Gem ships Bundle we want to provide that full/expected installation
     # but to do so we need to handle the case where someone has previously
     # installed bundle manually via `gem install`.
-    rm_f %W[
+    rm(%W[
       #{rubygems_bindir}/bundle
       #{rubygems_bindir}/bundler
-    ]
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/ruby/gems/#{api_version}/gems/bundler-*"]
+    ].select { |file| File.exist?(file) })
+    rm_r(Dir[HOMEBREW_PREFIX/"lib/ruby/gems/#{api_version}/gems/bundler-*"])
     rubygems_bindir.install_symlink Dir[libexec/"gembin/*"]
 
     # Customize rubygems to look/install in the global gem directory
@@ -236,7 +241,7 @@ class RubyAT32 < Formula
     assert_equal api_version, shell_output("#{bin}/ruby -e 'print Gem.ruby_api_version'")
 
     ENV["GEM_HOME"] = testpath
-    system "#{bin}/gem", "install", "json"
+    system bin/"gem", "install", "json"
 
     (testpath/"Gemfile").write <<~EOS
       source 'https://rubygems.org'

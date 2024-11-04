@@ -1,44 +1,38 @@
 class OpensslAT3 < Formula
   desc "Cryptography and SSL/TLS Toolkit"
-  homepage "https://openssl.org/"
-  url "https://www.openssl.org/source/openssl-3.2.1.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-3.2.1.tar.gz"
-  mirror "https://www.openssl.org/source/old/3.2/openssl-3.2.1.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/old/3.2/openssl-3.2.1.tar.gz"
-  mirror "http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-3.2.1.tar.gz"
-  mirror "http://www.mirrorservice.org/sites/ftp.openssl.org/source/old/3.2/openssl-3.2.1.tar.gz"
-  sha256 "83c7329fe52c850677d75e5d0b0ca245309b97e8ecbcfdc1dfdc4ab9fac35b39"
+  homepage "https://openssl-library.org"
+  url "https://github.com/openssl/openssl/releases/download/openssl-3.4.0/openssl-3.4.0.tar.gz"
+  mirror "http://fresh-center.net/linux/misc/openssl-3.4.0.tar.gz"
+  sha256 "e15dda82fe2fe8139dc2ac21a36d4ca01d5313c75f99f46c4e8a27709b7294bf"
   license "Apache-2.0"
 
   livecheck do
-    url "https://www.openssl.org/source/"
-    regex(/href=.*?openssl[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url "https://openssl-library.org/source/"
+    regex(/href=.*?openssl[._-]v?(3(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "fce7bf159988bf2b0960fa3d33ea810688d422c433b6461c7020cd0c937827a6"
-    sha256 arm64_ventura:  "020785e015f7b8ef638abc5835890bf3f0273c1eecba54b2f749e82cab0ddeec"
-    sha256 arm64_monterey: "a99828f7bf992193ab24f93eb85da1d89901d2f7ba32acb6fff9506d9b030897"
-    sha256 sonoma:         "ef8211c5115fc85f01261037f8fea76cc432b92b4fb23bc87bbf41e9198fcc0f"
-    sha256 ventura:        "f3cd46e866f40f134ee02ca264456e69730c721f577af6bd6927fdb90f2807e0"
-    sha256 monterey:       "6f7645cf9afb08c84f129bf39de4974c857bfff8941587cbb08ee20b9feed8d8"
-    sha256 x86_64_linux:   "0e4d59371d274c67e9f09ce81542e2856c7496e5d1bf70d7fed707bfbdfa04c0"
+    sha256 arm64_sequoia: "bf2e6c5cb39433b00fa2aaf4a6db681814149f62c01f04d381c3c64cd32c1bd3"
+    sha256 arm64_sonoma:  "706b2f224c9519816d987e28ecfae9cfb41d99b728e237ef98fa1c0698d1f626"
+    sha256 arm64_ventura: "4b27265cc378fad113f0ab2f8609098c3ac84f79a76ad68a03d6af96f4eb2380"
+    sha256 sonoma:        "28e2abc928e8afd0c58303de69dab5e4ec8663c5591fe3c425ad9177bf377ded"
+    sha256 ventura:       "9017cd4ac641f4a961b27328bf519cbed91d5e3be2ae8e7f833b866412697d2f"
+    sha256 x86_64_linux:  "424afb56cdd116602c373db5ff55fbaef0865775cfacdc18c5e6a71aa24845e9"
   end
 
   depends_on "ca-certificates"
 
   on_linux do
     resource "Test::Harness" do
-      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.48.tar.gz"
-      mirror "http://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.48.tar.gz"
-      sha256 "e73ff89c81c1a53f6baeef6816841b89d3384403ad97422a7da9d1eeb20ef9c5"
+      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.50.tar.gz"
+      mirror "http://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.50.tar.gz"
+      sha256 "79b6acdc444f1924cd4c2e9ed868bdc6e09580021aca8ff078ede2ffef8a6f54"
     end
 
     resource "Test::More" do
-      url "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302196.tar.gz"
-      mirror "http://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302196.tar.gz"
-      sha256 "020e71da0a479b2d2546304ce6bd23fb9dd428df7d4e161d19612fc1f406fd9f"
+      url "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302201.tar.gz"
+      mirror "http://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302201.tar.gz"
+      sha256 "956185dc96c1f2942f310a549a2b206cc5dd1487558f4e36d87af7a8aacbc87c"
     end
 
     resource "ExtUtils::MakeMaker" do
@@ -61,7 +55,7 @@ class OpensslAT3 < Formula
     args = %W[
       --prefix=#{prefix}
       --openssldir=#{openssldir}
-      --libdir=#{lib}
+      --libdir=lib
       no-ssl3
       no-ssl3-method
       no-zlib
@@ -109,7 +103,12 @@ class OpensslAT3 < Formula
     system "perl", "./Configure", *(configure_args + arch_args)
     system "make"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
-    system "make", "test"
+    # AF_ALG support isn't always enabled (e.g. some containers), which breaks the tests.
+    # AF_ALG is a kernel feature and failures are unlikely to be issues with the formula.
+    system "make", "HARNESS_JOBS=#{ENV.make_jobs}", "test", "TESTS=-test_afalg"
+
+    # Prevent `brew` from pruning the `certs` and `private` directories.
+    touch %w[certs private].map { |subdir| openssldir/subdir/".keepme" }
   end
 
   def openssldir
@@ -117,7 +116,7 @@ class OpensslAT3 < Formula
   end
 
   def post_install
-    rm_f openssldir/"cert.pem"
+    rm(openssldir/"cert.pem") if (openssldir/"cert.pem").exist?
     openssldir.install_symlink Formula["ca-certificates"].pkgetc/"cert.pem"
   end
 
@@ -134,8 +133,8 @@ class OpensslAT3 < Formula
 
   test do
     # Make sure the necessary .cnf file exists, otherwise OpenSSL gets moody.
-    assert_predicate pkgetc/"openssl.cnf", :exist?,
-            "OpenSSL requires the .cnf file for some functionality"
+    assert_predicate pkgetc/"openssl.cnf", :exist?, "OpenSSL requires the .cnf file for some functionality"
+    assert_predicate openssldir/"certs", :exist?, "OpenSSL throws confusing errors when this directory is missing"
 
     # Check OpenSSL itself functions as expected.
     (testpath/"testfile.txt").write("This is a test file")
@@ -145,5 +144,30 @@ class OpensslAT3 < Formula
       checksum = f.read(100).split("=").last.strip
       assert_equal checksum, expected_checksum
     end
+
+    # Invalid cert from superfish.badssl.com
+    bad_cert = <<~PEM
+      -----BEGIN CERTIFICATE-----
+      MIIC9TCCAl6gAwIBAgIJAK5EmlK7Klu5MA0GCSqGSIb3DQEBCwUAMFsxGDAWBgNV
+      BAoTD1N1cGVyZmlzaCwgSW5jLjELMAkGA1UEBxMCU0YxCzAJBgNVBAgTAkNBMQsw
+      CQYDVQQGEwJVUzEYMBYGA1UEAxMPU3VwZXJmaXNoLCBJbmMuMB4XDTE4MDUxNjE3
+      MTUyM1oXDTIwMDUxNTE3MTUyM1owajELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNh
+      bGlmb3JuaWExFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xDzANBgNVBAoMBkJhZFNT
+      TDEdMBsGA1UEAwwUc3VwZXJmaXNoLmJhZHNzbC5jb20wggEiMA0GCSqGSIb3DQEB
+      AQUAA4IBDwAwggEKAoIBAQDCBOz4jO4EwrPYUNVwWMyTGOtcqGhJsCK1+ZWesSss
+      dj5swEtgTEzqsrTAD4C2sPlyyYYC+VxBXRMrf3HES7zplC5QN6ZnHGGM9kFCxUbT
+      Focnn3TrCp0RUiYhc2yETHlV5NFr6AY9SBVSrbMo26r/bv9glUp3aznxJNExtt1N
+      wMT8U7ltQq21fP6u9RXSM0jnInHHwhR6bCjqN0rf6my1crR+WqIW3GmxV0TbChKr
+      3sMPR3RcQSLhmvkbk+atIgYpLrG6SRwMJ56j+4v3QHIArJII2YxXhFOBBcvm/mtU
+      mEAnhccQu3Nw72kYQQdFVXz5ZD89LMOpfOuTGkyG0cqFAgMBAAGjLjAsMAkGA1Ud
+      EwQCMAAwHwYDVR0RBBgwFoIUc3VwZXJmaXNoLmJhZHNzbC5jb20wDQYJKoZIhvcN
+      AQELBQADgYEAKgHH4VD3jfwzxvtWTmIA1nwK+Fjqe9VFXyDwXiBnhqDwJp9J+/2y
+      r7jbXfEKf7WBS6OmnU+HTjxUCFx2ZnA4r7dU5nIsNadKEDVHDOvYEJ6mXHPkrvlt
+      k79iHC0DJiJX36BTXcU649wKEVjgX/kT2yy3YScPdBoN0vtzPN3yFsQ=
+      -----END CERTIFICATE-----
+    PEM
+    output = pipe_output("#{bin}/openssl verify 2>&1", bad_cert, 2)
+    assert_match "verification failed", output
+    refute_match "error:80000002", output
   end
 end

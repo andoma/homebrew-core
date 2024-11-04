@@ -1,24 +1,24 @@
 class Libsail < Formula
   desc "Missing small and fast image decoding library for humans (not for machines)"
   homepage "https://github.com/HappySeaFox/sail"
-  url "https://github.com/HappySeaFox/sail/archive/refs/tags/v0.9.1.tar.gz"
-  sha256 "d02ce889b70d9e237b64806df26b044753e3edf3e87c8af42c32ec9968133a88"
+  url "https://github.com/HappySeaFox/sail/archive/refs/tags/v0.9.7.tar.gz"
+  sha256 "a882f8a88ad1fe3e833abe44fd2120463b4ab27f0b00ed8547c8a9616cc548f1"
   license "MIT"
 
   bottle do
-    sha256 arm64_sonoma:   "892e810cfbf5c82f3669df92557b09f5e1a95ba05e2fd8bfebe122739048138b"
-    sha256 arm64_ventura:  "f12a4b9944c894afe54f83346af3f2df20354ce7399d163b104a99633ee5c26c"
-    sha256 arm64_monterey: "fd19a8ee959db32f42c8d7cd669fda6de6ba9251210f7a7c6ee0075872b78ea2"
-    sha256 sonoma:         "9bd6302b283f72605c3bbd49a37200e04e65e1fb01e73845248a79fd97b6115b"
-    sha256 ventura:        "2397b138d40673b3496421e5eb291f4e7ed2b111e1e728d4f6a9e876fc2ed6fd"
-    sha256 monterey:       "878495a910f5b5b637c31ac2f796c49798509ec1ee0964ff82149064b07d82fc"
-    sha256 x86_64_linux:   "beeb7791e76ad1e875ee941e9a52777d65f3a9b4d3d580c9970f8c05540b63f5"
+    sha256 arm64_sequoia: "72d83230b9abf562bd455e14391fbfc10139718611796e715e429f13402fd1f7"
+    sha256 arm64_sonoma:  "84f8b9225541b6e925166e4785c9620ef42176ea314b8f5919d7675f4fc3e56b"
+    sha256 arm64_ventura: "ca2b55577c819dbb4574adbe28f09f79d1336696f485491a497b5c2a6c9fa510"
+    sha256 sonoma:        "741b81430d6192c2b0d09a2e8dceb437ed8a2294ad6e55ce3e4ab594be67a10f"
+    sha256 ventura:       "6d9e3f76154771759bab029c121f94bd467e247fffb065ba69d5ac74768890bf"
+    sha256 x86_64_linux:  "17994b249055bd8d8509d9f484a12f42738df1c033b2841ebfa972a1cf6c797d"
   end
 
   depends_on "cmake"      => :build
   depends_on "pkg-config" => [:build, :test]
-
+  depends_on "brotli"
   depends_on "giflib"
+  depends_on "highway"
   depends_on "jasper"
   depends_on "jpeg-turbo"
   depends_on "jpeg-xl"
@@ -42,9 +42,9 @@ class Libsail < Formula
   end
 
   test do
-    system "#{bin}/sail-imaging", "decode", test_fixtures("test.png")
+    system bin/"sail-imaging", "decode", test_fixtures("test.png")
 
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <sail/sail.h>
 
       int main(int argc, char **argv)
@@ -56,7 +56,7 @@ class Libsail < Formula
 
           return 0;
       }
-    EOS
+    C
 
     cflags = shell_output("#{Formula["pkg-config"].opt_bin}/pkg-config --cflags sail").strip.split
     libs   = shell_output("#{Formula["pkg-config"].opt_bin}/pkg-config --libs sail").strip.split

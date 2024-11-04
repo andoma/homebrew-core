@@ -1,9 +1,10 @@
 class Tor < Formula
   desc "Anonymizing overlay network for TCP"
   homepage "https://www.torproject.org/"
-  url "https://www.torproject.org/dist/tor-0.4.8.10.tar.gz"
-  mirror "https://www.torservers.net/mirrors/torproject.org/dist/tor-0.4.8.10.tar.gz"
-  sha256 "e628b4fab70edb4727715b23cf2931375a9f7685ac08f2c59ea498a178463a86"
+  url "https://www.torproject.org/dist/tor-0.4.8.13.tar.gz"
+  mirror "https://www.torservers.net/mirrors/torproject.org/dist/tor-0.4.8.13.tar.gz"
+  mirror "https://fossies.org/linux/misc/tor-0.4.8.13.tar.gz"
+  sha256 "9baf26c387a2820b3942da572146e6eb77c2bc66862af6297cd02a074e6fba28"
   # Complete list of licenses:
   # https://gitweb.torproject.org/tor.git/plain/LICENSE
   license all_of: [
@@ -19,13 +20,12 @@ class Tor < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "080d0bd0dac5b8c8554b334cf0ea12d668148a24f9886504f281b00e73e933da"
-    sha256 arm64_ventura:  "5880929275fc13defe5e0b7583e763ee26e94910fae0abdb2cf4827ea68c9653"
-    sha256 arm64_monterey: "531dd9f677846078631f52ecf1c7c9a80e45ee6847fb65b329ec78cc703e3d84"
-    sha256 sonoma:         "2c3dcf21b9404bc436650c92f324257cc35c35a3c0ff72d5d51ba3c9754a5f0f"
-    sha256 ventura:        "c73be7f174895ebf3c0a760ba3c1a4de0c297f9fa5bea8772b287fbe436adcea"
-    sha256 monterey:       "c9230424a8ba2af2a13b26cda66a2fdf98321264cb0eb2ec5a776a039c898179"
-    sha256 x86_64_linux:   "0a923eb5aa011c7ffd7c48d5b314da72fefecf7845d38f199967225fb2a7a78a"
+    sha256 arm64_sequoia: "c145702b169716f2d3945258a78609fdcddacddaea2bff154adc8a2599cc3252"
+    sha256 arm64_sonoma:  "c3ba7457be7ade66fbdd9183e0ea1af569095bc74a9760d91fdefb2b80f168e8"
+    sha256 arm64_ventura: "a3941a78504ade9acf7cd5b5311faee1ace9a6b2d7d36cfd32e2ef6aeccc6124"
+    sha256 sonoma:        "5372b93592b6d2306c2003acdc75001fcc6de1b606bc11b2bfe64e7aebbf2271"
+    sha256 ventura:       "4355e3f8d810a967daf2e76dcaf8929e0d1951d8dcfcaa9affd0dd6ce0e760d9"
+    sha256 x86_64_linux:  "61c54b14efec65e0f0cb97832e78a1740453859421769d2478f18e7a1ee6978b"
   end
 
   depends_on "pkg-config" => :build

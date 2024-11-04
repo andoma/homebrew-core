@@ -6,6 +6,7 @@ class Fplll < Formula
   license "LGPL-2.1-or-later"
 
   bottle do
+    sha256                               arm64_sequoia:  "8b425ebd95749e2547ab4fd07cce428ebe24b53c0313613d3ae79e4884714e8a"
     sha256                               arm64_sonoma:   "005ede2a59af2f7cca112eae17a3128cc51655e87b94f32d99cc419370e84f8a"
     sha256                               arm64_ventura:  "b6cd7be6eff467d3232377783aca10e2f233550ac3d41e50731e78fc3d7bd528"
     sha256                               arm64_monterey: "0e4d84d3652a61c6276ae3514062702c6d908eaff1ebca50942a9c20c73112dc"
@@ -35,7 +36,7 @@ class Fplll < Formula
     (testpath/"m2.fplll").write("[[17 42 4][50 75 108][11 47 33]][100 101 102]")
     assert_equal "[107 88 96]\n", `#{bin/"fplll"} -a cvp m2.fplll`
 
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <fplll.h>
       #include <vector>
       #include <stdio.h>
@@ -48,7 +49,7 @@ class Fplll < Formula
         }
         return 0;
       }
-    EOS
+    CPP
     system "pkg-config", "fplll", "--cflags"
     system "pkg-config", "fplll", "--libs"
     pkg_config_flags = `pkg-config --cflags --libs gmp mpfr fplll`.chomp.split

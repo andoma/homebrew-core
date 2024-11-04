@@ -1,19 +1,18 @@
 class Naabu < Formula
   desc "Fast port scanner"
   homepage "https://github.com/projectdiscovery/naabu"
-  url "https://github.com/projectdiscovery/naabu/archive/refs/tags/v2.2.1.tar.gz"
-  sha256 "d357e05d14934e7ac60337d8de5854fe15830565abf8c543d3273c5bf3676648"
+  url "https://github.com/projectdiscovery/naabu/archive/refs/tags/v2.3.2.tar.gz"
+  sha256 "bfe1e5752902d28cf8ff4f3194e1bab97e457813c202d98b0c54ad10bd9b52f3"
   license "MIT"
   head "https://github.com/projectdiscovery/naabu.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c0026a3676ffb2f8455bbd22e18de4fd56fb8407af5352d8ce60dc28f7237198"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9206ae47f18f55ee68d2cd21f5d90b806f0c06d4c89258cd2c31e0fb64c436cc"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2154c6818151c5e7ff28ceda08a75b367be4b1b508bdf47abbd51cea63b0bf8c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "07948cc7a8d43ab617847b31d2e2c5f1dd7bb2ae5aa6608d4ee3190a69b2ec3c"
-    sha256 cellar: :any_skip_relocation, ventura:        "5d087d29b2ab941f05f8ad59bec1c5d0043a07b45db938a5accaf3409d11563d"
-    sha256 cellar: :any_skip_relocation, monterey:       "d82e95ba1c714a963766accea260cd39ec874b02f53b7630c773998dcafadac3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8d1585e8219128347c3d16829a1b7238fa3da4ea0ff04295811b245527b6e23c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3a824daef7ad067a9cab585eb9bcf5a4053493c89e80b142f4199a2bb4f99592"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2d1819b138a60629f17be3215ac2d458846775118facb0cc8e723e74e856443d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3c626d427e77628a2eb75a690fda8285b8b4f131e227795391426e6957a89c75"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0a396034b7c31ed86158d6c10104cddac1288eced847de8a1709dda91f8ce0e8"
+    sha256 cellar: :any_skip_relocation, ventura:       "8938367a3c27711389826e9576e89e6068ee837c0ba15f2cd0c2c0495ef3693e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e13d192fc067df0882cbd88fb60178cadd5e3369c406d05c915ed7153599fc10"
   end
 
   depends_on "go" => :build

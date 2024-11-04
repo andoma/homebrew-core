@@ -1,18 +1,17 @@
 class Zenity < Formula
   desc "GTK+ dialog boxes for the command-line"
   homepage "https://wiki.gnome.org/Projects/Zenity"
-  url "https://download.gnome.org/sources/zenity/4.0/zenity-4.0.1.tar.xz"
-  sha256 "0c2f537813b10f728470d9d05d6c95713db2512f9c95096e1e85b1a6739605e6"
+  url "https://download.gnome.org/sources/zenity/4.0/zenity-4.0.3.tar.xz"
+  sha256 "b429d97b87bd9ce7fb72ac0b78df534725d8ad39817ddca6a4ca2ee5381b08de"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 arm64_sonoma:   "212ea8114fd4a8194d54901b7ffd39c0775596635c6d43d96792cee3f5d58c6f"
-    sha256 arm64_ventura:  "17e3166e2e29d183fd28e6698507363ece6abd27f9a4bbed174078946340d924"
-    sha256 arm64_monterey: "98b08d8479d72e2fda14722591ca57443ad0c8d14e24ad9ac8557f7e68d4c933"
-    sha256 sonoma:         "a0181ae41410618b7530b9b001fa8f5173ec7201d8caa6448e879d2e3be90067"
-    sha256 ventura:        "84b0b5d4903ee46ec73daee35c78c77dd5ccee2b8f7b09e3d3b5617d95f0625b"
-    sha256 monterey:       "689624fa6e714ea580b2e88d1a22fdd1b1fa512e8f278fe2383b3b0b0ecb8384"
-    sha256 x86_64_linux:   "6721b9d7445e31cb9f9c89d4a9733dee9eb326b0036a13dc37a4480aee992840"
+    sha256 arm64_sequoia: "4f153b28658b7ff4ac99ef77031d0f400e2f0b37f53f86a71011b6939ee0db26"
+    sha256 arm64_sonoma:  "d4a16c2b2fe9ec7097c61417db73813b6b2e53fa9c21413e7f4226d74c9248d3"
+    sha256 arm64_ventura: "0014365867ccb6ecfb231509a454655a5a2704889d059665dfb53c91c799fd2b"
+    sha256 sonoma:        "6dceb146aea04c1cf0df90c6bee53a8a34938ba299e3b001f431509656ff6074"
+    sha256 ventura:       "2a15e51a58f5554dffbb3a06fbe106b4e9362d02b9340031d7e5c003dc92958a"
+    sha256 x86_64_linux:  "ac173dea0b73c96fd5b9ae4c4abaee499ab44299bd9e479e5e5ebd97d683f4ce"
   end
 
   depends_on "gettext" => :build
@@ -21,9 +20,15 @@ class Zenity < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+
   depends_on "glib"
-  depends_on "gtk+3"
+  depends_on "gtk4"
   depends_on "libadwaita"
+  depends_on "pango"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     ENV["DESTDIR"] = "/"
@@ -31,6 +36,10 @@ class Zenity < Formula
     system "meson", "setup", "build", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
+  end
+
+  def post_install
+    system Formula["gtk4"].opt_bin/"gtk4-update-icon-cache", "-f", "-t", HOMEBREW_PREFIX/"share/icons/hicolor"
   end
 
   test do

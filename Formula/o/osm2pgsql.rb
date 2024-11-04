@@ -1,31 +1,33 @@
 class Osm2pgsql < Formula
   desc "OpenStreetMap data to PostgreSQL converter"
   homepage "https://osm2pgsql.org"
-  url "https://github.com/openstreetmap/osm2pgsql/archive/refs/tags/1.11.0.tar.gz"
-  sha256 "6b46313813b816f15ce906c04cd4108bbb05362740e0a1a8889055f4e25977d2"
+  url "https://github.com/openstreetmap/osm2pgsql/archive/refs/tags/2.0.0.tar.gz"
+  sha256 "05c2355b4a59d03a0f9855b4234a3bdc717b078faee625e73357947d1a82fe89"
   license "GPL-2.0-only"
   head "https://github.com/openstreetmap/osm2pgsql.git", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:   "98724fad7da02aabf3d1be53779806ccd18beb4c178afd365e9dba5745b50b50"
-    sha256 arm64_ventura:  "af879fd547cc43d4d8ecd4357be903fc96275aed727fda14a29347d25dadca60"
-    sha256 arm64_monterey: "cab73265911a6a15a1ae223a78355cd460e8d69887934a0d8d8597f83eb9e8ee"
-    sha256 sonoma:         "60cd245520c1256c0c2c3639fd2d583909a8e8614156e259f5f667d9b962970b"
-    sha256 ventura:        "f8a13291c73bafa5312936c2c9e2b788bb9f2ecbe8e71b22acf56a08476fc9c8"
-    sha256 monterey:       "c5b1a439f525c4c30b307db88c2b1b659030be40d6fdc860d622c1d1003f5dd5"
-    sha256 x86_64_linux:   "b90936c83143fea34b290dcb0c7a8f161f2e36cea7710be3761004458bbca9d7"
+    sha256 arm64_sequoia: "44e982673a866dec6f55a0ed34981dabce3fd941abd1dd4afea370edb518d41e"
+    sha256 arm64_sonoma:  "a2fdfb145a93bf00cc5dd31fda4978c1cc920bc36a0d2eca6baac03d7f60c91d"
+    sha256 arm64_ventura: "e95d13d81e46720bf56cb72972c0faab3f27ed8a89911cf35eabba5c7699e19b"
+    sha256 sonoma:        "34a75d5b8fb063e4edc427c780197c2d89089f92d11f2bd1c62f00533420f0fa"
+    sha256 ventura:       "b750fbd5a9b0ca469b4c19f3360c004fc8a1127aacce15a73f79d66b086984c9"
+    sha256 x86_64_linux:  "a4a8f8ba54aa13e536e0a994b66bdd4b4d3ba0a780846236432a613118926f24"
   end
 
   depends_on "cmake" => :build
   depends_on "lua" => :build
   depends_on "nlohmann-json" => :build
+
   depends_on "boost"
   depends_on "geos"
   depends_on "libpq"
   depends_on "luajit"
   depends_on "proj"
 
+  uses_from_macos "bzip2"
   uses_from_macos "expat"
+  uses_from_macos "zlib"
 
   def install
     # This is essentially a CMake disrespects superenv problem

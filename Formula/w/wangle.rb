@@ -1,23 +1,21 @@
 class Wangle < Formula
   desc "Modular, composable client/server abstractions framework"
   homepage "https://github.com/facebook/wangle"
-  url "https://github.com/facebook/wangle/releases/download/v2024.01.22.00/wangle-v2024.01.22.00.tar.gz"
-  sha256 "b6b0a43021604bf4cb51aa895ca47e7846f17a36b1419313d7d0c793bb742d0f"
+  url "https://github.com/facebook/wangle/archive/refs/tags/v2024.10.28.00.tar.gz"
+  sha256 "5e85324a00f5472b0fa0e627beff460ec9a81381f59d3e2c0bf284d843cc69eb"
   license "Apache-2.0"
   head "https://github.com/facebook/wangle.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "c19301c3ed4089f800aa832f740becb16f7b60192cb44f550f1f250695b32525"
-    sha256 cellar: :any,                 arm64_ventura:  "21267143f324ca51c1355eb904da3d85dfe555f031c0b8b98d6551e5a79e76db"
-    sha256 cellar: :any,                 arm64_monterey: "2a2af799c8bf8887ba0291379b240dcb67ce1242dd7443b44a13468f25b9bc8f"
-    sha256 cellar: :any,                 sonoma:         "0f89f375c6ed4d559669d9fc67be0a2e2c425866a4eea787111f436fd95e3252"
-    sha256 cellar: :any,                 ventura:        "58d4ba960f369f361aaa7f157a2ec33b5a0c981fc0b2799ca51dd20a8749e5e5"
-    sha256 cellar: :any,                 monterey:       "d6f46bb582401002bc01b2a6d5f6c3f3d1bbb22b357c12d57324120520fac78d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b583c358027f28b40fe24b9d5350247903aa8a093378612162e831cfff3ce28a"
+    sha256 cellar: :any,                 arm64_sequoia: "fcd6b918082fe3a07c9bcdd19d630dd3d84664e793c7e8eeb9871bf6c8ec83c9"
+    sha256 cellar: :any,                 arm64_sonoma:  "884c6ac4aae152860016cc38156ad7d24fc6e3f0f2a1f321cd765ad672f6b89c"
+    sha256 cellar: :any,                 arm64_ventura: "66f3fa89bafcb0d81a8b4138df7b6a54e2e0bd721a39f716e8e0e3ba737bbfea"
+    sha256 cellar: :any,                 sonoma:        "ac31bd508ac23c4d20dff43809141d30f910abf468b0c16c6a8461406f38e89d"
+    sha256 cellar: :any,                 ventura:       "605d7e4ff737bbfbf594af5c545ddf8ba135c69430b3c8a1648364566c9c3ede"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e0a749b191ad7e0affe2da88dda25ef6667aa8a932dd49dba25107c978882f25"
   end
 
-  depends_on "cmake" => :build
-  depends_on "boost"
+  depends_on "cmake" => [:build, :test]
   depends_on "double-conversion"
   depends_on "fizz"
   depends_on "fmt"
@@ -25,55 +23,57 @@ class Wangle < Formula
   depends_on "gflags"
   depends_on "glog"
   depends_on "libevent"
-  depends_on "libsodium"
   depends_on "lz4"
   depends_on "openssl@3"
-  depends_on "snappy"
   depends_on "zstd"
-
   uses_from_macos "bzip2"
-  uses_from_macos "zlib"
 
   fails_with gcc: "5"
 
   def install
-    cd "wangle" do
-      system "cmake", ".", "-DBUILD_TESTS=OFF", "-DBUILD_SHARED_LIBS=ON", *std_cmake_args
-      system "make", "install"
-      system "make", "clean"
-      system "cmake", ".", "-DBUILD_TESTS=OFF", "-DBUILD_SHARED_LIBS=OFF", *std_cmake_args
-      system "make"
-      lib.install "lib/libwangle.a"
+    args = ["-DBUILD_TESTS=OFF"]
+    # Prevent indirect linkage with boost, libsodium, snappy and xz
+    linker_flags = %w[-dead_strip_dylibs]
+    args << "-DCMAKE_SHARED_LINKER_FLAGS=-Wl,#{linker_flags.join(",")}" if OS.mac?
 
-      pkgshare.install Dir["example/echo/*.cpp"]
-    end
+    system "cmake", "-S", "wangle", "-B", "build/shared", "-DBUILD_SHARED_LIBS=ON", *args, *std_cmake_args
+    system "cmake", "--build", "build/shared"
+    system "cmake", "--install", "build/shared"
+
+    system "cmake", "-S", "wangle", "-B", "build/static", "-DBUILD_SHARED_LIBS=OFF", *args, *std_cmake_args
+    system "cmake", "--build", "build/static"
+    lib.install "build/static/lib/libwangle.a"
+
+    pkgshare.install Dir["wangle/example/echo/*.cpp"]
   end
 
   test do
-    cxx_flags = %W[
-      -std=c++17
-      -I#{include}
-      -I#{Formula["openssl@3"].opt_include}
-      -L#{Formula["gflags"].opt_lib}
-      -L#{Formula["glog"].opt_lib}
-      -L#{Formula["folly"].opt_lib}
-      -L#{Formula["fizz"].opt_lib}
-      -L#{lib}
-      -lgflags
-      -lglog
-      -lfolly
-      -lfizz
-      -lwangle
-    ]
-    if OS.linux?
-      cxx_flags << "-L#{Formula["boost"].opt_lib}"
-      cxx_flags << "-lboost_context-mt"
-      cxx_flags << "-ldl"
-      cxx_flags << "-lpthread"
+    # libsodium has no CMake file but fizz runs `find_dependency(Sodium)` so fetch a copy from mvfst
+    resource "FindSodium.cmake" do
+      url "https://raw.githubusercontent.com/facebook/mvfst/v2024.09.02.00/cmake/FindSodium.cmake"
+      sha256 "39710ab4525cf7538a66163232dd828af121672da820e1c4809ee704011f4224"
     end
+    (testpath/"cmake").install resource("FindSodium.cmake")
 
-    system ENV.cxx, pkgshare/"EchoClient.cpp", *cxx_flags, "-o", "EchoClient"
-    system ENV.cxx, pkgshare/"EchoServer.cpp", *cxx_flags, "-o", "EchoServer"
+    (testpath/"CMakeLists.txt").write <<~CMAKE
+      cmake_minimum_required(VERSION 3.5)
+      project(Echo LANGUAGES CXX)
+      set(CMAKE_CXX_STANDARD 17)
+
+      find_package(gflags REQUIRED)
+      find_package(folly CONFIG REQUIRED)
+      find_package(fizz CONFIG REQUIRED)
+      find_package(wangle CONFIG REQUIRED)
+
+      add_executable(EchoClient #{pkgshare}/EchoClient.cpp)
+      target_link_libraries(EchoClient wangle::wangle)
+      add_executable(EchoServer #{pkgshare}/EchoServer.cpp)
+      target_link_libraries(EchoServer wangle::wangle)
+    CMAKE
+
+    ENV.delete "CPATH"
+    system "cmake", ".", "-DCMAKE_MODULE_PATH=#{testpath}/cmake", "-Wno-dev"
+    system "cmake", "--build", "."
 
     port = free_port
     fork { exec testpath/"EchoServer", "-port", port.to_s }

@@ -1,19 +1,18 @@
 class Katana < Formula
   desc "Crawling and spidering framework"
   homepage "https://github.com/projectdiscovery/katana"
-  url "https://github.com/projectdiscovery/katana/archive/refs/tags/v1.0.5.tar.gz"
-  sha256 "7d2ce0f95447a5389401f1e60f9b9b0e21d20034f414fc7e6f65c8c684b3728b"
+  url "https://github.com/projectdiscovery/katana/archive/refs/tags/v1.1.1.tar.gz"
+  sha256 "8a22c1d940ddebad1b857c76edc21daa69f04bc5425c1e78680c05acc236d559"
   license "MIT"
   head "https://github.com/projectdiscovery/katana.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "aa484d5954f6893e54c293585b5fb1e3559f2e8edfe4f2b56eda906579c0a78c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "41df491c03289f9d1beb2721f4b30b3a6d6318c66767c9b3032a2dad7ceeb898"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "46f65b6b0edea3283808977d6d19c1c90773a1ed9cdc5e3762e46ad180d676c9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "80c74dfa43406c49b1fb1ead54677874e009c3cbb015163708b6fd1aa92b9474"
-    sha256 cellar: :any_skip_relocation, ventura:        "21a290a015e0b459cc7b70ad4070295397b5dc0a57247b8ce60699e9a2ed6896"
-    sha256 cellar: :any_skip_relocation, monterey:       "2f402466439215ab417489748da7ab5b6fb1f839c7d35a426bb0ea5d21831e2a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c5f8323a33a779798462064082e4c76b0fd5645d067d737b2f8bea056b836813"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "591d926469cc2912114357fa56b38b3ce7abd66f353661748673b4137eab7175"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "44f6733ebfbd43ebc273a04aba6ba97bd7ff5c7a50027e733d4a1595a35cdcf9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "8eb093df19667a3296d38be2fbcfdf0fe30880aaa3917eb587d88bd4cccdfefb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e5a8b6c66ed3731fbf64d93718c004ab85b6b22195bed8d06a762c87977cb772"
+    sha256 cellar: :any_skip_relocation, ventura:       "56b94160bd49f2b9074d5f53eb175e0e592d62a882fb91512725dfe2a96446a4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6930774a96299596c233d288bf3b54e0e606651e603982d28000c53abf21cbc3"
   end
 
   depends_on "go" => :build

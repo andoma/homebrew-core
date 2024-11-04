@@ -1,38 +1,40 @@
 class KnotResolver < Formula
   desc "Minimalistic, caching, DNSSEC-validating DNS resolver"
   homepage "https://www.knot-resolver.cz"
-  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-5.7.1.tar.xz"
-  sha256 "da14b415c61d53747a991f12d6209367ef826a13dc6bf4eeaf5d88760294c3a2"
+  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-5.7.4.tar.xz"
+  sha256 "6b6da6ecf06828041afad44dfa227781f0ae34ad183a667008509355d18bd9c8"
   license all_of: ["CC0-1.0", "GPL-3.0-or-later", "LGPL-2.1-or-later", "MIT"]
   head "https://gitlab.labs.nic.cz/knot/knot-resolver.git", branch: "master"
 
   livecheck do
-    url "https://secure.nic.cz/files/knot-resolver/"
-    regex(/href=.*?knot-resolver[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url "https://www.knot-resolver.cz/download/"
+    regex(/href=.*?knot-resolver[._-]v?(\d+(?:\.\d+)+)\.t[^>]*?>[^<]*?stable/i)
   end
 
   bottle do
-    sha256 arm64_sonoma:   "f5b50cd761834cdfe16e03717dcbdd08e56dd46f7cc8247cb17dd3ba8dfe2b41"
-    sha256 arm64_ventura:  "4e703c18bffa0042f49681079126eb44291d0f40294501a8513c0c354ce2e754"
-    sha256 arm64_monterey: "45db8c6cd8cab7f6689b30958647b38c8c74dcf9d3be104b67ae12654d9f3b21"
-    sha256 sonoma:         "48c8d2533a57a71ad7d5e6ac41256eec3f7f352c88bbe4b1f95fac7b83c8cc0e"
-    sha256 ventura:        "42f8f4799f7cbd270f9a8e080e9b36c5ba9f1689e1646367fd69ccd2e6239c7e"
-    sha256 monterey:       "4b735a8f787d82128743c1f5c65c61d06576a11a6cfe6c49901682ae34fcdbc4"
-    sha256 x86_64_linux:   "0971d3c13d39522ff6b651b0db22346a4875fcf2407b1295339df1b9f8ed009e"
+    sha256 arm64_sequoia: "08dd88e8e9fc10ef7494116e727723828e3e7d4f17e3fd96a204c828a5628945"
+    sha256 arm64_sonoma:  "8d442104e77ea8cff29c84fdb5a7e4604ebc8e81c32d9a9e070138eb5cb6e22b"
+    sha256 arm64_ventura: "f036e8ce8f5cf29c9996441ad4a479ac53534d6c83255c812526ac1c4831c790"
+    sha256 sonoma:        "bfb3e2c794ec64de04cb3bffb98c77cd525b628e84e0333fc17b9f67bfb5daf8"
+    sha256 ventura:       "acf867ac9bc8bea1f5095221acf661185c72523b288a1b3085057af455353aef"
+    sha256 x86_64_linux:  "b357e992fd8676db35a50c6e93abed1008f7f16b79e72450093631d1e83576d1"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+  depends_on "fstrm"
   depends_on "gnutls"
   depends_on "knot"
   depends_on "libnghttp2"
   depends_on "libuv"
   depends_on "lmdb"
   depends_on "luajit"
+  depends_on "protobuf-c"
 
   on_linux do
     depends_on "libcap-ng"
+    depends_on "libedit"
     depends_on "systemd"
   end
 

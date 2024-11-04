@@ -3,8 +3,8 @@ class Polynote < Formula
 
   desc "Polyglot notebook with first-class Scala support"
   homepage "https://polynote.org/"
-  url "https://github.com/polynote/polynote/releases/download/0.5.1/polynote-dist.tar.gz"
-  sha256 "e7715dd7e044cdf4149a1178b42a506c639a31bcb9bf97d08cec4d1fe529bf18"
+  url "https://github.com/polynote/polynote/releases/download/0.6.0/polynote-dist.tar.gz"
+  sha256 "ec4e0e434f5996e83fd9490dbd6b99cbb724a39fa4074d3198eb16662ddf1d4a"
   license "Apache-2.0"
 
   # Upstream marks all releases as "pre-release", so we have to use
@@ -27,27 +27,25 @@ class Polynote < Formula
 
   bottle do
     rebuild 1
-    sha256 cellar: :any, arm64_sonoma:   "9590805d7fd26247263cced0d0306bb7c863b95ef4354b27bae92c135efc1552"
-    sha256 cellar: :any, arm64_ventura:  "a93aa1f2b84d6e1137fea692702eae407d1ff09ad3318c6c5db0a4d97b24ce75"
-    sha256 cellar: :any, arm64_monterey: "7e5f4992e898ae22d50966b4855fa672fa7a15a2c3ad41d34ea94d6bfa7b14bb"
-    sha256 cellar: :any, sonoma:         "a50ff8929239623319fa68c68ba80e31b7212a6350485b74eb6b7c45da0c6fc4"
-    sha256 cellar: :any, ventura:        "e272c680279935779e96fd7f63fe5ce41b7702975e62d732846eb094f5103b87"
-    sha256 cellar: :any, monterey:       "92e35fd7f1bec7d1cabee9e55d15aedf037fe0c94d9511dca040e1f2e9c49f09"
-    sha256               x86_64_linux:   "f9ec11fd988d61e408555488aa45f20ae99d998c80db09ec0ca2a009a10e9cf5"
+    sha256 cellar: :any, arm64_sequoia: "3108301f5ac48280748b5bcb39d3d9a58163c01a746298e0fd52c356f60dce9d"
+    sha256 cellar: :any, arm64_sonoma:  "97f65023ac434561f2d6d2805cca4f42d8fd8ebece48db502774abe4451a395d"
+    sha256 cellar: :any, arm64_ventura: "099ee95666dab608cb20e6cf0a3ea6deddd2aa068e17f5d4b4a3e81e4a10f2b3"
+    sha256 cellar: :any, sonoma:        "023f3ec9fbbf8f609f50f2a5af29a219ad0f92bacaaaab04171ac0336e35749b"
+    sha256 cellar: :any, ventura:       "4f615c977c0f8fce74196f5edd3b4b206ecc49642e9488cf429c098633ca052b"
+    sha256               x86_64_linux:  "b45a939832aef9806c719241f96371f4672a7f46bb23f04bd672417083cd3038"
   end
 
-  depends_on "python-setuptools" => :build
   depends_on "numpy" # used by `jep` for Java primitive arrays
   depends_on "openjdk"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "jep" do
-    url "https://files.pythonhosted.org/packages/b3/0c/d208bc8a86f032b9a9270876129aadb41fa1a4baa172d68a29c579950856/jep-4.1.1.tar.gz"
-    sha256 "5914a4d815a7e86819f55be3de840edc2d3fe0d0b3f67626e5cea73841b1d1c0"
+    url "https://files.pythonhosted.org/packages/16/94/3bc40b4683442bd34e7c511cbe5c1a1bb8d5d6de1f4955991a07fe02c836/jep-4.2.0.tar.gz"
+    sha256 "636368786b4f3dc29510454e0580a432e45e696de99ce973a3caef6faec35287"
   end
 
   def install
-    python3 = "python3.12"
+    python3 = "python3.13"
 
     with_env(JAVA_HOME: Language::Java.java_home) do
       resource("jep").stage do
@@ -57,7 +55,7 @@ class Polynote < Formula
           ENV.append "LDFLAGS", "-Wl,-rpath,#{Formula["openjdk"].libexec}/lib/server"
         end
 
-        system python3, "-m", "pip", "install", *std_pip_args(prefix: libexec/"vendor"), "."
+        system python3, "-m", "pip", "install", *std_pip_args(prefix: libexec/"vendor", build_isolation: true), "."
       end
     end
 
@@ -66,6 +64,7 @@ class Polynote < Formula
 
     env = Language::Java.overridable_java_home_env
     env["PYTHONPATH"] = libexec/"vendor"/Language::Python.site_packages(python3)
+    env["LD_LIBRARY_PATH"] = lib
     (bin/"polynote").write_env_script libexec/"polynote.py", env
   end
 

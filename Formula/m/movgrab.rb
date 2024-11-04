@@ -1,19 +1,18 @@
 class Movgrab < Formula
   desc "Downloader for youtube, dailymotion, and other video websites"
-  homepage "https://sites.google.com/site/columscode/home/movgrab"
+  homepage "https://github.com/ColumPaget/Movgrab"
   url "https://github.com/ColumPaget/Movgrab/archive/refs/tags/3.1.2.tar.gz"
   sha256 "30be6057ddbd9ac32f6e3d5456145b09526cc6bd5e3f3fb3999cc05283457529"
   license "GPL-3.0-or-later"
-  revision 6
+  revision 8
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "00bae61b99036c125722e286765989750625ea2e101cb72b423d66b6d0e89885"
-    sha256 cellar: :any,                 arm64_ventura:  "2125f5ed70f10bc4a52fe12c2039bac9c5962fbc11279649a4afcb74edafbe25"
-    sha256 cellar: :any,                 arm64_monterey: "6862be98fc9700fe5387119419841f26933e19914cb5cc29cc1740ddbc7f5c91"
-    sha256 cellar: :any,                 sonoma:         "19b7eca42fa3da28533ebc1fcd5d591829945c9437e95856eeeb0e7866da7f91"
-    sha256 cellar: :any,                 ventura:        "be017c6a743b1e9e2da0fd70e84929e5c4922b86d4320c0a3bb9f0cd866904e3"
-    sha256 cellar: :any,                 monterey:       "2e6696b7eba9cfd5ddc641e08bca87e98f03005673f17d4be0a42888598ccac5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a8dcd83d074d217a70c8e52ab8fb1eaf827c83c104af436ec1bbd3e0b71bcafb"
+    sha256 cellar: :any,                 arm64_sequoia: "afb183eb74f1478d968a2305c377fe6c97ba608e5c44d8974a23c4c03a9b1559"
+    sha256 cellar: :any,                 arm64_sonoma:  "4fd44929e4f9da802c6517eae4eccce57f0903a513ade31baf63ac6c5a1d9d4b"
+    sha256 cellar: :any,                 arm64_ventura: "36ee0f40c03cc093c495d70f1665766974a307c8f021b716c30f7bc1570e7550"
+    sha256 cellar: :any,                 sonoma:        "3fd10d07f84f4b0adb19636b805b9db9ad2486fe3d13bc35a2f080bb588f3a2d"
+    sha256 cellar: :any,                 ventura:       "ab2995d794afc29b4195997223f875d6b36e301cbe3243d8c86d9d4c753b51c4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ddd8b8dffed7bf9c48adf8df108c5de1c8671ee55a7b87c61f862a39264edef"
   end
 
   depends_on "libressl"
@@ -32,7 +31,17 @@ class Movgrab < Formula
 
   # Backport fix for GCC linker library search order
   # Upstream ref: https://github.com/ColumPaget/Movgrab/commit/fab3c87bc44d6ce47f91ded430c3512ebcf7501b
-  patch :DATA
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/6e5fdfd05ce62383c7f3ac4b23ba31f5ffbac5b2/movgrab/linker.patch"
+    sha256 "e23330f110cb8ea2ed29ebc99180250fa5498d53706303b4d1878dc44aa483d3"
+  end
+
+  # build patch to fix pointer conversion issues
+  # upstream bug report, https://github.com/ColumPaget/Movgrab/issues/6
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/ba252015727b6f0fb362fec3edfb7c53a3f888c2/movgrab/pointer-conv.patch"
+    sha256 "9b5c0bb666d92c87966e610e3c2db9736371507b646359b5421f2a4fa7d68222"
+  end
 
   def install
     # workaround for Xcode 14.3
@@ -59,36 +68,6 @@ class Movgrab < Formula
   end
 
   test do
-    system "#{bin}/movgrab", "--version"
+    system bin/"movgrab", "--version"
   end
 end
-
-__END__
-diff --git a/Makefile.in b/Makefile.in
-index 04ea67d..5516051 100755
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -11,7 +11,7 @@ OBJ=common.o settings.o containerfiles.o outputfiles.o servicetypes.o extract_te
-
- all: $(OBJ)
- 	@cd libUseful-2.8; $(MAKE)
--	$(CC) $(FLAGS) -o movgrab main.c $(LIBS) $(OBJ) libUseful-2.8/libUseful-2.8.a
-+	$(CC) $(FLAGS) -o movgrab main.c $(OBJ) libUseful-2.8/libUseful-2.8.a $(LIBS)
-
- clean:
- 	@rm -f movgrab *.o libUseful-2.8/*.o libUseful-2.8/*.a libUseful-2.8/*.so config.log config.status
-diff --git a/libUseful-2.8/DataProcessing.c b/libUseful-2.8/DataProcessing.c
-index 3e188a8..56087a6 100755
---- a/libUseful-2.8/DataProcessing.c
-+++ b/libUseful-2.8/DataProcessing.c
-@@ -420,8 +420,8 @@ switch(val)
-
- if (Data->Cipher)
- {
--Data->enc_ctx=(EVP_CIPHER_CTX *) calloc(1,sizeof(EVP_CIPHER_CTX));
--Data->dec_ctx=(EVP_CIPHER_CTX *) calloc(1,sizeof(EVP_CIPHER_CTX));
-+Data->enc_ctx=EVP_CIPHER_CTX_new();
-+Data->dec_ctx=EVP_CIPHER_CTX_new();
- EVP_CIPHER_CTX_init(Data->enc_ctx);
- EVP_CIPHER_CTX_init(Data->dec_ctx);
- Data->BlockSize=EVP_CIPHER_block_size(Data->Cipher);

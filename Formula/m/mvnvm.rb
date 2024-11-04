@@ -2,13 +2,13 @@ class Mvnvm < Formula
   desc "Maven version manager"
   # upstream homepage bug report, https://bitbucket.org/mjensen/mvnvm/issues/41/https-mvnvmorg-is-not-reachable
   homepage "https://bitbucket.org/mjensen/mvnvm/"
-  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.26.tar.gz"
-  sha256 "9f3572114ae983b24c5bd36e2ef5124daa606298be33986e726b79fcd44d486c"
+  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.29.tar.gz"
+  sha256 "f3004baa68051fe64b2ab212fea57cb05dcc598e334f2529b9ca936a3b275b0e"
   license "Apache-2.0"
   head "https://bitbucket.org/mjensen/mvnvm.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "24779d38d6951058a609d6819b97a6cc01ca9220848ea78587fcc427209453c2"
+    sha256 cellar: :any_skip_relocation, all: "03af6e6b002c6e176d523f5d182400b70066fa9f2350155a2cd51abd249b122a"
   end
 
   depends_on "openjdk"
@@ -50,6 +50,6 @@ class Mvnvm < Formula
         }
       }
     EOS
-    system "#{bin}/mvn", "-gs", "#{testpath}/settings.xml", "compile"
+    system bin/"mvn", "-gs", testpath/"settings.xml", "compile"
   end
 end

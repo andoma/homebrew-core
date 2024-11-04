@@ -1,18 +1,17 @@
 class Ctlptl < Formula
   desc "Making local Kubernetes clusters fun and easy to set up"
   homepage "https://github.com/tilt-dev/ctlptl"
-  url "https://github.com/tilt-dev/ctlptl/archive/refs/tags/v0.8.27.tar.gz"
-  sha256 "6afa37a0c74a0dc886920f72eeca1570bb35573626ede4f18aecfd55ef0ba9cd"
+  url "https://github.com/tilt-dev/ctlptl/archive/refs/tags/v0.8.35.tar.gz"
+  sha256 "67906ada26be934b0a2af574e1f6a52e72ae34cf02bef88f1ef9afdd459dc7d8"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4ce02b5583c831cd7dbe353a68fa06fe02cfb520dbfb92fb4cc1e484ea2c7eee"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6b6f85fddf3f6cc1306589ddfd31ef582add15b7edb0ed63b6044e890da290da"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "43a29776f2809e1c5f6552a1f1ff6b36fd4d311d58a0e71e3242517ba2e7c3fe"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e608375e6bd49362a8a20d45545633ee9d5483e9463a213604a55e09e8fb5872"
-    sha256 cellar: :any_skip_relocation, ventura:        "fa573de88462c1527adf534f8d8fa0c27bbe8e36cc187f2d78202a0e87cb4bf8"
-    sha256 cellar: :any_skip_relocation, monterey:       "edbb04daea5072a337423924a74507652cacb6befb5952b7d67ede5f64e93a68"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "38934cbf12e3ad0b0504c3814172728633384105106babd90ccca9c848921553"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "33a286b814c602b50f8776d6f83528f527026d793e7eac3c76def15831ca8d07"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b1c24730304915173a73418a41081221781f88179925bc662d115903377aea1a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "557881046faa2a851aeb3e14df484ca33b48c7c654206d3797e80dd54e4965f6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "87ef5dfe6e80471b6b422a64f93454938b37091b128702f13dfa7bab17868952"
+    sha256 cellar: :any_skip_relocation, ventura:       "57c24df0bbdec555886923fd065fa7f51bf6e2ca17a782f1adacc2788be59767"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "51a619d1511f3970152d9acd607c44624592028ac44fefe0e0171829346808a0"
   end
 
   depends_on "go" => :build
@@ -23,7 +22,7 @@ class Ctlptl < Formula
       -X main.version=#{version}
       -X main.date=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/ctlptl"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/ctlptl"
 
     generate_completions_from_executable(bin/"ctlptl", "completion")
   end

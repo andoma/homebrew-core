@@ -1,19 +1,20 @@
 class Luv < Formula
   desc "Bare libuv bindings for lua"
   homepage "https://github.com/luvit/luv"
-  url "https://github.com/luvit/luv/archive/refs/tags/v1.48.0-0.tar.gz"
-  sha256 "c9c12e414f8045aea11e5dbb44cd6c68196c10e02e1294dad971c367976cc1f9"
+  url "https://github.com/luvit/luv/archive/refs/tags/1.48.0-2.tar.gz"
+  sha256 "e64cd8a0197449288b37df6ca058120e8d2308fc305f543162b5bf3e92273a05"
   license "Apache-2.0"
   head "https://github.com/luvit/luv.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "a5a0804b0f9e914a959c539e82ed9125e30ee3f8a45ab50687c050038778179e"
-    sha256 cellar: :any,                 arm64_ventura:  "065b4bba5f6f5da08fa3880d6408259e0d7589de22407d744e5010663379bfba"
-    sha256 cellar: :any,                 arm64_monterey: "83c7f87651cb20df7227bf7010074df2ddf1240dbe936f3ee1dc69e24a92fb2f"
-    sha256 cellar: :any,                 sonoma:         "d1ddd7ed8dd0bce2c0e173dd49cc2d9a2b0fa24c9ef007aa74379fab1b63f27f"
-    sha256 cellar: :any,                 ventura:        "4e329fc722c29685d8ffedbe989b3e79ce8b60b424d0b5b4a73263e6ddba1d32"
-    sha256 cellar: :any,                 monterey:       "ea65b68a6ec4aec7ecd77ea792eb3aecd2cbbfdf840e2f2648dfae0afb614c59"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "249fa07bc1dd60a559c8aaa9c9f13e8cf4aa4139c718a73c99576a0f8e5afb6c"
+    sha256 cellar: :any,                 arm64_sequoia:  "6fc436592e7512c75133cd501da7005a0ca564122198a20cdb28305ea0dc7f4d"
+    sha256 cellar: :any,                 arm64_sonoma:   "8eee983f433b14404e806a25d9d9d6a37dea290ecd07676eea143c244aa81b7c"
+    sha256 cellar: :any,                 arm64_ventura:  "5b52e62605db4618b943a313b7dc27fa1ca4d606289f773a934d62aa841ce822"
+    sha256 cellar: :any,                 arm64_monterey: "4ead7a7d5a515244136e919f531d24f1b9ea4ed01847476b0f1b50d5bcede873"
+    sha256 cellar: :any,                 sonoma:         "b573480537972f4d8479623184281fc3e5b78a3e8d92e8b5eaf743db9584e5d8"
+    sha256 cellar: :any,                 ventura:        "6dabf92fc2281a8c6f92dc2a58be611da35160b81daf54dc496cae8d6c63016c"
+    sha256 cellar: :any,                 monterey:       "fbb502ebd96a09cdf7bcc97a2e675a90d1261598bbc198eef328b06f524eaab0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd96aeba470693fd6b86ed66ee7fc53171dc7ee04f141b69423b1301beddcc83"
   end
 
   depends_on "cmake" => :build

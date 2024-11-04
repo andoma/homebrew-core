@@ -13,6 +13,7 @@ class Ldapvi < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "619197cac0a0f9f7c8df2d5ced5e42f95e421c645ae87b7ae0d44048cbec6359"
     sha256 cellar: :any,                 arm64_sonoma:   "1a498cb6fd5153f82c0cfd2a9133dcaf68c280f3da4fa641abdcde5d0d2c4311"
     sha256 cellar: :any,                 arm64_ventura:  "a3ad41b60a3da8e819b1abec997f49b3912addab32ffde4c5e12b7b747c5e86f"
     sha256 cellar: :any,                 arm64_monterey: "63919baa17c57b8a12fa108dbfe0f4c8dbf3c591be3b8fad01f0750cca17be95"
@@ -26,6 +27,7 @@ class Ldapvi < Formula
 
   depends_on "pkg-config" => :build
   depends_on "xz" => :build # Homebrew bug. Shouldn't need declaring explicitly.
+
   depends_on "gettext"
   depends_on "glib"
   depends_on "openssl@3"
@@ -33,6 +35,7 @@ class Ldapvi < Formula
   depends_on "readline"
 
   uses_from_macos "libxcrypt"
+  uses_from_macos "ncurses"
   uses_from_macos "openldap"
 
   # These patches are applied upstream but release process seems to be dead.
@@ -53,12 +56,11 @@ class Ldapvi < Formula
     inreplace "ldapvi.c", "if (lstat(sasl, &st) == -1) return;",
                           "if (lstat(sasl, &st) == -1) return 0;"
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 
   test do
-    system "#{bin}/ldapvi", "--version"
+    system bin/"ldapvi", "--version"
   end
 end

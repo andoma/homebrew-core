@@ -1,19 +1,13 @@
 class Quill < Formula
   desc "C++17 Asynchronous Low Latency Logging Library"
   homepage "https://github.com/odygrd/quill"
-  url "https://github.com/odygrd/quill/archive/refs/tags/v3.6.0.tar.gz"
-  sha256 "ba9dc3df262f2e65c57904580cc8407eba9a462001340c17bab7ae1dccddb4bd"
+  url "https://github.com/odygrd/quill/archive/refs/tags/v7.4.0.tar.gz"
+  sha256 "749e6f75ee0889062f7135306832de5ad4d5d2e638b52316b5cd3f9af8671aff"
   license "MIT"
   head "https://github.com/odygrd/quill.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "45357b7bd9822deaff1c9852c628ea088e31995808a3fe72e03525ea89b7494c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "da9ab033ee76f8a08ba6732011402d0de7fa340b614c8c686db57c343bb3d4e9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cdb091334953b941808e9547128532132d647a38c42ccdbd6def712d5902db7c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1901e295faac057bd9350e25dd9ac244e61d9512c1327a502e08ea8ca3f8c73f"
-    sha256 cellar: :any_skip_relocation, ventura:        "57afd751c3ff317631b73a2f5c76e9b26cf1532ed675ffe1309557c48b4250cb"
-    sha256 cellar: :any_skip_relocation, monterey:       "8f1f0abb334f329374de32f768443045fcdbf0e8753cd56503e2eefc35027568"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "772ec4937e7bccbcc6d2ec8cc2abf6db36182ebff3bdd98dd1a14108f7346fb3"
+    sha256 cellar: :any_skip_relocation, all: "7cf1b51237a68bd846ba0b630050b0e0cff5ccf717c06f6e4d7062c56170716c"
   end
 
   depends_on "cmake" => :build
@@ -29,23 +23,36 @@ class Quill < Formula
 
   test do
     (testpath/"test.cpp").write <<~EOS
-      #include "quill/Quill.h"
+      #include "quill/Backend.h"
+      #include "quill/Frontend.h"
+      #include "quill/LogMacros.h"
+      #include "quill/Logger.h"
+      #include "quill/sinks/ConsoleSink.h"
+
       int main()
       {
-        quill::start();
+        // Start the backend thread
+        quill::Backend::start();
 
-        quill::FileHandlerConfig file_handler_cfg;
-        file_handler_cfg.set_open_mode('w');
+        // Frontend
+        auto console_sink = quill::Frontend::create_or_get_sink<quill::ConsoleSink>("sink_id_1");
+        quill::Logger* logger = quill::Frontend::create_or_get_logger("root", std::move(console_sink));
 
-        std::shared_ptr< quill::Handler > file_handler = quill::file_handler("#{testpath}/basic-log.txt", file_handler_cfg);
-        quill::Logger* logger = quill::create_logger("logger_bar", std::move(file_handler));
-        LOG_INFO(logger, "Test");
+        // Change the LogLevel to print everything
+        logger->set_log_level(quill::LogLevel::TraceL3);
+
+        LOG_INFO(logger, "Welcome to Quill!");
+        LOG_ERROR(logger, "An error message. error code {}", 123);
+        LOG_WARNING(logger, "A warning message.");
+        LOG_CRITICAL(logger, "A critical error.");
+        LOG_DEBUG(logger, "Debugging foo {}", 1234);
+        LOG_TRACE_L1(logger, "{:>30}", "right aligned");
+        LOG_TRACE_L2(logger, "Positional arguments are {1} {0} ", "too", "supported");
+        LOG_TRACE_L3(logger, "Support for floats {:03.2f}", 1.23456);
       }
     EOS
 
-    system ENV.cxx, "-std=c++17", "test.cpp", "-I#{include}", "-L#{lib}", "-lquill", "-o", "test", "-pthread"
+    system ENV.cxx, "-std=c++17", "test.cpp", "-I#{include}", "-o", "test", "-pthread"
     system "./test"
-    assert_predicate testpath/"basic-log.txt", :exist?
-    assert_match "Test", (testpath/"basic-log.txt").read
   end
 end

@@ -6,6 +6,7 @@ class Openmama < Formula
   license "LGPL-2.1-only"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "786b187f472ddd357f105cffc281cf4f8382b46ae31c5b428a5f1d8038c812ae"
     sha256 cellar: :any,                 arm64_sonoma:   "7b9ff5f5a5bacec5396c90a71d3f473c917aa5bf33cd403cc6f5eb4259f5f8b5"
     sha256 cellar: :any,                 arm64_ventura:  "6de6d6508390baa3544fa1995f827b8bf9cd6e043d167b97411e4fdf1a82c2d5"
     sha256 cellar: :any,                 arm64_monterey: "01798a8ef79a4568217feef635bf6c19a611df734fca69ca1d056a15ff6c8708"
@@ -24,6 +25,7 @@ class Openmama < Formula
   depends_on "qpid-proton"
 
   uses_from_macos "flex" => :build
+  uses_from_macos "ncurses"
 
   # UUID is provided by util-linux on Linux.
   on_linux do
@@ -48,8 +50,9 @@ class Openmama < Formula
   end
 
   test do
-    system "#{bin}/mamalistenc", "-?"
-    (testpath/"test.c").write <<~EOS
+    system bin/"mamalistenc", "-?"
+
+    (testpath/"test.c").write <<~C
       #include <mama/mama.h>
       #include <stdio.h>
       int main() {
@@ -62,7 +65,8 @@ class Openmama < Formula
           printf("%s\\n", version);
           return 0;
       }
-    EOS
+    C
+
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lmama", "-o", "test"
     assert_includes shell_output("./test"), version.to_s
   end

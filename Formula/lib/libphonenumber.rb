@@ -1,8 +1,8 @@
 class Libphonenumber < Formula
   desc "C++ Phone Number library by Google"
   homepage "https://github.com/google/libphonenumber"
-  url "https://github.com/google/libphonenumber/archive/refs/tags/v8.13.31.tar.gz"
-  sha256 "6d03446f096259552d34580a42ef6ebb450f2419dde3801a60fffca4240b3227"
+  url "https://github.com/google/libphonenumber/archive/refs/tags/v8.13.49.tar.gz"
+  sha256 "491a8c0d7febb14a36f68f2a5fc23aa8e7e1fa024a88633a638049be66648d3e"
   license "Apache-2.0"
 
   livecheck do
@@ -11,23 +11,20 @@ class Libphonenumber < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "c8f47d7fdf1ba9675bc7ae710174207450d37f764069a875f05decb40696eda6"
-    sha256 cellar: :any,                 arm64_ventura:  "ddbbec9be4a385c96d74100f78e1bfa4b9f2bf61ae3f6cabf63e7f3c14771cd4"
-    sha256 cellar: :any,                 arm64_monterey: "b26169dbce01bf1cb9d058bbd574674c3de762ba344054148ff26ef4ca65ee68"
-    sha256 cellar: :any,                 sonoma:         "0ed9a0e1a43a2492fe02a750454e1ca9a8723e72ab5eaf088a0adf421b43e9f9"
-    sha256 cellar: :any,                 ventura:        "e7535a25a504eb7e2688e225874e666baf460ceaf1116784af461b7e60c815ea"
-    sha256 cellar: :any,                 monterey:       "6cec2cb931b327f2946ef13e9d642497dd30f5fe5c28ca6c4364567de10399f3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1210f2a97ab6580d92cee21cb28505ccd5360c2a0d332969f34d86b23e8420da"
+    sha256 cellar: :any,                 arm64_sequoia: "bdb20d44491e4cc96604e0caa98c6f4a3644253db66bf03976d1b9d414f9b1c9"
+    sha256 cellar: :any,                 arm64_sonoma:  "09f74949de16d2f0bfee0e9d367f971c9e8cd5cbdf5e9418a9dccd6cfc39a0ef"
+    sha256 cellar: :any,                 arm64_ventura: "88364877e446ebcc9977373274bf13ecdbc17b2c3f29160e56c7ab610dd49838"
+    sha256 cellar: :any,                 sonoma:        "dc145681eb4215f92e51359afab5883c42ddad5a880e0e687539ea6a47ccc7ec"
+    sha256 cellar: :any,                 ventura:       "49ff519f43c73ab462a1d15d6cb2068926cce4395d083a71cf709ebe2a664539"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "663b5d3b1016f836cd2eac9949a3db4ab67f2ebab07311aa8dd4b6faed3f1ec8"
   end
 
   depends_on "cmake" => :build
-  depends_on "googletest" => :build
   depends_on "openjdk" => :build
   depends_on "abseil"
   depends_on "boost"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "protobuf"
-  depends_on "re2"
 
   fails_with gcc: "5" # For abseil and C++17
 
@@ -35,14 +32,13 @@ class Libphonenumber < Formula
     ENV.append_to_cflags "-Wno-sign-compare" # Avoid build failure on Linux.
     system "cmake", "-S", "cpp", "-B", "build",
                     "-DCMAKE_CXX_STANDARD=17", # keep in sync with C++ standard in abseil.rb
-                    "-DGTEST_INCLUDE_DIR=#{Formula["googletest"].opt_include}",
                      *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <phonenumbers/phonenumberutil.h>
       #include <phonenumbers/phonenumber.pb.h>
       #include <iostream>
@@ -53,7 +49,7 @@ class Libphonenumber < Formula
       int main() {
         PhoneNumberUtil *phone_util_ = PhoneNumberUtil::GetInstance();
         PhoneNumber test_number;
-        string formatted_number;
+        std::string formatted_number;
         test_number.set_country_code(1);
         test_number.set_national_number(6502530000ULL);
         phone_util_->Format(test_number, PhoneNumberUtil::E164, &formatted_number);
@@ -63,8 +59,10 @@ class Libphonenumber < Formula
           return 1;
         }
       }
-    EOS
-    system ENV.cxx, "-std=c++17", "test.cpp", "-L#{lib}", "-lphonenumber", "-o", "test"
+    CPP
+    system ENV.cxx, "-std=c++17", "test.cpp",
+                                "-I#{Formula["protobuf"].opt_include}",
+                                "-L#{lib}", "-lphonenumber", "-o", "test"
     system "./test"
   end
 end

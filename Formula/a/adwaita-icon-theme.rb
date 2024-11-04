@@ -1,17 +1,15 @@
 class AdwaitaIconTheme < Formula
   desc "Icons for the GNOME project"
   homepage "https://developer.gnome.org"
-  url "https://download.gnome.org/sources/adwaita-icon-theme/45/adwaita-icon-theme-45.0.tar.xz"
-  sha256 "2442bfb06f4e6cc95bf6e2682fdff98fa5eddc688751b9d6215c623cb4e42ff1"
+  url "https://download.gnome.org/sources/adwaita-icon-theme/47/adwaita-icon-theme-47.0.tar.xz"
+  sha256 "ad088a22958cb8469e41d9f1bba0efb27e586a2102213cd89cc26db2e002bdfe"
   license any_of: ["LGPL-3.0-or-later", "CC-BY-SA-3.0"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "1f15f403be112f15296ba0526f19abbdcbb830ca027cec557ef52c1f3563de05"
+    sha256 cellar: :any_skip_relocation, all: "02a59c3c9335a81374805e6959a572255f6def77b599ee378ad39a1fe6ff61e7"
   end
 
-  depends_on "gettext" => :build
   depends_on "gtk4" => :build # for gtk4-update-icon-cache
-  depends_on "intltool" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build

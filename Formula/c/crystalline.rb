@@ -1,22 +1,25 @@
 class Crystalline < Formula
   desc "Language Server Protocol implementation for Crystal"
   homepage "https://github.com/elbywan/crystalline"
-  url "https://github.com/elbywan/crystalline/archive/refs/tags/v0.12.2.tar.gz"
-  sha256 "32d137f1e4edd29c74381cc010e9080379346b23646ca5f0806f64d2e05628fb"
+  url "https://github.com/elbywan/crystalline/archive/refs/tags/v0.15.0.tar.gz"
+  sha256 "45ed0162e724d2ef080e5264086bcea5b53d12fcafc5ddefc3bbf16af021fc48"
   license "MIT"
 
   bottle do
-    sha256 arm64_sonoma:   "8b3a14b51496e54a12b6c05c9afb99c352b6db81b1063f56fb946e1c05500cf7"
-    sha256 arm64_ventura:  "abba1c9b5837de3c4a170d4f0ac50770afc7b7b1b1b0e53cdd841e4f66bfed24"
-    sha256 arm64_monterey: "3e0f71e345b2bcf1031d490c0390b262cfa8c75be25273820a1bee3288b22e1a"
-    sha256 sonoma:         "90c4b784d95f277d7d7409dd5d2dd5d5756b69857f0165518edc4648579a9bad"
-    sha256 ventura:        "0f9284cca91cd996884e8b7f83b23cac76f866a2c6d2036f7578587e6015c71a"
-    sha256 monterey:       "ecd7f70f34d59c93fd7d1af673093ee3ecd39df5d5602918cbd62e000e0f8dd1"
-    sha256 x86_64_linux:   "5c44c95d1c1a6528b0d5b64c04731ca91e41a8776c74b0381d0c99a5b340fd7b"
+    sha256 arm64_sequoia: "58cb6766d9b3bde9205fc294459629e62cc7b0f33c8340d56541cbf8d58b7cf5"
+    sha256 arm64_sonoma:  "d49db70364b4b5fffcd93c462c5522bbd0be7335b612ed59174866b1372f335f"
+    sha256 arm64_ventura: "25ee4d95d2bf90dd2ebfd9dd3ad08e5d50c2435407e54324872d2e30f8f61d87"
+    sha256 sonoma:        "2300f91fa3b8111f09e9749cf1fca4eeab71045765fedab5133081fb6ef9c52c"
+    sha256 ventura:       "47a3caec8b5e43a8da8d246da2aeaa2c84a4735b572b3680eedaba931bed4796"
+    sha256 x86_64_linux:  "715de9336f21432cd9d431bb5e7f4f280f9e5cef7947dccdb172b5dacab52ac4"
   end
 
+  depends_on "bdw-gc"
   depends_on "crystal"
+  depends_on "libevent"
   depends_on "libyaml"
+  depends_on "llvm"
+  depends_on "pcre2"
 
   def install
     system "shards", "install"
@@ -51,7 +54,7 @@ class Crystalline < Formula
       #{payload}
     LSP_REQUEST
 
-    output = pipe_output("#{bin}/crystalline", request, 0)
+    output = pipe_output(bin/"crystalline", request, 0)
     assert_match "Content-Length", output
   end
 end

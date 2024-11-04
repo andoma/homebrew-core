@@ -1,18 +1,19 @@
 class Libpqxx < Formula
   desc "C++ connector for PostgreSQL"
   homepage "https://pqxx.org/development/libpqxx/"
-  url "https://github.com/jtv/libpqxx/archive/refs/tags/7.9.0.tar.gz"
-  sha256 "a1fafd5f6455f6c66241fca1f35f5cb603251580b99f9a0cf1b5d0a586006f16"
+  url "https://github.com/jtv/libpqxx/archive/refs/tags/7.9.2.tar.gz"
+  sha256 "e37d5774c39f6c802e32d7f418e88b8e530404fb54758516e884fc0ebdee6da4"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "0544a6e77c53c081636c4ec66691c8b145dafb881a002f5d9dbccdb78561883f"
-    sha256 cellar: :any,                 arm64_ventura:  "bec9d1600d861411dfa6fe8caeae9f75bba3ef966d7bd28210d870e225cc4113"
-    sha256 cellar: :any,                 arm64_monterey: "99f9329816b3b984a5fc11be9c7a73eb257afd5b3e445f5c0b2b8e649a622d28"
-    sha256 cellar: :any,                 sonoma:         "f912b2f89ef856d97c2533c368b3d98998bbaf13b07ac1bc6ed225880d16a87d"
-    sha256 cellar: :any,                 ventura:        "7ca720a46c7737536b36714efe28718583745f5bae30b118440fbc27b5d1f1c6"
-    sha256 cellar: :any,                 monterey:       "754eaaa867f534643bc3eb3d2315d68cf73795b9786d50c75f46ad667e8d4364"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6dc5225d4cc66f46baddf5692617203357fe5e4f91792fe3248574bc01e3e62c"
+    sha256 cellar: :any,                 arm64_sequoia:  "d88089c7284c6e48d32ac9a8913a4592d2402ba8724cee41d3d8e99aeedf508a"
+    sha256 cellar: :any,                 arm64_sonoma:   "4bbe6bc59845beb22347415487ece9596a1547125b25cb79f863a73bd00a4b91"
+    sha256 cellar: :any,                 arm64_ventura:  "1430202c780b48c6105e855ea8d419d8007c64efdb31ab47e470b400d10bc09a"
+    sha256 cellar: :any,                 arm64_monterey: "578bccfc4ad118c1cdb92c1dbe202656db8a284ce3c6ac1cd04112b7b1276902"
+    sha256 cellar: :any,                 sonoma:         "58ac23cc1afda6a9bcaa73888c4f336025cfebfcc95f96a60e041dfb36f4165b"
+    sha256 cellar: :any,                 ventura:        "67b91dc955bef467e00fbe835fc34c4c7026b2c3e113fe7dde43d805fa6e0664"
+    sha256 cellar: :any,                 monterey:       "0fb08adfdcd300f7cc93ee0b5a3fc8ede01ba43afc896091500b29c0adf168a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8434faf947afc1526b6da021efaa8e7d5b4cd5ab680f5eef2f191e797f09b3d7"
   end
 
   depends_on "pkg-config" => :build
@@ -33,13 +34,13 @@ class Libpqxx < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <pqxx/pqxx>
       int main(int argc, char** argv) {
         pqxx::connection con;
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++17", "test.cpp", "-L#{lib}", "-lpqxx",
            "-I#{include}", "-o", "test"
     # Running ./test will fail because there is no running postgresql server

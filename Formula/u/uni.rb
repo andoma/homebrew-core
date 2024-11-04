@@ -1,18 +1,19 @@
 class Uni < Formula
   desc "Unicode database query tool for the command-line"
   homepage "https://github.com/arp242/uni"
-  url "https://github.com/arp242/uni/archive/refs/tags/v2.6.0.tar.gz"
-  sha256 "dc9b5081279b03b8ffcf1120d3a12635acade73d43abf6a511e3453aa0180e1f"
+  url "https://github.com/arp242/uni/archive/refs/tags/v2.8.0.tar.gz"
+  sha256 "627a8aebe8d72bad5a462b8efc8b96dc96794b926b094de3f1e5b9965e44a678"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "aa3b7279dc2c2bc79cb3e5dcf6b371ba6012c137f1ed54bcf0aaef7a3e20f8ed"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "aa3b7279dc2c2bc79cb3e5dcf6b371ba6012c137f1ed54bcf0aaef7a3e20f8ed"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "aa3b7279dc2c2bc79cb3e5dcf6b371ba6012c137f1ed54bcf0aaef7a3e20f8ed"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c784f3b7ae14f4b197b6ebe63b339afe482f4946bebe8afd5033691e51c1d31e"
-    sha256 cellar: :any_skip_relocation, ventura:        "c784f3b7ae14f4b197b6ebe63b339afe482f4946bebe8afd5033691e51c1d31e"
-    sha256 cellar: :any_skip_relocation, monterey:       "c784f3b7ae14f4b197b6ebe63b339afe482f4946bebe8afd5033691e51c1d31e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0f4adbbcf33e46fc73a9fae2f5d20c897cdba8ac481bfd8cd8c7ecbcaaa9adbe"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "37e3831bc8e3e33e11bd120dba3ac8cca6d5514dcb99b001c9f5737c7bc0f1d6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "37e3831bc8e3e33e11bd120dba3ac8cca6d5514dcb99b001c9f5737c7bc0f1d6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "37e3831bc8e3e33e11bd120dba3ac8cca6d5514dcb99b001c9f5737c7bc0f1d6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "37e3831bc8e3e33e11bd120dba3ac8cca6d5514dcb99b001c9f5737c7bc0f1d6"
+    sha256 cellar: :any_skip_relocation, sonoma:         "e35a0f3bdaf6a9c3eeac5bfeb1041c2f1bc454cfc3f13be21e97081e77a33530"
+    sha256 cellar: :any_skip_relocation, ventura:        "e35a0f3bdaf6a9c3eeac5bfeb1041c2f1bc454cfc3f13be21e97081e77a33530"
+    sha256 cellar: :any_skip_relocation, monterey:       "e35a0f3bdaf6a9c3eeac5bfeb1041c2f1bc454cfc3f13be21e97081e77a33530"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e806e0bf1993f45ab980bd2a01bd4ae1d00b60adc33449c5ec5fdb766c0eebc2"
   end
 
   depends_on "go" => :build

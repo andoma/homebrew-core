@@ -3,26 +3,27 @@ class Kin < Formula
 
   desc "Sane PBXProj files"
   homepage "https://github.com/Serchinastico/Kin"
-  url "https://files.pythonhosted.org/packages/fb/99/49be90a495d0044a9ecadedb2b44c294489d249f65058ffd4575f6b55c95/kin-2.1.8.tar.gz"
-  sha256 "5ba16dbb9f28b38a73a5cda71f477bf198e2c078a134c2cc7a51ba8703f84428"
+  url "https://files.pythonhosted.org/packages/4f/36/dcb0e16c5634d58d0ef2f771fe1e608264698394f4a184afc289d9a85bb8/kin-2.1.10.tar.gz"
+  sha256 "a3cbb3b376c3d28b16b0c07ee835607690745b7a3ba7592f2534b384dd9a9eab"
   license "Apache-2.0"
   head "https://github.com/Serchinastico/Kin.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8561d56906fe5e791c47583652b4ae0a8e763a99e20721b4fe8d431fb2e1061b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ddc8f9d7b9f588cf2d6612995b613e0fab47fd89a345e0528a82f5cf9e6e2dc4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d752587cbae0ca55d3abef627f4868a41f9bd8fb400abd41d3e3cc7c936d427e"
-    sha256 cellar: :any_skip_relocation, sonoma:         "7f2bd1301e6e055808ee3550677b817ce31728321f4364669b7b200563db91f5"
-    sha256 cellar: :any_skip_relocation, ventura:        "cac32fec242bab35b2c7a7675720d6a1b210beaa99bc214d88bb366a37b440e7"
-    sha256 cellar: :any_skip_relocation, monterey:       "ee034b9e8dca4352709afdff44886e1db4409eb82577b5aa687e7b1382bbf502"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6a2de0278557c397127022f7c981a567585eb4dd580a59a8bb3a4c170f71ddb"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "da6d161bf7d2eaaa1150abe6c09599ae49bcb43c3f43ef0be93e7b1a3e4ea7de"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "antlr4-python3-runtime" do
     url "https://files.pythonhosted.org/packages/b6/00/7f1cab9b44518ca225a03f4493ac9294aab5935a7a28486ba91a20ea29cf/antlr4-python3-runtime-4.13.1.tar.gz"
     sha256 "3cd282f5ea7cfb841537fe01f143350fdb1c0b1ce7981443a2fa8513fddb6d1a"
+  end
+
+  # Drop unneeded argparse requirement: https://github.com/Serchinastico/Kin/pull/115
+  patch do
+    url "https://github.com/Serchinastico/Kin/commit/02251e6babc56e3b3d5dfda18559d2f86f147975.patch?full_index=1"
+    sha256 "838b4e9fe54c9afcff0f38a6b6f1eda83883ff724c7089bfa08521f96615fbca"
   end
 
   def install

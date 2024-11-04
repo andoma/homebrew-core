@@ -2,39 +2,71 @@ class Mapproxy < Formula
   include Language::Python::Virtualenv
 
   desc "Accelerating web map proxy"
-  homepage "https://mapproxy.org/"
-  url "https://files.pythonhosted.org/packages/ba/09/6ca59563371cf5a0839a1bca32f277f00dc737a213b1bfa72e5ec0dfeca6/MapProxy-2.0.2.tar.gz"
-  sha256 "1f03b982faec5bda40af3e112edc4d7c29a216a6bce40022eb004923e17d184f"
+  # `mapproxy.org` is 404, upstream bug report, https://github.com/mapproxy/mapproxy/issues/983
+  homepage "https://github.com/mapproxy/mapproxy"
+  url "https://files.pythonhosted.org/packages/20/37/72c3bd2a68d753c595cc15d781b6300d882bfa959ab6b73f20e6e194c2b4/MapProxy-3.1.0.tar.gz"
+  sha256 "a473f5554723d89b04186a41ee15f8463d135bc41ade53f885228d7e5774f1c8"
   license "Apache-2.0"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sonoma:   "82398c857174ec6a22855e591db44faba1ae0270e2ee84457960f0608d8678c2"
-    sha256 cellar: :any,                 arm64_ventura:  "06425b98adf84902c1d050ee66c988adff0bb2288868448ef47e69023c441037"
-    sha256 cellar: :any,                 arm64_monterey: "57d9aeb9919b4369c31dad5c4e8729587f8cec6881df41538cc8480ba25a0e00"
-    sha256 cellar: :any,                 sonoma:         "0b2a3b5cb6b62a0d196a8e14c937d273bfdcd06c972d2a1a439c6a7929b8bd1b"
-    sha256 cellar: :any,                 ventura:        "18580838c29f9809de9b1b326d87d62ddeaac7722f2ecc8ad30e21c1d7735fc6"
-    sha256 cellar: :any,                 monterey:       "b3b844f92f66b88c2e80ea2678daa725543f7b433066c76ac92ebdfc370d540f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "91815dfe504f725458091b08e042a1b3ebf19cb27d42d222c951485a0de43280"
+    sha256 cellar: :any,                 arm64_sequoia: "f2a5388e5b7dd9c1bd08d0ce6ed9a9520ad085b2c9c39c23ad467413ad4fb440"
+    sha256 cellar: :any,                 arm64_sonoma:  "1ca2578919d1c9373c675403450fa5480af2d7f76b6a57f4a8574b4af454c17e"
+    sha256 cellar: :any,                 arm64_ventura: "7fd3bbbf8eda2c887a0d783783dbd82f0134cefb7af5d4b46bf9aa4ea9ba225b"
+    sha256 cellar: :any,                 sonoma:        "bad40127f6dae06e1c819e19555a870ccf209d5e675bd8cc0df294992a0f741a"
+    sha256 cellar: :any,                 ventura:       "bf67be50e86b2cfe15016aeb493c8dd41edbcf9320e9d9899f3aadcccc749503"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "93e509f3f757a65da2787796550a66f43d1944a3507300ba927fb6dd9750a2f7"
   end
 
+  depends_on "rust" => :build # for rpds-py
+  depends_on "certifi"
   depends_on "libyaml"
   depends_on "pillow"
   depends_on "proj"
-  depends_on "python-certifi"
-  # Should be able to remove python-setuptools dependency in next release,
-  # see: https://github.com/mapproxy/mapproxy/pull/863
-  depends_on "python-setuptools"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
+
+  resource "attrs" do
+    url "https://files.pythonhosted.org/packages/fc/0f/aafca9af9315aee06a89ffde799a10a582fe8de76c563ee80bbcdc08b3fb/attrs-24.2.0.tar.gz"
+    sha256 "5cfb1b9148b5b086569baec03f20d7b6bf3bcacc9a42bebf87ffaaca362f6346"
+  end
+
+  resource "future" do
+    url "https://files.pythonhosted.org/packages/a7/b2/4140c69c6a66432916b26158687e821ba631a4c9273c474343badf84d3ba/future-1.0.0.tar.gz"
+    sha256 "bd2968309307861edae1458a4f8a4f3598c03be43b97521076aebf5d94c07b05"
+  end
+
+  resource "jsonschema" do
+    url "https://files.pythonhosted.org/packages/38/2e/03362ee4034a4c917f697890ccd4aec0800ccf9ded7f511971c75451deec/jsonschema-4.23.0.tar.gz"
+    sha256 "d71497fef26351a33265337fa77ffeb82423f3ea21283cd9467bb03999266bc4"
+  end
+
+  resource "jsonschema-specifications" do
+    url "https://files.pythonhosted.org/packages/10/db/58f950c996c793472e336ff3655b13fbcf1e3b359dcf52dcf3ed3b52c352/jsonschema_specifications-2024.10.1.tar.gz"
+    sha256 "0f38b83639958ce1152d02a7f062902c41c8fd20d558b0c34344292d417ae272"
+  end
 
   resource "pyproj" do
-    url "https://files.pythonhosted.org/packages/7d/84/2b39bbf888c753ea48b40d47511548c77aa03445465c35cc4c4e9649b643/pyproj-3.6.1.tar.gz"
-    sha256 "44aa7c704c2b7d8fb3d483bbf75af6cb2350d30a63b144279a09b75fead501bf"
+    url "https://files.pythonhosted.org/packages/47/c2/0572c8e31aebf0270f15f3368adebd10fc473de9f09567a0743a3bc41c8d/pyproj-3.7.0.tar.gz"
+    sha256 "bf658f4aaf815d9d03c8121650b6f0b8067265c36e31bc6660b98ef144d81813"
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+  end
+
+  resource "referencing" do
+    url "https://files.pythonhosted.org/packages/99/5b/73ca1f8e72fff6fa52119dbd185f73a907b1989428917b24cff660129b6d/referencing-0.35.1.tar.gz"
+    sha256 "25b42124a6c8b632a425174f24087783efb348a6f1e0008e63cd4466fedf703c"
+  end
+
+  resource "rpds-py" do
+    url "https://files.pythonhosted.org/packages/55/64/b693f262791b818880d17268f3f8181ef799b0d187f6f731b1772e05a29a/rpds_py-0.20.0.tar.gz"
+    sha256 "d72a210824facfdaf8768cf2d7ca25a042c30320b3020de2fa04640920d4e121"
+  end
+
+  resource "werkzeug" do
+    url "https://files.pythonhosted.org/packages/10/27/a33329150147594eff0ea4c33c2036c0eadd933141055be0ff911f7f8d04/Werkzeug-1.0.1.tar.gz"
+    sha256 "6c80b1e5ad3665290ea39320b91e1be1e0d5f60652b964a3070216de83d2e47c"
   end
 
   def install

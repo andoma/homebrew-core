@@ -1,18 +1,19 @@
 class Miniserve < Formula
   desc "High performance static file server"
   homepage "https://github.com/svenstaro/miniserve"
-  url "https://github.com/svenstaro/miniserve/archive/refs/tags/v0.26.0.tar.gz"
-  sha256 "5ac3e7220c0c86c23af46326cf88e4d0dc9eb296ca201c47c4c3f01d607edf63"
+  url "https://github.com/svenstaro/miniserve/archive/refs/tags/v0.28.0.tar.gz"
+  sha256 "c4c5e12796bdae2892eff3832b66c4c04364738b62cf1429259428b03363d1f1"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e1f54645d0e86e8b2e4f2a829962fc83d2f95feeca16630af236a930534d23e8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e80d2d3cb22652242f9283c8189105f0c1f90b05ef2aaab0c1184745d0272edd"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "10d96d9da732f080867d6015e592c7487f2d62cf18917e4cea60cdf8d3c4cce0"
-    sha256 cellar: :any_skip_relocation, sonoma:         "20f6c53707d7ab0072858a3820d7a8fea40c103909a75288b4a388cdb4e68a59"
-    sha256 cellar: :any_skip_relocation, ventura:        "42e87a029d0e0e4d4b8dc49463e6b98a15d8de89e7da089d2526f9d74fe84957"
-    sha256 cellar: :any_skip_relocation, monterey:       "701a29bcf2132d61fcd33ca6c18d4faaed245671c9abff8afd5844301eb17a96"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac1d3605b7a3b73c16021a55903a28a7b35e936486592879d128eea224d5c957"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c5a16ad48eadc894131a875091d1b19107721c2bb36464765e42012020d9a48a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b6cc10cf16ca85666a77e70f4bd57bfb157c32f0b4d5a605847bd6c687868a66"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0e994ff3f1800725951a60884f93fccd05badb165f1245c8419c270392d671b8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4cb916ec796c97f84352cc13f63128780b62481bc8ec66a2f0c31037e69e5a94"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ccf0b0cfa48e87739289f56839e79e009ea127074c392efd6ee502c2564c1ade"
+    sha256 cellar: :any_skip_relocation, ventura:        "c5163f3e1e1ff80ada46fc814f2da5698613cdb92e5cc5cfd726ae7cf7dc8506"
+    sha256 cellar: :any_skip_relocation, monterey:       "78cceaca14f67f7e211a310f86bf8c85c6fca302a190a90bb89cbb2ff6dd79a6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "78e575b93ef33f7fab95beb3203edd3648de63abdcabdca011ea001c41dc2f6d"
   end
 
   depends_on "rust" => :build
@@ -27,7 +28,7 @@ class Miniserve < Formula
   test do
     port = free_port
     pid = fork do
-      exec "#{bin}/miniserve", "#{bin}/miniserve", "-i", "127.0.0.1", "--port", port.to_s
+      exec bin/"miniserve", bin/"miniserve", "-i", "127.0.0.1", "--port", port.to_s
     end
 
     sleep 2

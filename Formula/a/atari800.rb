@@ -12,6 +12,7 @@ class Atari800 < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "82df74e82551f83d67d3a7fcba873d4bd62a0084bc96371fbcc16e760a80aac4"
     sha256 cellar: :any,                 arm64_sonoma:   "800ce7fc88004e578e5b69d573b4a3701245de0174fbd4a4494d37ad79c0f3d0"
     sha256 cellar: :any,                 arm64_ventura:  "07b1d045d2e043b5ffa9af66fa8680309ced19869b882783caa535a3895c85c5"
     sha256 cellar: :any,                 arm64_monterey: "fecd8f434681b731b644ca26c0f22d1be8373bce97386e0f7dd4eee0983ee29b"
@@ -21,10 +22,25 @@ class Atari800 < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "656005889be7d36009a7b927d4b7437f38b988cc74063b5e3cefe3406bbffd77"
   end
 
+  head do
+    url "https://github.com/atari800/atari800.git", branch: "master"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   depends_on "libpng"
   depends_on "sdl12-compat"
 
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "readline"
+  end
+
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-sdltest",
                           "--disable-riodevice",
                           *std_configure_args.reject { |s| s["--disable-debug"] }

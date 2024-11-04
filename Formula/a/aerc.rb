@@ -1,19 +1,20 @@
 class Aerc < Formula
   desc "Email client that runs in your terminal"
   homepage "https://aerc-mail.org/"
-  url "https://git.sr.ht/~rjarry/aerc/archive/0.17.0.tar.gz"
-  sha256 "a8a1af36b4d4989afd670601d83fc2088e14d804c66bd1e3bdd14561bd89c2cc"
+  url "https://git.sr.ht/~rjarry/aerc/archive/0.18.2.tar.gz"
+  sha256 "78408b3fe7a4991a6097c961c348fb7583af52dff80cbfcd99808415cf3d7586"
   license "MIT"
   head "https://git.sr.ht/~rjarry/aerc", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:   "eef77c08cf8d69afa1c59820320cd5dba759119d3b398adb44f885845ea6e32c"
-    sha256 arm64_ventura:  "01ce8e648d2f1b8fb697da3a65f6e871a7233d140b03aa593df573dbdcee5fd0"
-    sha256 arm64_monterey: "7e7506253ea9be9f9e691b608f67fad28e06290c134a7247f581510bc634dc2e"
-    sha256 sonoma:         "8806a18b7d32f7f97257b5cedfd11dac9e7dd8eb71094263d9a8de4cdea64a99"
-    sha256 ventura:        "cada196df04e28a6c58074364fd91e3cc15892b8906f44a67b6726a991901f2a"
-    sha256 monterey:       "1562f08d702285efe9ba28e81e00609fef74a21aa96752b86dfb49fed60c3c8c"
-    sha256 x86_64_linux:   "4c26c5c6b06cc574dcd67d8644808128c716dd042e0a000cb272e3c59d1e5826"
+    sha256 arm64_sequoia:  "02bd542c1b8a84826e33c592cb850888d2c445f8cf7cad22cb37edb42f409731"
+    sha256 arm64_sonoma:   "0e45fdcaf540c298c7b135144d7eb67eddddd4b26ae5513842c3c4e5f954ad22"
+    sha256 arm64_ventura:  "9465440c9a9799b8e4b6544bb369c4cc988836e86bb8c91f0036f463f774c526"
+    sha256 arm64_monterey: "39c67445c4e18f65a634633632aabff711a1cf94cabcf84e3ee7b94a4fbf1209"
+    sha256 sonoma:         "1fcfc86803cb283e391daea387457fafbf50019706f4a7105058fe8f53804b70"
+    sha256 ventura:        "cdabe2f89e91c3cd42eeea0851bb1d91a0aa535229c15e510f566dd32d21d267"
+    sha256 monterey:       "b7197c015ac239b9f7695386f90654ef03f0541497dc218727835508254b5bf9"
+    sha256 x86_64_linux:   "589b8963d1e494d234d37f0e1982e67eecd6a13b36faf11840a0146a455b4c8c"
   end
 
   depends_on "go" => :build
@@ -25,6 +26,6 @@ class Aerc < Formula
   end
 
   test do
-    system "#{bin}/aerc", "-v"
+    system bin/"aerc", "-v"
   end
 end

@@ -1,19 +1,18 @@
 class Fblog < Formula
   desc "Small command-line JSON log viewer"
   homepage "https://github.com/brocode/fblog"
-  url "https://github.com/brocode/fblog/archive/refs/tags/v4.8.0.tar.gz"
-  sha256 "5d024cc4145da69964b35972e211dab49f59107a3564824921da674df1ab8aa9"
+  url "https://github.com/brocode/fblog/archive/refs/tags/v4.13.1.tar.gz"
+  sha256 "0212dd590cdcb4794a44ea79535ba298c1e971bb344a248fb84528777b0998f1"
   license "WTFPL"
   head "https://github.com/brocode/fblog.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "217887f4b004cb2ced0f1acd39b9655539e9abc6311509ee2dd34444f30e857a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "32adc72848331b660def53e7080e58da6f81b6cf7a213c2de48c7d25b6b00210"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e8dce7ff87886371a2863b56ec6ccd504e77c113bf26105c60c47f0f761e520a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b9a72a7ef6e1712cdd8985f6811664502d97fc32bbf72e28eb574be5c1717721"
-    sha256 cellar: :any_skip_relocation, ventura:        "755c0f94f7fd1a884a0dd03f957d0005e63b52c03e19b713073445e1b6904a45"
-    sha256 cellar: :any_skip_relocation, monterey:       "97af63022dcd3853ad3b42385681600900420435310706bb588daeb442e7959d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "730e239c455b50002a01de74c59a56798768d483664d9c93a6f3275422e2c749"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6bb35ff146fd1409fceeda88135dbb8a3038dd052ca29dcad94fca29b3407036"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5eb80841e5eb4b5a45651d36956c246a014ff77b583c642e55aeeb43f4220e87"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b5db8c09137e39a27eccb7b3b88d59c6b91c1d0c84b13de44cfdf29a2635fe32"
+    sha256 cellar: :any_skip_relocation, sonoma:        "83fd40354f5f1812199343c7acf8df4cabae46b46cb9a5791cf5b79c4785d559"
+    sha256 cellar: :any_skip_relocation, ventura:       "b6a47871ea357767785a7b1d8d8bc5f313e4e630d96a1aa5a03cb2ad3a279be8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0cf0822428bb0d7fe47572c153f2fb60644dae34c7ba6b0b661f92511c9ec97d"
   end
 
   depends_on "rust" => :build

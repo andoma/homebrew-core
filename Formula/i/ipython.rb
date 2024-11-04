@@ -3,23 +3,21 @@ class Ipython < Formula
 
   desc "Interactive computing in Python"
   homepage "https://ipython.org/"
-  url "https://files.pythonhosted.org/packages/95/2c/9ef08ee0cc836f95bc2750e7c3f18790a90dff596d372cee4bcd2561ae1c/ipython-8.22.1.tar.gz"
-  sha256 "39c6f9efc079fb19bfb0f17eee903978fe9a290b1b82d68196c641cecb76ea22"
+  url "https://files.pythonhosted.org/packages/85/e0/a3f36dde97e12121106807d80485423ae4c5b27ce60d40d4ab0bab18a9db/ipython-8.29.0.tar.gz"
+  sha256 "40b60e15b22591450eef73e40a027cf77bd652e757523eebc5bd7c7c498290eb"
   license "BSD-3-Clause"
   head "https://github.com/ipython/ipython.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "20874b5e93b98520b50304aecd8312ef652a5a22f6ecd2335cc808374bcfd12a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5b93a97b89ecaf696b5c0830a2c5c85362b5375d66b496e2a1a687c8c2509216"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a77d2c8e32db4092b562fc399ad58ace5f69efda5e95ffc178cc347ddd4b947e"
-    sha256 cellar: :any_skip_relocation, sonoma:         "833e3cda9c169c1ef82109e78f6560c67afaec1d30953d6a04b4158aae1ce08e"
-    sha256 cellar: :any_skip_relocation, ventura:        "3a0011f2037eaccf4f0bfaec40aa1311c693320142fca00ef49e3a8a1ead4f79"
-    sha256 cellar: :any_skip_relocation, monterey:       "ceb9cbcb90ada43e41cb0458fd5314ec783ce264914819ad5441773a540b9372"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f6be82ded3b45d3aa2b59defde60a4972861521b0b539f65f67f4a5d3b9ca3e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "57644bacc3221aa6171fceed5309e684105af359d190743bf27ea889c460dee1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "57644bacc3221aa6171fceed5309e684105af359d190743bf27ea889c460dee1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "57644bacc3221aa6171fceed5309e684105af359d190743bf27ea889c460dee1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2bde16917a1eff6ace3d9372792332cf6cbb88545c36a6713be2823f6cce40c6"
+    sha256 cellar: :any_skip_relocation, ventura:       "2bde16917a1eff6ace3d9372792332cf6cbb88545c36a6713be2823f6cce40c6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "57644bacc3221aa6171fceed5309e684105af359d190743bf27ea889c460dee1"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "asttokens" do
     url "https://files.pythonhosted.org/packages/45/1d/f03bcb60c4a3212e15f99a56085d93093a497718adf828d050b9d675da81/asttokens-2.4.1.tar.gz"
@@ -32,8 +30,8 @@ class Ipython < Formula
   end
 
   resource "executing" do
-    url "https://files.pythonhosted.org/packages/08/41/85d2d28466fca93737592b7f3cc456d1cfd6bcd401beceeba17e8e792b50/executing-2.0.1.tar.gz"
-    sha256 "35afe2ce3affba8ee97f2d69927fa823b08b472b7b994e36a52a964b93d16147"
+    url "https://files.pythonhosted.org/packages/8c/e3/7d45f492c2c4a0e8e0fad57d081a7c8a0286cdd86372b070cca1ec0caa1e/executing-2.1.0.tar.gz"
+    sha256 "8ea27ddd260da8150fa5a708269c4a10e76161e2496ec3e587da9e3c0fe4b9ab"
   end
 
   resource "jedi" do
@@ -42,13 +40,13 @@ class Ipython < Formula
   end
 
   resource "matplotlib-inline" do
-    url "https://files.pythonhosted.org/packages/d9/50/3af8c0362f26108e54d58c7f38784a3bdae6b9a450bab48ee8482d737f44/matplotlib-inline-0.1.6.tar.gz"
-    sha256 "f887e5f10ba98e8d2b150ddcf4702c1e5f8b3a20005eb0f74bfdbd360ee6f304"
+    url "https://files.pythonhosted.org/packages/99/5b/a36a337438a14116b16480db471ad061c36c3694df7c2084a0da7ba538b7/matplotlib_inline-0.1.7.tar.gz"
+    sha256 "8423b23ec666be3d16e16b60bdd8ac4e86e840ebd1dd11a30b9f117f2fa0ab90"
   end
 
   resource "parso" do
-    url "https://files.pythonhosted.org/packages/a2/0e/41f0cca4b85a6ea74d66d2226a7cda8e41206a624f5b330b958ef48e2e52/parso-0.8.3.tar.gz"
-    sha256 "8c07be290bb59f03588915921e29e8a50002acaf2cdc5fa0e0114f91709fafa0"
+    url "https://files.pythonhosted.org/packages/66/94/68e2e17afaa9169cf6412ab0f28623903be73d1b32e208d9e8e541bb086d/parso-0.8.4.tar.gz"
+    sha256 "eb3a7b58240fb99099a345571deecc0f9540ea5f4dd2fe14c2a99d6b281ab92d"
   end
 
   resource "pexpect" do
@@ -57,8 +55,8 @@ class Ipython < Formula
   end
 
   resource "prompt-toolkit" do
-    url "https://files.pythonhosted.org/packages/cc/c6/25b6a3d5cd295304de1e32c9edbcf319a52e965b339629d37d42bb7126ca/prompt_toolkit-3.0.43.tar.gz"
-    sha256 "3527b7af26106cbc65a040bcc84839a3566ec1b051bb0bfe953631e704b0ff7d"
+    url "https://files.pythonhosted.org/packages/2d/4f/feb5e137aff82f7c7f3248267b97451da3644f6cdc218edfe549fb354127/prompt_toolkit-3.0.48.tar.gz"
+    sha256 "d6623ab0477a80df74e646bdbc93621143f5caf104206aa29294d53de1a03d90"
   end
 
   resource "ptyprocess" do
@@ -67,13 +65,13 @@ class Ipython < Formula
   end
 
   resource "pure-eval" do
-    url "https://files.pythonhosted.org/packages/97/5a/0bc937c25d3ce4e0a74335222aee05455d6afa2888032185f8ab50cdf6fd/pure_eval-0.2.2.tar.gz"
-    sha256 "2b45320af6dfaa1750f543d714b6d1c520a1688dec6fd24d339063ce0aaa9ac3"
+    url "https://files.pythonhosted.org/packages/cd/05/0a34433a064256a578f1783a10da6df098ceaa4a57bbeaa96a6c0352786b/pure_eval-0.2.3.tar.gz"
+    sha256 "5f4e983f40564c576c7c8635ae88db5956bb2229d7e9237d03b3c0b0190eaf42"
   end
 
   resource "pygments" do
-    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
-    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
   end
 
   resource "six" do
@@ -87,8 +85,8 @@ class Ipython < Formula
   end
 
   resource "traitlets" do
-    url "https://files.pythonhosted.org/packages/f1/b9/19206da568095bbf2e57f9f7f7cb6b3b2af2af2670f8c83c23a53d6c00cd/traitlets-5.14.1.tar.gz"
-    sha256 "8585105b371a04b8316a43d5ce29c098575c2e477850b62b848b964f1444527e"
+    url "https://files.pythonhosted.org/packages/eb/79/72064e6a701c2183016abbbfedaba506d81e30e232a68c9f0d6f6fcd1574/traitlets-5.14.3.tar.gz"
+    sha256 "9ed0579d3502c94b4b3732ac120375cda96f923114522847de4b3bb98b96b6b7"
   end
 
   resource "wcwidth" do

@@ -1,20 +1,19 @@
 class Vtk < Formula
   desc "Toolkit for 3D computer graphics, image processing, and visualization"
   homepage "https://www.vtk.org/"
-  url "https://www.vtk.org/files/release/9.2/VTK-9.2.6.tar.gz"
-  sha256 "06fc8d49c4e56f498c40fcb38a563ed8d4ec31358d0101e8988f0bb4d539dd12"
+  url "https://www.vtk.org/files/release/9.3/VTK-9.3.1.tar.gz"
+  sha256 "8354ec084ea0d2dc3d23dbe4243823c4bfc270382d0ce8d658939fd50061cab8"
   license "BSD-3-Clause"
-  revision 6
+  revision 2
   head "https://gitlab.kitware.com/vtk/vtk.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f20755f5d0c78907093053e342ce035028ea558526ada41d5e9e31c503d4279e"
-    sha256 cellar: :any,                 arm64_ventura:  "cdd226baf560c3e1e9fce1e148fe54785b5dc49f1a382a786b834184258b58fe"
-    sha256 cellar: :any,                 arm64_monterey: "caec13dc4c09d2b60893bfe0f7dbcdfdcd974032aadfe5a2af1521aaba0fae29"
-    sha256 cellar: :any,                 sonoma:         "23de361f5fdca9ae88ae5f2641eac13bed7cac725b63b21ed23211f026512373"
-    sha256 cellar: :any,                 ventura:        "594c3fc78487efe42977d0f4ec784ebd60a799f82d484ec6c8ec8274efc1d44b"
-    sha256 cellar: :any,                 monterey:       "a07cda157d8d95a3ce059ceb990419b954ce4f5abc6a720637a9f90fb97d40fc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6945c1726c7fa0dd5aba7008f83d0b1b3d0f1cc3c7bebd59f49dd97fa81d1fca"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sonoma:  "52785c8ac91993b76918a78686e63f1ae53ada730e463308cb87325da1f65841"
+    sha256 cellar: :any,                 arm64_ventura: "e9ffe1a3428d109c871d0fda9127e06bb8e5d2f7ed4aaeb35808c387e786659b"
+    sha256 cellar: :any,                 sonoma:        "d9ddbb1ac51c4eea1e8985978a0a6b6354ffcd3d077e52e20552bff0b4a3fdf1"
+    sha256 cellar: :any,                 ventura:       "717cf55c5e9105da6bf00def7678b20194adb9cf21a4c402b9cf0e97ec0b6ec8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fb218cf265e0d6745f02cf2feb990c7a12504367c72c4e52b7c15fcc4f2b1495"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -47,6 +46,9 @@ class Vtk < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "libaec"
+    depends_on "zstd"
+
     on_arm do
       if DevelopmentTools.clang_build_version == 1316
         depends_on "llvm" => :build
@@ -61,6 +63,9 @@ class Vtk < Formula
 
   on_linux do
     depends_on "libaec"
+    depends_on "libx11"
+    depends_on "libxcursor"
+    depends_on "mesa"
     depends_on "mesa-glu"
   end
 
@@ -112,6 +117,10 @@ class Vtk < Formula
     # https://github.com/Homebrew/linuxbrew-core/pull/21654#issuecomment-738549701
     args << "-DOpenGL_GL_PREFERENCE=LEGACY"
 
+    # Help vtk find hdf5 1.14.4.x
+    # https://github.com/Homebrew/homebrew-core/pull/170959#issuecomment-2295288143
+    args << "-DHDF5_INCLUDE_DIR=#{Formula["hdf5"].opt_include}"
+
     args << "-DVTK_USE_COCOA:BOOL=ON" if OS.mac?
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
@@ -127,15 +136,15 @@ class Vtk < Formula
     vtk_cmake_module = vtk_dir/"VTK-vtk-module-find-packages.cmake"
     assert_match Formula["boost"].version.to_s, vtk_cmake_module.read, "VTK needs to be rebuilt against Boost!"
 
-    (testpath/"CMakeLists.txt").write <<~EOS
+    (testpath/"CMakeLists.txt").write <<~CMAKE
       cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
       project(Distance2BetweenPoints LANGUAGES CXX)
       find_package(VTK REQUIRED COMPONENTS vtkCommonCore CONFIG)
       add_executable(Distance2BetweenPoints Distance2BetweenPoints.cxx)
       target_link_libraries(Distance2BetweenPoints PRIVATE ${VTK_LIBRARIES})
-    EOS
+    CMAKE
 
-    (testpath/"Distance2BetweenPoints.cxx").write <<~EOS
+    (testpath/"Distance2BetweenPoints.cxx").write <<~CPP
       #include <cassert>
       #include <vtkMath.h>
       int main() {
@@ -144,18 +153,18 @@ class Vtk < Formula
         assert(vtkMath::Distance2BetweenPoints(p0, p1) == 3.0);
         return 0;
       }
-    EOS
+    CPP
 
     system "cmake", ".", "-DCMAKE_BUILD_TYPE=Debug", "-DCMAKE_VERBOSE_MAKEFILE=ON", "-DVTK_DIR=#{vtk_dir}"
     system "make"
     system "./Distance2BetweenPoints"
 
-    (testpath/"Distance2BetweenPoints.py").write <<~EOS
+    (testpath/"Distance2BetweenPoints.py").write <<~PYTHON
       import vtk
       p0 = (0, 0, 0)
       p1 = (1, 1, 1)
       assert vtk.vtkMath.Distance2BetweenPoints(p0, p1) == 3
-    EOS
+    PYTHON
 
     system bin/"vtkpython", "Distance2BetweenPoints.py"
   end

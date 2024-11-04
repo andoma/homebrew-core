@@ -22,14 +22,14 @@ class Wellington < Formula
   end
 
   # upstream go1.20 support report, https://github.com/wellington/wellington/issues/223
-  deprecate! date: "2023-08-20", because: :unmaintained
+  disable! date: "2024-08-24", because: :unmaintained
 
   # Bump to 1.20 on the next release, if possible.
   depends_on "go@1.19" => :build
 
   def install
     ldflags = "-X github.com/wellington/wellington/version.Version=#{version}"
-    system "go", "build", *std_go_args(output: bin/"wt", ldflags: ldflags), "wt/main.go"
+    system "go", "build", *std_go_args(output: bin/"wt", ldflags:), "wt/main.go"
   end
 
   test do

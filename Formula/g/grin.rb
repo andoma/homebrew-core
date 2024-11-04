@@ -1,45 +1,25 @@
 class Grin < Formula
   desc "Minimal implementation of the Mimblewimble protocol"
   homepage "https://grin.mw/"
-  url "https://github.com/mimblewimble/grin/archive/refs/tags/v5.2.1.tar.gz"
-  sha256 "243f391e5181307c5a8158759f560bc835b3e0287ffdd1898d38d6db644de631"
+  url "https://github.com/mimblewimble/grin/archive/refs/tags/v5.3.3.tar.gz"
+  sha256 "f10bb5454120b9d8153df1fa8dd8f527f0420f3026b03518e0df8dc8895dc38b"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "05f68f3caf0b4cef0870c96275a817bccfd9b903290a823c8b3b4a2e670a210a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "428409d7fbe42d5724fc854f327b60a0495a81e55dbea52e9c2e67d81806b236"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "aa57538c97aff157112eb556cd5488fd0d0626f53bc637753710e8b09ffef5c3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a4e38053926da306851e7f52dd21c94a6c7f01230acfc74bd4ddba1aa8c5129d"
-    sha256 cellar: :any_skip_relocation, ventura:        "0cdca72ad1c8de934c61e079842d06d5fdfd4f345ccf08370cc5f93f78a85128"
-    sha256 cellar: :any_skip_relocation, monterey:       "b240b9c21819088b04c045a82480e6d5650947e68c38f136aaada618deef2bf7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "56241d9e23541542bdce1c9c22905509140c3254c5b63d3ae6e8bb8ae7fedf07"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "721f60007ef15d390dade33f2263a7d1d7d99dc35944824ebc29d78f64b2869f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "dcb00117fbbd30fd499af18797efaceeb80ac034a5e209e3747bfb4303c2e609"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9c0b317cc1b6d3121b628c7a86429f400f7e4247d6f374c0bbf94d553c0bb794"
+    sha256 cellar: :any_skip_relocation, sonoma:        "38c5456560cd5e0d35a0086589fa709947091647545e4b5a50be3a3cf423e57b"
+    sha256 cellar: :any_skip_relocation, ventura:       "95c878f8c5a355046aa021e41a96f607bd893df168124b5e8930f048709947dd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fa4c00e5bd2c766ae605b711264ea3c55f76c5a39d5761cb9ec34b971d90e3e0"
   end
 
-  # Use `llvm@15` to work around build failure with Clang 16 described in
-  # https://github.com/rust-lang/rust-bindgen/issues/2312.
-  # TODO: Switch back to `uses_from_macos "llvm" => :build` when `bindgen` is
-  # updated to 0.62.0 or newer. There is a check in the `install` method.
-  depends_on "llvm@15" => :build # for libclang
   depends_on "rust" => :build
 
+  uses_from_macos "llvm" => :build # for libclang
   uses_from_macos "ncurses"
 
   def install
-    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
-    # libunwind due to it being present in a library search path.
-    ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm@15"].opt_lib
-
-    bindgen_version = Version.new(
-      (buildpath/"Cargo.lock").read
-                              .match(/name = "bindgen"\nversion = "(.*)"/)[1],
-    )
-    if bindgen_version >= "0.62.0"
-      odie "`bindgen` crate is updated to 0.62.0 or newer! Please remove " \
-           'this check and try switching to `uses_from_macos "llvm" => :build`.'
-    end
-
-    ENV["CLANG_PATH"] = Formula["llvm@15"].opt_bin/"clang"
-
     system "cargo", "install", *std_cargo_args
   end
 

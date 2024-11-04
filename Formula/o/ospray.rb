@@ -1,8 +1,8 @@
 class Ospray < Formula
   desc "Ray-tracing-based rendering engine for high-fidelity visualization"
   homepage "https://www.ospray.org/"
-  url "https://github.com/ospray/ospray/archive/refs/tags/v3.1.0.tar.gz"
-  sha256 "0b9d7df900fe0474b12e5a2641bb9c3f5a1561217b2789834ebf994a15288a82"
+  url "https://github.com/ospray/ospray/archive/refs/tags/v3.2.0.tar.gz"
+  sha256 "2c8108df2950bc5d1bc2a62f74629233dbe4f36e3f6a8ea032907d4a3fdc6750"
   license "Apache-2.0"
   head "https://github.com/ospray/ospray.git", branch: "master"
 
@@ -12,13 +12,13 @@ class Ospray < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "4e6b528ff98519227a2c29a3ef9d3ccd101ab54cf90cb9dd3e191b0fded2f5cc"
-    sha256 cellar: :any,                 arm64_ventura:  "4d73f569d4d84fd0b49d3bc518837441cdaf395a6d88c2967f86c7fcdbe38c0c"
-    sha256 cellar: :any,                 arm64_monterey: "fc9f7cf3c1d9ddf7993ade253ab98de07603cfbb1eeedd264354d28bbb3df3f0"
-    sha256 cellar: :any,                 sonoma:         "c70571c9a32a24f68128fd62039f0e1510889b137c8ad9fe334a64dbb3f76c54"
-    sha256 cellar: :any,                 ventura:        "aba734d9bbf8edb7079814520ba8cff1959048a0aa2d2bec4e1d955fe88b2911"
-    sha256 cellar: :any,                 monterey:       "82f9d9de8cc78e6db8b14216a8f9203ef559a9655bca7595abc21bbe6f436c66"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ede52a6c1a8662804500b9569e72c0b2ad8fcac56462ee82a87ff8965c60e8a3"
+    sha256 cellar: :any, arm64_sequoia:  "53dc5d5d174208c9983057f7adb43813e67acbc4aefb4d65d363c13b89998113"
+    sha256 cellar: :any, arm64_sonoma:   "970fe14d8a918196943fd2ff352432fe55d02c2ffb903a97637c0cd8a7d13ac2"
+    sha256 cellar: :any, arm64_ventura:  "0d1c6ded545f4cb342648e3a604468d476b37bf749dfc19a3eae74b76804bf63"
+    sha256 cellar: :any, arm64_monterey: "34df9ae68fdd19cdb8cb85074678fd4ed0f259e3ef0f1e9582d015d5d520a7d6"
+    sha256 cellar: :any, sonoma:         "a72ff4404280c926f33548561b8252863557e9305eeab39c99c102371bf56b5f"
+    sha256 cellar: :any, ventura:        "a073623de4aaa0e7d97d579b83b882ed03cf9f7030fac1c928862bc2346daa14"
+    sha256 cellar: :any, monterey:       "e0260bfe736f2dcca20e488902e28b41a4322535e928cafa888f11b3d19db7e2"
   end
 
   depends_on "cmake" => :build
@@ -27,8 +27,8 @@ class Ospray < Formula
   depends_on "tbb"
 
   resource "rkcommon" do
-    url "https://github.com/ospray/rkcommon/archive/refs/tags/v1.13.0.tar.gz"
-    sha256 "8ae9f911420085ceeca36e1f16d1316a77befbf6bf6de2a186d65440ac66ff1f"
+    url "https://github.com/ospray/rkcommon/archive/refs/tags/v1.14.0.tar.gz"
+    sha256 "5aef75afc8d4fccf9e70df4cbdf29a1b28b39ee51b5588b94b83a14c6a166d83"
   end
 
   resource "openvkl" do
@@ -37,6 +37,13 @@ class Ospray < Formula
   end
 
   def install
+    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
+    # libunwind due to it being present in a library search path.
+    if DevelopmentTools.clang_build_version >= 1500
+      ENV.remove "HOMEBREW_LIBRARY_PATHS",
+                 Formula["ispc"].deps.map(&:to_formula).find { |f| f.name.match? "^llvm" }.opt_lib
+    end
+
     resources.each do |r|
       r.stage do
         args = %W[
@@ -61,7 +68,7 @@ class Ospray < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <assert.h>
       #include <ospray/ospray.h>
       int main(int argc, const char **argv) {
@@ -70,7 +77,7 @@ class Ospray < Formula
         ospShutdown();
         return 0;
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lospray"
     system "./a.out"

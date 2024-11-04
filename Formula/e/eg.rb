@@ -3,10 +3,11 @@ class Eg < Formula
   homepage "https://github.com/davep/eg"
   url "https://github.com/davep/eg/archive/refs/tags/v1.02.tar.gz"
   sha256 "6b73fff51b5cf82e94cdd60f295a8f80e7bbb059891d4c75d5b1a6f0c5cc7003"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
   head "https://github.com/davep/eg.git", branch: "master"
 
   bottle do
+    sha256                               arm64_sequoia:  "88dbfa7cf9217122bc925c3681ee19cefcdb758063696fa00577967301b34fbb"
     sha256                               arm64_sonoma:   "76e0f0b7dadc29420b7a83e10425eda231ba773ee90485838605b87d3934d964"
     sha256                               arm64_ventura:  "be6bd513bea9e8468a72127b84cb49d0ab0dc1d061c9fa42e799613ebb007357"
     sha256                               arm64_monterey: "e2612dfd6d458297a3c8b0b405ff7663150c28f5a7665e3b69158d61da5e80be"
@@ -25,6 +26,12 @@ class Eg < Formula
 
   depends_on "s-lang"
 
+  conflicts_with "eg-examples", because: "both install `eg` binaries"
+
+  # Fix error: parameter 'iRefresh' was not declared, defaults to 'int';
+  # ISO C99 and later do not support implicit int [-Wimplicit-int]
+  patch :DATA
+
   def install
     inreplace "eglib.c", "/usr/share/", "#{etc}/"
     bin.mkpath
@@ -41,3 +48,18 @@ class Eg < Formula
     system bin/"eg", "not_here.ng"
   end
 end
+
+__END__
+diff --git a/egscreen.c b/egscreen.c
+index d3c7e66..31bbca3 100644
+--- a/egscreen.c
++++ b/egscreen.c
+@@ -211,7 +211,7 @@ void DisplayMessage( char *pszMsg, int iRefresh )
+ /*
+  */
+
+-void ShowStdMsg( iRefresh )
++void ShowStdMsg( int iRefresh )
+ {
+     char *pszMsg = (char *) egmalloc( strlen( CurrentGuide( NULL ) ) +
+                                       strlen( EG_VERSION ) + 7 );

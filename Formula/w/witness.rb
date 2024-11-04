@@ -1,8 +1,8 @@
 class Witness < Formula
   desc "Automates, normalizes, and verifies software artifact provenance"
   homepage "https://witness.dev"
-  url "https://github.com/in-toto/witness/archive/refs/tags/v0.3.0.tar.gz"
-  sha256 "a64f86533dae75a1f8b7e4e54e890b476d2c20b3e12ddd1527b3e3e39ec83e73"
+  url "https://github.com/in-toto/witness/archive/refs/tags/v0.6.0.tar.gz"
+  sha256 "b339520c1665de3d5d1efa4a4c4f97cd8f0c3a152ff9ab9abca94e41e4c1924a"
   license "Apache-2.0"
   head "https://github.com/in-toto/witness.git", branch: "main"
 
@@ -12,13 +12,14 @@ class Witness < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6e69f739af76f1c69de2637b09886c0e8d1fb9455cd2a0e3ba21687cb98495e5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "76247f4e6ef0a0bfac14c4e470b04f698779f7ba5ecff8988c6d8a83132e8b73"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b22a17faab7255c37500f46eaed456216af1c890054dec24a54163c4d7beb3e8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b9ba91a19eb19a69f08dc952ae51822dd4d5300e8b6fc58f316853534397ba1f"
-    sha256 cellar: :any_skip_relocation, ventura:        "e0cfd6e5c6932d26e64396758592e19b80daef20e2b889dbd5a6ae264a6885f2"
-    sha256 cellar: :any_skip_relocation, monterey:       "15e23b1a0ad375719b82517016ed93174649de9278241e47f6e70c05ae1ceef5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4e6009218b64571ae312756693a9d3daf8aad663150660e7d1a4d4dfb09922d1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "28b5d385d73647959f52fff65d7577f0aad73018a11029634ea8a6d4876847c1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "747f88b6f93a91f6a1e0708183db400083568a3e51e2e673cb145f9eb688c8e8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cdb367ca20cf86f1ab16b3190751d5aa8c57b38f8a73eed2a4cd49b6756f7410"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a832ec6ec65212bd9789316aa2afd63bff2bb95821d0958cef2530c992696c0b"
+    sha256 cellar: :any_skip_relocation, sonoma:         "9d2afa770333213ceac92b86572f9ba221fc7173df510cda45c3ce77aa7d2458"
+    sha256 cellar: :any_skip_relocation, ventura:        "c78bf5c966f6d713b32cc8dd2ada9e06539285af3a8e8d599125ad3c08211f25"
+    sha256 cellar: :any_skip_relocation, monterey:       "2514a58f498470c8f65a0901ea30cc6169c44f1cab9436f3e87174999d0877f8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c2fb63072d2eda046ad0c4491d4140530da592a743502840cd2e8ab47aaac465"
   end
 
   depends_on "go" => :build
@@ -28,7 +29,7 @@ class Witness < Formula
       -s -w
       -X github.com/in-toto/witness/cmd.Version=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"witness", "completion")
   end
@@ -38,7 +39,7 @@ class Witness < Formula
 
     system "openssl", "genrsa", "-out", "buildkey.pem", "2048"
     system "openssl", "rsa", "-in", "buildkey.pem", "-outform", "PEM", "-pubout", "-out", "buildpublic.pem"
-    system "#{bin}/witness", "run", "-s", "build", "-a", "environment", "-k", "buildkey.pem", "-o",
+    system bin/"witness", "run", "-s", "build", "-a", "environment", "-k", "buildkey.pem", "-o",
            "build-attestation.json"
 
     output = Base64.decode64(JSON.parse((testpath/"build-attestation.json").read)["payload"])

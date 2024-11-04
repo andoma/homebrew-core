@@ -1,4 +1,6 @@
 class GitImerge < Formula
+  include Language::Python::Virtualenv
+
   desc "Incremental merge for git"
   homepage "https://github.com/mhagger/git-imerge"
   license "GPL-2.0-or-later"
@@ -15,25 +17,14 @@ class GitImerge < Formula
   end
 
   bottle do
-    rebuild 3
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2553c9a8ab46a5e1a8eba30fae465f3f18904a805d18b4dabead2a2834f7ffe0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "be9be74bcab3fe1e9647f15d73679116fb603a2099e3ba9c14f3fe68c5b5d41c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "31be9d067a48d1eedcfeb0d937d4ea50f06fb7f9e4abb3fce89eef8e4016f6a8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "896e8ca74494b063750de2bca61fce0ac58b46d64befb9e2e8fe2097010f4262"
-    sha256 cellar: :any_skip_relocation, ventura:        "a58c276c1b031d5a13f03218fa2091de8a544d48e1c015b548338cd4ec2528d4"
-    sha256 cellar: :any_skip_relocation, monterey:       "8911acc2155e1f094a6b90080d2161d82139a01ae27d823efbf02ba25ab6d5da"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "96f10ccf33457be8b0e265a79b4f270c9c6c8aa5c2ea51423e2b8f39d4a73847"
+    rebuild 5
+    sha256 cellar: :any_skip_relocation, all: "f889e12d851617cfc36b7af9f0994b42ca348d9bbd3b0ca6848b79d1bc51f55a"
   end
 
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.12"
-
-  def python3
-    "python3.12"
-  end
+  depends_on "python@3.13"
 
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
     bash_completion.install "completions/git-imerge"
   end
 

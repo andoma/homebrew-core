@@ -4,24 +4,30 @@ class Mgis < Formula
   url "https://github.com/thelfer/MFrontGenericInterfaceSupport/archive/refs/tags/MFrontGenericInterfaceSupport-2.2.tar.gz"
   sha256 "b3776d7b3a534ca626525a42b97665f7660ae2b28ea57b3f53fd7e8538da1ceb"
   license any_of: ["LGPL-3.0-only", "CECILL-1.0"]
-  revision 1
+  revision 3
   head "https://github.com/thelfer/MFrontGenericInterfaceSupport.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "2bd24d25f6466447e6bde81d60d882ffe2c628afe20dba8e79bdd7cb97ec61bf"
-    sha256 cellar: :any,                 arm64_ventura:  "3e5fa82b99d16d95cc4cb14bb3693a98d8062fa40b1d5304c14c2244dd94b55a"
-    sha256 cellar: :any,                 arm64_monterey: "09af9fd2b65e9b0a7973675a5dd19432e3e06a383a7982cd20a61e08816f77b1"
-    sha256 cellar: :any,                 sonoma:         "d3cd13a7f563f1f03d93df3ba8dc5f35b07cdade9a27db2f577d28faa0577ca4"
-    sha256 cellar: :any,                 ventura:        "a824eef673ef10b82c7da248878d986f947b6fc46951a9ac3e17d5d8caf414c4"
-    sha256 cellar: :any,                 monterey:       "5a80fcac0d29d5080dd5ae89c7d5d9bef4757bf817dee35f2f1c4cd319137b95"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f54728d7b513b611cbe8e023fc9de26193c7f2bf09f818e0aef03f63afbeb966"
+    sha256 cellar: :any,                 arm64_sequoia:  "b7779b3b5c38db9f720dfe50cf812955434ff9fa6eb9b42edb47583bcce28c45"
+    sha256 cellar: :any,                 arm64_sonoma:   "73c148a736218658862b6627cd7c2864bc74f01afeaa7f948f4af7e0bc991c1f"
+    sha256 cellar: :any,                 arm64_ventura:  "488f7e70c16abb8b4c6845717cda7df904f2d1d757614dfdd63bf80dc6d1beb5"
+    sha256 cellar: :any,                 arm64_monterey: "51acb9671ffeacc21b644d28e0fc5f7f9b874b1b928e06f8d93de061d013043b"
+    sha256 cellar: :any,                 sonoma:         "edd070e94b3729e3fb0313846ed723cfe12c8e9139dd63f2e52ace7c1c82a3e4"
+    sha256 cellar: :any,                 ventura:        "ec42419ee95dddba6b674c1f73687543d51dd07f938696cb6830d1ce2187c515"
+    sha256 cellar: :any,                 monterey:       "a4ae2c41254776a40b86c3a224369c5dacf2c8bc4515ff45f769e3957d27a24e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "16ffae790702d03708dde3d9465844e67f576d50f92b9e8e0d25c88815678797"
   end
 
   depends_on "cmake" => :build
   depends_on "llvm" => :build
+
   depends_on "boost-python3"
   depends_on "numpy"
   depends_on "python@3.12"
+
+  on_macos do
+    depends_on "gcc"
+  end
 
   def python3
     which("python3.12")

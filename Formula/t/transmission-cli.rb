@@ -1,9 +1,10 @@
 class TransmissionCli < Formula
   desc "Lightweight BitTorrent client"
   homepage "https://www.transmissionbt.com/"
-  url "https://github.com/transmission/transmission/releases/download/4.0.5/transmission-4.0.5.tar.xz"
-  sha256 "fd68ff114a479200043c30c7e69dba4c1932f7af36ca4c5b5d2edcb5866e6357"
+  url "https://github.com/transmission/transmission/releases/download/4.0.6/transmission-4.0.6.tar.xz"
+  sha256 "2a38fe6d8a23991680b691c277a335f8875bdeca2b97c6b26b598bc9c7b0c45f"
   license any_of: ["GPL-2.0-only", "GPL-3.0-only"]
+  revision 1
 
   livecheck do
     url :stable
@@ -11,19 +12,21 @@ class TransmissionCli < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "b5e9657b1b68418730b83241402e4cd920e1435d486c0e808112604144abfb89"
-    sha256 arm64_ventura:  "486256bd49bb056fdfed7be6410250b944422a851caf5e0c23c6b0222beceeac"
-    sha256 arm64_monterey: "25a97b33cea73fe451481caf4e230624c4c426d36bdd7289e5055182c8c6333f"
-    sha256 sonoma:         "8e2546700b358f34d1a29783fb4eb860bf996a9393acecad9d5fb30ce8d618b9"
-    sha256 ventura:        "57be8ac8a7e8fa483ab0ad0c8eee13304ccfdbe9c2614061faa1f23cf7a23ca3"
-    sha256 monterey:       "bf81a29ab61299f7b1706bb6491d2896412b64b6f02217fdaa88c54769b8b002"
-    sha256 x86_64_linux:   "452e7344e8cebd8278636938b78bbb303acafb6ff5aa6f4f0c9f12db20c2b9c8"
+    sha256 arm64_sequoia:  "94d02b7c2b45b7450c52829a5ab321326233bfbed68dbfd893c8baff83fd0a0b"
+    sha256 arm64_sonoma:   "0f0903287fe52ce1b88eed158aae216a75bdf0ab494d5e99f295b65c411820cc"
+    sha256 arm64_ventura:  "4805411462de5ffd0816e57000adb672d111babf25e7e0776724e28063bbad1c"
+    sha256 arm64_monterey: "b1337b3c899974f389a87b82fdc534bfa3bfbdc084287bfb922424345d2cf870"
+    sha256 sonoma:         "e21900a4d0aca80c877027429c58988a95a57c690bee3b82e8d851b0d2b6b7d6"
+    sha256 ventura:        "2d3bfe4e50fa99d891cfd8271e41a4be8382833046e17a500e1ddc835c5a8059"
+    sha256 monterey:       "9a05cac7b4b68b0d327e78a8904ead9ca46221fadb7cd340cdf9b3315d85e98b"
+    sha256 x86_64_linux:   "2385b33a24c9f11c58274d956f42dee8e2ad66ef1cc849934f36e433250f90f3"
   end
 
   depends_on "cmake" => :build
   depends_on "gettext" => :build
   depends_on "pkg-config" => :build
   depends_on "libevent"
+  depends_on "miniupnpc"
 
   uses_from_macos "python" => :build
   uses_from_macos "curl"
@@ -32,6 +35,9 @@ class TransmissionCli < Formula
   on_linux do
     depends_on "openssl@3" # Uses CommonCrypto on macOS
   end
+
+  # miniupnpc 2.2.8 compatibility patch
+  patch :DATA
 
   def install
     args = %w[
@@ -71,7 +77,29 @@ class TransmissionCli < Formula
   end
 
   test do
-    system "#{bin}/transmission-create", "-o", "#{testpath}/test.mp3.torrent", test_fixtures("test.mp3")
+    system bin/"transmission-create", "-o", testpath/"test.mp3.torrent", test_fixtures("test.mp3")
     assert_match(/^magnet:/, shell_output("#{bin}/transmission-show -m #{testpath}/test.mp3.torrent"))
   end
 end
+
+__END__
+diff --git a/libtransmission/port-forwarding-upnp.cc b/libtransmission/port-forwarding-upnp.cc
+index 7c4865b..695d43f 100644
+--- a/libtransmission/port-forwarding-upnp.cc
++++ b/libtransmission/port-forwarding-upnp.cc
+@@ -275,8 +275,13 @@ tr_port_forwarding_state tr_upnpPulse(tr_upnp* handle, tr_port port, bool is_ena
+ 
+         FreeUPNPUrls(&handle->urls);
+         auto lanaddr = std::array<char, TR_ADDRSTRLEN>{};
+-        if (UPNP_GetValidIGD(devlist, &handle->urls, &handle->data, std::data(lanaddr), std::size(lanaddr) - 1) ==
+-            UPNP_IGD_VALID_CONNECTED)
++        if (
++#if (MINIUPNPC_API_VERSION >= 18)
++            UPNP_GetValidIGD(devlist, &handle->urls, &handle->data, std::data(lanaddr), std::size(lanaddr) - 1, nullptr, 0)
++#else
++            UPNP_GetValidIGD(devlist, &handle->urls, &handle->data, std::data(lanaddr), std::size(lanaddr) - 1)
++#endif
++            == UPNP_IGD_VALID_CONNECTED)
+         {
+             tr_logAddInfo(fmt::format(_("Found Internet Gateway Device '{url}'"), fmt::arg("url", handle->urls.controlURL)));
+             tr_logAddInfo(fmt::format(_("Local Address is '{address}'"), fmt::arg("address", lanaddr.data())));

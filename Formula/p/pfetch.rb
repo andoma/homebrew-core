@@ -7,6 +7,7 @@ class Pfetch < Formula
   head "https://github.com/dylanaraps/pfetch.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1fb62a82ee4474d2d2de0fed793cc7b5245dd28d8b535b600c1b9ba5a6bea5fd"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0771fb68c047893a0b59514f822c42d3371b23734a48c62c88b151a0e386e776"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "1a91953275ab9b2daa26d9ffe6d6f60b5ca3ce5d556223d24c1020aa9e8285ec"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "1a91953275ab9b2daa26d9ffe6d6f60b5ca3ce5d556223d24c1020aa9e8285ec"
@@ -21,6 +22,8 @@ class Pfetch < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "dfa6a98908cbd7ac49f1fd4813011ee6f18849130d84b4c4fa3c01282a33c568"
   end
 
+  deprecate! date: "2024-05-04", because: :repo_archived
+
   def install
     if build.head?
       bin.mkdir
@@ -32,6 +35,6 @@ class Pfetch < Formula
   end
 
   test do
-    assert_match "uptime", shell_output("#{bin}/pfetch")
+    assert_match "uptime", shell_output(bin/"pfetch")
   end
 end

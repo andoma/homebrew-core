@@ -2,8 +2,8 @@ class Kubent < Formula
   desc "Easily check your clusters for use of deprecated APIs"
   homepage "https://github.com/doitintl/kube-no-trouble"
   url "https://github.com/doitintl/kube-no-trouble.git",
-      tag:      "0.7.1",
-      revision: "1ed4bfb4bd271f88731d245131edec931956cf74"
+      tag:      "0.7.3",
+      revision: "57480c07b3f91238f12a35d0ec88d9368aae99aa"
   license "MIT"
   head "https://github.com/doitintl/kube-no-trouble.git", branch: "master"
 
@@ -13,13 +13,14 @@ class Kubent < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1e03c84dc5347e7931047215f1224fb92d0e3913e1c80a067cb52ba746cd8a5d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c876f3965a17662b390875b14c8b464f1130da38be9b1c5a6e84ef653fb34750"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3ccadcc2821aeab6bb28856b4705a66e42f41c59ad1c42b1dd1b9884d4a3bc70"
-    sha256 cellar: :any_skip_relocation, sonoma:         "758d8945d7f8d95067b0c981479368761f3ad68d983f752354db018a7e09417d"
-    sha256 cellar: :any_skip_relocation, ventura:        "a428e8130b5dce422a6e0bf9700b12adde7f4996074375b05d27ed07a9b6fdea"
-    sha256 cellar: :any_skip_relocation, monterey:       "900174c819d9c4f1937d25d9c16a524a314a432021dc9b5a5b9b331af7dad7f2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1eeca187c6f80307613e5fb077c5da060747df9c407f7c6f33b17513135552b7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "68db3486daaf6ba9c4a84482b1592bff93a67767d0b12b2766d09619a65e1691"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "13d2768c1c54c75eb61b9509441b74a2046fb0e296f7e4186a5123250a74d61c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "13d2768c1c54c75eb61b9509441b74a2046fb0e296f7e4186a5123250a74d61c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "13d2768c1c54c75eb61b9509441b74a2046fb0e296f7e4186a5123250a74d61c"
+    sha256 cellar: :any_skip_relocation, sonoma:         "b9f9a862ec8458c562ec9643e4c6876475d1e77071730f2c6876b29403d641f1"
+    sha256 cellar: :any_skip_relocation, ventura:        "b9f9a862ec8458c562ec9643e4c6876475d1e77071730f2c6876b29403d641f1"
+    sha256 cellar: :any_skip_relocation, monterey:       "b9f9a862ec8458c562ec9643e4c6876475d1e77071730f2c6876b29403d641f1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0a54e603d5dca3dd7c708ce765318b460eef6b5ca4407a28356edc0c16ae2bbe"
   end
 
   depends_on "go" => :build
@@ -30,7 +31,7 @@ class Kubent < Formula
       -X main.version=#{version}
       -X main.gitSha=#{Utils.git_head}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/kubent"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/kubent"
   end
 
   test do

@@ -1,20 +1,18 @@
-require "language/node"
-
 class Czg < Formula
   desc "Interactive Commitizen CLI that generate standardized commit messages"
   homepage "https://github.com/Zhengqbbb/cz-git"
-  url "https://registry.npmjs.org/czg/-/czg-1.8.0.tgz"
-  sha256 "3f19d2111df1e0551c5cffc4d3199e7b04412bd475353aac6911da069fd996ad"
+  url "https://registry.npmjs.org/czg/-/czg-1.10.1.tgz"
+  sha256 "e92e718e06d7e46075c52b3768eb2511eadc76855c604d6bb0b51d579935ce1a"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "8fe171a429673b19b25a87e8d92a9d4882fb82280e5c8df6b32cbb08540365ed"
+    sha256 cellar: :any_skip_relocation, all: "be41d1971f0154205cbcbf34435638b689e94f9ffdeb8b9f60091c8a7e293218"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

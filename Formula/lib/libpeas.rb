@@ -1,30 +1,34 @@
 class Libpeas < Formula
   desc "GObject plugin library"
   homepage "https://wiki.gnome.org/Projects/Libpeas"
-  url "https://download.gnome.org/sources/libpeas/1.36/libpeas-1.36.0.tar.xz"
-  sha256 "297cb9c2cccd8e8617623d1a3e8415b4530b8e5a893e3527bbfd1edd13237b4c"
+  url "https://download.gnome.org/sources/libpeas/2.0/libpeas-2.0.5.tar.xz"
+  sha256 "376f2f73d731b54e13ddbab1d91b6382cf6a980524def44df62add15489de6dd"
   license "LGPL-2.1-or-later"
-  revision 1
 
   bottle do
-    sha256 arm64_sonoma:   "249a30363c03546d15f68df7d8c3f0fe102effb6bac4b5ee3af6c1c57266eef5"
-    sha256 arm64_ventura:  "6665b8a64464d0af0bc1a4bfb7f12e8437a163dc76d6f85c0dde4e25e2a35ccd"
-    sha256 arm64_monterey: "33937a96502980298f719024ce5b4ab328e491fc2aca16a1ca65632360e31591"
-    sha256 sonoma:         "625a76fc14d1ded3604b981c1a5464dd5173943b4798292dbf288730863f551a"
-    sha256 ventura:        "0aa535e04f1759c3e6b8de5ca7caf178437149643481e1a2d24ee13b23993ce8"
-    sha256 monterey:       "1d2456328df18f6ab771a2aa3f866078f73cd2be07c07b246baae5c05c773488"
-    sha256 x86_64_linux:   "baa8d94412cd5d63a202de7a2935cfc8aba6879563077f676b59655e2d42bb5a"
+    sha256 arm64_sequoia: "823a7e14c6824998266a429fb76a406048faf99ea6d530562a34ddaf3d8141d3"
+    sha256 arm64_sonoma:  "f31f15cb8a9fc7715d5cdb2c017d8e1325453e1f5882f9b11e97d3ddb64f1cbd"
+    sha256 arm64_ventura: "4fe81d0c5880a2671e0568fc8a203845b7ef0131e08296064bce9d50689c4709"
+    sha256 sonoma:        "76c211768f09e686c3e3a0eef8c7b766cff4098cf3506c04d093f18c7be94730"
+    sha256 ventura:       "a2c240b560490b396217018dff8aba7949016e508e9b2ded78653887f8338945"
+    sha256 x86_64_linux:  "6457499ae5800a12684db70edf0ef2b2138b3fd0d96cc1a0e4c69f2b41186ebd"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "vala" => :build
+  depends_on "gjs"
   depends_on "glib"
   depends_on "gobject-introspection"
   depends_on "gtk+3"
   depends_on "pygobject3"
   depends_on "python@3.12"
+  depends_on "spidermonkey"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     pyver = Language::Python.major_minor_version "python3.12"
@@ -32,11 +36,10 @@ class Libpeas < Formula
     inreplace "meson.build", "'python3-embed'", "'python-#{pyver}-embed'"
 
     args = %w[
+      -Dlua51=false
       -Dpython3=true
       -Dintrospection=true
       -Dvapi=true
-      -Dwidgetry=true
-      -Ddemos=false
     ]
 
     system "meson", "setup", "build", *args, *std_meson_args
@@ -45,14 +48,14 @@ class Libpeas < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
-      #include <libpeas/peas.h>
+    (testpath/"test.c").write <<~C
+      #include <libpeas.h>
 
       int main(int argc, char *argv[]) {
         PeasObjectModule *mod = peas_object_module_new("test", "test", FALSE);
         return 0;
       }
-    EOS
+    C
     gettext = Formula["gettext"]
     glib = Formula["glib"]
     gobject_introspection = Formula["gobject-introspection"]
@@ -62,7 +65,7 @@ class Libpeas < Formula
       -I#{glib.opt_include}/glib-2.0
       -I#{glib.opt_lib}/glib-2.0/include
       -I#{gobject_introspection.opt_include}/gobject-introspection-1.0
-      -I#{include}/libpeas-1.0
+      -I#{include}/libpeas-2
       -I#{libffi.opt_lib}/libffi-3.0.13/include
       -D_REENTRANT
       -L#{gettext.opt_lib}
@@ -74,7 +77,7 @@ class Libpeas < Formula
       -lglib-2.0
       -lgmodule-2.0
       -lgobject-2.0
-      -lpeas-1.0
+      -lpeas-2
     ]
     flags << "-lintl" if OS.mac?
     system ENV.cc, "test.c", "-o", "test", *flags

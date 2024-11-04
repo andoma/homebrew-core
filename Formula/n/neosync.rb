@@ -1,19 +1,18 @@
 class Neosync < Formula
   desc "CLI for interfacing with Neosync"
   homepage "https://www.neosync.dev/"
-  url "https://github.com/nucleuscloud/neosync/archive/refs/tags/v0.3.44.tar.gz"
-  sha256 "033cda097e23d25c8af0986194c861ad6e305adaa15ab128b7457e71d189ecab"
+  url "https://github.com/nucleuscloud/neosync/archive/refs/tags/v0.4.84.tar.gz"
+  sha256 "6d821888a8efeb5d295cf67e45900f7f919f5684e20a723af6ba41958c4e49b2"
   license "MIT"
   head "https://github.com/nucleuscloud/neosync.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1f272e03133bd99fef61202fc9d5ce267957461772ccbabf2a7cfd3f487a64ce"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7a41fab4d48b0839b3f945dd205de9f890f0736f651c924c77f59475bfebe87c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4838879c68073748186ceec01b2d285fff93a7187d872b3c754d809274060364"
-    sha256 cellar: :any_skip_relocation, sonoma:         "4fa31d517938a5fa2c55726669de347df418af3421cab6073b1c751a3ddab045"
-    sha256 cellar: :any_skip_relocation, ventura:        "ba060ee5d7108df47fab4639626a9b8b625dab0ed8ea04ebf0012b9e2e63baf6"
-    sha256 cellar: :any_skip_relocation, monterey:       "8e15236c1f82808b3e6269b4eb66b676d97b8f1514c04b97f75511e44b91b9d8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b947be73ba261fc6744eb2c586778ccdd7fee635c44aae370cb9fcedbcf8f5d2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a645dc50f19a8fd409ba1a52db958d3310d10fef41d96163a4172151c5b9f8cc"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a645dc50f19a8fd409ba1a52db958d3310d10fef41d96163a4172151c5b9f8cc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a645dc50f19a8fd409ba1a52db958d3310d10fef41d96163a4172151c5b9f8cc"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0a8552583b4bfea73f69c07a06046afdd8057e26dfc8328dc983b386eac33405"
+    sha256 cellar: :any_skip_relocation, ventura:       "0a8552583b4bfea73f69c07a06046afdd8057e26dfc8328dc983b386eac33405"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "30f3907ebe25df35784579e29c3f9f347b351df240b0ae3f27c52f0dedd528bd"
   end
 
   depends_on "go" => :build
@@ -25,16 +24,14 @@ class Neosync < Formula
       -X github.com/nucleuscloud/neosync/cli/internal/version.gitCommit=#{tap.user}
       -X github.com/nucleuscloud/neosync/cli/internal/version.buildDate=#{time.iso8601}
     ]
-    cd "cli" do
-      system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/neosync"
-    end
+    system "go", "build", *std_go_args(ldflags:), "./cli/cmd/neosync"
 
     generate_completions_from_executable(bin/"neosync", "completion")
   end
 
   test do
     output = shell_output("#{bin}/neosync connections list 2>&1", 1)
-    assert_match "connect: connection refused", output
+    assert_match "ERRO Unable to retrieve account id", output
 
     assert_match version.to_s, shell_output("#{bin}/neosync --version")
   end

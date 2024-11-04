@@ -6,6 +6,7 @@ class FfmpegAT28 < Formula
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
+  revision 3
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -13,13 +14,12 @@ class FfmpegAT28 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "00fe33dbef855097d0a45c4c154c0a96b582343a59456cedd13ace31cf7300aa"
-    sha256 arm64_ventura:  "709564e3afc39a1c3e8ad99a2e6c1dcbed32060cc1eea2aad4d627468be60dcc"
-    sha256 arm64_monterey: "695f2440ba89672b76d159b613ceebfaf444a1b606a084298a704a0ca43cee47"
-    sha256 sonoma:         "a7ef1aa921ac56de58f16cf393255e747932bc61d74d5b1f4e02399bd4ff5766"
-    sha256 ventura:        "8e3204980c368a650a13a4943b07e41ef3c94b346ba7e4ebb471aecdba3f09bb"
-    sha256 monterey:       "02519afb764a5e0b40eb81907e6821aa81a69b8c0dfccf464382c2ee75d9090a"
-    sha256 x86_64_linux:   "3e335a395cf3a49a6a9e2eab1f4acabfe7c24916a3bdc2b391ed63837bb9be20"
+    sha256 arm64_sequoia: "e96b9cf0d22d26bbb5e31a328470ae33968ad11689331bf00194de6c0804a2f7"
+    sha256 arm64_sonoma:  "da1e239986a7e9d4460b6c34248a445116bd77b189e415122e3b4ae7817b11b7"
+    sha256 arm64_ventura: "336e26f38c4a56a4adfa36fe3483c7b98aad5103de3458efdad2cdf8a743252c"
+    sha256 sonoma:        "8e678fd542f42f1ff7df584291fd10d4f78d2b958b41c2fac1d1da2b416b0059"
+    sha256 ventura:       "c1d9eef17eeb35651624ea12ab079b20326e44b0d7afde99bc6d5493e50dcb72"
+    sha256 x86_64_linux:  "45a9e326e3fbe245bd9408f9928967bb9737b3d1d67fbe05607c80f73470f66e"
   end
 
   keg_only :versioned_formula
@@ -33,10 +33,12 @@ class FfmpegAT28 < Formula
   depends_on "frei0r"
   depends_on "lame"
   depends_on "libass"
+  depends_on "libogg"
   depends_on "libvo-aacenc"
   depends_on "libvorbis"
   depends_on "libvpx"
   depends_on "opencore-amr"
+  depends_on "openssl@3"
   depends_on "opus"
   depends_on "rtmpdump"
   depends_on "sdl12-compat"
@@ -46,11 +48,20 @@ class FfmpegAT28 < Formula
   depends_on "x264"
   depends_on "x265"
   depends_on "xvid"
-  depends_on "xz" # try to change to uses_from_macos after python is not a dependency
+  depends_on "xz"
+
+  uses_from_macos "bzip2"
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "alsa-lib"
+  end
 
   def install
+    # Work-around for build issue with Xcode 15.3
+    ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
+
     args = %W[
-      --prefix=#{prefix}
       --enable-shared
       --enable-pthreads
       --enable-gpl
@@ -79,6 +90,7 @@ class FfmpegAT28 < Formula
       --enable-libopencore-amrwb
       --enable-librtmp
       --enable-libspeex
+      --enable-vda
       --disable-indev=jack
       --disable-libxcb
       --disable-xlib
@@ -86,17 +98,7 @@ class FfmpegAT28 < Formula
 
     args << "--enable-opencl" if OS.mac?
 
-    # A bug in a dispatch header on 10.10, included via CoreFoundation,
-    # prevents GCC from building VDA support. GCC has no problems on
-    # 10.9 and earlier.
-    # See: https://github.com/Homebrew/homebrew/issues/33741
-    args << if ENV.compiler == :clang
-      "--enable-vda"
-    else
-      "--disable-vda"
-    end
-
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args.reject { |s| s["--disable-dependency-tracking"] }
 
     inreplace "config.mak" do |s|
       shflags = s.get_make_var "SHFLAGS"

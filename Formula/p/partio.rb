@@ -1,24 +1,25 @@
 class Partio < Formula
   desc "Particle library for 3D graphics"
   homepage "https://github.com/wdas/partio"
-  url "https://github.com/wdas/partio/archive/refs/tags/v1.17.1.tar.gz"
-  sha256 "5d00fbfc55817acb310bcaf61212a78b2c602e08b839060dfee69570b4b82464"
+  url "https://github.com/wdas/partio/archive/refs/tags/v1.17.3.tar.gz"
+  sha256 "08a571ca75cf133f373415dfd50b7d0e33a0dd1811dfb63409f0ae46652033c1"
   license "BSD-3-Clause"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4190275eaab2237478ec8ed6a67f1a4d80df2054a33fa2a16eeeef2a2df97093"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "74bda8a42983f06954ecd4d2e1dca980e53e26735759591a29d9ea3cf65f8326"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9c397d2f8e5950eb8efa481f8712435db116b985eab3ac80008d193aae1f17f3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "404a097330457846beb3ffcba2ee486821c8d209f6b78b21d2f7fc21d8bc8a32"
-    sha256 cellar: :any_skip_relocation, ventura:        "6a3e5cc7e0209696bedd6d51206b9bf94d714de01dd62c666fcb8942cc7878ef"
-    sha256 cellar: :any_skip_relocation, monterey:       "1ac550d4e1becb13ff7361704878b733c5508fad437a3fdf7615260f98844577"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fbbdeafe9f2d3a0e99381f928c3e70b54244430e9eae60060c4fb4def6e50fa4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "156678f075f4be856918ad93364d8fabc320a1d21c3604091ae0a6ba80b13377"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1ac54c92b0170c31766af0d7bb486361b091bfba772fc410fb33132071f06652"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0da7b8ea9d0aed2ea12fbbb4e525d5a300552911bd1cf11f018f69cdd59c2e99"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ded84cbbbbafe20305db9f3bf9b64f5b041d2a6d76059a3235d442736d689a0e"
+    sha256 cellar: :any_skip_relocation, ventura:       "8f6c84a190bd21fa1461172c3915aaf4b8e9f6912760a05854d7bd526e8f91ad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "15f6f86a2f0bcc8e1add259eaad579075a719f0c7bd53ed0301f54177ff72586"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
-  depends_on "python@3.12"
+  depends_on "python@3.13"
+
+  uses_from_macos "zlib"
 
   on_linux do
     depends_on "freeglut"
@@ -30,12 +31,11 @@ class Partio < Formula
     args = std_cmake_args
     args << "-DPARTIO_USE_GLVND=OFF" unless OS.mac?
 
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make"
-      system "make", "doc"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", ".", *args
+    system "cmake", "--build", "."
+    system "cmake", "--build", ".", "--target", "doc"
+    system "cmake", "--install", "."
+
     pkgshare.install "src/data"
   end
 

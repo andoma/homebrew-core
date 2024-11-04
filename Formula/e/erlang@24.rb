@@ -2,26 +2,24 @@ class ErlangAT24 < Formula
   desc "Programming language for highly scalable real-time systems"
   homepage "https://www.erlang.org/"
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/releases/download/OTP-24.3.4.16/otp_src_24.3.4.16.tar.gz"
-  sha256 "aad5d79ab7554b5827298024b722dbbf54bf01b9a5737e633e93e5953fadc4f9"
+  url "https://github.com/erlang/otp/releases/download/OTP-24.3.4.17/otp_src_24.3.4.17.tar.gz"
+  sha256 "0bf449184ef4ca71f9af79fc086d941f4532922e01957e84a4fec192c2db5c0c"
   license "Apache-2.0"
-
-  livecheck do
-    url :stable
-    regex(/^OTP[._-]v?(24(?:\.\d+)+)$/i)
-  end
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "4a4bf658939302bb5b6770d7a9db05ddb0f094e68e6e1ceb96424bbdfa8e6315"
-    sha256 cellar: :any,                 arm64_ventura:  "1f35e2150fc5b6a6cd51de541b2e0d4bc9dedafbb1d755f5a7a8b43b988251a1"
-    sha256 cellar: :any,                 arm64_monterey: "2e3c2e272e82607eb27f5097f61153332203d7a29d42a8a3fd4928dc5948bfb8"
-    sha256 cellar: :any,                 sonoma:         "3d65ab59a1ddc652efdc70c52d55f44b0cf31e9506256ced19c43f38c6ad94c6"
-    sha256 cellar: :any,                 ventura:        "71ddc4dd3e15d87e146198e5bb947becd43d2160848a214ec25292b8b66272ef"
-    sha256 cellar: :any,                 monterey:       "6148169dd11a401fd5355af293de744b6c70df0780466962321da16c5ae2e2e2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0ec01b7ba7941565663ceadbd1fb3fe30e0543c439fbaade64549c684396dd5f"
+    sha256 cellar: :any,                 arm64_sequoia: "4b033ab7693bc346cfcdc745afe84cabb0a67326ec1651cd2294e6f0bb84eb24"
+    sha256 cellar: :any,                 arm64_sonoma:  "034839e7b3d701ed14dfb55a2e025bacc979106e12907a94f65a367bb71c13de"
+    sha256 cellar: :any,                 arm64_ventura: "57b237d5803642973cb653d25c8934a34edbf72ee1b1624ae328d6928ba3144e"
+    sha256 cellar: :any,                 sonoma:        "e3a714e6cb9575535d9f42a82e21757285a1cfd9141055f4924392768bdde52f"
+    sha256 cellar: :any,                 ventura:       "bd2eb3ff1de20d55737b6de2d6fe806f557ed3e1c25ac1c9aa875e50396db8e5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1d7b48ce5b43fe07e78116d0c40ead3da8c54876a94aba05f7e4f893954e76a0"
   end
 
   keg_only :versioned_formula
+
+  # EOL with OTP-27 release (2024-05-20)
+  deprecate! date: "2024-07-24", because: :unsupported
 
   depends_on "openssl@3"
   depends_on "unixodbc"
@@ -30,11 +28,13 @@ class ErlangAT24 < Formula
   uses_from_macos "libxslt" => :build # for xsltproc
 
   resource "html" do
-    url "https://github.com/erlang/otp/releases/download/OTP-24.3.4.16/otp_doc_html_24.3.4.16.tar.gz"
-    sha256 "42f33957f4bc3fd46ece5a7dd4038158c9dcb59e0922d52dc433a5a0f3a5b3f8"
+    url "https://github.com/erlang/otp/releases/download/OTP-24.3.4.17/otp_doc_html_24.3.4.17.tar.gz"
+    sha256 "f9aec1b812dfdbf2dc259f9e93c037f346259b7baf391705b6c1c4e29a4eaac8"
   end
 
   def install
+    odie "html resource needs to be updated" if version != resource("html").version
+
     # Unset these so that building wx, kernel, compiler and
     # other modules doesn't fail with an unintelligible error.
     %w[LIBS FLAGS AFLAGS ZFLAGS].each { |k| ENV.delete("ERL_#{k}") }
@@ -84,9 +84,8 @@ class ErlangAT24 < Formula
   end
 
   test do
-    assert_equal version, resource("html").version, "`html` resource needs updating!"
+    system bin/"erl", "-noshell", "-eval", "crypto:start().", "-s", "init", "stop"
 
-    system "#{bin}/erl", "-noshell", "-eval", "crypto:start().", "-s", "init", "stop"
     (testpath/"factorial").write <<~EOS
       #!#{bin}/escript
       %% -*- erlang -*-
@@ -109,6 +108,7 @@ class ErlangAT24 < Formula
       fac(0) -> 1;
       fac(N) -> N * fac(N-1).
     EOS
+
     chmod 0755, "factorial"
     assert_match "usage: factorial integer", shell_output("./factorial")
     assert_match "factorial 42 = 1405006117752879898543142606244511569936384000000000", shell_output("./factorial 42")

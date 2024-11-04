@@ -1,18 +1,17 @@
 class Pocketbase < Formula
   desc "Open source backend for your next project in 1 file"
   homepage "https://pocketbase.io/"
-  url "https://github.com/pocketbase/pocketbase/archive/refs/tags/v0.21.3.tar.gz"
-  sha256 "c9b1cd211a53097fe14ab2f08954391e0f59fc1ba430953868cf8e7cf6578de7"
+  url "https://github.com/pocketbase/pocketbase/archive/refs/tags/v0.22.23.tar.gz"
+  sha256 "f7780c2579450ba94e81b02f105b39cca87087f134753f0dbdae851e3848506f"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1d7b494be838357978891ee4e3455031d302b6b4de48f15f153f6c8a6b8fa7de"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1d7b494be838357978891ee4e3455031d302b6b4de48f15f153f6c8a6b8fa7de"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1d7b494be838357978891ee4e3455031d302b6b4de48f15f153f6c8a6b8fa7de"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e00e0411d923b74c10053ca61692a51dbf06b655fdc710bc417c54d8b428c105"
-    sha256 cellar: :any_skip_relocation, ventura:        "e00e0411d923b74c10053ca61692a51dbf06b655fdc710bc417c54d8b428c105"
-    sha256 cellar: :any_skip_relocation, monterey:       "e00e0411d923b74c10053ca61692a51dbf06b655fdc710bc417c54d8b428c105"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6cd3a73d94466eb3d0e8cc9d122cf10639415da5c376c8956770a55a8cf18618"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1b6de8b3fcd8748da2e9b7aa9a5aefa02a7a0ef743886917f3a2f87349402c87"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1b6de8b3fcd8748da2e9b7aa9a5aefa02a7a0ef743886917f3a2f87349402c87"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1b6de8b3fcd8748da2e9b7aa9a5aefa02a7a0ef743886917f3a2f87349402c87"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1f93428658967a98b0fe6bf6c7e15f3a3efd7d357e84fe64ed8748f166e661fa"
+    sha256 cellar: :any_skip_relocation, ventura:       "1f93428658967a98b0fe6bf6c7e15f3a3efd7d357e84fe64ed8748f166e661fa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e6bf8750c2c99a086a1c1dfaff08c8c6d7872a9004c652c0ec08ad476b23ce28"
   end
 
   depends_on "go" => :build

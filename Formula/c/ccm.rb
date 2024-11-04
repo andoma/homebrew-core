@@ -6,26 +6,25 @@ class Ccm < Formula
   url "https://files.pythonhosted.org/packages/f1/12/091e82033d53b3802e1ead6b16045c5ecfb03374f8586a4ae4673a914c1a/ccm-3.1.5.tar.gz"
   sha256 "f07cc0a37116d2ce1b96c0d467f792668aa25835c73beb61639fa50a1954326c"
   license "Apache-2.0"
-  revision 3
+  revision 4
   head "https://github.com/riptano/ccm.git", branch: "master"
 
   bottle do
-    rebuild 4
-    sha256 cellar: :any,                 arm64_sonoma:   "238731a2b61638873f9a94df258f553eeb4d062a9871ae2976cee5efb23c73e5"
-    sha256 cellar: :any,                 arm64_ventura:  "a5ec6e8ba4a31ce97bf0c76bab35925a9ed7e70fb316e4b94d620fe42d3a0785"
-    sha256 cellar: :any,                 arm64_monterey: "a87e6a11875898d4c6852d80e0dc21008dcf4f07d8d734cabc4836bcefa116e0"
-    sha256 cellar: :any,                 sonoma:         "ee37033f3eedc5ea6090a4b7b945f1409d1d57e18e7ddcb4184892221612ebc8"
-    sha256 cellar: :any,                 ventura:        "b28083c2a409fc2c89dd87541d249143b3b2da4297b709dc2234a530be8237fd"
-    sha256 cellar: :any,                 monterey:       "29a980cae479521c3bc2efa1599b3d6ba8871624ea1ae15b1a97202e08f29b9f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "85cfbe69582690550af35accb458500bde601a9f35d37fb7d3a7705b11ee1e1b"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "e036ab0817d4b65085d1c2cb6c2edf0a9e55b6340b9bbe99d6f90abc16e36e1f"
+    sha256 cellar: :any,                 arm64_sonoma:  "33a2184cc7764d6ee186071d78e743b0c152cb0ac37ec5dcfe77ee3eae97ab01"
+    sha256 cellar: :any,                 arm64_ventura: "a8231ecd1b2f906259979cc35186be52000c4b7786dbb55c8c3cd13c52b5402a"
+    sha256 cellar: :any,                 sonoma:        "528a3299799df8daf15b07e0a0670df132ae046f0f52466defe58e968bc54a11"
+    sha256 cellar: :any,                 ventura:       "9912048114592dbd5fd7be13ab693bd12c6dabe896f2b953802c383c3483e7c6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7cf8010b7799a42307a71b081fdb9afa505ecc13b7ad8fa4fb826f257eafc364"
   end
 
   depends_on "libyaml"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "cassandra-driver" do
-    url "https://files.pythonhosted.org/packages/59/28/3e0ea7003910166525304b65a8ffa190666b483c2cc9c38ed5746a25d0fd/cassandra-driver-3.29.0.tar.gz"
-    sha256 "0a34f9534356e5fd33af8cdda109d5e945b6335cb50399b267c46368c4e93c98"
+    url "https://files.pythonhosted.org/packages/b2/6f/d25121afaa2ea0741d05d2e9921a7ca9b4ce71634b16a8aaee21bd7af818/cassandra-driver-3.29.2.tar.gz"
+    sha256 "c4310a7d0457f51a63fb019d8ef501588c491141362b53097fbc62fa06559b7c"
   end
 
   resource "click" do
@@ -39,13 +38,13 @@ class Ccm < Formula
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/c9/3d/74c56f1c9efd7353807f8f5fa22adccdba99dc72f34311c30a69627a0fad/setuptools-69.1.0.tar.gz"
-    sha256 "850894c4195f09c4ed30dba56213bf7c3f21d86ed6bdaafb5df5972593bfc401"
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
   end
 
   resource "six" do
@@ -58,6 +57,6 @@ class Ccm < Formula
   end
 
   test do
-    assert_match "Usage", shell_output("#{bin}/ccm", 1)
+    assert_match "Usage", shell_output(bin/"ccm", 1)
   end
 end

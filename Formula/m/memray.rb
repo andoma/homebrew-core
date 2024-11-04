@@ -3,19 +3,20 @@ class Memray < Formula
 
   desc "Memory profiler for Python applications"
   homepage "https://bloomberg.github.io/memray/"
-  url "https://files.pythonhosted.org/packages/b9/3b/0af451f20f8a72b3dcfdf65c6d5639469a92db3f333e3c344a6b5cc12732/memray-1.11.0.tar.gz"
-  sha256 "f72c111a4868d0f2b4e4fb9ba4da736db8c73b6fb0ac6e6f2deca8ee540eb688"
+  url "https://files.pythonhosted.org/packages/88/8b/0a9854e5b6ce0875f2e2ad163cfecdb8de59fc1a2f1b9a1cb7c683a67826/memray-1.12.0.tar.gz"
+  sha256 "3b61c199a60197ae6164a2b44cd828c52de24083ecc49e9ac7d6287686bd68f3"
   license "Apache-2.0"
+  revision 1
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "59c0f7bd9f706792cd4c2635b9d2c08ab9ae1424fef226e423a1dba7cdba75f0"
-    sha256 cellar: :any,                 arm64_ventura:  "cc1236f2987157ea213b704d80f3c8b7ad5d97e8d4ce3e4cf25a90f2856dda59"
-    sha256 cellar: :any,                 arm64_monterey: "181b183a12ec2fe8718f279f94cdda690c6cf2008fe25b276fe2083e4cc8fa6d"
-    sha256 cellar: :any,                 sonoma:         "2c8bab2b26820b65d0ab21374f368adc278d643de06049afbc46665e22e8ad16"
-    sha256 cellar: :any,                 ventura:        "aa5f7fcb775e8b10cfe5d44e7cd7d38157043f4c89c9defc8b6cf96f414aa1e4"
-    sha256 cellar: :any,                 monterey:       "ab4c255db68bfd50c7ce55b8bec6ee3560024ef1d2dc30d7b2ea46bf56682a98"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2dae408d451554221f662a17822de809c76a89af812e936cff3a3cba704fe101"
+    sha256 cellar: :any,                 arm64_sequoia:  "225b47b059540d81c0759f42c7bb20b179260eedb9be02f79f8066d93af60fc8"
+    sha256 cellar: :any,                 arm64_sonoma:   "e9143f4d9a3c3d482d954ea73c087807c4cfdb6dce59e4089d591d0f7a058787"
+    sha256 cellar: :any,                 arm64_ventura:  "3acafce0da2ccd71ad600c19b5874bfc9ee631bbc97ebe3d9fcb2fa82244aef6"
+    sha256 cellar: :any,                 arm64_monterey: "4290e4e4db85b37308fd49645d0811de4f890af44ea4afb5a569e45133f47122"
+    sha256 cellar: :any,                 sonoma:         "69c7b1e30daed011e69d6deef8b3f6e9e84d12f152fef20bf6273f14ce6840f1"
+    sha256 cellar: :any,                 ventura:        "2c13474cfdca182986698c79e53c48003b1df5a0768a045478714be350de0753"
+    sha256 cellar: :any,                 monterey:       "ccb4489fe93cb13f9a29c1a1872dfcab9edc69661026e10aa7fc0bbec4db665f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d1d810cfa28a600b8c00e1404f8b177c22c0b9f57dc0896d4566ad3dc03202e5"
   end
 
   depends_on "lz4"
@@ -26,8 +27,8 @@ class Memray < Formula
   end
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/b2/5e/3a21abf3cd467d7876045335e681d276ac32492febe6d98ad89562d1a7e1/Jinja2-3.1.3.tar.gz"
-    sha256 "ac8bd6544d4bb2c9792bf3a159e80bba8fda7f07e81bc3aed565432d5925ba90"
+    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
+    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
   end
 
   resource "linkify-it-py" do
@@ -56,23 +57,23 @@ class Memray < Formula
   end
 
   resource "pygments" do
-    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
-    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
   end
 
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/a7/ec/4a7d80728bd429f7c0d4d51245287158a1516315cadbb146012439403a9d/rich-13.7.0.tar.gz"
-    sha256 "5cb5123b5cf9ee70584244246816e9114227e0b98ad9176eede6ad54bf5403fa"
+    url "https://files.pythonhosted.org/packages/b3/01/c954e134dc440ab5f96952fe52b4fdc64225530320a910473c1fe270d9aa/rich-13.7.1.tar.gz"
+    sha256 "9be308cb1fe2f1f57d67ce99e95af38a1e2bc71ad9813b0e247cf7ffbcc3a432"
   end
 
   resource "textual" do
-    url "https://files.pythonhosted.org/packages/bb/ce/b224ccc05260871da8df640e7cd8ca0a5e38721fddb6733650195402841e/textual-0.52.1.tar.gz"
-    sha256 "4232e5c2b423ed7c63baaeb6030355e14e1de1b9df096c9655b68a1e60e4de5f"
+    url "https://files.pythonhosted.org/packages/11/8d/70bc2b5ac7c0860678daa915f39a8907664c1d1d93e6b497df4fff752353/textual-0.58.1.tar.gz"
+    sha256 "3a01be0b583f2bce38b8e9786b75ed33dddc816bba502d8e7a9ca3ca2ead3957"
   end
 
   resource "typing-extensions" do
-    url "https://files.pythonhosted.org/packages/0c/1d/eb26f5e75100d531d7399ae800814b069bc2ed2a7410834d57374d010d96/typing_extensions-4.9.0.tar.gz"
-    sha256 "23478f88c37f27d76ac8aee6c905017a143b0b1b886c3c9f66bc2fd94f9f5783"
+    url "https://files.pythonhosted.org/packages/f6/f3/b827b3ab53b4e3d8513914586dcca61c355fa2ce8252dea4da56e67bf8f2/typing_extensions-4.11.0.tar.gz"
+    sha256 "83f085bd5ca59c80295fc2a82ab5dac679cbe02b9f33f7d83af68e241bea51b0"
   end
 
   resource "uc-micro-py" do
@@ -85,7 +86,7 @@ class Memray < Formula
   end
 
   test do
-    system "#{bin}/memray", "run", "--output", "output.bin", "-c", "print()"
+    system bin/"memray", "run", "--output", "output.bin", "-c", "print()"
     assert_predicate testpath/"output.bin", :exist?
 
     assert_match version.to_s, shell_output("#{bin}/memray --version")

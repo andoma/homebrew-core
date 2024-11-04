@@ -12,6 +12,7 @@ class Bookloupe < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "7ba3e588146783e6f0257c71de17fd54e6f4690c272790982b98f58bbfbf62f3"
     sha256 cellar: :any,                 arm64_sonoma:   "24bf9a6ae43fe3f89408a72d83f31b770ed3a34b8cd1bc2a8966418015b0035c"
     sha256 cellar: :any,                 arm64_ventura:  "4421a88b7f0f464d3469a652e232134ae0f9402c48201515a3c04f9e9f267c45"
     sha256 cellar: :any,                 arm64_monterey: "f981bcea12ecb29401b723391ccf8a7b47ba68bf57dd7277cc4474fc3e0767af"
@@ -28,18 +29,20 @@ class Bookloupe < Formula
   end
 
   depends_on "pkg-config" => :build
+
   depends_on "glib"
 
+  on_macos do
+    depends_on "gettext"
+  end
+
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 
   test do
-    ENV["BOOKLOUPE"] = "#{bin}/bookloupe"
+    ENV["BOOKLOUPE"] = bin/"bookloupe"
 
     Dir["#{pkgshare}/*.tst"].each do |test_file|
       # Skip test that fails on macOS
@@ -47,7 +50,7 @@ class Bookloupe < Formula
       # (bugzilla page is not publicly accessible)
       next if test_file.end_with?("/markup.tst")
 
-      system "#{bin}/loupe-test", test_file
+      system bin/"loupe-test", test_file
     end
   end
 end

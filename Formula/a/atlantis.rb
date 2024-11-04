@@ -1,8 +1,8 @@
 class Atlantis < Formula
   desc "Terraform Pull Request Automation tool"
   homepage "https://www.runatlantis.io/"
-  url "https://github.com/runatlantis/atlantis/archive/refs/tags/v0.27.1.tar.gz"
-  sha256 "3bd89fcbfd8061583b5ea1eba7d23a2706faf8646840e7a44323cc40bbfb6daa"
+  url "https://github.com/runatlantis/atlantis/archive/refs/tags/v0.30.0.tar.gz"
+  sha256 "ea16f50ae5cf3fab7137e87a8eea3493721530af393a39a52a238590696a0357"
   license "Apache-2.0"
   head "https://github.com/runatlantis/atlantis.git", branch: "main"
 
@@ -12,24 +12,42 @@ class Atlantis < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "45e7370e0bb99a6b9ccbf53c350641b3d467547e74e5858c8c063212a883f69a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "34ec275a05f786edbd77999c821ccec5f92862b0f85f4398bcda00f8af855522"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7fede0c11c3daeb524c58bbf82fb7a4bd53354e7d6fa4406d3203c7c21c0d9be"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a4c83a067e1e64bd5ca523c8715405cc4e96addc8caaf744c0b2d9669094f392"
-    sha256 cellar: :any_skip_relocation, ventura:        "3eca304ebaaa84b491a730205e047262848339dcd7c5c28bda221fbe9cdca154"
-    sha256 cellar: :any_skip_relocation, monterey:       "7593cf74e4dc4007efae749ce7110d7a9dcb154a81d425a863a30f8ae12f0b5d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8568cd1c7021b44978654ac63db80eaba9f8203a8602a1facb0ca6577b2584d2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c0ad4f04aa65ad49d1389bcf6bcd27d76b3974383d74fe482c19f971656a626d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c0ad4f04aa65ad49d1389bcf6bcd27d76b3974383d74fe482c19f971656a626d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c0ad4f04aa65ad49d1389bcf6bcd27d76b3974383d74fe482c19f971656a626d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "721b41b1aa8be6b1d4a5659cfc75d72b93905b148714a4baf88f5f5d3c99c699"
+    sha256 cellar: :any_skip_relocation, ventura:       "721b41b1aa8be6b1d4a5659cfc75d72b93905b148714a4baf88f5f5d3c99c699"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d857dce1fe9db66cd104873cfe80448f116429a0a5405012b07e8397fcb4a27e"
   end
 
   depends_on "go" => :build
-  depends_on "terraform"
+
+  resource "terraform" do
+    # https://www.hashicorp.com/blog/hashicorp-adopts-business-source-license
+    # Do not update terraform, it switched to the BUSL license
+    # Waiting for https://github.com/runatlantis/atlantis/issues/3741
+    url "https://github.com/hashicorp/terraform/archive/refs/tags/v1.5.7.tar.gz"
+    sha256 "6742fc87cba5e064455393cda12f0e0241c85a7cb2a3558d13289380bb5f26f5"
+  end
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w")
+    resource("terraform").stage do
+      system "go", "build", *std_go_args(ldflags: "-s -w", output: libexec/"bin/terraform")
+    end
+
+    ldflags = %W[
+      -s -w
+      -X main.version=#{version}
+      -X main.commit=brew
+      -X main.date=#{time.iso8601}
+    ]
+    system "go", "build", *std_go_args(ldflags:, output: libexec/"bin/atlantis")
+
+    (bin/"atlantis").write_env_script libexec/"bin/atlantis", PATH: libexec/"bin"
   end
 
   test do
-    system bin/"atlantis", "version"
+    assert_match version.to_s, shell_output("#{bin}/atlantis version")
     port = free_port
     loglevel = "info"
     gh_args = "--gh-user INVALID --gh-token INVALID --gh-webhook-secret INVALID --repo-allowlist INVALID"

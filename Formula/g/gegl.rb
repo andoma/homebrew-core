@@ -1,8 +1,8 @@
 class Gegl < Formula
   desc "Graph based image processing framework"
   homepage "https://www.gegl.org/"
-  url "https://download.gimp.org/pub/gegl/0.4/gegl-0.4.48.tar.xz"
-  sha256 "418c26d94be8805d7d98f6de0c6825ca26bd74fcacb6c188da47533d9ee28247"
+  url "https://download.gimp.org/pub/gegl/0.4/gegl-0.4.50.tar.xz"
+  sha256 "6084969b06ee86ca71142133773f27e13f02e5a6a22c2cfce452ecaaddb790c1"
   license all_of: ["LGPL-3.0-or-later", "GPL-3.0-or-later", "BSD-3-Clause", "MIT"]
   head "https://gitlab.gnome.org/GNOME/gegl.git", branch: "master"
 
@@ -12,25 +12,31 @@ class Gegl < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "181d5c65f56537c5ba402862e6d2e63d83a02f4e02b5b2bc07482cdfba10ada6"
-    sha256 arm64_ventura:  "3ec4319427d9749b83a3dc282465dfe99ca49e91d041ea04ba8b664a7524481b"
-    sha256 arm64_monterey: "9eb503e902a884dcc7b9c436183a38080d49093705aeaf852bb468824b590e9b"
-    sha256 sonoma:         "bfdeaeaaadabb0a02589256a47ecf8a112bf50a6b4391be319a6b1108db2955e"
-    sha256 ventura:        "9e35612d5ba6b7b14aeb6dae97fc6ab3ebd298c68d77cd416426a3ce1c4c6ff3"
-    sha256 monterey:       "6ef9068062d0a3d937cc9ecd6dde04d916f535501ed9309d688fca2133920625"
-    sha256 x86_64_linux:   "4411ccbe1d5e15a856bec20d3da20a381f97a0ec6950fd906475f7bc26b64bb5"
+    sha256 arm64_sequoia: "6bd88cae8516ebe58073db2ea3360f874a3fbc50d8c03b9c4b2da49844594751"
+    sha256 arm64_sonoma:  "1e25aa3f9c365f2b4c649ed0e3627aa0edc64e52c9ea3d0f8fe30801ca1bc37f"
+    sha256 arm64_ventura: "6277609123c9cb3126f995c2338d148027ab1806d0272ca8ec62138dca9fac34"
+    sha256 sonoma:        "c01c80479a69d3193fd07f6d8c7327eac886c0883ef399e5cea646e657c17004"
+    sha256 ventura:       "20a1ffd5936c47ecf52336d4d01b16f6c3a7847de705cd2a31618cc39af05318"
+    sha256 x86_64_linux:  "73e0aea27efd64a9c2b143108504694945b46e431fca56b7a3a40ab4d2088b1b"
   end
 
+  depends_on "gettext" => :build
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+
   depends_on "babl"
-  depends_on "gettext"
   depends_on "glib"
   depends_on "jpeg-turbo"
   depends_on "json-glib"
   depends_on "libpng"
+  depends_on "libtiff"
+  depends_on "little-cms2"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   on_linux do
     depends_on "cairo"
@@ -48,19 +54,21 @@ class Gegl < Formula
     touch "subprojects/poly2tri-c/EMPTYFILE.c"
     ### END Temporary Fix ###
 
-    system "meson", *std_meson_args, "build",
-                    "-Ddocs=false",
-                    "-Dcairo=disabled",
-                    "-Djasper=disabled",
-                    "-Dumfpack=disabled",
-                    "-Dlibspiro=disabled",
-                    "--force-fallback-for=libnsgif,poly2tri-c"
-    system "meson", "compile", "-C", "build", "-v"
+    args = %w[
+      -Ddocs=false
+      -Dcairo=disabled
+      -Djasper=disabled
+      -Dumfpack=disabled
+      -Dlibspiro=disabled
+      --force-fallback-for=libnsgif,poly2tri-c
+    ]
+    system "meson", "setup", "build", *args, *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <gegl.h>
       gint main(gint argc, gchar **argv) {
         gegl_init(&argc, &argv);
@@ -68,7 +76,7 @@ class Gegl < Formula
         gegl_exit();
         return 0;
       }
-    EOS
+    C
     system ENV.cc,
            "-I#{Formula["babl"].opt_include}/babl-0.1",
            "-I#{Formula["glib"].opt_include}/glib-2.0",

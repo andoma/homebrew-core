@@ -1,27 +1,27 @@
 class Yarn < Formula
   desc "JavaScript package manager"
   homepage "https://yarnpkg.com/"
-  url "https://yarnpkg.com/downloads/1.22.21/yarn-v1.22.21.tar.gz"
-  sha256 "a55bb4e85405f5dfd6e7154a444e7e33ad305d7ca858bad8546e932a6688df08"
+  url "https://yarnpkg.com/downloads/1.22.22/yarn-v1.22.22.tar.gz"
+  sha256 "88268464199d1611fcf73ce9c0a6c4d44c7d5363682720d8506f6508addf36a0"
   license "BSD-2-Clause"
 
   livecheck do
-    skip("1.x line is frozen and features/bugfixes only happen on 2.x")
+    skip("1.x line is frozen and features/bugfixes only happen on 2+")
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "321bf5ede7905483a19a4acd4896caad7f6cb7cc4f92fbe4e2f39706e1f98bb3"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "edb63a1b15d560263270324b63bee4c2aa8145197636a755436cc14424fc1e12"
   end
 
   depends_on "node" => :test
 
   conflicts_with "hadoop", because: "both install `yarn` binaries"
-  conflicts_with "corepack", because: "both install `yarn` and `yarnpkg` binaries"
 
   def install
     libexec.install buildpath.glob("*")
     (bin/"yarn").write_env_script libexec/"bin/yarn.js", PREFIX: HOMEBREW_PREFIX
-    (bin/"yarnpkg").write_env_script libexec/"bin/yarn.js", PREFIX: HOMEBREW_PREFIX
+    bin.install_symlink bin/"yarn" => "yarnpkg"
     inreplace libexec/"lib/cli.js", "/usr/local", HOMEBREW_PREFIX
     inreplace libexec/"package.json", '"installationMethod": "tar"',
                                       "\"installationMethod\": \"#{tap.user.downcase}\""

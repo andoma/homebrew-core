@@ -7,6 +7,7 @@ class Cjdns < Formula
   head "https://github.com/cjdelisle/cjdns.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0142ab3b54849f126cdb39c6bd9e61dbde277e9021d608caf6724f795b2c2f54"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ff8c49f78499d690c7e298220a109e52f0c92da7510409ae18b06ba9063af3f1"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "43e9dbce680ded6cbe6b0aabbff2d4a5e06c37a0dfbdd62953b026901230ceab"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "9936c5967ebb1f708154585ccde1446d36c9eb88c614b59ae42f96c551f3ccd9"
@@ -19,13 +20,12 @@ class Cjdns < Formula
   end
 
   depends_on "node" => :build
-  depends_on "python@3.12" => :build
   depends_on "rust" => :build
-  depends_on "six" => :build
 
   def install
-    # Libuv build fails on macOS with: env: python: No such file or directory
-    ENV.prepend_path "PATH", Formula["python@3.12"].opt_libexec/"bin" if OS.mac?
+    # Work-around for build issue with Xcode 15.3
+    # upstream PR patch, https://github.com/cjdelisle/cjdns/pull/1263
+    ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
 
     # Avoid using -march=native
     inreplace "node_build/make.js",
@@ -33,7 +33,7 @@ class Cjdns < Formula
               "var NO_MARCH_FLAG = ['x64', 'arm', 'arm64', 'ppc', 'ppc64'];"
 
     system "./do"
-    bin.install("cjdroute")
+    bin.install "cjdroute"
 
     man1.install "doc/man/cjdroute.1"
     man5.install "doc/man/cjdroute.conf.5"

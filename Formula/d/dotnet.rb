@@ -3,29 +3,32 @@ class Dotnet < Formula
   homepage "https://dotnet.microsoft.com/"
   # Source-build tag announced at https://github.com/dotnet/source-build/discussions
   url "https://github.com/dotnet/dotnet.git",
-      tag:      "v8.0.1",
-      revision: "b27976e5a6850466ee5b4ce24f91ee93bef645f7"
+      tag:      "v8.0.10",
+      revision: "8922fe64a1903ed4e35e24568efb056b3e0fad43"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "fe16d3dc3e1072ec371128be7dcaf483a9b02be472cb87e1da3b43fb842bf82f"
-    sha256 cellar: :any,                 arm64_ventura:  "49d43810256813aa3375cd9c3269bb065d6e3f8fa059c553ab71685a3809fd91"
-    sha256 cellar: :any,                 arm64_monterey: "a1f2ee204269a54c96db79418119b954508e5117e85e06855496cee045de0d9b"
-    sha256 cellar: :any,                 sonoma:         "5e0b209c5a8aef590fa7805aa047c8308064953f24bdfcbf5c82c48d3aff7762"
-    sha256 cellar: :any,                 ventura:        "c4a7d97f40ff6165c38bc6f106567ff08d6afd0fa0bc564de7aa109605c853e8"
-    sha256 cellar: :any,                 monterey:       "90a53fa755e4946734eb0e3db1fb11b0a0bd511cbfd1882159e46a3b1c6a075e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "40880305c33d01db2bfdbb6c1f3a970c408d0a05f8e8bc0db2c5cc2c3bb4f7f3"
+    sha256 cellar: :any,                 arm64_sequoia: "197cb068d41882513946c97853080a27b7c314ffd8f42296b663d2a6a19277c4"
+    sha256 cellar: :any,                 arm64_sonoma:  "ee8e38b1f895f854eb38256ce40ae985613b2c005881a64d58de86a7e0b9e24d"
+    sha256 cellar: :any,                 arm64_ventura: "474fd3ad1582cf4f406654ec9b015e975569705c451e7f55d1a609a35b2da9ad"
+    sha256 cellar: :any,                 sonoma:        "ef18da376e2734a3b327840e99aac667dd43b5c797e6b651aa875ed56644e2c4"
+    sha256 cellar: :any,                 ventura:       "75c23fb3c05ac68ec3a3c22203e6829a8f80f5a2f22a3453bce1a4eff83338ad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e8bc8e2a21f664c9e49fba79e66c6e0fe53d8ad2eba046703ad536e47e5bb675"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.12" => :build
-  depends_on "icu4c"
+  depends_on "python@3.13" => :build
+  depends_on "icu4c@76"
   depends_on "openssl@3"
 
   uses_from_macos "llvm" => :build
   uses_from_macos "krb5"
   uses_from_macos "zlib"
+
+  on_sonoma do
+    depends_on xcode: :build if DevelopmentTools.clang_build_version == 1600
+  end
 
   on_linux do
     depends_on "libunwind"
@@ -36,10 +39,30 @@ class Dotnet < Formula
   # GCC builds have limited support via community.
   fails_with :gcc
 
+  # Backport fix for error loading BuildXL service index
+  patch do
+    url "https://github.com/dotnet/dotnet/commit/18b5c7e1b125468f483a697ba8809c0a2412a762.patch?full_index=1"
+    sha256 "76ede810166cf718fe430a8b155da07ca245ec9174b73b3471baf413bbd42460"
+  end
+
+  # Backport fix to build with Xcode 16
+  patch do
+    url "https://github.com/dotnet/runtime/commit/562efd6824762dd0c1826cc99e006ad34a7e9e85.patch?full_index=1"
+    sha256 "435002246227064be19db8065b945e94565b59362e75a72ee6d6322a25baa832"
+    directory "src/runtime"
+  end
+
+  # Backport fix to build with Clang 19
+  # Ref: https://github.com/dotnet/runtime/commit/043ae8c50dbe1c7377cf5ad436c5ac1c226aef79
+  patch :DATA
+
   def install
     if OS.mac?
-      # Deparallelize to avoid missing PDBs
+      # Deparallelize to reduce chances of missing PDBs
       ENV.deparallelize
+      # Avoid failing on missing PDBs as unable to build bottle on all runners in current state
+      # Issue ref: https://github.com/dotnet/source-build/issues/4150
+      inreplace "build.proj", /\bFailOnMissingPDBs="true"/, 'FailOnMissingPDBs="false"'
 
       # Disable crossgen2 optimization in ASP.NET Core to work around build failure trying to find tool.
       # Microsoft.AspNetCore.App.Runtime.csproj(445,5): error : Could not find crossgen2 tools/crossgen2
@@ -48,8 +71,10 @@ class Dotnet < Formula
                 "<CrossgenOutput Condition=\" '$(TargetArchitecture)' == 's390x'",
                 "<CrossgenOutput Condition=\" '$(TargetOsName)' == 'osx'"
     else
-      ENV.append_path "LD_LIBRARY_PATH", Formula["icu4c"].opt_lib
+      icu4c_dep = deps.find { |dep| dep.name.match?(/^icu4c(@\d+)?$/) }
+      ENV.append_path "LD_LIBRARY_PATH", icu4c_dep.to_formula.opt_lib
       ENV.append_to_cflags "-I#{Formula["krb5"].opt_include}"
+      ENV.append_to_cflags "-I#{Formula["zlib"].opt_include}"
 
       # Use our libunwind rather than the bundled one.
       inreplace "src/runtime/eng/SourceBuild.props",
@@ -131,3 +156,41 @@ class Dotnet < Formula
                  shell_output("#{bin}/dotnet run --framework #{target_framework} #{testpath}/test.dll a b c")
   end
 end
+
+__END__
+diff --git a/src/runtime/src/coreclr/vm/comreflectioncache.hpp b/src/runtime/src/coreclr/vm/comreflectioncache.hpp
+index 08d173e61648c6ebb98a4d7323b30d40ec351d94..12db55251d80d24e3765a8fbe6e3b2d24a12f767 100644
+--- a/src/runtime/src/coreclr/vm/comreflectioncache.hpp
++++ b/src/runtime/src/coreclr/vm/comreflectioncache.hpp
+@@ -26,6 +26,7 @@ template <class Element, class CacheType, int CacheSize> class ReflectionCache
+
+     void Init();
+
++#ifndef DACCESS_COMPILE
+     BOOL GetFromCache(Element *pElement, CacheType& rv)
+     {
+         CONTRACTL
+@@ -102,6 +103,7 @@ template <class Element, class CacheType, int CacheSize> class ReflectionCache
+         AdjustStamp(TRUE);
+         this->LeaveWrite();
+     }
++#endif // !DACCESS_COMPILE
+
+ private:
+     // Lock must have been taken before calling this.
+@@ -141,6 +143,7 @@ template <class Element, class CacheType, int CacheSize> class ReflectionCache
+         return CacheSize;
+     }
+
++#ifndef DACCESS_COMPILE
+     void AdjustStamp(BOOL hasWriterLock)
+     {
+         CONTRACTL
+@@ -170,6 +173,7 @@ template <class Element, class CacheType, int CacheSize> class ReflectionCache
+         if (!hasWriterLock)
+             this->LeaveWrite();
+     }
++#endif // !DACCESS_COMPILE
+
+     void UpdateHashTable(SIZE_T hash, int slot)
+     {

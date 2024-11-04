@@ -1,24 +1,28 @@
 class Minizinc < Formula
   desc "Medium-level constraint modeling language"
   homepage "https://www.minizinc.org/"
-  url "https://github.com/MiniZinc/libminizinc/archive/refs/tags/2.8.3.tar.gz"
-  sha256 "151ec26165abfb13d709d89be92b3f9bbb5ba3873b8ecf9d88ac15f31042628f"
+  url "https://github.com/MiniZinc/libminizinc/archive/refs/tags/2.8.7.tar.gz"
+  sha256 "91413c9788d45eb77ecb1da9657c00744312cca4fd5e71ca2583c35a32a3be62"
   license "MPL-2.0"
   head "https://github.com/MiniZinc/libminizinc.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f16fbb920305c15ba2df29feedeb3be6cf719cb8ddcc6a9f2c8eb83726189b61"
-    sha256 cellar: :any,                 arm64_ventura:  "1669fe4bea10e36e02db72af1a214a5ffce1113c3153735fe794ce552f45bdfc"
-    sha256 cellar: :any,                 arm64_monterey: "ac0406db5f6e4938a9107e2eede359be8f92c60900af676467ec8bf6a7f98e30"
-    sha256 cellar: :any,                 sonoma:         "6c94413d2e8235d519f4cae3fa0cd8b582ea285848dfef8668b6f718a0e08145"
-    sha256 cellar: :any,                 ventura:        "a8685926ef8f4e34f57e75ec5063d9a207b541f92697cc05da5c0f5d953a7702"
-    sha256 cellar: :any,                 monterey:       "13a9031a1ff9da632321b0d2d0d1873cd3ffb311d4c00efc28a979b1398eb06e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3663e181a5ecbd059199c43c07b30b987ac0ac3509e29a039e74dbc705b752a5"
+    sha256 cellar: :any,                 arm64_sequoia: "13c0b9e11d12f00725a0d3877a48fd8738d1055f545ff637496dd9c60cf451e9"
+    sha256 cellar: :any,                 arm64_sonoma:  "4471139edeb08c57ef898b371543ccd1f5dd7e92edd485b2db5aaa1719431efa"
+    sha256 cellar: :any,                 arm64_ventura: "1a640fb1b353c20683c31756a63dd5da5b7442e879481efb0082b234f4edf522"
+    sha256 cellar: :any,                 sonoma:        "713ee39dbb00cca35b673456b7fda516fcef1014c9615cdfd66df9ac8e3a2768"
+    sha256 cellar: :any,                 ventura:       "9fbe354f2b789bc9f3b1311c2ccbd03e13fd361001e297e3e50975903dae150f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11caed387d09bf8b91e0aa053bb333bbf6276adefe72d962c5d2c0b5151d679a"
   end
 
   depends_on "cmake" => :build
+
   depends_on "cbc"
+  depends_on "cgl"
+  depends_on "clp"
+  depends_on "coinutils"
   depends_on "gecode"
+  depends_on "osi"
 
   fails_with gcc: "5"
 

@@ -1,8 +1,8 @@
 class BotanAT2 < Formula
   desc "Cryptographic algorithms and formats library in C++"
   homepage "https://botan.randombit.net/"
-  url "https://botan.randombit.net/releases/Botan-2.19.4.tar.xz"
-  sha256 "5a3a88ef6433e97bcab0efa1ed60c6197e4ada9d9d30bc1c47437bf89b97f276"
+  url "https://botan.randombit.net/releases/Botan-2.19.5.tar.xz"
+  sha256 "dfeea0e0a6f26d6724c4af01da9a7b88487adb2d81ba7c72fcaf52db522c9ad4"
   license "BSD-2-Clause"
   head "https://github.com/randombit/botan.git", branch: "release-2"
 
@@ -12,19 +12,23 @@ class BotanAT2 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "474b35ff0b5f6181037c3abbfcdb2e18bbd6f36984319c9a2a0d8b0bf644adbe"
-    sha256 arm64_ventura:  "95984c9e9d4253c0e2a5aa62025f114b889e7eb20c87db78f0d18da716ef3c76"
-    sha256 arm64_monterey: "95827c9faccd5b1c3ebf7b4b2fc1ca1698bd91eb429cfb202b341fb1836ece8c"
-    sha256 sonoma:         "ed5cccfcfa2bb1a7449a44fc8cf1c9649e060c890d07423a3c8357a5e59a134f"
-    sha256 ventura:        "c02d656cf9e53ebbe300ccfee5bdcecf5229938491208c37dda8255a28419202"
-    sha256 monterey:       "f83cdd76d128db1c88a5ffde722c5fa78815cee57f954423b074c22632c2cb03"
-    sha256 x86_64_linux:   "4cb4c1a3e7e7d08a7782780ffc5f84df3b6259776205fc97fbb511dc5bc3bddd"
+    rebuild 1
+    sha256 arm64_sequoia: "1104641a2c34fa2c1212ad9002fc1a2089a75be4c9fb66ad655a1680c8428ad0"
+    sha256 arm64_sonoma:  "c65820f897ce8748cc5b74e9537a7bcbc4842f161f36557f5b6858b409b32c63"
+    sha256 arm64_ventura: "31a49478cd103522bee1b3e216145c3ba149f93e586a824b9d1b4ed4a2a196ae"
+    sha256 sonoma:        "2bb57c57173cd293cc738dda60c02bcd2d7ddffad9f6e5d0b170245c03feaeff"
+    sha256 ventura:       "51ecbd410373905c81df9ab8cf43b39076c77d255bd00e797a09c0a8243422bd"
+    sha256 x86_64_linux:  "9fd91b5d569739ca97a8130d374d0d289a1d5f6a4b7e9cea90014ec714b52181"
   end
 
   keg_only :versioned_formula
 
+  # Botan2 is currently scheduled to reach end of life at the end of 2024
+  # Ref: https://botan.randombit.net/#releases
+  deprecate! date: "2024-12-31", because: :unsupported
+
   depends_on "pkg-config" => :build
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "sqlite"
 
   uses_from_macos "bzip2"
@@ -33,7 +37,7 @@ class BotanAT2 < Formula
   fails_with gcc: "5"
 
   def python3
-    which("python3.12")
+    which("python3.13")
   end
 
   def install

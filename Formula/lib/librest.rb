@@ -3,10 +3,19 @@ class Librest < Formula
   homepage "https://wiki.gnome.org/Projects/Librest"
   url "https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz"
   sha256 "0513aad38e5d3cedd4ae3c551634e3be1b9baaa79775e53b2dba9456f15b01c9"
+  license all_of: ["LGPL-2.1-or-later", "LGPL-3.0-or-later"]
   revision 4
+
+  # librest doesn't seem to follow the typical GNOME version scheme, so we
+  # provide a regex to disable the `Gnome` strategy's version filtering.
+  livecheck do
+    url :stable
+    regex(/rest[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     rebuild 1
+    sha256                               arm64_sequoia:  "b495dc3f46d8a9540285976f91890822b26bb33455aa22aad0d0c1eedbd542fc"
     sha256                               arm64_sonoma:   "83899cbb34ed5f7f1015a92854e0593d720bdbe31d1f44a0b29e24823e26503d"
     sha256                               arm64_ventura:  "5b9577e9c171c879a9fe98ed60239ac2997732b0d3d23be936ec4c8b51e660d7"
     sha256                               arm64_monterey: "b82cb89cd5181ce20e2bce9f9255bd7878a13d9badb6c0c8fe633be3c1fe748a"
@@ -21,25 +30,31 @@ class Librest < Formula
 
   depends_on "gobject-introspection" => :build
   depends_on "pkg-config" => :build
+
   depends_on "glib"
   depends_on "libsoup@2"
+
+  uses_from_macos "libxml2"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     ENV.prepend_path "PKG_CONFIG_PATH", Formula["libsoup@2"].opt_lib/"pkgconfig"
     ENV.prepend_path "XDG_DATA_DIRS", Formula["libsoup@2"].opt_share
     ENV.prepend_path "XDG_DATA_DIRS", HOMEBREW_PREFIX/"share"
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
+    system "./configure", "--disable-silent-rules",
                           "--without-gnome",
                           "--without-ca-certificates",
-                          "--enable-introspection=yes"
+                          "--enable-introspection=yes",
+                          *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdlib.h>
       #include <rest/rest-proxy.h>
 
@@ -50,7 +65,7 @@ class Librest < Formula
 
         return EXIT_SUCCESS;
       }
-    EOS
+    C
     glib = Formula["glib"]
     libsoup = Formula["libsoup@2"]
     flags = %W[

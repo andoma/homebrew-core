@@ -1,12 +1,12 @@
 class FfmpegAT4 < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.4.4.tar.xz"
-  sha256 "e80b380d595c809060f66f96a5d849511ef4a76a26b76eacf5778b94c3570309"
+  url "https://ffmpeg.org/releases/ffmpeg-4.4.5.tar.xz"
+  sha256 "f9514e0d3515aee5a271283df71636e1d1ff7274b15853bcd84e144be416ab07"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
-  revision 4
+  revision 3
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -14,19 +14,19 @@ class FfmpegAT4 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "1797363ec0d50082473d532fb2cea7fb51a9f7bc245298dd2f965327e141cc9b"
-    sha256 arm64_ventura:  "f4694b200722b39385c309b25618de9f1d978dce3b4aa5dd76582086f09f269e"
-    sha256 arm64_monterey: "1cf6a2b196893942bcf08bd30e2f7fdc1aa055b3fd8ff3ea74b46e1ffde91c32"
-    sha256 sonoma:         "250bd70ea9f79d197f73830a66cf3a0a86aace2089d2e66ab729b68d0a8a3d3d"
-    sha256 ventura:        "495de31aa416d2046a986083249bf726ec264bdafca638f54b9b3d55f30f0ffe"
-    sha256 monterey:       "dc7666e3f742a6c21f688e0aefab9ebd554b509d23461ee60ffafd431229d1da"
-    sha256 x86_64_linux:   "5d243ef576e3f8b2f697e42fca10f5244b0d279376cd3e79de33a3147f343c23"
+    sha256 arm64_sequoia: "7ba55aabaf7f392fd82a0237a3af26b269109da24637cbe7993a033c663dd832"
+    sha256 arm64_sonoma:  "6740ca2e4930657d8a988837f99e47c4af85c9c9c744ab2afefa2a8c8c572c57"
+    sha256 arm64_ventura: "24c0e63bbd4c28ac9f8b633e2a874af3dac3d25c30bfec4a9b8406ee2de44c69"
+    sha256 sonoma:        "ebab393886ca4290430648aa1819126171765184e63198512daba0031e701b58"
+    sha256 ventura:       "12fcd8ca5ed3698a30a9c3ad86c35ef6d9318e35c6258d9c922603167a40c489"
+    sha256 x86_64_linux:  "a7bdce89cfd26e96b357a7b3cd0faad87f552897f9d14b6aa5b232446c04c421"
   end
 
   keg_only :versioned_formula
 
   depends_on "nasm" => :build
   depends_on "pkg-config" => :build
+
   depends_on "aom"
   depends_on "dav1d"
   depends_on "fontconfig"
@@ -41,6 +41,7 @@ class FfmpegAT4 < Formula
   depends_on "libvidstab"
   depends_on "libvorbis"
   depends_on "libvpx"
+  depends_on "libxcb"
   depends_on "opencore-amr"
   depends_on "openjpeg"
   depends_on "opus"
@@ -64,18 +65,21 @@ class FfmpegAT4 < Formula
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "libarchive"
+    depends_on "libogg"
+    depends_on "libsamplerate"
+    depends_on "libvmaf"
+  end
+
   on_linux do
     depends_on "alsa-lib"
+    depends_on "libx11"
+    depends_on "libxext"
     depends_on "libxv"
   end
 
   fails_with gcc: "5"
-
-  # Fixes assembling with binutil as >= 2.41
-  patch do
-    url "https://github.com/FFmpeg/FFmpeg/commit/effadce6c756247ea8bae32dc13bb3e6f464f0eb.patch?full_index=1"
-    sha256 "9800c708313da78d537b61cfb750762bb8ad006ca9335b1724dbbca5669f5b24"
-  end
 
   def install
     args = %W[

@@ -1,8 +1,8 @@
 class KymaCli < Formula
   desc "Kyma command-line interface"
   homepage "https://kyma-project.io"
-  url "https://github.com/kyma-project/cli/archive/refs/tags/2.20.3.tar.gz"
-  sha256 "0da053a6ac4b0b83fc052380fb43704fa69be87dc80bb0a3f743cbfbaf295011"
+  url "https://github.com/kyma-project/cli/archive/refs/tags/2.20.5.tar.gz"
+  sha256 "6c39252cc15aeb4828831d040819297c9cd7a5235844ae9c9ea91dad8db02551"
   license "Apache-2.0"
   head "https://github.com/kyma-project/cli.git", branch: "main"
 
@@ -15,13 +15,14 @@ class KymaCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "981c22ebbb6a6dab6d0ee66f45d7feb10cac9cb66533552ce88fa1554226f7ca"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6d415507384471e088ce6d154141971caaf7992ee94eba2bbfa10b6c06100ce5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4c3e596b571a218275839d090ba1de70dc13dbe808d23f4e625b1a7f09f331eb"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c295b47ef4ce115a3214705ddeee4d816ec8dec0495d1465fb7c8933208cc077"
-    sha256 cellar: :any_skip_relocation, ventura:        "f6c7378d30ce1c68e08de4d5bc4f019c192e348b289cd8b8c0dc438ad327f07b"
-    sha256 cellar: :any_skip_relocation, monterey:       "77c2a70793aa4197ad0128dd80d9a17cc8cfb7831c3b8eb23f744a3450c4f6a4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "92c6a1810b7c08d2ee9bb43a8c6c13a7bc0dc759a0847257d94e795071cd12fd"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8e2908d074bedcae0b73a8279a6c3856d0a6bc2234dd20adabc3abe2dd47d352"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bff4fcdeda28c0ff582c34aa30ee171319b4478b9d6af175d949d525c6cbf5d5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9f4d62bc61545db83c20e731e14ed0de8d35856f88bc9d0f3ae2008f6c72f8fb"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c5193a6b23e406ef87e9c6829e63de28888199ffdbe5bff65dec95bd9e87e07b"
+    sha256 cellar: :any_skip_relocation, sonoma:         "51ea7ae1f069f4ae9b80044ba461c314c5c8e68b1fbbcb1dfb4ab03c2aa160ed"
+    sha256 cellar: :any_skip_relocation, ventura:        "6ee34b3498729c5069494b95b08a589d4468834a2001c17e45131ed2ce53e647"
+    sha256 cellar: :any_skip_relocation, monterey:       "adafe8dcaf3bf488a2df29c7e92647fb45f097f3c532b78d7a60074a49bc60e5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9cb2e46ef5d6cb0ca12ae214815c9c40b6e233f403a0574f4833df8d413ff37c"
   end
 
   depends_on "go" => :build
@@ -32,7 +33,7 @@ class KymaCli < Formula
       -X github.com/kyma-project/cli/cmd/kyma/version.Version=#{version}
     ]
 
-    system "go", "build", *std_go_args(output: bin/"kyma", ldflags: ldflags), "./cmd"
+    system "go", "build", *std_go_args(output: bin/"kyma", ldflags:), "./cmd"
 
     generate_completions_from_executable(bin/"kyma", "completion", base_name: "kyma")
   end

@@ -7,6 +7,7 @@ class Rc < Formula
   license "Zlib"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7f1229b46bbcd4ea15a8cf6ed36601dc7e2a6e1a0436f4c6f946bc8611c236c9"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "64e670569da0f8330abe43a6f0cbb96266ae145b5324add5e71c658d44266745"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "384e3f48c4d39fc6b6eae5638514b345684dd3d8af6a14b73de894927083dcd5"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "4ac5175270dab427e207bc53ab5d47f6e3f28e8618b471df5a59dc2fd29719cb"
@@ -21,6 +22,8 @@ class Rc < Formula
     sha256 cellar: :any_skip_relocation, sierra:         "627e45477eabd5854e3c5f39af5290befd43d03b385d1b20f0ce4b49636fd2d9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6623be4e09b3e283101e33938ec83f0c47d07ad164a30c5854a66d8e64e31447"
   end
+
+  deprecate! date: "2024-06-10", because: :repo_removed
 
   uses_from_macos "libedit"
 

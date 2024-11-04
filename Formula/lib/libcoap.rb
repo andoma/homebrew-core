@@ -1,51 +1,41 @@
 class Libcoap < Formula
   desc "Lightweight application-protocol for resource-constrained devices"
   homepage "https://github.com/obgm/libcoap"
-  url "https://github.com/obgm/libcoap/archive/refs/tags/v4.3.4.tar.gz"
-  sha256 "ae61a48c21f7b40e1442c9e1da9aab9e6f2cf0deccb02f3fed4de232a0b0522e"
+  url "https://github.com/obgm/libcoap/archive/refs/tags/v4.3.5.tar.gz"
+  sha256 "a417ed26ec6c95c041b42353b5b6fad1602e2bf42a6e26c09863450e227b7b5f"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "c5318807d70629d11a4b4d66f3eb50ee7edba115141ada20e551b7780f80df78"
-    sha256 cellar: :any,                 arm64_ventura:  "5be317341fa4f1116c8bde8a7a7228b6565b906a915e079cd11b2be8837b9f73"
-    sha256 cellar: :any,                 arm64_monterey: "aced78b02de0f56db571a4fec3a43ba552ef55cd51c74c6b0d779a54ff732a13"
-    sha256 cellar: :any,                 sonoma:         "7e7a9c9739409132a254b650e7f6b4511ed76f5b218630b437b1cf880bdc16f0"
-    sha256 cellar: :any,                 ventura:        "be3732c2372e3ed2e45ade2f2f5accadb0d6ad119c274623ed8b61d807aba666"
-    sha256 cellar: :any,                 monterey:       "c09e0bce7754763e69ca660fcb233339f396435985027ce270fab5922d065e66"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "19c81e44ed492de2e8ea366ace3f52c88cadc1f19e5b60a4f98b8cc6b3b4a7e0"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "a98670de3fe4ec6aa76bce6909dcb2e4508d965d16f8d5087e08d11561dc3f8a"
+    sha256 cellar: :any,                 arm64_sonoma:  "3e1ccc1ecda3c10ba83e6c427e83cf30166cc8693821914426ef5b35e024d12f"
+    sha256 cellar: :any,                 arm64_ventura: "3509f77235a4648fb6242af0573ab2d864f5347b78e941b70d3695f4c8c1970c"
+    sha256 cellar: :any,                 sonoma:        "7c1e314e9154f828266e6e6077564e0f87450ee55047f7d1f96d99a8c4b7047b"
+    sha256 cellar: :any,                 ventura:       "cd74e8814cc3d2fe124bc986455a778412efde46f3a4487038c8b634e291882f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ede5117a7134ea1750a9ae100837280ff4b971c00e995196b2f669dde62320d"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "doxygen" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "openssl@3"
 
   def install
     system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-examples",
-                          "--disable-manpages"
+    system "./configure", "--disable-manpages", "--disable-doxygen", *std_configure_args
     system "make"
     system "make", "install"
   end
 
   test do
-    %w[coap-client coap-server].each do |src|
-      system ENV.cc, pkgshare/"examples/#{src}.c",
-        "-I#{Formula["openssl@3"].opt_include}", "-I#{include}",
-        "-L#{Formula["openssl@3"].opt_lib}", "-L#{lib}",
-        "-lcrypto", "-lssl", "-lcoap-3-openssl", "-o", src
-    end
-
     port = free_port
     fork do
-      exec testpath/"coap-server", "-p", port.to_s
+      exec bin/"coap-server", "-p", port.to_s
     end
 
     sleep 1
-    output = shell_output(testpath/"coap-client -B 5 -m get coap://localhost:#{port}")
+    output = shell_output(bin/"coap-client -B 5 -m get coap://localhost:#{port}")
     assert_match "This is a test server made with libcoap", output
   end
 end

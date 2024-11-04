@@ -13,6 +13,7 @@ class Lizard < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "63b78a3a1448020e2818baa44fd54fda999a71b99ba02529f465710351f0e0b1"
     sha256 cellar: :any,                 arm64_sonoma:   "476ceb4a73d3142140462bc343d0efd3730580b26108977c304c39dee0142989"
     sha256 cellar: :any,                 arm64_ventura:  "6fcf6c0c2243f9fa4a9f06ebb9b28c2fcf5aaed5916bc3ab6be36024e3096556"
     sha256 cellar: :any,                 arm64_monterey: "870168a41711bd2dac174484f576c7573b422e9b9a9ba20a4f761b262747966f"
@@ -26,6 +27,8 @@ class Lizard < Formula
     sha256 cellar: :any,                 high_sierra:    "a42e90e02b4074e0c864ae32fe5833977cebd50b8f9c74339c7a91dcf169b098"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d50573d98593492aefbae83f872366e44915d241f975a9f3213c6fbc59b6a1f8"
   end
+
+  conflicts_with "lizard-analyzer", because: "both install `lizard` binaries"
 
   def install
     system "make", "PREFIX=#{prefix}", "install"

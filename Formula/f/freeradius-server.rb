@@ -6,8 +6,8 @@ class FreeradiusServer < Formula
   head "https://github.com/FreeRADIUS/freeradius-server.git", branch: "master"
 
   stable do
-    url "https://github.com/FreeRADIUS/freeradius-server/archive/refs/tags/release_3_2_3.tar.gz"
-    sha256 "65cdb744471895ea1da49069454a9a73cc0851fba97251f96b40673d3d54bd8f"
+    url "https://github.com/FreeRADIUS/freeradius-server/archive/refs/tags/release_3_2_6.tar.gz"
+    sha256 "65e099edf5d72ac2f9f7198c800cf0199544f974aae13c93908ab739815b9625"
 
     # Fix -flat_namespace being used
     patch do
@@ -22,19 +22,18 @@ class FreeradiusServer < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "975eb3ec60ead242efbddafd806f7221ca8d620d834596223cb06b1dc1757e6b"
-    sha256 arm64_ventura:  "37734c06c9574c408e54949be5cbd8d5bd854cc1ee62a38db20e59e0c40099b9"
-    sha256 arm64_monterey: "7a44daa75f6580de3b0c94272a7f9571f7a980479605ec0ed3cb758ce62efd47"
-    sha256 sonoma:         "d363438223648119548525ad6445ba46637fc98826abdb901a738975ba5b9a7b"
-    sha256 ventura:        "288de84c2b4f3c8af2c818ccb9663acddf3844e37563196eb7dccf49f6a77d9f"
-    sha256 monterey:       "f0ca09ead3c4384d90869155652a4181402da2c9c1281d6522ee2e3246c652fb"
-    sha256 x86_64_linux:   "3d3bb2b2e6a477690ac32054c51e1f01c7ebbed5c8580123f3b0afae6a85308b"
+    sha256 arm64_sequoia: "d8273c1e4724a8889b45df7127dc8bc0f9e2311d521d4c37d88d0b60e4268f45"
+    sha256 arm64_sonoma:  "550ad29d70fda795a136f5a68a4985a39457608daaed3e8793095bbc239037d3"
+    sha256 arm64_ventura: "ea53fcee6f0448a54b68658d3251b7bd47654dbca51b5994464749b50db13ae9"
+    sha256 sonoma:        "86e0e4e80f9ca6e4b01fa22c6886a6063acb626305976425508196130e39c8cf"
+    sha256 ventura:       "631343eab2dd4aa02175a17c3593a2effcf441e9df705f78562c83eb8565459e"
+    sha256 x86_64_linux:  "54af2578552e86f51d43f76f2892e387c71e07297f77083c01178a3ba54ca90e"
   end
 
   depends_on "collectd"
+  depends_on "json-c"
   depends_on "openssl@3"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "talloc"
 
   uses_from_macos "krb5"
@@ -44,6 +43,7 @@ class FreeradiusServer < Formula
   uses_from_macos "sqlite"
 
   on_linux do
+    depends_on "gdbm"
     depends_on "readline"
   end
 
@@ -73,7 +73,10 @@ class FreeradiusServer < Formula
   end
 
   test do
-    output = shell_output("#{bin}/smbencrypt homebrew")
-    assert_match "77C8009C912CFFCF3832C92FC614B7D1", output
+    assert_match "77C8009C912CFFCF3832C92FC614B7D1",
+                 shell_output("#{bin}/smbencrypt homebrew")
+
+    assert_match "Configuration appears to be OK",
+                 shell_output("#{bin}/radiusd -CX")
   end
 end

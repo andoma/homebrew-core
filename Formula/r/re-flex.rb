@@ -1,21 +1,22 @@
 class ReFlex < Formula
   desc "Regex-centric, fast and flexible scanner generator for C++"
   homepage "https://www.genivia.com/doc/reflex/html"
-  url "https://github.com/Genivia/RE-flex/archive/refs/tags/v4.0.1.tar.gz"
-  sha256 "cf492c10573a3b29e832ccf8c728e1931c5b2d073f1703e8fcd5e0eeb0e043ca"
+  url "https://github.com/Genivia/RE-flex/archive/refs/tags/v5.0.1.tar.gz"
+  sha256 "b74430fe63a6e3e665676d23601e332fcf12714efb798661bf307cb7a230ca4f"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2e68a48b64e43aaad6e6aee54f50a4fb0b8190e66fe0523329a1062f97da828c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3b9c4116e1ab2d5df06d97478dab33784e76f20c59e91790d17843666a1a7ed2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "219fca9edaffe5dd20fd3b25eb90f2abfd2c76f413059ef2efa5861a0724bb44"
-    sha256 cellar: :any_skip_relocation, sonoma:         "34479728358131cc2de9cbddbf545435f2aa121409d7bf4395f9896b965d85ca"
-    sha256 cellar: :any_skip_relocation, ventura:        "8441ab7781690c984da77686116568740e710cf61130ab1c2c5914e5c584ad28"
-    sha256 cellar: :any_skip_relocation, monterey:       "e06d60b8fe9168455bd77b4b22c032dedb0a514301f9b3ed8b15133066cfe938"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4a2b06c556335342ee5d18f95d0836056f33f16e205d3db3851f056c09a2d2a9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0391567b0004d9f3dc666925585fa66ff5456ffd69aabfd86c4806210c101d02"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f3bbc1d5c80d249444e4e8b78f231ce9df3a88df46c40b6e993a6e2bec12b1ee"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "331fcd3fa95fec4dee453d989c316cd389382b05d35ec59b8626b55982425117"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a34892a8aa14f7ca2f3323533e940a4f348706246f54f8850bc7ddbc13d2d106"
+    sha256 cellar: :any_skip_relocation, ventura:       "7eb55d5adaeca42c12bf2c67840899443db4cd924b0aa3298d468c5627c3a9cf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "51d548da31dcbebeec82ada8cf0d2e66b8c087b5f7e179af96fb0bf52f32ce5f"
   end
 
   depends_on "pcre2"
+
+  conflicts_with "reflex", because: "both install `reflex` binaries"
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -34,7 +35,7 @@ class ReFlex < Formula
       .+  ECHO;
       %%
     EOS
-    system "#{bin}/reflex", "--flex", "echo.l"
+    system bin/"reflex", "--flex", "echo.l"
     assert_predicate testpath/"lex.yy.cpp", :exist?
   end
 end

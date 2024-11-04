@@ -3,74 +3,79 @@ class SyslogNg < Formula
 
   desc "Log daemon with advanced processing pipeline and a wide range of I/O methods"
   homepage "https://www.syslog-ng.com"
-  url "https://github.com/syslog-ng/syslog-ng/releases/download/syslog-ng-4.6.0/syslog-ng-4.6.0.tar.gz"
-  sha256 "b69e3360dfb96a754a4e1cbead4daef37128b1152a23572356db4ab64a475d4f"
+  url "https://github.com/syslog-ng/syslog-ng/releases/download/syslog-ng-4.8.1/syslog-ng-4.8.1.tar.gz"
+  sha256 "e8b8b98c60a5b68b25e3462c4104c35d05b975e6778d38d8a81b8ff7c0e64c5b"
   license all_of: ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
+  revision 2
+  head "https://github.com/syslog-ng/syslog-ng.git", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:   "19578e6b6f382c326b6fb8c4d3cd09ec7f55a78e90ae4776fbbfdec81833c8ca"
-    sha256 arm64_ventura:  "a0c705a7b53386f97cf4e71c7fd392f5875c9363a9d0e58621e24c36f1191106"
-    sha256 arm64_monterey: "c366d1c99deddbe312e6ca672744a2382e894c72c7c6ca0fd0ede33579486b7c"
-    sha256 sonoma:         "f616a82c15c8a71cb7c6d1201a5e25c84c3971f7637560768656b6129b4871d9"
-    sha256 ventura:        "e3d562b92be1e943d4ac7d6c8560db27fba6e14e2393475a8de5815de99eaa2b"
-    sha256 monterey:       "6412eb3a4676aa8160be43e759fbfafb7097d3429ec33aea4de1884e4d09fb97"
-    sha256 x86_64_linux:   "c88bbb6dfd93353e59b09b286082c6af3b56527d80da7adab87c487c4d6ced89"
+    sha256 arm64_sequoia: "1b3a14d749d5325d65ae7b2f5343b89b56b6be39a261916420427fb369775014"
+    sha256 arm64_sonoma:  "4c1310145369969a8ecc6bd4e0d22d81f154d6b59369b54cca08512c8eb48344"
+    sha256 arm64_ventura: "e143d0a386aceae685182a06fc6e0741e0ba28534e2ee857dfe87be0fae3f9e5"
+    sha256 sonoma:        "adbd14bd8b028670b37cda177425589f9e24de52fd2170488e7773e940216c89"
+    sha256 ventura:       "2fcab4b74d5c82a06e766ff70a34a2197c1c53e6428d08e9fa121bb81189e5f9"
+    sha256 x86_64_linux:  "4002982fba8e00707365ea34e18deb81cdba673956aa7461ebced2903283f9fc"
   end
 
-  depends_on "autoconf" => :build
-  depends_on "autoconf-archive" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
 
+  depends_on "abseil"
   depends_on "glib"
+  depends_on "grpc"
   depends_on "hiredis"
   depends_on "ivykis"
   depends_on "json-c"
   depends_on "libdbi"
   depends_on "libmaxminddb"
   depends_on "libnet"
+  depends_on "libpaho-mqtt"
   depends_on "librdkafka"
   depends_on "mongo-c-driver"
+  depends_on "net-snmp"
   depends_on "openssl@3"
   depends_on "pcre2"
+  depends_on "protobuf"
   depends_on "python@3.12"
+  depends_on "rabbitmq-c"
   depends_on "riemann-client"
 
   uses_from_macos "curl"
 
+  on_macos do
+    depends_on "gettext"
+  end
+
   def install
-    # In file included from /Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk/usr/include/c++/v1/compare:157:
-    # ./version:1:1: error: expected unqualified-id
-    rm "VERSION"
     ENV["VERSION"] = version
 
     python3 = "python3.12"
-    sng_python_ver = Language::Python.major_minor_version python3
+    venv = virtualenv_create(libexec, python3)
+    # FIXME: we should use resource blocks but there is no upstream pip support besides this requirements.txt
+    # https://github.com/syslog-ng/syslog-ng/blob/master/requirements.txt
+    args = std_pip_args(prefix: false, build_isolation: true).reject { |s| s["--no-deps"] }
+    system python3, "-m", "pip", "--python=#{venv.root}/bin/python",
+                          "install", *args, "--requirement=#{buildpath}/requirements.txt"
 
-    venv_path = libexec/"python-venv"
     system "./configure", *std_configure_args,
+                          "CXXFLAGS=-std=c++17",
                           "--disable-silent-rules",
+                          "--enable-all-modules",
                           "--sysconfdir=#{pkgetc}",
-                          "--localstatedir=#{var}/#{name}",
+                          "--localstatedir=#{var/name}",
                           "--with-ivykis=system",
-                          "--with-python=#{sng_python_ver}",
-                          "--with-python-venv-dir=#{venv_path}",
-                          "--disable-afsnmp",
+                          "--with-python=#{Language::Python.major_minor_version python3}",
+                          "--with-python-venv-dir=#{venv.root}",
                           "--disable-example-modules",
                           "--disable-java",
-                          "--disable-java-modules"
+                          "--disable-java-modules",
+                          "--disable-smtp"
     system "make", "install"
-
-    requirements = lib/"syslog-ng/python/requirements.txt"
-    venv = virtualenv_create(venv_path, python3)
-    venv.pip_install requirements.read.gsub(/#.*$/, "")
-    cp requirements, venv_path
   end
 
   test do
-    assert_equal "syslog-ng #{version.major} (#{version})",
-                 shell_output("#{sbin}/syslog-ng --version").lines.first.chomp
-    system "#{sbin}/syslog-ng", "--cfgfile=#{pkgetc}/syslog-ng.conf", "--syntax-only"
+    output = shell_output("#{sbin}/syslog-ng --version")
+    assert_equal "syslog-ng #{version.major} (#{version})", output.lines.first.chomp
+    system sbin/"syslog-ng", "--cfgfile=#{pkgetc}/syslog-ng.conf", "--syntax-only"
   end
 end

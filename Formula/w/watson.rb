@@ -2,26 +2,25 @@ class Watson < Formula
   include Language::Python::Virtualenv
 
   desc "Command-line tool to track (your) time"
-  homepage "https://tailordev.github.io/Watson/"
+  homepage "https://jazzband.github.io/Watson/"
   url "https://files.pythonhosted.org/packages/a9/61/868892a19ad9f7e74f9821c259702c3630138ece45bab271e876b24bb381/td-watson-2.1.0.tar.gz"
   sha256 "204384dc04653e0dbe8f833243bb833beda3d79b387fe173bfd33faecdd087c8"
   license "MIT"
-  revision 3
-  head "https://github.com/TailorDev/Watson.git", branch: "master"
+  revision 6
+  head "https://github.com/jazzband/Watson.git", branch: "master"
 
   bottle do
-    rebuild 3
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a4ee2bd9304a573511ea7cb3c898c5e528e69eaf91490e1c8dd95903ecdfefe0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ae8211cef7d9393d8cf6d75181de266a6607c4e0d024dc650898d2b746eaf4e6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d56c69547e4f873cf87e174b4dba3fdc45b75fd6846406a30447c4bcfc012166"
-    sha256 cellar: :any_skip_relocation, sonoma:         "398ef4490a1a30e5d6bb02e5a8ca8670f4e6e6160787c461e0d86b8dd3c5f461"
-    sha256 cellar: :any_skip_relocation, ventura:        "641a4981c271e57e8b83eee82ba48a1282640480d11b7773113167a3087aff38"
-    sha256 cellar: :any_skip_relocation, monterey:       "8d6f0a9b0cf69dc1a3e98b78570bf8a455b7c4282978e743489d3f717b45f046"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f8034f0e5e5df745091df486c4cb7c702100a33824231da836820c5f00cf9c33"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "479ecc469da915b26139b32fed053e032430f9c0116f47caeb7091984f091f4b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c036a73c69622ce25a9d2146211fba738857e43d619f959adff7912e686016d1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f7e35a6890a1a5578f1f4359e60f76c66af23c753a63270a7e1cd932114d7176"
+    sha256 cellar: :any_skip_relocation, sonoma:        "887e4dbd5b24eb0f0f405a6bd0cdc032443cfe1a2ed4dea860283f1050e9165c"
+    sha256 cellar: :any_skip_relocation, ventura:       "a4c97c4889759dcda9394c15f596b92a5678f9967f70ec3910dc75ccd1e8e5e8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b5eb01d458e69203120a5050be8056035f7a2b9473c5b2a57725d084e75f77d4"
   end
 
-  depends_on "python-certifi"
-  depends_on "python@3.12"
+  depends_on "certifi"
+  depends_on "python@3.13"
 
   resource "arrow" do
     url "https://files.pythonhosted.org/packages/2e/00/0f6e8fcdb23ea632c866620cc872729ff43ed91d284c866b515c6342b173/arrow-1.3.0.tar.gz"
@@ -29,8 +28,8 @@ class Watson < Formula
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
-    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "click" do
@@ -39,23 +38,23 @@ class Watson < Formula
   end
 
   resource "click-didyoumean" do
-    url "https://files.pythonhosted.org/packages/2f/a7/822fbc659be70dcb75a91fb91fec718b653326697d0e9907f4f90114b34f/click-didyoumean-0.3.0.tar.gz"
-    sha256 "f184f0d851d96b6d29297354ed981b7dd71df7ff500d82fa6d11f0856bee8035"
+    url "https://files.pythonhosted.org/packages/30/ce/217289b77c590ea1e7c24242d9ddd6e249e52c795ff10fac2c50062c48cb/click_didyoumean-0.3.1.tar.gz"
+    sha256 "4f82fdff0dbe64ef8ab2279bd6aa3f6a99c3b28c05aa09cbfc07c9d7fbb5a463"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
-    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "six" do
@@ -64,13 +63,13 @@ class Watson < Formula
   end
 
   resource "types-python-dateutil" do
-    url "https://files.pythonhosted.org/packages/9b/47/2a9e51ae8cf48cea0089ff6d9d13fff60701f8c9bf72adaee0c4e5dc88f9/types-python-dateutil-2.8.19.20240106.tar.gz"
-    sha256 "1f8db221c3b98e6ca02ea83a58371b22c374f42ae5bbdf186db9c9a76581459f"
+    url "https://files.pythonhosted.org/packages/31/f8/f6ee4c803a7beccffee21bb29a71573b39f7037c224843eff53e5308c16e/types-python-dateutil-2.9.0.20241003.tar.gz"
+    sha256 "58cb85449b2a56d6684e41aeefb4c4280631246a0da1a719bdbe6f3fb0317446"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install
@@ -81,9 +80,9 @@ class Watson < Formula
   end
 
   test do
-    system "#{bin}/watson", "start", "foo", "+bar"
-    system "#{bin}/watson", "status"
-    system "#{bin}/watson", "stop"
-    system "#{bin}/watson", "log"
+    system bin/"watson", "start", "foo", "+bar"
+    system bin/"watson", "status"
+    system bin/"watson", "stop"
+    system bin/"watson", "log"
   end
 end

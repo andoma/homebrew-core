@@ -1,23 +1,24 @@
 class Jackett < Formula
   desc "API Support for your favorite torrent trackers"
   homepage "https://github.com/Jackett/Jackett"
-  url "https://github.com/Jackett/Jackett/archive/refs/tags/v0.21.1855.tar.gz"
-  sha256 "c300bbd70def8fa73cda27b06f9fe5f4649ea1d6f8847debea384c7d1e9d561a"
+  url "https://github.com/Jackett/Jackett/archive/refs/tags/v0.22.867.tar.gz"
+  sha256 "382e9cc11536866b991a80688f8159f44c7e57048d71f831960b2810bd1f1e5b"
   license "GPL-2.0-only"
   head "https://github.com/Jackett/Jackett.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "a5a78091bfc78ea1bb934f0f88860f8ba244c8810d44878e0703a2c5e010356f"
-    sha256 cellar: :any,                 arm64_monterey: "3d8ece56c4d717cf5f769316e668cf3ed7375378b2270d1c16d324a6cdcb1146"
-    sha256 cellar: :any,                 ventura:        "92185b2692432a42dcd50fc16c4a86f841c681bca7fc0b429ff91923d2b330bc"
-    sha256 cellar: :any,                 monterey:       "51d7841211d5c9fa9dbc18fb542c90784d9a8cb390070c257b0196b719f9ce9f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dce1acc47af8ade940d08d930a8a26044f65eb778af342438dea7e1303d7dcdf"
+    sha256 cellar: :any,                 arm64_sequoia: "58fdee28a3167bfe2a0e1285ada0b347a1bb2963b91c9f16d7fce805f23039a3"
+    sha256 cellar: :any,                 arm64_sonoma:  "ee2d883d72a7fef0b010b327cecbf38669f65c9b44418b86daea6fa81e15601c"
+    sha256 cellar: :any,                 arm64_ventura: "2ea758536cc7a8a48f915f8be1d32dc238ea03361a2ef63b4e7708f492a39afa"
+    sha256 cellar: :any,                 sonoma:        "35497941844c9f93cae8897967e161da4e211a70e222bf7a7d7f3c30cd3d39fd"
+    sha256 cellar: :any,                 ventura:       "588df8002314e43776f0ea6c97ea234bbfe4f40d72152088d26e19c2824f9521"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f924caaec9d2b2310b92865dc114c959b7fe0e04df227c1c77241c9e586fa369"
   end
 
-  depends_on "dotnet@6"
+  depends_on "dotnet"
 
   def install
-    dotnet = Formula["dotnet@6"]
+    dotnet = Formula["dotnet"]
     os = OS.mac? ? "osx" : OS.kernel_name.downcase
     arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
 
@@ -57,11 +58,11 @@ class Jackett < Formula
     port = free_port
 
     pid = fork do
-      exec "#{bin}/jackett", "-d", testpath, "-p", port.to_s
+      exec bin/"jackett", "-d", testpath, "-p", port.to_s
     end
 
     begin
-      sleep 10
+      sleep 15
       assert_match "<title>Jackett</title>", shell_output("curl -b cookiefile -c cookiefile -L --silent http://localhost:#{port}")
     ensure
       Process.kill "TERM", pid

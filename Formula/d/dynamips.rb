@@ -3,6 +3,7 @@ class Dynamips < Formula
   homepage "https://github.com/GNS3/dynamips"
   url "https://github.com/GNS3/dynamips/archive/refs/tags/v0.2.23.tar.gz"
   sha256 "503bbb52c03f91900ea8dbe8bd0b804b76e2e28d0b7242624e0d3c52dda441a1"
+  license "GPL-2.0-only"
 
   livecheck do
     url :stable
@@ -10,6 +11,7 @@ class Dynamips < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4bc0583f71947ce92c88e24ad659542886af0698ef9601e6432ddb3c925c208e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3db4b7a6d2140635eae5d91a96810fbbef58144dcad5f7ed77743f930df696d3"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "106e42f80c14fe08866951b8e1d5032f98fe3d8a57c497856d09aa0657a7120b"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "ea736c8b0b31f481066a64f07a154e5bd8b556be4cd259c1a0e0d8da509da3be"
@@ -35,21 +37,19 @@ class Dynamips < Formula
   end
 
   def install
-    cmake_args = std_cmake_args + ["-DANY_COMPILER=1"]
+    cmake_args = ["-DANY_COMPILER=1"]
     cmake_args << if OS.mac?
       "-DLIBELF_INCLUDE_DIRS=#{Formula["libelf"].opt_include}/libelf"
     else
       "-DLIBELF_INCLUDE_DIRS=#{Formula["elfutils"].opt_include}"
     end
 
-    ENV.deparallelize
-    mkdir "build" do
-      system "cmake", "..", *cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *cmake_args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    system "#{bin}/dynamips", "-e"
+    system bin/"dynamips", "-e"
   end
 end

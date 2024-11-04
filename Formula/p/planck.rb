@@ -1,27 +1,26 @@
 class Planck < Formula
   desc "Stand-alone ClojureScript REPL"
   homepage "https://planck-repl.org/"
-  url "https://github.com/planck-repl/planck/archive/refs/tags/2.27.0.tar.gz"
-  sha256 "d69be456efd999a8ace0f8df5ea017d4020b6bd806602d94024461f1ac36fe41"
+  url "https://github.com/planck-repl/planck/archive/refs/tags/2.28.0.tar.gz"
+  sha256 "44f52e170d9a319ec89d3f7a67a7bb8082354f3da385a83bd3c7ac15b70b9825"
   license "EPL-1.0"
-  revision 3
+  revision 2
   head "https://github.com/planck-repl/planck.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "6ff3ca72b2b4cf469eb4319d31a45784ecdf4943a99e65b7cf1b0644f679f9da"
-    sha256 cellar: :any,                 arm64_ventura:  "970c6f4dd5346c0acf49d25fdc2256ad3553b5ad646a347c99765510cf517b53"
-    sha256 cellar: :any,                 arm64_monterey: "3545c08d8d72de0a809fdc78db7a3b062e813dc760d5e23cafcc9c469171539d"
-    sha256 cellar: :any,                 sonoma:         "2078414c6bedde4348454315bf808b1df07f4d6e5898626465591daa2191a944"
-    sha256 cellar: :any,                 ventura:        "1740760a4e914f41546f3bb1b4d7eaa0594a9492a73e20843da76b715c10a02b"
-    sha256 cellar: :any,                 monterey:       "7aabe1b076a404ebf5f5795413b4ce92b661981140d7445885856020d9d555d5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ffce7a73a0e99520998c61c87c42606c387ab78f57734f1dc7d172821997e865"
+    sha256 cellar: :any,                 arm64_sequoia: "ab34e0ef0e2e78aa190ca2ba821bd8e4ccfc7f4ba3b79fc1d7a74c697095512e"
+    sha256 cellar: :any,                 arm64_sonoma:  "96f747019fe7702ddf88fa4d7d2267b6031436df2417073f3bbcabb8c6b5d66d"
+    sha256 cellar: :any,                 arm64_ventura: "342f71f4a83296fa7754cc6244c4979a8976f0a4a5a6ea1ebad661ad6d6e329e"
+    sha256 cellar: :any,                 sonoma:        "d8d0fd48c44530bc3ef14f7eaa733c596356a686c6acba27da55224a936d0172"
+    sha256 cellar: :any,                 ventura:       "0ed48e120f059d43836251a16464488a85e46826a428838317bdef1bda516bea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3f73054a3ff20c391c8f63196e146ff267143c1c3f72a4177d205f63bd2a1aa6"
   end
 
   depends_on "clojure" => :build
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on xcode: :build
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "libzip"
 
   uses_from_macos "vim" => :build # for xxd

@@ -9,6 +9,7 @@ class Launchdns < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "17fe53b3739164de794cbd74b1b7ef2f7c0272a364b3d6f76de1ba9a2d4d8941"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b8227cba91d4fc649472990903523d886123ac2809504aa4d9a2c286d06182fd"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "480788e6d0135672b26a62c84111d1d6cc1e3f8407da7338cd1ea334767679bd"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "76976e31629220e8697a50b0e52d080cef29a6b761a987175b07438d35225ff8"
@@ -20,6 +21,8 @@ class Launchdns < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "ebae3446c46a7a6662c3e9b95d61bbee372f1f277a07a4beea1eafc00d64570a"
     sha256 cellar: :any_skip_relocation, mojave:         "38ad8be46847983774ec6b50896560517bb027b6fe5e5543395f168e489c9c27"
   end
+
+  deprecate! date: "2024-03-07", because: :repo_archived
 
   depends_on :macos # uses launchd, a component of macOS
 

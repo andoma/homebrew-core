@@ -1,8 +1,8 @@
 class Zigmod < Formula
   desc "Package manager for the Zig programming language"
   homepage "https://nektro.github.io/zigmod/"
-  url "https://github.com/nektro/zigmod/archive/refs/tags/r89.tar.gz"
-  sha256 "3c53d2c50cfc6d0ecc7d1f326e84f11b9d3ffb4c35bc2ad73ec9c4b4f924eec5"
+  url "https://github.com/nektro/zigmod/archive/refs/tags/r93.tar.gz"
+  sha256 "302162e6ba66ee8abe028b5d61fe1c474ec50eadfb6481dc782702126fddb639"
   license "MIT"
 
   livecheck do
@@ -11,13 +11,12 @@ class Zigmod < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2018735989a352dc810333e9fe56e988f8ec6cc04e2f2ef110c423c2e8bc78d7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5075953d63bf642db089d7186541b5196dd02a6f874c8df558e2ee6a877dd362"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f9db743ebce1eb091fc482a50428f0c81e2750792c7239ab609fde5858a69ae9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5abcc719b5feba7cece3905da953fc78f29168ece9f782d5ef4e8ca2db014984"
-    sha256 cellar: :any_skip_relocation, ventura:        "5e9be7c44ff6c9fccd95fe91f6a6d73f1aea774021d3421f68b53dc15330b21b"
-    sha256 cellar: :any_skip_relocation, monterey:       "a3e79885e16d0f981998efe8e77528b9f2554178692094753ff82b610ac6fbcf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "494a4e835b2f3c9a9fd096b5aee9cdad64c236d1b364f2c0970d832c54b91308"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "420f7558e02cced834ae9109dfb12b93a864510c582af36d097cbb25a3379fc0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3ada99291a14a4b050d9021469d4912be19098785d6d557ccfd09f7613dbce43"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "6dde24eaa99843a68b0f5c59f95c3a7116afd326b315d8a30f519cd6eb099c79"
+    sha256 cellar: :any_skip_relocation, sonoma:        "61702ca7b0671790b8598c55957f3cd53b6f215907be3add1f9de06f3da746ad"
+    sha256 cellar: :any_skip_relocation, ventura:       "dfd79a1b16483e86d85867b7494952d6a9c05dbc26c0924fd952106370e41500"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "41a39652f9ed4f90a02280a3064bfa9a16746fda7af518d886280e86dceeb068"
   end
 
   depends_on "pkg-config" => :build

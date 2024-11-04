@@ -1,19 +1,20 @@
 class Nudoku < Formula
   desc "Ncurses based sudoku game"
   homepage "https://jubalh.github.io/nudoku/"
-  url "https://github.com/jubalh/nudoku/archive/refs/tags/3.0.0.tar.gz"
-  sha256 "56c9f8d70ca350411dccfdc5a0e2dc39aaa83da08f87ad874f7f4b7fb64b3541"
+  url "https://github.com/jubalh/nudoku/archive/refs/tags/5.0.0.tar.gz"
+  sha256 "ba60a99c9832b5c950a00a0a9d1e0938fddf2cef32765bca18041e770afc3c4a"
   license "GPL-3.0-or-later"
   head "https://github.com/jubalh/nudoku.git", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:   "85ce667fde814b7ca2b8c3144c1a81947c899e9f091bf90805cf77bdec0f4c9c"
-    sha256 arm64_ventura:  "df24e16774377f98521d6bc623460dbe8a1340afdf08486f27c060b3911b37ed"
-    sha256 arm64_monterey: "aaba4315a0bcaa31e2fbb6f667e49a04e80078bd43dec4b5c706f30f5954c054"
-    sha256 sonoma:         "b557d8370bc5be84244ba9ec0ece988b92f83110bf58e2f4a68208da3bfb5013"
-    sha256 ventura:        "e2a099b569c0f32ec86d4827962661af24c6e739fa33e416e46b6065744ecea6"
-    sha256 monterey:       "b1f68424a9e2847b7e420ca03caa73fc523f64203d6619da8a17da1aa89cfbc8"
-    sha256 x86_64_linux:   "dafd045886518df5e1eda43914636403c31a5e48a4c090a08df33bbab8573730"
+    sha256 arm64_sequoia:  "f829eb3b002dc33ea48c3d58926a3ca3c5a0378941ce0b587737d4ed1a11a100"
+    sha256 arm64_sonoma:   "969ddf28f4eb7014b9c44cf6bac0106f2d00306fef670f08b8d57fa08873ca9f"
+    sha256 arm64_ventura:  "8e257d6a76e89ded708920215a7446a845c2ed74fe1cb31ee695de5f08129864"
+    sha256 arm64_monterey: "ad835249ee203dac6d4c7fdd7b95d1395e113f6aaa0ec7a4d2d14c9405e61cc3"
+    sha256 sonoma:         "d4f87f815b143cddae90e6bcf12bb8609a53e7f112cb19580585613e92a2fd49"
+    sha256 ventura:        "a58e28aa1ffac9ef8d792ef34190e7bd1605828aa2ae29550042e28740863023"
+    sha256 monterey:       "c208d8a2b1a5bbe9179a4969f284e2412ad354ee00da078f423552adc67698fa"
+    sha256 x86_64_linux:   "6050f8f3ab9a15cafee9cf73e62cfc236bd98f445015cbed8f2a48fb82de0efc"
   end
 
   depends_on "autoconf" => :build
@@ -25,7 +26,7 @@ class Nudoku < Formula
   uses_from_macos "ncurses"
 
   def install
-    system "autoreconf", "-fiv"
+    system "autoreconf", "--force", "--install", "--verbose"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--enable-cairo",

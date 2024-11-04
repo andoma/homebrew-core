@@ -1,18 +1,18 @@
 class Jose < Formula
   desc "C-language implementation of Javascript Object Signing and Encryption"
   homepage "https://github.com/latchset/jose"
-  url "https://github.com/latchset/jose/releases/download/v12/jose-12.tar.xz"
-  sha256 "0ba189b483f27899867fdd886eda42dd9d17b807ffdc7819822665cb45d7e784"
+  url "https://github.com/latchset/jose/releases/download/v14/jose-14.tar.xz"
+  sha256 "cee329ef9fce97c4c025604a8d237092f619aaa9f6d35fdf9d8c9052bc1ff95b"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "5ab1d6d35f6489c7ee29f67ae59cff675657024b9456e9c0437b82d63def577a"
-    sha256 cellar: :any, arm64_ventura:  "6ed6cda62ae66cd159c81ea7fd1cf465755d3ab7494701f0aac6ace4fc3991bb"
-    sha256 cellar: :any, arm64_monterey: "139a737ba296a4d24e680decdf3daf9a1276836b22aec2493a7c9625234602a0"
-    sha256 cellar: :any, sonoma:         "c51afd0ee639305c12bc69b03b8583ff9c6e4289fb0050ecae55e6e18f57944f"
-    sha256 cellar: :any, ventura:        "88e802405401cbd382a56bd6c7b17d4d604bf76351d07bb46dea75ee11cdaf4a"
-    sha256 cellar: :any, monterey:       "cdeb4abd78ee95d1663ec47da5a54801edab0dd6f618749d7af02dfcec4cd9d3"
-    sha256               x86_64_linux:   "3b7cbdea2a9554c0f2ff87359ceb73e73ab35f2455147d98cdf7cfcbe2b7fc29"
+    sha256 cellar: :any, arm64_sonoma:   "1af1eb0f697cd897bbedac36674670646b82cae369c752f4718500f5f1f324ef"
+    sha256 cellar: :any, arm64_ventura:  "77b2d20d1a63a7f669930cdb9d8804722ed939a10efa9634c1f7635e61643634"
+    sha256 cellar: :any, arm64_monterey: "4e01f021271f496483c1ce088c3c717eca63cee78498a2ecc778ca75e65f76bd"
+    sha256 cellar: :any, sonoma:         "8bf8223dfd601b5631333198719e64e9c7b529e4a5d9e86192d181d6c8926f99"
+    sha256 cellar: :any, ventura:        "1a670df4a652c8ffd615947a16be8a8867135d4b34e2081744a075c898d6cd79"
+    sha256 cellar: :any, monterey:       "4301c9a1347a66f4b8065e0e78725bab058a264f1031c35cf4c92881af350492"
+    sha256               x86_64_linux:   "ebb309c88f0a9cf0d4a2ab3c13015ebecf876991941b9ed6a2de2dbc9f6a7adb"
   end
 
   depends_on "meson" => :build
@@ -24,7 +24,7 @@ class Jose < Formula
   uses_from_macos "zlib"
 
   def install
-    system "meson", *std_meson_args, "build"
+    system "meson", "setup", "build", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end

@@ -1,21 +1,23 @@
 class Libchewing < Formula
   desc "Intelligent phonetic input method library"
   homepage "https://chewing.im/"
-  url "https://github.com/chewing/libchewing/releases/download/v0.6.0/libchewing-0.6.0.tar.xz"
-  sha256 "c2913bed55b7fdb25942b6a5832c254bc9bcb9c365d3cafa0a569b4b7cbd8f00"
+  url "https://github.com/chewing/libchewing/releases/download/v0.9.1/libchewing-0.9.1.tar.zst"
+  sha256 "e98b76c306552148b7d85f0e596860751d9eef4bc8f2dfc053177b14f421c31f"
   license "LGPL-2.1-only"
 
   bottle do
-    sha256 arm64_sonoma:   "f6b0bae26a972636b58d05cd8d38e1f190bbb9b8451697b71250d1b8565d7755"
-    sha256 arm64_ventura:  "2e81a74c69dd6d45f338c834307e462b2e3eadae969ee38a4808feb81ac82cfe"
-    sha256 arm64_monterey: "04d6bc7b63800ffdcc2eea940241e5ef2159dc36eab0f65d75584fef6a7e1a41"
-    sha256 sonoma:         "a51840ab89e99407f22784ab4b5d5a9997e78e65b060b1de12cdfebfe629ea86"
-    sha256 ventura:        "4bc98f0aa284a4086f18c65a24a566969d021f9414fc2bb8d722b8749a11ab9a"
-    sha256 monterey:       "46d704071c778e0d718a37ac0d0ae25de49025e7679e02b17358155efce877a7"
-    sha256 x86_64_linux:   "b3c77db3b0e9db76fb7341cb8d0fd30959d251e69da1ac6504eb293733076b3d"
+    sha256 cellar: :any,                 arm64_sequoia: "32135dee630c01d5a8d9a4e9bbaaa2d162d1487b422a71b7c9df375c95d54f5f"
+    sha256 cellar: :any,                 arm64_sonoma:  "dda2fc0363058909c7de62a6cfdd59db89f30c6b6a6bf291da227d8beb045b7d"
+    sha256 cellar: :any,                 arm64_ventura: "2698f929ef06c474f8f08f5729a6a923c89aef36b572163f353360158188f51d"
+    sha256 cellar: :any,                 sonoma:        "a8bb15dfebb22f402c3bd8182b90324c273f363474c9d7ebc170e1c672e800a8"
+    sha256 cellar: :any,                 ventura:       "99d2a65e3971de39db1e15f8c63c8b2b944cc25f762c903a6f161fae2d15c33f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d104abaa34a16aeb177b1c644b01bf8480b372405c3ca4d02ff90b9aad661196"
   end
 
   depends_on "cmake" => :build
+  depends_on "corrosion" => :build
+  depends_on "rust" => :build
+
   uses_from_macos "sqlite"
 
   on_system :linux, macos: :ventura_or_newer do
@@ -23,13 +25,13 @@ class Libchewing < Formula
   end
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build", "-DBUILD_TESTING=OFF", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <stdlib.h>
       #include <chewing/chewing.h>
       int main()
@@ -47,7 +49,7 @@ class Libchewing < Formula
           chewing_delete(ctx);
           return 0;
       }
-    EOS
+    CPP
     system ENV.cc, "test.cpp", "-L#{lib}", "-lchewing", "-o", "test"
     system "./test"
   end

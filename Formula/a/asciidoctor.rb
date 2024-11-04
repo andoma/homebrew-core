@@ -1,18 +1,19 @@
 class Asciidoctor < Formula
   desc "Text processor and publishing toolchain for AsciiDoc"
   homepage "https://asciidoctor.org/"
-  url "https://github.com/asciidoctor/asciidoctor/archive/refs/tags/v2.0.21.tar.gz"
-  sha256 "78a54eaf88fe9f5e6945578313aac4096a9d8c49e760932b3ef66c599483f10b"
+  url "https://github.com/asciidoctor/asciidoctor/archive/refs/tags/v2.0.23.tar.gz"
+  sha256 "72d271de1fccd3610e6f12bba29be1a3b6c8c813c5b2f3a12491ffc423090518"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e30f71491a030ea2dec1c63f0b00e061a03ecabdc9eb5e94852637b6c6b0b638"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e30f71491a030ea2dec1c63f0b00e061a03ecabdc9eb5e94852637b6c6b0b638"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e30f71491a030ea2dec1c63f0b00e061a03ecabdc9eb5e94852637b6c6b0b638"
-    sha256 cellar: :any_skip_relocation, sonoma:         "f1330a677e96b6a3a21b4412eea992f56385944ce4e7929ac1e62c5d10ba1693"
-    sha256 cellar: :any_skip_relocation, ventura:        "f1330a677e96b6a3a21b4412eea992f56385944ce4e7929ac1e62c5d10ba1693"
-    sha256 cellar: :any_skip_relocation, monterey:       "f1330a677e96b6a3a21b4412eea992f56385944ce4e7929ac1e62c5d10ba1693"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ebc56f94f9fd1338d7f9e5372cde31a9c8ba76af4c26551825bdf57e32a5c366"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0e22867759dbac0647abe6e8a89fbc85ff2abdfc8feca72b04a354e43ec82dd8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "98d673578b71fc61fcfbae82914b8836d7cb8cf00943c453d1734412e76522ae"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b633e081e4ac8c4f30ac1166c7ab756307724c788209b7b7981e0ebc4d2cf54a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4f1cd991e0e82b564540e53b37037c666e066ddeed28d32d7b178ee04ba59c41"
+    sha256 cellar: :any_skip_relocation, sonoma:         "522247415d5dca5d39056e6a6c2598c15f16d2e9a5c17cf6dd5bf807f9d971ae"
+    sha256 cellar: :any_skip_relocation, ventura:        "153aa583433922871932d0a9546f98f2ae71933e46dc0eaf120fb7c664c157d6"
+    sha256 cellar: :any_skip_relocation, monterey:       "aa9fef3b8866426e0aac8f523dc488b90eee4d6ef6fefa9a49eac92c224dfb5f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f3b2cc8dd6df0643b5fffbec0c01a69cc80a249b6ee62677169d51c3e1df7697"
   end
 
   # Some gems require >= ruby 2.7
@@ -30,6 +31,11 @@ class Asciidoctor < Formula
     sha256 "ed48add684a2d7a8fd6e3b8b027d8ee5983b50977ae691913131a24f1746ac29"
   end
 
+  resource "concurrent-ruby" do
+    url "https://rubygems.org/gems/concurrent-ruby-1.2.3.gem"
+    sha256 "82fdd3f8a0816e28d513e637bb2b90a45d7b982bdf4f3a0511722d2e495801e2"
+  end
+
   resource "ttfunk" do
     url "https://rubygems.org/gems/ttfunk-1.7.0.gem"
     sha256 "2370ba484b1891c70bdcafd3448cfd82a32dd794802d81d720a64c15d3ef2a96"
@@ -45,9 +51,44 @@ class Asciidoctor < Formula
     sha256 "82062744f7126c2d77501da253a154271790254dfa8c309b8e52e79bc5de2abd"
   end
 
-  resource "ruby-rc4" do
-    url "https://rubygems.org/gems/ruby-rc4-0.1.5.gem"
-    sha256 "00cc40a39d20b53f5459e7ea006a92cf584e9bc275e2a6f7aa1515510e896c03"
+  resource "prawn-icon" do
+    url "https://rubygems.org/gems/prawn-icon-3.0.0.gem"
+    sha256 "dac8d481dee0f60a769c0cab0fd1baec7351b4806bf9ba959cd6c65f6694b6f5"
+  end
+
+  resource "rexml" do
+    url "https://rubygems.org/gems/rexml-3.2.6.gem"
+    sha256 "e0669a2d4e9f109951cb1fde723d8acd285425d81594a2ea929304af50282816"
+  end
+
+  resource "matrix" do
+    url "https://rubygems.org/downloads/matrix-0.4.2.gem"
+    sha256 "71083ccbd67a14a43bfa78d3e4dc0f4b503b9cc18e5b4b1d686dc0f9ef7c4cc0"
+  end
+
+  resource "public_suffix" do
+    url "https://rubygems.org/gems/public_suffix-5.0.5.gem"
+    sha256 "72c340218bb384610536919988705cc29e09749c0021fd7005f715c7e5dfc493"
+  end
+
+  resource "addressable" do
+    url "https://rubygems.org/gems/addressable-2.8.6.gem"
+    sha256 "798f6af3556641a7619bad1dce04cdb6eb44b0216a991b0396ea7339276f2b47"
+  end
+
+  resource "css_parser" do
+    url "https://rubygems.org/gems/css_parser-1.17.1.gem"
+    sha256 "eb730f2d26591a843e52bd3d0efd76abdfeec8bad728e0b2ac821fc10bb018e6"
+  end
+
+  resource "prawn-svg" do
+    url "https://rubygems.org/gems/prawn-svg-0.34.2.gem"
+    sha256 "afff79d332940f6d59604d0b2810f54d46e9335533a2aa4e892fb7d514777a90"
+  end
+
+  resource "afm" do
+    url "https://rubygems.org/gems/afm-0.2.2.gem"
+    sha256 "c83e698e759ab0063331ff84ca39c4673b03318f4ddcbe8e90177dd01e4c721a"
   end
 
   resource "hashery" do
@@ -55,14 +96,14 @@ class Asciidoctor < Formula
     sha256 "d239cc2310401903f6b79d458c2bbef5bf74c46f3f974ae9c1061fb74a404862"
   end
 
-  resource "Ascii85" do
-    url "https://rubygems.org/gems/Ascii85-1.1.0.gem"
-    sha256 "9ce694467bd69ab2349768afd27c52ad721cdc6f642aeaa895717bfd7ada44b7"
+  resource "ruby-rc4" do
+    url "https://rubygems.org/gems/ruby-rc4-0.1.5.gem"
+    sha256 "00cc40a39d20b53f5459e7ea006a92cf584e9bc275e2a6f7aa1515510e896c03"
   end
 
-  resource "afm" do
-    url "https://rubygems.org/gems/afm-0.2.2.gem"
-    sha256 "c83e698e759ab0063331ff84ca39c4673b03318f4ddcbe8e90177dd01e4c721a"
+  resource "Ascii85" do
+    url "https://rubygems.org/gems/Ascii85-1.1.1.gem"
+    sha256 "73d760d093bf997e88c2a4d0bfe4328e838e0799915aee6b3162836c5267c2b0"
   end
 
   resource "pdf-reader" do
@@ -80,59 +121,19 @@ class Asciidoctor < Formula
     sha256 "336d46e39e003f77bf973337a958af6a68300b941c85cb22288872dc2b36addb"
   end
 
-  resource "rexml" do
-    url "https://rubygems.org/gems/rexml-3.2.6.gem"
-    sha256 "e0669a2d4e9f109951cb1fde723d8acd285425d81594a2ea929304af50282816"
-  end
-
-  resource "matrix" do
-    url "https://rubygems.org/downloads/matrix-0.4.2.gem"
-    sha256 "71083ccbd67a14a43bfa78d3e4dc0f4b503b9cc18e5b4b1d686dc0f9ef7c4cc0"
-  end
-
-  resource "public_suffix" do
-    url "https://rubygems.org/gems/public_suffix-5.0.4.gem"
-    sha256 "35cd648e0d21d06b8dce9331d19619538d1d898ba6d56a6f2258409d2526d1ae"
-  end
-
-  resource "addressable" do
-    url "https://rubygems.org/gems/addressable-2.8.6.gem"
-    sha256 "798f6af3556641a7619bad1dce04cdb6eb44b0216a991b0396ea7339276f2b47"
-  end
-
-  resource "css_parser" do
-    url "https://rubygems.org/gems/css_parser-1.16.0.gem"
-    sha256 "f70fb492254418522ea77c01d57bf64452d6c7465001926c3620d0b50289b1a2"
-  end
-
-  resource "prawn-svg" do
-    url "https://rubygems.org/gems/prawn-svg-0.33.0.gem"
-    sha256 "6228b5115719e34b9c0f585b0434328e8191bd11a2393e60da1ee26470771f29"
-  end
-
-  resource "prawn-icon" do
-    url "https://rubygems.org/gems/prawn-icon-3.0.0.gem"
-    sha256 "dac8d481dee0f60a769c0cab0fd1baec7351b4806bf9ba959cd6c65f6694b6f5"
-  end
-
-  resource "concurrent-ruby" do
-    url "https://rubygems.org/gems/concurrent-ruby-1.2.3.gem"
-    sha256 "82fdd3f8a0816e28d513e637bb2b90a45d7b982bdf4f3a0511722d2e495801e2"
-  end
-
   # asciidoctor supports the Python 3 pygments syntax highlighter via pygments.rb ~> 2.0.0
   # Unless pygments.rb is installed in the asciidoctor libexec gems folder, asciidoctor will
   # not be able to find the gem. Installing the pygment.rb gem as part of the main asciidoctor
   # formula ensures it's available if users choose to install and enable the Pygments syntax
   # highlighter.
   resource "pygments.rb" do
-    url "https://rubygems.org/gems/pygments.rb-2.4.1.gem"
-    sha256 "61a3c9a00c01d53fa5fe7f6f6d2c461abc5b50cf6db9438c04b812d80f8d94be"
+    url "https://rubygems.org/gems/pygments.rb-3.0.0.gem"
+    sha256 "41729ecc69624bd3fc6bcc13d6ccb6ff0263334c42f66bfcf517a120addbb093"
   end
 
   resource "asciidoctor-pdf" do
-    url "https://rubygems.org/gems/asciidoctor-pdf-2.3.13.gem"
-    sha256 "fa03c42e317060b0492005b77665c376d36d75e50859a51fc21b7f85d1030e77"
+    url "https://rubygems.org/gems/asciidoctor-pdf-2.3.15.gem"
+    sha256 "432effdefdcd6433a797b702422b5f6fd4120c495c5f75ae059159aa75aa9a94"
   end
 
   resource "coderay" do
@@ -141,8 +142,8 @@ class Asciidoctor < Formula
   end
 
   resource "rouge" do
-    url "https://rubygems.org/gems/rouge-4.2.0.gem"
-    sha256 "60dd666b3a223467dc72f5b7384764dfd7ad4e50b0df9eff072be58123506eba"
+    url "https://rubygems.org/gems/rouge-4.2.1.gem"
+    sha256 "f371732db127913fe10f13b1c25500b927539167a746dc8ee8089ad868bba1fd"
   end
 
   def install

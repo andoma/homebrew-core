@@ -1,18 +1,17 @@
 class Argc < Formula
   desc "Easily create and use cli based on bash script"
   homepage "https://github.com/sigoden/argc"
-  url "https://github.com/sigoden/argc/archive/refs/tags/v1.15.0.tar.gz"
-  sha256 "a724ee0b6807df40460cfe5e75c7a7cf1a9ba6a4e76c8aa4bcbe8cc7f0c43162"
+  url "https://github.com/sigoden/argc/archive/refs/tags/v1.21.0.tar.gz"
+  sha256 "fdefde9388a19cc23c21f8261f339203c2fc2a7c9941709550c497a1cb0935d7"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "24f7ae10be03b0011992bd43d39d3ad960ed9e532812ec32450b2e4c6f45debd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7f30d6630ada40229f899aaaf2eae2cc09f2724ec4b1254485c4c8826992e815"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "77fd39a8307c613dc250cc9b3312aee3127f35f96f887d53cd39068497402105"
-    sha256 cellar: :any_skip_relocation, sonoma:         "229040baf236c7f881bd7eac4292602ced86c645433ab9531529c52b2dfddc0e"
-    sha256 cellar: :any_skip_relocation, ventura:        "9ac927c13a0f17eb889bd789d79295325080bc117b78374fc8c882da2ab5543f"
-    sha256 cellar: :any_skip_relocation, monterey:       "763e907a1ce8a94f7a693d236e41dad9dfc970fd21ba9c0445fbe2a588e9085a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c16497882c9113dcfd110eff9e3dcacbfb3f1eec423ea44eb27023e13e4371ed"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "01936b35118b90fec8cf9dde9b39a7ffce5e4f2c3fa5342d4deb1b17ea064be9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "371dbc627a41dd90cd22ae57335fb6b0d4ef96b930e4b6aa68d961539abdc4e1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "48e7fadd19bcfb6ead4fb79c2dba92620c62d0ce8be01275efc2fcbceff527ca"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1ed24925e4c6e5de7fee57aeeb304124397102893aafe24f245fb89a5427fa9b"
+    sha256 cellar: :any_skip_relocation, ventura:       "dbd07cabfaaa014fbed24e4f2a9e6a5cbe3b249b54018d97251b562df057b9c5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e4038056ff409ebf860da659a54bdc5868a49a245c60c07baf0fd4cbdc348f25"
   end
 
   depends_on "rust" => :build

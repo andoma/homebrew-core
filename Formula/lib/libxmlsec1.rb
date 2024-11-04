@@ -1,8 +1,8 @@
 class Libxmlsec1 < Formula
   desc "XML security library"
   homepage "https://www.aleksey.com/xmlsec/"
-  url "https://www.aleksey.com/xmlsec/download/xmlsec1-1.3.3.tar.gz"
-  sha256 "ab5b9a9ffd6960f46f7466d9d91f174ec37e8c31989237ba6b9eacdd816464f2"
+  url "https://www.aleksey.com/xmlsec/download/xmlsec1-1.3.6.tar.gz"
+  sha256 "952b626ad3f3be1a4598622dab52fdab2a8604d0837c1b00589f3637535af92f"
   license "MIT"
 
   livecheck do
@@ -11,17 +11,15 @@ class Libxmlsec1 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "07b5d4245f094834f734f7b565f7c9b251701a658946a97c4009cd3413f0fbbf"
-    sha256 cellar: :any,                 arm64_ventura:  "1be9b04b4fdcf57f3c12db2b29ba60f7f751c342765f0a596e6e5cf676e56cbc"
-    sha256 cellar: :any,                 arm64_monterey: "fac1d12419e5109fb3af30b63b2e6ea07bdbbbbfdad2c76651c1fd9b61cf00fb"
-    sha256 cellar: :any,                 sonoma:         "688115c81e7669f0bfcb6de834048fc7b440340ba0044e4fea202f2bbf5d190c"
-    sha256 cellar: :any,                 ventura:        "2fa460acb52cd77add84da5c218d32a1a439388140672d0740d86cd84aa1015d"
-    sha256 cellar: :any,                 monterey:       "a473c6df33bf0230f7d1bd6b51e7c3d802d0b31b3dcb6cfa7442af146d6916a4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e624fb9421f05cae655fb1243729e042c92a9a2c8e640c4385c74303248dceaa"
+    sha256 cellar: :any,                 arm64_sequoia: "9fa6ba58cc9412b98a27930230dc48d6640895dc49d72a869e10d0e337bbcaf0"
+    sha256 cellar: :any,                 arm64_sonoma:  "9082d72d07de372b53b6d6c8545fb7fb01aaf0d102512ab7bc46aacd6b5f42dd"
+    sha256 cellar: :any,                 arm64_ventura: "cebe4fac67b13bc1c1c2d48116229eb794c78b571fe3036142272a0edc01fcb3"
+    sha256 cellar: :any,                 sonoma:        "5e606f8c356f9174438d4d965444bf38b6e2c0e97b9f452c6b71c9c0cdb5a3ba"
+    sha256 cellar: :any,                 ventura:       "504df3d9c26ffd9c04e6da49fb9d7bd64e44ba1f69e42b4c3cacbd371fec0998"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cbdf3e9c1bc660992306f640fa0b64bafe4db84ab1fdd0f785256d34e640aa18"
   end
 
   depends_on "pkg-config" => :build
-  depends_on xcode: :build
   depends_on "gnutls" # Yes, it wants both ssl/tls variations
   depends_on "libgcrypt"
   depends_on "libxml2"
@@ -47,8 +45,8 @@ class Libxmlsec1 < Formula
   end
 
   test do
-    system "#{bin}/xmlsec1", "--version"
-    system "#{bin}/xmlsec1-config", "--version"
+    system bin/"xmlsec1", "--version"
+    system bin/"xmlsec1-config", "--version"
   end
 end
 

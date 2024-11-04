@@ -1,19 +1,24 @@
 class Nest < Formula
   desc "Neural Simulation Tool (NEST) with Python3 bindings (PyNEST)"
   homepage "https://www.nest-simulator.org/"
-  url "https://github.com/nest/nest-simulator/archive/refs/tags/v3.6.tar.gz"
-  sha256 "68d6b11791e1284dc94fef35d84c08dd7a11322c0f1e1fc9b39c5e6882284922"
+  url "https://github.com/nest/nest-simulator/archive/refs/tags/v3.8.tar.gz"
+  sha256 "eb255f8828be001abea0cddad2f14d78b70857fc82bece724551f27c698318c8"
   license "GPL-2.0-or-later"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    rebuild 1
-    sha256                               arm64_sonoma:   "375af4a21572a8c8a8992591c15f4533ec9bc3031e95b633969d842dd99d8c84"
-    sha256                               arm64_ventura:  "ba3c8aa598f7702e6134221924ac3689754c3e3c97de404a846d4a2eeb4c7d27"
-    sha256                               arm64_monterey: "becb04c85ad79df087239f165c5ee9fa9fc52daacbcff97c5e44d0f3f4be7c80"
-    sha256                               sonoma:         "ab566c2c64c5e805ec1632354388f65293eb9fe3cb54b1ddfbd50371171c7d63"
-    sha256                               ventura:        "be1d2a8920d7ee3cc5fc9f3f4f0cfcdf810653f06d5f49cd56106d71df29aabd"
-    sha256                               monterey:       "1487adf49b7e0a7e3fe8a1cbed04b8238530a6f32b2951f4a3ac540bee4ae9b5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9e1f100fd4c7512f3a543b46c1b85263d6eca26fb47fb008e60e9d0ba4ae824b"
+    sha256                               arm64_sequoia:  "f752b4a7174c66b710b60ebb340d32d411332e06ea18d7da09660618754788c6"
+    sha256                               arm64_sonoma:   "6653314027909fa7b2d3016afb0983cdd38ceb79d8103605287251419902e69a"
+    sha256                               arm64_ventura:  "f8c15f21fd28ec67bd1adc7f5265123096a4b3837a54c12b39db7f02c54945a3"
+    sha256                               arm64_monterey: "e29a15567400ebde27990ee78119903bca4fca61e69dbc2b63ff9791a0b6f03c"
+    sha256                               sonoma:         "0a606967e870f9d74f29a0646c7852bd521ba1c2f1e3beff080d81de12036589"
+    sha256                               ventura:        "1a324c3ad9977ca71a8fd89470414276394e7f2f56329516cc7bb372f4a5c343"
+    sha256                               monterey:       "538f6bd318806ce37bb426d0b5c5d5fcba4770da28b5bfdb94049135e2526e47"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a66f6b2a3b6b67b20f3506bef7be6a0aaec05366eddde02f2137ccc96ff2cf29"
   end
 
   depends_on "cmake" => :build

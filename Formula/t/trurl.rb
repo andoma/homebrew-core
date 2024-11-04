@@ -1,19 +1,18 @@
 class Trurl < Formula
   desc "Command-line tool for URL parsing and manipulation"
   homepage "https://curl.se/trurl/"
-  url "https://github.com/curl/trurl/archive/refs/tags/trurl-0.10.tar.gz"
-  sha256 "e54ee05a1a39f2547fbb39225f9cf5e2608eeaf07ad3f7dbff0a069d060d3c46"
+  url "https://github.com/curl/trurl/releases/download/trurl-0.16/trurl-0.16.tar.gz"
+  sha256 "2c26e3016f591f06234838bbe1dd4b165dce2c871c82ca6a32222d19696588d6"
   license "curl"
   head "https://github.com/curl/trurl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4886ffef9b94a416a41f17e4907156959712c88a09df14f1dc6a924154a49d6a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1a36314122612daef2bc5bb5479dbaa5aff372a984060757b6f41228025ef242"
-    sha256 cellar: :any,                 arm64_monterey: "252c9e7fe7d0da6181b279758aac617e6201253fc6a8fae552ec4590a56b045a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c1a2526089bb814d2604f7d1cae1914c84b3cf03b766e832e84378bb8bc0cf5b"
-    sha256 cellar: :any_skip_relocation, ventura:        "8b405bf8b11782d00453f475c69f3bcb70f6467acbc6f2bd88202a3c67f2bc59"
-    sha256 cellar: :any,                 monterey:       "a5c4e330963b151dbd17b8ae81700663f2703b1235a3c3debe1a8338a6fd9b7e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fec75bd56c994820629b18df12c09f8fc0af6fbcaf8906649b2a7900dd4e562c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "df26d62384190d1a00053a96ba375a141c425bb2a0f0cada3fc31f85c4168486"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b58119bdf75c5a16c8fdecc4dfac11b5e0a2c52f98572c4504f3ace89ba0eebe"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "03f8e7f616a696ad50626c1ac19fca6c621a938949ddc015f9e5f30a7c3a940e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f3ea260353a4fedd1c00eed276c199209113fdd4cb45e7765ae86c91072ebd8c"
+    sha256 cellar: :any_skip_relocation, ventura:       "95e22717c9655e8c099e7c71bea14e012ee92374e4cdea6f91790801abe39e3d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3dee373d99cf5010d37ca908c283018c8ea0265a809c368ccaf8bcd7aae12302"
   end
 
   uses_from_macos "curl", since: :ventura # uses CURLUE_NO_ZONEID, available since curl 7.81.0
@@ -24,8 +23,8 @@ class Trurl < Formula
   end
 
   test do
-    output = shell_output(bin/"trurl https://example.com/hello.html " \
-                              "--default-port --get '{scheme} {port} {path}'").chomp
+    output = shell_output("#{bin}/trurl https://example.com/hello.html " \
+                          "--default-port --get '{scheme} {port} {path}'").chomp
     assert_equal "https 443 /hello.html", output
   end
 end

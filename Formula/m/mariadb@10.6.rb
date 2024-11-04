@@ -1,8 +1,8 @@
 class MariadbAT106 < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://archive.mariadb.org/mariadb-10.6.17/source/mariadb-10.6.17.tar.gz"
-  sha256 "fb41b0702059c046832d60138733acb73e4c0e5a1a0681061709d25591e4b086"
+  url "https://archive.mariadb.org/mariadb-10.6.20/source/mariadb-10.6.20.tar.gz"
+  sha256 "47f05abc7dbebb3f26b31e75022b1b3969dbbc4752c4ae701f8920a604896d41"
   license "GPL-2.0-only"
 
   livecheck do
@@ -18,13 +18,12 @@ class MariadbAT106 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "58bb92d7a3fc3a9a6f7d12a2ad6524f49616ad0a91a7bc152f951b40c5078a46"
-    sha256 arm64_ventura:  "710b772bfb5dedd610aa0992babe615d6993846725f51fd074450964b30d7b06"
-    sha256 arm64_monterey: "2abcdb914fe29f38c32a6584cc0b5d364ab36593cf21e279e0aa8bd2ca9c7356"
-    sha256 sonoma:         "3b47f68b0874a680b2e0d869815faac8c5e48e99e0d92c5555358f23ebd066bc"
-    sha256 ventura:        "07bd66c2968e4457cd78b9af6272bfee9aa369856ad8377f8234af769a4bcdf6"
-    sha256 monterey:       "8af07bc7d5c281b0ec834fe2748a9d29a7e06f1beffab16baeed87f6496c74c0"
-    sha256 x86_64_linux:   "faf4f00b3c6974e2d20fb6102c25caa1ab5694de8c0f59eb07f78fc7d3ec7e89"
+    sha256 arm64_sequoia: "8b274b7e7a6c52e3939d0fd223b9cb2dd5c4a8dc9d7a750b87b439ab8577a45f"
+    sha256 arm64_sonoma:  "dfebbc1251ebb2afaaaa169b2204dad530ac8af1ca7a01c95694f8002da3ec6a"
+    sha256 arm64_ventura: "dc03aa0df93b795e33e721e289edfd7b30fe87b0094e1e89d475f7a900330302"
+    sha256 sonoma:        "dde75d48efbad69fac8963c920b7821225e44a2ce2b2f01e0f4553bab6accc0a"
+    sha256 ventura:       "5f8d9ceb359c403f7258097d0f3ca87b08c3eadaebe9b0db6735dce8c05ace26"
+    sha256 x86_64_linux:  "d3e760d0479f989fbf8e16621328e0828bcdbdcabb30b664d12ec1d999e5214e"
   end
 
   keg_only :versioned_formula
@@ -34,15 +33,24 @@ class MariadbAT106 < Formula
 
   depends_on "bison" => :build
   depends_on "cmake" => :build
+  depends_on "openjdk" => :build
   depends_on "pkg-config" => :build
+
   depends_on "groonga"
+  depends_on "lz4"
+  depends_on "lzo"
   depends_on "openssl@3"
   depends_on "pcre2"
+  depends_on "xz"
+  depends_on "zstd"
 
   uses_from_macos "bzip2"
+  uses_from_macos "krb5"
+  uses_from_macos "libedit"
   uses_from_macos "libxcrypt"
   uses_from_macos "libxml2"
   uses_from_macos "ncurses"
+  uses_from_macos "xz"
   uses_from_macos "zlib"
 
   on_linux do
@@ -100,13 +108,9 @@ class MariadbAT106 < Formula
                                "!includedir #{etc}/my.cnf.d"
     touch etc/"my.cnf.d/.homebrew_dont_prune_me"
 
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix/"data"
-
     # Save space
-    (prefix/"mysql-test").rmtree
-    (prefix/"sql-bench").rmtree
+    rm_r(prefix/"mysql-test")
+    rm_r(prefix/"sql-bench")
 
     # Link the setup script into bin
     bin.install_symlink prefix/"scripts/mysql_install_db"
@@ -147,7 +151,7 @@ class MariadbAT106 < Formula
 
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV["TMPDIR"] = nil
-      system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
+      system bin/"mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
         "--basedir=#{prefix}", "--datadir=#{var}/mysql", "--tmpdir=/tmp"
     end
   end
@@ -175,12 +179,12 @@ class MariadbAT106 < Formula
       "--auth-root-authentication-method=normal"
     port = free_port
     fork do
-      system "#{bin}/mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
+      system bin/"mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
         "--datadir=#{testpath}/mysql", "--port=#{port}", "--tmpdir=#{testpath}/tmp"
     end
     sleep 5
     assert_match "information_schema",
       shell_output("#{bin}/mysql --port=#{port} --user=root --password= --execute='show databases;'")
-    system "#{bin}/mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
+    system bin/"mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
   end
 end

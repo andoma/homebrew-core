@@ -1,19 +1,19 @@
 class Libxcb < Formula
   desc "X.Org: Interface to the X Window System protocol"
   homepage "https://www.x.org/"
-  url "https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.16.tar.xz"
-  sha256 "4348566aa0fbf196db5e0a576321c65966189210cb51328ea2bb2be39c711d71"
+  url "https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.xz"
+  sha256 "599ebf9996710fea71622e6e184f3a8ad5b43d0e5fa8c4e407123c88a59a6d55"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "f9b6be27d8ad4fe5e599747d36d068817c034262c80608b4c98c4b8af67bf374"
-    sha256 cellar: :any,                 arm64_ventura:  "fdebe13a04434a1c531a05a96d73690aaa77450d14a4aab059641b71f1ece75f"
-    sha256 cellar: :any,                 arm64_monterey: "b0999ac7afa5248993eb4461ac28c92b444f962928dfde615480f10df24e386c"
-    sha256 cellar: :any,                 sonoma:         "0fe2f8cf12ca0fb252dbc5ad87d38d0b0bb9dfa03c848453796deb6352422839"
-    sha256 cellar: :any,                 ventura:        "e501531b388f9e218fc6deacfdf24f6b7daf922d82a7cade6838bddd0ac866ce"
-    sha256 cellar: :any,                 monterey:       "7df566b634d6266fbcc10bae41e98b535a92cf8baea722312b70ba521497c3c6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8ab80d0da10993364e138368eb8ca1882fe6c9217a0b7d1f5646c7bf1e82cfb"
+    sha256 cellar: :any,                 arm64_sequoia:  "424cfa4a90faa3e8a83924ab33e339fe7f332c05428fd7ff64e39fbdebc20732"
+    sha256 cellar: :any,                 arm64_sonoma:   "73d103661722410b7789107ff2dc6d4290e6d6b3a48fe1311665bb4593110dc1"
+    sha256 cellar: :any,                 arm64_ventura:  "28d4e84c5f80959fcccf10e66bded2fe5d506d66fb89682d40acb6e0cc0a4611"
+    sha256 cellar: :any,                 arm64_monterey: "9c9f126aca70259930ccc652c9e208f2fa8db321ddadb31bc36af9c4ded4ac3a"
+    sha256 cellar: :any,                 sonoma:         "13fa9f9277a82b642375ad327d412afe69b7ad593ef3c0745454f731dd333f27"
+    sha256 cellar: :any,                 ventura:        "9184f59a65ee1c60eb22b5566a5b842f4730408f512c154ddf64ecbfac911b98"
+    sha256 cellar: :any,                 monterey:       "32b18a3b435be0f22af8cbf093fbd6f299a7265982e7cde07c3b6e4642817604"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c89a99c1bd6af9c2ee85f4c7bacd07906bb16e6ab515cd5d347f9f392dbd80a1"
   end
 
   depends_on "pkg-config" => :build
@@ -45,7 +45,7 @@ class Libxcb < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <stdlib.h>
       #include <string.h>
@@ -90,7 +90,7 @@ class Libxcb < Formula
         xcb_disconnect(connection);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-o", "test", "-I#{include}", "-L#{lib}", "-lxcb"
     system "./test"
     assert_equal 0, $CHILD_STATUS.exitstatus

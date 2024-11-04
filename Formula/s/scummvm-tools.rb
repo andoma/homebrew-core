@@ -4,7 +4,7 @@ class ScummvmTools < Formula
   url "https://downloads.scummvm.org/frs/scummvm-tools/2.7.0/scummvm-tools-2.7.0.tar.xz"
   sha256 "1d9f1faf8338a2fda64f0e6e14bc25a2dadced156cb28a9c60191b983d72db71"
   license "GPL-3.0-or-later"
-  revision 3
+  revision 6
   head "https://github.com/scummvm/scummvm-tools.git", branch: "master"
 
   livecheck do
@@ -13,22 +13,26 @@ class ScummvmTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "342affad8075a0aefefa19c772f3ba0efc299b56f3eb30c8ace586994533219a"
-    sha256 cellar: :any,                 arm64_ventura:  "2b67586af4d4a3cec81644cb17244bbe0c379bb6e77ad6bf157cdc32572cb536"
-    sha256 cellar: :any,                 arm64_monterey: "d9ccc5e2ddadea3ad088371506bb04642e480491fd90a48a760e0491cd9af6bf"
-    sha256 cellar: :any,                 sonoma:         "be1293f1988b909d8df79690875265df47fcb88a0eaaf1f302695563b1c29fa4"
-    sha256 cellar: :any,                 ventura:        "703755bdc07dc18575bd3a6ab60e47dd65e7e683c50f2f7766099143aad75353"
-    sha256 cellar: :any,                 monterey:       "0b0e577a7c015b429108786c1265e297519e238629b9a755ca44006c7ea237cd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9bd108dbabf9c84fef7003307af68906fc7fe2e1554860644b95b23ae1e2694a"
+    sha256 cellar: :any,                 arm64_sequoia:  "a7a9b2ad9338b06651f10ad2df98a3f8c4632b3d3131473c3e5136d7a92b0c9d"
+    sha256 cellar: :any,                 arm64_sonoma:   "8b78826af926de9ec347542ec780fc66f159eb5f3b36660f6d40b35a832e9352"
+    sha256 cellar: :any,                 arm64_ventura:  "d6a3d97e6819c362dac3207848b99446363fbc4084056a7b5fe8bfa01de3a3cd"
+    sha256 cellar: :any,                 arm64_monterey: "51613aeb80f1f322075be0edfaf0e70dd0f16eb66946205db21f4acab942174d"
+    sha256 cellar: :any,                 sonoma:         "3c98ef75a43b652e83d64c071103f963966c5498bb07f578a5cc3c196dc861e2"
+    sha256 cellar: :any,                 ventura:        "492a9820bcfd434d53c783a7270d73e9c3d4ae851f869bdff678ed371a67821c"
+    sha256 cellar: :any,                 monterey:       "d0b67c7264294d61a499a6474339a65bb7dce29f5f8cded3fdb0f78a588a7063"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "95ece3329da2323817bd776851b93076fb3dd5997884a43122397f4dcc487dfc"
   end
 
   depends_on "boost"
   depends_on "flac"
   depends_on "freetype"
+  depends_on "libogg"
   depends_on "libpng"
   depends_on "libvorbis"
   depends_on "mad"
   depends_on "wxwidgets"
+
+  uses_from_macos "zlib"
 
   def install
     # configure will happily carry on even if it can't find wxwidgets,
@@ -41,13 +45,19 @@ class ScummvmTools < Formula
     wxconfig = "wx-config-#{wxwidgets.version.major_minor}"
     inreplace "configure", /^_wxconfig=wx-config$/, "_wxconfig=#{wxconfig}"
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--enable-verbose-build"
+    system "./configure", "--enable-verbose-build", *std_configure_args
     system "make", "install"
   end
 
   test do
-    system bin/"scummvm-tools-cli", "--list"
+    assert_match <<~EOS, shell_output("#{bin}/scummvm-tools-cli --list")
+      All available tools:
+      \tcompress_agos:	Compresses Simon the Sorcerer and Feeble Files data files.
+      \tcompress_gob:	Compresses Gobliiins! data files.
+      \tcompress_kyra:	Used to compress Legend of Kyrandia games.
+      \tcompress_queen:	Used to compress Flight of the Amazon Queen data files.
+    EOS
+
+    assert_match version.to_s, shell_output("#{bin}/scummvm-tools-cli --version")
   end
 end

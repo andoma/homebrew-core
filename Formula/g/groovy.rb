@@ -1,8 +1,8 @@
 class Groovy < Formula
   desc "Java-based scripting language"
   homepage "https://www.groovy-lang.org/"
-  url "https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-4.0.18.zip"
-  sha256 "4b03aa472ec7848d272893348a656be05d1b3502b30770ea57efa158e61154a6"
+  url "https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-4.0.23.zip"
+  sha256 "7089dd7a1e84adc814d616f5ec2f7d7dac2044a0a0457f3341b3b92d30204229"
   license "Apache-2.0"
 
   livecheck do
@@ -11,13 +11,14 @@ class Groovy < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5a664d71ffeb7a709b0ae5a6b8854c3e3c64dd49c2c8395bbba84aef975ec115"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "425d2b8199adde7025c44c113fb22e2ad8ddf64fa1798009c4e43acb5556a76e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9c4effd4134fcf088ff790367513fee216b5f8288dab9ac31fc887e57fa2ae94"
-    sha256 cellar: :any_skip_relocation, sonoma:         "8f4cff8792196c61e7bb1b2b19257059a2b1e4b06966e94553a3e3a80c340aee"
-    sha256 cellar: :any_skip_relocation, ventura:        "265e2b67d0249e507c87d3aa504ecd7cb9250517805b18951c0bd287ae125ead"
-    sha256 cellar: :any_skip_relocation, monterey:       "698760f88a9747713d37f94961146a8000818a0ef42cd881416e05ed74dfe451"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f40dbeb077361bd87335c00b497e7fcaa0445801010d7b11227e6ab8118d2ee1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "58f6f1bf7b988b5af519c65a348ddd8120345ee851a38fe8c2980498baa06ec0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b99325a58df4b5eace82bbfcd4b5b0fb8ca4535949dd708b54363989756562cf"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e62e3b2b54ea540657bf9fe2b85b200b1e5980bd48c1e9e27d7d7ea00a423554"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6e29f8b2629249bd80e81062c63b83908952cde2e306580d8762b70b98f002c0"
+    sha256 cellar: :any_skip_relocation, sonoma:         "741859b47887c02ececba9c0065192c92131026c22925deb96684b2d08d9b7cf"
+    sha256 cellar: :any_skip_relocation, ventura:        "59e356b7b3cfe2240d179baf0543f2d444f7e8cb3c60490347b3e80f238c61f4"
+    sha256 cellar: :any_skip_relocation, monterey:       "e935094889a78fc966fa945622d436c97a1acdd757633d5f6f1cfb58011347c1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa342316a67cb5bd67c23c2d8e3906e69a8af3b4c58c0ed206898d52698ff00e"
   end
 
   depends_on "openjdk"
@@ -59,7 +60,7 @@ class Groovy < Formula
     end
 
     # Don't need Windows files.
-    rm_f Dir["bin/*.bat"]
+    rm(Dir["bin/*.bat"])
 
     libexec.install "bin", "conf", "lib"
     bin.install Dir["#{libexec}/bin/*"] - ["#{libexec}/bin/groovy.ico"]

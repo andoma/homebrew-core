@@ -21,11 +21,11 @@ class AnimeDownloader < Formula
   end
 
   # https://github.com/anime-dl/anime-downloader/commit/24de83d
-  deprecate! date: "2023-11-08", because: :unmaintained
+  disable! date: "2024-09-09", because: :unmaintained
 
   depends_on "aria2"
+  depends_on "certifi"
   depends_on "node"
-  depends_on "python-certifi"
   depends_on "python@3.11"
 
   resource "appdirs" do
@@ -88,7 +88,7 @@ class AnimeDownloader < Formula
     sha256 "0e45d2d852a66ecfb904f090c3f87dc0dfb89a499570abad8590f10d9cffb350"
   end
 
-  resource "pySmartDL" do
+  resource "pysmartdl" do
     url "https://files.pythonhosted.org/packages/5a/4c/ed073b2373f115094a4a612431abe25b58e542bebd951557dcc881999ef9/pySmartDL-1.3.4.tar.gz"
     sha256 "35275d1694f3474d33bdca93b27d3608265ffd42f5aeb28e56f38b906c0c35f4"
   end

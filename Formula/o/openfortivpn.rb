@@ -1,19 +1,20 @@
 class Openfortivpn < Formula
   desc "Open Fortinet client for PPP+TLS VPN tunnel services"
   homepage "https://github.com/adrienverge/openfortivpn"
-  url "https://github.com/adrienverge/openfortivpn/archive/refs/tags/v1.21.0.tar.gz"
-  sha256 "e03242e1bc39de9d916674a4641830a004309c2fd52f0f23aae2f431924ec4ae"
+  url "https://github.com/adrienverge/openfortivpn/archive/refs/tags/v1.22.1.tar.gz"
+  sha256 "9aaaae2229f01b35bf79dcc9e1c0a4363cec75084a30fd46df58c20d52bff809"
   license "GPL-3.0-or-later" => { with: "openvpn-openssl-exception" }
+  head "https://github.com/adrienverge/openfortivpn.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "b4771b967f920be533a02071151acf1993b5e7a23c6721434f1634af5c2912b4"
-    sha256 arm64_ventura:  "fdf89a41fb091d8e31335a60441a30add086c386f40f20b4036c7ce478d7848b"
-    sha256 arm64_monterey: "a62558b10fe6d8ebe8e4b2248bafd87ccee2753af3a2d8b2c99f549ede7aa629"
-    sha256 sonoma:         "b326509c4c5e9425dc862fe620bbba34bf3a9a8ce839acae73fd51ac024fa432"
-    sha256 ventura:        "52fd759e336d2921d01a9b7facce76274af558daf92e6467c6512da7f0e9a2bc"
-    sha256 monterey:       "4695372eeaeb1772b0ec63422932f2970c59487e70b2908c4406c6d2d3f73da5"
-    sha256 x86_64_linux:   "8f08d3314a70126a2dc00807b2f1ed5782fe0b41945900a5cf22c527001e9dd6"
+    sha256 arm64_sequoia:  "57822a57fca8d720b5848885d49b39eb4f6ea35da9e9003bee8c122f83c58f7e"
+    sha256 arm64_sonoma:   "946734a0e699c191de0514da876e803c048b205aae824c4f8420ab50bbdb37fa"
+    sha256 arm64_ventura:  "580097ee6f08798f95b62c4598f1ed966ed4c85aec9a2c31a602c1ba2a0e59fa"
+    sha256 arm64_monterey: "5653d24c9352334c49c33f19ff5514bca38b5cc4d0e94ebbd68da4b2675730de"
+    sha256 sonoma:         "de8c7bd44f6f7c79c48b340cc1884b6f97c04ca96555a2aa84d96c25c327126d"
+    sha256 ventura:        "47ff2f44fdeffc326ae23aa344b9a5d8b82fb9b64365bf3d66bcd07b823e2387"
+    sha256 monterey:       "3ce32945254b9a2f25fe4e0534564b93e545ed8d54271204f478537c9d904d42"
+    sha256 x86_64_linux:   "7a059b81db6de8273b0b44e6d53686f58e76264e7c7fc031823479a6fa07c551"
   end
 
   depends_on "autoconf" => :build

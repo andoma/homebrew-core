@@ -1,10 +1,10 @@
 class Wagyu < Formula
   desc "Rust library for generating cryptocurrency wallets"
-  homepage "https://github.com/AleoHQ/wagyu"
-  url "https://github.com/AleoHQ/wagyu/archive/refs/tags/v0.6.1.tar.gz"
+  homepage "https://github.com/howardwu/wagyu"
+  url "https://github.com/howardwu/wagyu/archive/refs/tags/v0.6.1.tar.gz"
   sha256 "2458b3d49653acd5df5f3161205301646527eca9f6ee3d84c7871afa275bad9f"
   license any_of: ["Apache-2.0", "MIT"]
-  head "https://github.com/AleoHQ/wagyu.git", branch: "master"
+  head "https://github.com/howardwu/wagyu.git", branch: "master"
 
   bottle do
     rebuild 2
@@ -20,6 +20,12 @@ class Wagyu < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a81b1c07ee67f4e0cac9e8a7ca17720e440b40c14d66e76db3f5945f862eadb9"
   end
 
+  # cannot build with latest rust and upstream is not active
+  # https://github.com/howardwu/wagyu/issues/280
+  # https://github.com/howardwu/wagyu/issues/282
+  # https://github.com/howardwu/wagyu/issues/285
+  deprecate! date: "2024-09-11", because: :unmaintained
+
   depends_on "rust" => :build
 
   def install
@@ -27,6 +33,6 @@ class Wagyu < Formula
   end
 
   test do
-    system "#{bin}/wagyu", "bitcoin"
+    system bin/"wagyu", "bitcoin"
   end
 end

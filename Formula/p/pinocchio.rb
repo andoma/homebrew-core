@@ -1,10 +1,9 @@
 class Pinocchio < Formula
   desc "Efficient and fast C++ library implementing Rigid Body Dynamics algorithms"
   homepage "https://stack-of-tasks.github.io/pinocchio"
-  url "https://github.com/stack-of-tasks/pinocchio/releases/download/v2.7.0/pinocchio-2.7.0.tar.gz"
-  sha256 "fbc8de46b3296c8bf7d4d9b03392c04809a1bca52930fab243749eeef39db406"
+  url "https://github.com/stack-of-tasks/pinocchio/releases/download/v3.2.0/pinocchio-3.2.0.tar.gz"
+  sha256 "b6a7e6f6f6e3f175dd7010aa998a018f88d712477caa6c41f6ae038310c2fd7d"
   license "BSD-2-Clause"
-  revision 1
   head "https://github.com/stack-of-tasks/pinocchio.git", branch: "master"
 
   livecheck do
@@ -13,24 +12,32 @@ class Pinocchio < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "781a3b121121e88517d0a6a6f413131ece78708216ec4d0c2f3cff62cbd7c590"
-    sha256 cellar: :any,                 arm64_ventura:  "dd0e1dde8f163d57400e922d8ed5bd60aa74605a79278dab1c4b3cac9a873d9c"
-    sha256 cellar: :any,                 arm64_monterey: "f63a49d966faa14097f9f4989ec36b986540f480d94b937b37191d97c92c859c"
-    sha256 cellar: :any,                 sonoma:         "c9dfbb95fd4a4289424a26e1877eee71d067eb5ea9cb49e5aa2517b7cf053845"
-    sha256 cellar: :any,                 ventura:        "463dd67f36178173769df0370bece739c552dd9cbe852d89d6745d4da4a4001a"
-    sha256 cellar: :any,                 monterey:       "d90ba5eb31d2a99b37c75349ce45a72315adb27c29c05dbae258e1eef8ef1720"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "63a8f309e4549196bbf3cfd33b9f21c275ac74c5677b96ba36b775c0e5f8e3a8"
+    sha256 cellar: :any,                 arm64_sequoia:  "287fc7e57114de6aab36ba53ce86b4cff23ad61c446e0af0ddc54d99d2c28319"
+    sha256 cellar: :any,                 arm64_sonoma:   "e5aecd8d45644b8e8816b8976380b0d56a90d3c58fbaacffc25d38c313d2703e"
+    sha256 cellar: :any,                 arm64_ventura:  "98d4385db1a890c8efab927d13cfa7d43825a01f747a35f232867864be056dbd"
+    sha256 cellar: :any,                 arm64_monterey: "1521650db4d1d0b81fd049a48df5c6166c000229f6a399f1f3605d6c37a3310d"
+    sha256 cellar: :any,                 sonoma:         "3c6530280e7008d33b3077669d7e718a19463da9e1e48b2fc70cbaa277909261"
+    sha256 cellar: :any,                 ventura:        "458b37e151cc241998b1094a6c7416a041aa9a6160de8c7fa42ab142190cd0ea"
+    sha256 cellar: :any,                 monterey:       "da6b92220a00a51ba948bcb9d9e3848fc951910eb7eaa9a1527895beb29580a3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a09640f68ac89dba6af85f0a056058747643772a95388ab7cde28d9097db5332"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "pkg-config" => :build
+
   depends_on "boost"
+  depends_on "boost-python3"
+  depends_on "console_bridge"
   depends_on "eigen"
   depends_on "eigenpy"
   depends_on "hpp-fcl"
   depends_on "python@3.12"
   depends_on "urdfdom"
+
+  on_macos do
+    depends_on "octomap"
+  end
 
   def python3
     "python3.12"

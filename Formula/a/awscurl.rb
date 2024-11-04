@@ -3,32 +3,30 @@ class Awscurl < Formula
 
   desc "Curl like simplicity to access AWS resources"
   homepage "https://github.com/okigan/awscurl"
-  url "https://files.pythonhosted.org/packages/fa/71/2bd268f518591a82400eeccaef4cc11987b6a49912bccbf46339388eb98a/awscurl-0.32.tar.gz"
-  sha256 "0c4c91a9c9873e1ad95c37371b63ebf8be20c70722b5fb9cdec430553117594e"
+  url "https://files.pythonhosted.org/packages/f0/53/68500d2e61aff7549f878a9227eea5c80eaf6ffcad7c134c576360b1bae7/awscurl-0.36.tar.gz"
+  sha256 "9eb9d4949616d90dd7bf0d12a67eb3e1d3487bf08d75a7555d979811e5da1cb4"
   license "MIT"
   head "https://github.com/okigan/awscurl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "692fa4ce1184d846de9a33a6c79e63d25d3d1d6fe0d30b7816940dc117087ae6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7c09759c3419821d62992a55145a1419ecfcc2d373a08b7bb5d8459d20867bf2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1000feb4fcc0cd10fceb4904ac8cd6181d6bb7e80bd6d342f57d433142727600"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2abc19057d9b4a3a37d95dd0a07c2b9e024e03a16e552a1dc4ba52da1c07c571"
-    sha256 cellar: :any_skip_relocation, ventura:        "5341420cfb7591d726a33158d9becb34c03ae375b6816171a6821e35cc4ecac8"
-    sha256 cellar: :any_skip_relocation, monterey:       "204e51eda87a881a450779fa9559327db754cb9b7d9ed5de8fff48d76fa73314"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7cc913c2814175a57b646985d9ca3d2e602591beaf5c1d4dcbe2a53ec01b80d3"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "f13670bbd5d0dd632377a14b891c024656917d4e22994d9262d887c9b176d670"
   end
 
-  depends_on "cffi"
-  depends_on "pycparser"
-  depends_on "python-certifi"
-  depends_on "python-cryptography"
-  depends_on "python@3.12"
+  depends_on "certifi"
+  depends_on "cryptography"
+  depends_on "python@3.13"
 
   uses_from_macos "libffi"
 
+  resource "botocore" do
+    url "https://files.pythonhosted.org/packages/f7/28/d83dbd69d7015892b53ada4fded79a5bc1b7d77259361eb8302f88c2da81/botocore-1.35.39.tar.gz"
+    sha256 "cb7f851933b5ccc2fba4f0a8b846252410aa0efac5bfbe93b82d10801f5f8e90"
+  end
+
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/6d/b3/aa417b4e3ace24067f243e45cceaffc12dba6b8bd50c229b43b3b163768b/charset-normalizer-3.3.1.tar.gz"
-    sha256 "d9137a876020661972ca6eec0766d81aef8a5627df628b664b234b73396e727e"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "configargparse" do
@@ -37,23 +35,38 @@ class Awscurl < Formula
   end
 
   resource "configparser" do
-    url "https://files.pythonhosted.org/packages/0b/65/bad3eb64f30657ee9fa2e00e80b3ad42037db5eb534fadd15a94a11fe979/configparser-6.0.0.tar.gz"
-    sha256 "ec914ab1e56c672de1f5c3483964e68f71b34e457904b7b76e06b922aec067a8"
+    url "https://files.pythonhosted.org/packages/a5/2e/a8d83652990ecb5df54680baa0c53d182051d9e164a25baa0582363841d1/configparser-7.1.0.tar.gz"
+    sha256 "eb82646c892dbdf773dae19c633044d163c3129971ae09b49410a303b8e0a5f7"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
+  end
+
+  resource "jmespath" do
+    url "https://files.pythonhosted.org/packages/00/2a/e867e8531cf3e36b41201936b7fa7ba7b5702dbef42922193f05c8976cd6/jmespath-1.0.1.tar.gz"
+    sha256 "90261b206d6defd58fdd5e85f478bf633a2901798906be2ad389150c5c60edbe"
+  end
+
+  resource "python-dateutil" do
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/af/47/b215df9f71b4fdba1025fc05a77db2ad243fa0926755a52c5e71659f4e3c/urllib3-2.0.7.tar.gz"
-    sha256 "c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install
@@ -61,9 +74,12 @@ class Awscurl < Formula
   end
 
   test do
+    ENV["AWS_ACCESS_KEY_ID"] = "test"
+    ENV["AWS_SECRET_ACCESS_KEY"] = "test"
+
     assert_match "Curl", shell_output("#{bin}/awscurl --help")
 
-    assert_match "No access key is available",
-      shell_output("#{bin}/awscurl --service s3 https://homebrew-test-non-existent-bucket.s3.amazonaws.com 2>&1", 1)
+    assert_match "The AWS Access Key Id you provided does not exist in our records.",
+      shell_output("#{bin}/awscurl --service s3 https://homebrew-test-non-existent-bucket.s3.amazonaws.com")
   end
 end

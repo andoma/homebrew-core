@@ -1,8 +1,8 @@
 class PythonGdbmAT312 < Formula
   desc "Python interface to gdbm"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.12.2/Python-3.12.2.tgz"
-  sha256 "a7c4f6a9dc423d8c328003254ab0c9338b83037bd787d680826a5bf84308116e"
+  url "https://www.python.org/ftp/python/3.12.7/Python-3.12.7.tgz"
+  sha256 "73ac8fe780227bf371add8373c3079f42a0dc62deff8d612cd15a618082ab623"
   license "Python-2.0"
 
   livecheck do
@@ -10,33 +10,22 @@ class PythonGdbmAT312 < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "b57278030c6bc53d605282f55ac8b3c405f26b66ed9594858b0b2f64243a5211"
-    sha256 cellar: :any, arm64_ventura:  "67b46fd4027e3332d0a8db95ff5f1af4bde1a1fb14f460996738ed36efedb99e"
-    sha256 cellar: :any, arm64_monterey: "9e4843211c412e29c6fc8b2ead2edd0c999c67c5b0ae058c0277ab51d9127a83"
-    sha256 cellar: :any, sonoma:         "b5d32a47d26373140044e9dd7d466a282970722b023d0386321dfb2e8bfbf105"
-    sha256 cellar: :any, ventura:        "934d91775a816281b5c2f45917995ecd759d7391a742848dcd0cdd52b4194b07"
-    sha256 cellar: :any, monterey:       "1b638694f6b24c25c01f2f93040853aa4ec28845fadb2960fbd4857f42e08ecb"
-    sha256               x86_64_linux:   "0aa6c6997e05ec40bdb2b313a0f01971360a331dcce67ecdbfe6083f1a57598f"
+    sha256 cellar: :any, arm64_sequoia: "63c5604dac90c9f5caeff9048a356974f264c23e19e71a1f00038cff94248dbd"
+    sha256 cellar: :any, arm64_sonoma:  "0850ecb339f79f4b74b200a6707a74ae3c7a973100892b1e2c919dbeccce2664"
+    sha256 cellar: :any, arm64_ventura: "ecd7fec78dc938ec4d58dda6c031e89ab99d4f77e71790d96889f38f2c05a262"
+    sha256 cellar: :any, sonoma:        "55f70d3c5a89b8de7c6452b521ea8645cf1cd3b002e2f6a8ce6cae9326550a48"
+    sha256 cellar: :any, ventura:       "44ab8aefa06d2af77193f2b399e782e0ae8917002d4e9393f316f2e228bf24d0"
+    sha256               x86_64_linux:  "9fb06a5c4094750bef26395bd2131b90f5e9e46d2a74bad6862fb29205fa5801"
   end
 
   depends_on "gdbm"
   depends_on "python@3.12"
-
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/4b/d9/d0cf66484b7e28a9c42db7e3929caed46f8b80478cd8c9bd38b7be059150/setuptools-69.0.2.tar.gz"
-    sha256 "735896e78a4742605974de002ac60562d286fa8051a7e2299445e8e8fbb01aa6"
-  end
 
   def python3
     "python3.12"
   end
 
   def install
-    ENV.append_path "PYTHONPATH", buildpath/Language::Python.site_packages(python3)
-    resource("setuptools").stage do
-      system python3, "-m", "pip", "install", *std_pip_args(prefix: buildpath), "."
-    end
-
     cd "Modules" do
       (Pathname.pwd/"setup.py").write <<~EOS
         from setuptools import setup, Extension
@@ -52,9 +41,9 @@ class PythonGdbmAT312 < Formula
               ]
         )
       EOS
-      system python3, *Language::Python.setup_install_args(libexec, python3),
-                      "--install-lib=#{libexec}"
-      rm_r libexec.glob("*.egg-info")
+      system python3, "-m", "pip", "install", *std_pip_args(prefix: false, build_isolation: true),
+                                              "--target=#{libexec}", "."
+      rm_r libexec.glob("*.dist-info")
     end
   end
 

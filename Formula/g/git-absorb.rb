@@ -1,18 +1,17 @@
 class GitAbsorb < Formula
   desc "Automatic git commit --fixup"
   homepage "https://github.com/tummychow/git-absorb"
-  url "https://github.com/tummychow/git-absorb/archive/refs/tags/0.6.12.tar.gz"
-  sha256 "88a64712bcb4885a65984359c783e7f16b76fe4ca4ccd339d0c2d83139d0428b"
+  url "https://github.com/tummychow/git-absorb/archive/refs/tags/0.6.16.tar.gz"
+  sha256 "d0fac448801674a4d4d5d42d6ef2d2e21545ad66755023c531a273a47893a573"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "132f1bb9c25a7d6846e5750ca1424c921676bd89bccd479f95fa70d63666bba8"
-    sha256 cellar: :any,                 arm64_ventura:  "1209e6679448586b5dbe805d3ddeffb25db62c12ad39ea3cb4c27b0b8685be79"
-    sha256 cellar: :any,                 arm64_monterey: "e043101eb1548f3ae582afba7221d796d09a8b4ea563e2241fcb0e2f8cc72483"
-    sha256 cellar: :any,                 sonoma:         "ee0017cb0f5fcb667546a586433ee1dfcac5ddc68e304faa13baae0931f51827"
-    sha256 cellar: :any,                 ventura:        "e98d15fae9087c6275bd329d23306d07924c471977b811f8c7d6debffef5259d"
-    sha256 cellar: :any,                 monterey:       "c729abf17834d844e7a188a9101e19b652925b1e54cf90cca0bc3a9a08b6d879"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "033a4edd4d671b5a349ca17c918d9cda24328a8f3c14680f3ff969112e703a51"
+    sha256 cellar: :any,                 arm64_sequoia: "642563694d9d397f39c68368965fa1f80b0e76840ce400f4f92c7e3b07dfe7e2"
+    sha256 cellar: :any,                 arm64_sonoma:  "717cf20e7c9341f2d20b0b17d6e188b6e1c3e2795409df79642cf6efd6bd7811"
+    sha256 cellar: :any,                 arm64_ventura: "47e0e651f3848fb5b07fff7d43853725b573aa69d98c9ec03fb78492f58098d0"
+    sha256 cellar: :any,                 sonoma:        "09fe5516b5b7a42fd378a7b63ecbbbc945b03f4ee6a183e175c689b4b6c95034"
+    sha256 cellar: :any,                 ventura:       "cf1478d96f79469824668a92b25b6d40d47fc8abc14a8ac2df4891db8701cc75"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ca35199361f91362a640963a2b19fd16b741613b22552d142690055fadb7e70c"
   end
 
   depends_on "pkg-config" => :build

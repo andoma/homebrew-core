@@ -1,20 +1,19 @@
 class Osslsigncode < Formula
   desc "OpenSSL based Authenticode signing for PE/MSI/Java CAB files"
   homepage "https://github.com/mtrojnar/osslsigncode"
-  url "https://github.com/mtrojnar/osslsigncode/archive/refs/tags/2.7.tar.gz"
-  sha256 "00fc2b43395d89a2d07ebbd4981e7a9dbc676c7115d122a1385441c0294239b8"
+  url "https://github.com/mtrojnar/osslsigncode/archive/refs/tags/2.9.tar.gz"
+  sha256 "3fe5488e442ad99f91410efeb7b029275366b5df9aa02371dcc89a8f8569ff55"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "ee253906f690082fb0f95925c7ca20973748f3c7f622b181c284b1bf2221756d"
-    sha256 cellar: :any,                 arm64_ventura:  "1f6ab0d22e1025c6b5d66c8978e338fe3f85f5b924709b28d7625d3861951e32"
-    sha256 cellar: :any,                 arm64_monterey: "d3fb5dfb502c3c3fd7a1a8a55a0105852c5eb68b995da2fce81009827f953042"
-    sha256 cellar: :any,                 arm64_big_sur:  "46b8c4c787717d1847fee881670449f95a2c5a34701506b7cfe8c59d858050ad"
-    sha256 cellar: :any,                 sonoma:         "7f49058612fcc742b1e456e5452a56d4dd097d6a675b6fa8ec4cdcc569b2b351"
-    sha256 cellar: :any,                 ventura:        "5011f0d203e816aab853cabc73d16e5dab6f4c1e1673f79c5fbaae83a7c7fe7a"
-    sha256 cellar: :any,                 monterey:       "b4ebe200ae4b762b5824a4855d95e2a23ac13c93d3a92cd973de6759e6df9bb3"
-    sha256 cellar: :any,                 big_sur:        "778fdb11adce389448e9d034fd9b5b0062671eb71ae40e5f297297bf6c11c7b5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ba9e75264cb30857cbb73ab8f0863a5a039c9005a9b296732d78b4ab09a7ff7e"
+    sha256 cellar: :any,                 arm64_sequoia:  "fe12f26f3bd487dc6663ffdc0d6091547e52b4c3f00f003eff28d932d23bddcf"
+    sha256 cellar: :any,                 arm64_sonoma:   "917f9ac6b5ceaa7558b47929da67fa0aa3a7b3d6e4d2e7fb40f582c29bde91a2"
+    sha256 cellar: :any,                 arm64_ventura:  "3024c29dd0838b5fa7c57edab3ed3e2373515e65dd211421d8384fe9088642cb"
+    sha256 cellar: :any,                 arm64_monterey: "aa7c4c53ebf2aa83120b5883b0f8229e119fe1a4ac5bb97c1d3e9fcf141c1241"
+    sha256 cellar: :any,                 sonoma:         "6278aff15a055a409edbc6aa4a69176befc7777325b3980afc58cd71737cf11a"
+    sha256 cellar: :any,                 ventura:        "c09dfe8cb41d3af6327fb73695a7a5691c799b36f09331454b21a23e0e04ffbb"
+    sha256 cellar: :any,                 monterey:       "a329dc07e46683d428cd6f8d9fe9b2bd6c02fc03b3f5c86dfbed1e5fdb244913"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e35630485849326c73bc6135118ccc391fdef8afd579371432207dd0aaec5f05"
   end
 
   depends_on "cmake" => :build
@@ -22,6 +21,7 @@ class Osslsigncode < Formula
 
   uses_from_macos "curl"
   uses_from_macos "python"
+  uses_from_macos "zlib"
 
   # Fix permission issue when installing bash completionn
   patch :DATA

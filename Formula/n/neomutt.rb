@@ -1,19 +1,18 @@
 class Neomutt < Formula
   desc "E-mail reader with support for Notmuch, NNTP and much more"
   homepage "https://neomutt.org/"
-  url "https://github.com/neomutt/neomutt/archive/refs/tags/20240201.tar.gz"
-  sha256 "5229c4fdd6fd6ef870b94032bb1073f7f881ce97cf5754b1a4f4579a97b918da"
+  url "https://github.com/neomutt/neomutt/archive/refs/tags/20241002.tar.gz"
+  sha256 "8d5673d9cc4b239adcf4bc718d372c8c85d0b53248ecd628358625c877a53064"
   license "GPL-2.0-or-later"
   head "https://github.com/neomutt/neomutt.git", branch: "main"
 
   bottle do
-    sha256 arm64_sonoma:   "8b5a97acd8efd445c812f9362abe71a42628b01368353f095e0bf7603c3c820c"
-    sha256 arm64_ventura:  "acdd4e7a51f442fb52a8588842309adb43a9cdc6470d22167bff20cc5d759bfe"
-    sha256 arm64_monterey: "c0726ac45ba19f9fba4417e2a6d5d4e06b36f8118d3a30c20ddc97ec20e9bf39"
-    sha256 sonoma:         "38d031428b164d0ac808c367faa6ac80cb04aa79176cc7edc3217fd806d0c5a2"
-    sha256 ventura:        "26da78e044ff5fa8ed5ea2217ae56389c604cf195f8a0e9144e52852371d331b"
-    sha256 monterey:       "724fa2dd46ab58bb680beb285d8585c66b3c2b3525dc661a9771fa5fbe75f009"
-    sha256 x86_64_linux:   "10563ce40c776a66871e655a5e42988a8306a2b893b385bcaf244b7870283cbc"
+    sha256 arm64_sequoia: "1f23f328fc319b165c5098e039c8828f292ebda873292a92a2fa1f6d9f480b24"
+    sha256 arm64_sonoma:  "bad6b01c064964d44a25c07f41fe97daebd0eaba1a462b40883b189b153ac6e7"
+    sha256 arm64_ventura: "c8089b9563eeb881c776052b55bfba069e89c181570447ed94916af4b1b7445f"
+    sha256 sonoma:        "6a053929de9b0b88a6e9d9de5572fee3e95e3df8f8449f035a25e22d90d97eed"
+    sha256 ventura:       "d4096559ddf7bc9cb6a6f500d5ec152678a23666a9657b6e94838aa4bf9ea3e1"
+    sha256 x86_64_linux:  "70218512a0db0ac376d5ece31926033733c6c9f310acd4d07ecf236be0b614bd"
   end
 
   depends_on "docbook-xsl" => :build
@@ -29,6 +28,7 @@ class Neomutt < Formula
   depends_on "notmuch"
   depends_on "openssl@3"
   depends_on "pcre2"
+  depends_on "sqlite"
   depends_on "tokyo-cabinet"
 
   uses_from_macos "libxslt" => :build # for xsltproc
@@ -37,6 +37,7 @@ class Neomutt < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "libgpg-error"
     # Build again libiconv for now on,
     # but reconsider when macOS 14.2 is released
     depends_on "libiconv"

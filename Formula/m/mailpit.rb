@@ -1,30 +1,27 @@
-require "language/node"
-
 class Mailpit < Formula
   desc "Web and API based SMTP testing"
   homepage "https://mailpit.axllent.org/"
-  url "https://github.com/axllent/mailpit/archive/refs/tags/v1.14.0.tar.gz"
-  sha256 "66236518a6e0747f610f947e576cc0b507b44d7cb0ee36e9540c2d04d137a1b3"
+  url "https://github.com/axllent/mailpit/archive/refs/tags/v1.21.1.tar.gz"
+  sha256 "c03bea0de19620bcfc1316e8d28f79a7b1a57499494ba486851905ec550e1777"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "852f2be655f315e66788cc4db8b343ee747f33b0f176cce4b7f19556f86612a5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a22888b66a811f409804e527708110ecb011fb1d16a7024a9580503226008137"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3dd9b4a418f091be4fd2b56d90c8ae4372a9b4ae7a8ebf84cb40854fe41f0cff"
-    sha256 cellar: :any_skip_relocation, sonoma:         "50dc8fff25da704afe2243504d45cadfa3d4b27c46ea3f8697bf95406b475c3e"
-    sha256 cellar: :any_skip_relocation, ventura:        "d2d71609beed31e06e1806f89609b19a44c6c03f82ce9041a8891deae18f69f0"
-    sha256 cellar: :any_skip_relocation, monterey:       "8a66af36b5d02c640a625f78424ecfad544f3b222f16c443729a999dba915b61"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "140beb0e82a77c1facba278855a05d495dcb6ac5c7a9e88c408669a41093face"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "81f3fa9751962ced90b37e635c328da5a8be35d8d0b5d978ec22009bc5a98bfb"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7c5e5b47d27283e77d741abd91a84b14ad42feda4681739f924f69cc5656b525"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "41f3dda497106b91b6d3ccc984b36443ab2f81b22f3dce880905d04f684476dd"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1020ff4fded74f7d5ad72bfa8451ac7053b53cfa922c2192b152117c411db34d"
+    sha256 cellar: :any_skip_relocation, ventura:       "3b22c512d681dcacfbfb0dbec54059599ecdee428ca92a567d2c94be9677dad9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "78d39eeec69fa524b8c560334366231647193cfb3ae49844a77d8cc23ce20758"
   end
 
   depends_on "go" => :build
   depends_on "node" => :build
 
   def install
-    system "npm", "install", *Language::Node.local_npm_install_args
+    system "npm", "install", *std_npm_args(prefix: false)
     system "npm", "run", "build"
     ldflags = "-s -w -X github.com/axllent/mailpit/config.Version=v#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   service do

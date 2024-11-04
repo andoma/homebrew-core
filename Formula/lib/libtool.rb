@@ -1,36 +1,33 @@
 class Libtool < Formula
   desc "Generic library support script"
   homepage "https://www.gnu.org/software/libtool/"
-  url "https://ftp.gnu.org/gnu/libtool/libtool-2.4.7.tar.xz"
-  mirror "https://ftpmirror.gnu.org/libtool/libtool-2.4.7.tar.xz"
-  sha256 "4f7f217f057ce655ff22559ad221a0fd8ef84ad1fc5fcb6990cecc333aa1635d"
+  url "https://ftp.gnu.org/gnu/libtool/libtool-2.5.3.tar.xz"
+  mirror "https://ftpmirror.gnu.org/libtool/libtool-2.5.3.tar.xz"
+  sha256 "898011232cc59b6b3bbbe321b60aba9db1ac11578ab61ed0df0299458146ae2e"
   license "GPL-2.0-or-later"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "211b174c29c24b3bdd42c44a12262ba479c4707b19bd2abd41f41a67f1b45cf5"
-    sha256 cellar: :any,                 arm64_ventura:  "a7196b340a6b2ee833b9451409a2e83b08ba192bebe4fd019c6e658789c76298"
-    sha256 cellar: :any,                 arm64_monterey: "359d2a8f85d03f310263b91c665bf591703e8a7a6e79396bc2fc64df75e0655a"
-    sha256 cellar: :any,                 arm64_big_sur:  "faa1bb0c78ff5881efcaf476ccfc6ec400e56a4583fcc850d265b70f37fd577e"
-    sha256 cellar: :any,                 sonoma:         "47676ae503261483d5f1f35caa074efc416527bc471e25b0dc5c19bf588ed39f"
-    sha256 cellar: :any,                 ventura:        "d20beb0eb96c3ab67be5987393c64a575781c5d7abe6fb20efd2ae343a0680c7"
-    sha256 cellar: :any,                 monterey:       "4b248059b3fed99774183f17e335eca05edb25698dabcecbe916f4ec63a48cc6"
-    sha256 cellar: :any,                 big_sur:        "deffadfecec61da06dde9edf5eae19381f80f99ae78e57607732fd54be366b8a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f55d5bcc07a45f599800b2c9fb5818c13be90803355e169cdb0e1ddc621bee5e"
+    sha256 cellar: :any,                 arm64_sequoia: "1f26cc2d321343e11736fa4f7aea031651544291262584c0c94f5b6269422a29"
+    sha256 cellar: :any,                 arm64_sonoma:  "e857244e8cf19dd0d0005ab9ad0a3a180e61285dcb981fd6deda5c2e362d98cd"
+    sha256 cellar: :any,                 arm64_ventura: "904b1aba635748ba67a6c8e64264edef34e9ab444faee45def5b6a5689942a8b"
+    sha256 cellar: :any,                 sequoia:       "e989f7ac6c96f10ffc29c995faae51642772742c82f8167d07224dd6b9695881"
+    sha256 cellar: :any,                 sonoma:        "169193ec2d3672a4b13cdcad155723ee0ea03fdc726db81213569f6aa2a83246"
+    sha256 cellar: :any,                 ventura:       "c35e90a528d4351c4b8c6b2d244dcec015851393fccd88e96d09f1497bed6274"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "91784670a1d9f78f471156a9d9633529d0ae06599f64de93de4210ac95f96b3f"
   end
 
   depends_on "m4"
 
   def install
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
+    ENV["M4"] = Formula["m4"].opt_bin/"m4"
+
+    args = %w[
+      --disable-silent-rules
       --enable-ltdl-install
     ]
-
     args << "--program-prefix=g" if OS.mac?
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
 
     if OS.mac?
@@ -38,10 +35,8 @@ class Libtool < Formula
         (libexec/"gnubin").install_symlink bin/"g#{prog}" => prog
         (libexec/"gnuman/man1").install_symlink man1/"g#{prog}.1" => "#{prog}.1"
       end
-      libexec.install_symlink "gnuman" => "man"
-    end
-
-    if OS.linux?
+      (libexec/"gnubin").install_symlink "../gnuman" => "man"
+    else
       bin.install_symlink "libtool" => "glibtool"
       bin.install_symlink "libtoolize" => "glibtoolize"
 
@@ -62,15 +57,19 @@ class Libtool < Formula
   end
 
   test do
-    system "#{bin}/glibtool", "execute", File.executable?("/usr/bin/true") ? "/usr/bin/true" : "/bin/true"
-    (testpath/"hello.c").write <<~EOS
+    system bin/"glibtool", "execute", File.executable?("/usr/bin/true") ? "/usr/bin/true" : "/bin/true"
+
+    (testpath/"hello.c").write <<~C
       #include <stdio.h>
       int main() { puts("Hello, world!"); return 0; }
-    EOS
+    C
+
     system bin/"glibtool", "--mode=compile", "--tag=CC",
       ENV.cc, "-c", "hello.c", "-o", "hello.o"
     system bin/"glibtool", "--mode=link", "--tag=CC",
       ENV.cc, "hello.o", "-o", "hello"
     assert_match "Hello, world!", shell_output("./hello")
+
+    system bin/"glibtoolize", "--ltdl"
   end
 end

@@ -7,7 +7,8 @@ class Inja < Formula
   head "https://github.com/pantor/inja.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "5af855be623e2ed9baf2182e6b645efc7ec85b13e6a3485237dd35cc661ce7ef"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "78f7fb60abcd044a0fbd19d1723da834a8a754f4df1601de17a02b2010381666"
   end
 
   depends_on "cmake" => :build
@@ -22,7 +23,7 @@ class Inja < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <inja/inja.hpp>
 
       int main() {
@@ -31,7 +32,7 @@ class Inja < Formula
 
           inja::render_to(std::cout, "Hello {{ name }}!\\n", data);
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++17", "test.cpp", "-o", "test",
            "-I#{include}", "-I#{Formula["nlohmann-json"].opt_include}"
     assert_equal "Hello world!\n", shell_output("./test")

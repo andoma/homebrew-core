@@ -1,29 +1,32 @@
 class Typst < Formula
   desc "Markup-based typesetting system"
   homepage "https://typst.app/"
-  url "https://github.com/typst/typst/archive/refs/tags/v0.10.0.tar.gz"
-  sha256 "f1b7baba3c6f6f37dee6d05c9ab53d2ba5cd879a57b6e726dedf9bc51811e132"
+  url "https://github.com/typst/typst/archive/refs/tags/v0.12.0.tar.gz"
+  sha256 "5e92463965c0cf6aa003a3bacd1c68591ef2dc0db59dcdccb8f7b084836a1266"
   license "Apache-2.0"
   version_scheme 1
   head "https://github.com/typst/typst.git", branch: "main"
 
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b8a2ca9d7dd922991dc3c870d68334322ab4396a5ddeae1e6be72ae69d97541e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b6d46b37db02e52f90242460c33585c82e4af974d015f3d54d4b12308d5dbc1f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5a1616edbd759adc8e589461b4be6928325c71cfb87f4d9cdb52cacfb0930199"
-    sha256 cellar: :any_skip_relocation, sonoma:         "27efefec35449432d7a6a3122f30b020e64d502dd0f162ad17ff5c65af7d6065"
-    sha256 cellar: :any_skip_relocation, ventura:        "a685024b601d5d32c4df8da1e88c61aaad03afc456d1be2d2a138f25fa95f6bc"
-    sha256 cellar: :any_skip_relocation, monterey:       "cd9a33a5d715fcd3c2fffbab2c3d661182cebcdb183a278a2f8d6bd3ae9a2979"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a1981101d2e97d813b210cf78c313aa4ec51d029b186e78faf20bb41c8016919"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5586435036b1ba98415dda2c346ffd7756a888bcb33a9447ec0618c52ba7fd8e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "af2d66c4beed4da51ef9f3ca8818b3df5986a3b98f8c73d48d123634e3c88d05"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "56b6fc67564c350e86b8d1370f98d197c7aa1c83a194cb464071cc1f9e89f83a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "130bf8405ef2f904419776a5672d37717c91cdb58899c4978e55c7a3a0c19bc7"
+    sha256 cellar: :any_skip_relocation, ventura:       "cccad3f48cce4a2a3d38850f978866c7ae2cff9673cbfb83cae7a055ee6ff4fd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "66c9c3b7c7e3899fef7daacea96eb2a309add3524747e2fd4164a4afb9175169"
   end
 
+  depends_on "pkg-config" => :build
   depends_on "rust" => :build
+
+  on_linux do
+    depends_on "openssl@3"
+  end
 
   def install
     ENV["TYPST_VERSION"] = version.to_s

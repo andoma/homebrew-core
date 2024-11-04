@@ -1,8 +1,8 @@
 class SlsaVerifier < Formula
   desc "Verify provenance from SLSA compliant builders"
   homepage "https://github.com/slsa-framework/slsa-verifier"
-  url "https://github.com/slsa-framework/slsa-verifier/archive/refs/tags/v2.4.1.tar.gz"
-  sha256 "f601e768a3a1b073a0e89d5933fcece349e4c729f75f149319696eb5a88b8df2"
+  url "https://github.com/slsa-framework/slsa-verifier/archive/refs/tags/v2.6.0.tar.gz"
+  sha256 "5f8087e6eda61482e928ce209e550d345ee6ce7667dada42cd83a0437065b82e"
   license "Apache-2.0"
   head "https://github.com/slsa-framework/slsa-verifier.git", branch: "main"
 
@@ -15,13 +15,14 @@ class SlsaVerifier < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "975e1854760e9ca124a7e7374f03b5d000a3ee8dbe6100965d9269cc3f1a1e0f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ecde6acfec216988e574ce374fe0c580b96699a3539d25a497d6b42d044909d5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f950b178108ab59febfa53ef4b040e480c557b957855d2907e5970791517a277"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c4a6d76256ddf33b89e98280b70e6e559353bde3650f6a19ac2a6200adbc3281"
-    sha256 cellar: :any_skip_relocation, ventura:        "88028d14b515fc10ddd964156742b226f6b2b1f654998e03c94de80467dfa724"
-    sha256 cellar: :any_skip_relocation, monterey:       "3dcbbf5f343b4bed93080329865754d101df568322d9c4adf91aea29d7d73ba0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8aafaf9ae4d3f9895d247c435b954c85e1e8e384aed64f5a24ff87be8c4eed04"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "df827e49081b703823cbbccb01252d3445101ae7390a4878ad1ea47c212fdcce"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ce4b7dda9cf008548c59673522d450c473d1feb47f124a3fb0f076c31b4cc588"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b7e1a021819162cd3cbe24766bc896052bf3152962e225f8281ef13bdb03c2f3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5de731335d288f870a0bc7234a1863ff0289548d269e8763bc554ff0ea5ff013"
+    sha256 cellar: :any_skip_relocation, sonoma:         "6033c9e1b3ca86c150fff5624cd4daa46ae6af4405438a79ba91747310d528be"
+    sha256 cellar: :any_skip_relocation, ventura:        "fd0043c341b5ec63d1c055702fe1ed11b772dd81122f5121695475717e178e27"
+    sha256 cellar: :any_skip_relocation, monterey:       "94906edb8bb402a2dc60dd946a2c8392caf260746c2482f3e442137871a47c18"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b7ee0e2b74abf16b0a9455f360537208064f5e6824c07736cfec07de82d84447"
   end
 
   depends_on "go" => :build
@@ -35,7 +36,7 @@ class SlsaVerifier < Formula
       -X sigs.k8s.io/release-utils/version.buildDate=#{time.iso8601}
     ]
 
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cli/slsa-verifier"
+    system "go", "build", *std_go_args(ldflags:), "./cli/slsa-verifier"
 
     generate_completions_from_executable(bin/"slsa-verifier", "completion")
   end

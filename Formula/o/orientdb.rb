@@ -1,8 +1,8 @@
 class Orientdb < Formula
   desc "Graph database"
   homepage "https://orientdb.org/"
-  url "https://search.maven.org/remotecontent?filepath=com/orientechnologies/orientdb-community/3.2.28/orientdb-community-3.2.28.zip"
-  sha256 "e0cbba55722b4c97e9aeea953f61bdec7f21ca143ae176b166f162665a3756a5"
+  url "https://search.maven.org/remotecontent?filepath=com/orientechnologies/orientdb-community/3.2.35/orientdb-community-3.2.35.zip"
+  sha256 "b5bbc84023740da6fd0f78d5819cb3413db492dd582aa6402fbf4c1e1f0261ba"
   license "Apache-2.0"
 
   livecheck do
@@ -11,14 +11,14 @@ class Orientdb < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "f8f13e1f5dff5367d61a43bba6467146e23bfee5f3289a760141e6f3fd2574c6"
+    sha256 cellar: :any_skip_relocation, all: "0283694e4dc4cf95f2c4981b7d478d318cf0de15a9ab51accbc6c642c8a86432"
   end
 
   depends_on "maven" => :build
   depends_on "openjdk"
 
   def install
-    rm_rf Dir["bin/*.bat"]
+    rm_r(Dir["bin/*.bat"])
 
     chmod 0755, Dir["bin/*"]
     libexec.install Dir["*"]
@@ -49,12 +49,12 @@ class Orientdb < Formula
     touch "#{var}/log/orientdb/orientdb.log"
 
     ENV["ORIENTDB_ROOT_PASSWORD"] = "orientdb"
-    system "#{bin}/orientdb", "stop"
+    system bin/"orientdb", "stop"
     sleep 3
-    system "#{bin}/orientdb", "start"
+    system bin/"orientdb", "start"
     sleep 3
   ensure
-    system "#{bin}/orientdb", "stop"
+    system bin/"orientdb", "stop"
   end
 
   def caveats

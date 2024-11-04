@@ -3,17 +3,17 @@ class Pycodestyle < Formula
 
   desc "Simple Python style checker in one Python file"
   homepage "https://pycodestyle.pycqa.org/"
-  url "https://github.com/PyCQA/pycodestyle/archive/refs/tags/2.11.1.tar.gz"
-  sha256 "a01fdd890c6472eebc32e8baf21e29173c35776e765c64cc83ccd09b99dc5399"
+  url "https://github.com/PyCQA/pycodestyle/archive/refs/tags/2.12.1.tar.gz"
+  sha256 "231f65fbf5558e342cbad275245accb8a988d637cbeaf66508dd890f3d2d60fa"
   license "MIT"
   head "https://github.com/PyCQA/pycodestyle.git", branch: "master"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "09b8e38e31a5647a76ac32d163628e69211c67ad0a09d7b34313d9791a6278d4"
+    sha256 cellar: :any_skip_relocation, all: "711ddb1897f67e34b9e67d3e1710b229f19fe40e78993119e9ccb0006a7e8c1d"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   def install
     rewrite_shebang detected_python_shebang, "pycodestyle.py"

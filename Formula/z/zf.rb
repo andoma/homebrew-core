@@ -1,19 +1,18 @@
 class Zf < Formula
   desc "Command-line fuzzy finder that prioritizes matches on filenames"
   homepage "https://github.com/natecraddock/zf"
-  url "https://github.com/natecraddock/zf/archive/refs/tags/0.9.1.tar.gz"
-  sha256 "93c29cebde61ab75014fae7dd2ff218a0b5c769ba86640f20a0d7fac25edf993"
+  url "https://github.com/natecraddock/zf/archive/refs/tags/0.10.1.tar.gz"
+  sha256 "d1640134b002492d2ef823243bc49d96fe7e0780b0b2b45d29331caa9fbbbb27"
   license "MIT"
   head "https://github.com/natecraddock/zf.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f67612f23ffb1a33f2bac3bc948e2ee3eaef617920f7bd5c228cf8fbf8dfbde3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "436703a73ef1a81f8e6b3895534cbac25ffca84e67c2cb2a0fdbe4e8450d26be"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "de1a6133393771f7ae18606280f037a081bfef63e071ac05673d84b7a1a13432"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a063457f461b1374916cb101139d0507cdfabe597817f7dec07d31d30aa6025a"
-    sha256 cellar: :any_skip_relocation, ventura:        "2d321fedc50de2b33f595003d8cecadeaf3f972b214a6f673edcfae72d27391c"
-    sha256 cellar: :any_skip_relocation, monterey:       "eefde17eae947cfe908b4832606f2987d5eb95cf4246f4e59a3d713c9f6157df"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dfdbd78a226afb851913b45ee6eb2263c856b575de430e1bd58edf874581c8ea"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "01e83d6b000b2fb7f4514fcc6784499be3d90638f6cf499aeb49759bc79553f7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "79be676a3b29a77dd57a8954a27130ec20edc575018df0df1098da8aba980a20"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7c118f618b1fa0014e943e676f2b11cec943c4bbf13fd3122be3a3ef15394e03"
+    sha256 cellar: :any_skip_relocation, sonoma:        "258e4735444e3cafe7431d41c7785415ff78935aca7cb1478355025bd641fc58"
+    sha256 cellar: :any_skip_relocation, ventura:       "9c3e7a6e7d6796cbaca393b92cafd14b24b4eebca0778b66bfa16ac2ecac1c3d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "141a283ae3068d928127d004cd195ea23ecc647b5cb0c501c304adc9770f9945"
   end
 
   depends_on "zig" => :build

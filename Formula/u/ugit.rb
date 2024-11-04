@@ -12,6 +12,8 @@ class Ugit < Formula
   depends_on "bash"
   depends_on "fzf"
 
+  conflicts_with "git-extras", because: "both install `git-undo` binaries"
+
   def install
     bin.install "ugit"
     bin.install "git-undo"
@@ -19,6 +21,6 @@ class Ugit < Formula
 
   test do
     assert_match "ugit version #{version}", shell_output("#{bin}/ugit --version")
-    assert_match "Ummm, you are not inside a Git repo", shell_output("#{bin}/ugit")
+    assert_match "Ummm, you are not inside a Git repo", shell_output(bin/"ugit")
   end
 end

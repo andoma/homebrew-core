@@ -11,16 +11,12 @@ class SpiceProtocol < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "c95213126a4de3d3ab508fbfc7f23f11ece2f0011d3a6d251d7f79034376066e"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "bb1ba08888157c151697bfd2e2ea90d5aea69d25d9771032ba6196536bad74e4"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-
-  on_linux do
-    # Test fails on gcc-5: spice/macros.h:68:32: error: expected '}' before '__attribute__'
-    depends_on "gcc" => :test
-  end
 
   def install
     system "meson", "setup", "build", *std_meson_args
@@ -36,13 +32,7 @@ class SpiceProtocol < Formula
       }
     EOS
 
-    cc = if OS.mac?
-      ENV.cc
-    else
-      Formula["gcc"].opt_bin/"gcc-#{Formula["gcc"].any_installed_version.major}"
-    end
-
-    system cc, "test.cpp", "-I#{include}/spice-1", "-o", "test"
+    system ENV.cc, "test.cpp", "-I#{include}/spice-1", "-o", "test"
     system "./test"
   end
 end

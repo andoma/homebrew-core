@@ -5,7 +5,13 @@ class Libffi < Formula
   sha256 "b0dea9df23c863a7a50e825440f3ebffabd65df1497108e5d437747843895a4e"
   license "MIT"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "3c98bcb95fbcf46bdc04e0bdc87c5253a8f965edc8da1f1fe1213a9e438abc7e"
     sha256 cellar: :any,                 arm64_sonoma:   "e81237234a3e21d5222c1c8baf4017bc2f2ad7e444fbf58ad6b635fc0ace5078"
     sha256 cellar: :any,                 arm64_ventura:  "7a6a1d1dffe41d4e9bf117440190be51c432a2a192945ed8e2e10c4bb1f95ad0"
     sha256 cellar: :any,                 arm64_monterey: "eacdfea3b29d48dc8c3fb7578a9a59dbeb9048eca6493b8cd95605c86652e6de"
@@ -31,15 +37,14 @@ class Libffi < Formula
   end
 
   test do
-    (testpath/"closure.c").write <<~EOS
+    (testpath/"closure.c").write <<~C
       #include <stdio.h>
       #include <ffi.h>
 
       /* Acts like puts with the file given at time of enclosure. */
-      void puts_binding(ffi_cif *cif, unsigned int *ret, void* args[],
-                        FILE *stream)
+      void puts_binding(ffi_cif *cif, void *ret, void** args, void *stream)
       {
-        *ret = fputs(*(char **)args[0], stream);
+        *(unsigned int *)ret = fputs(*(char **)args[0], (FILE *)stream);
       }
 
       int main()
@@ -78,7 +83,7 @@ class Libffi < Formula
 
         return 0;
       }
-    EOS
+    C
 
     flags = ["-L#{lib}", "-lffi", "-I#{include}"]
     system ENV.cc, "-o", "closure", "closure.c", *(flags + ENV.cflags.to_s.split)

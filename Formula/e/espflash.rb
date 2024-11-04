@@ -1,18 +1,17 @@
 class Espflash < Formula
   desc "Serial flasher utility for Espressif SoCs and modules based on esptool.py"
   homepage "https://github.com/esp-rs/espflash"
-  url "https://github.com/esp-rs/espflash/archive/refs/tags/v2.1.0.tar.gz"
-  sha256 "85a62ee12949eeb9ed0cb186b87f88b1ff04eeabce5c4974cc24c304ed1bf960"
+  url "https://github.com/esp-rs/espflash/archive/refs/tags/v3.2.0.tar.gz"
+  sha256 "62cc57be0e97e0370a6c05de82241b2f3e68c51969d6bca0446bd70c244c055f"
   license any_of: ["MIT", "Apache-2.0"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d4866a3d27c2a2b7c01358bc5aafbf7a01d79dd5335b897ffa1e68a8d89f969c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9825e9f2533cc09518f44689cbabd5fb0a607bcd586054ef6aa5ba2b226fa3db"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "976109b475ee90f0cfaebffa94f5b2b0f4433ab141ecddd4de1d24bc3428fada"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a60c76c7d2d096f9f1984c8378d7a2d0f2573eb0b459fbec8e3ae233f7c4aa2d"
-    sha256 cellar: :any_skip_relocation, ventura:        "1694bb6181d17267e225b5b671806d5eaa92f528dd29a937347e5fe495aab3fb"
-    sha256 cellar: :any_skip_relocation, monterey:       "25be9d3266502248ed3a7a2f1d57bfd2b777a88cea5032621e8096fb5e4e45f6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3dddd24c74da2eacbce4c0c263836c9327fb958e41795b82046a4206db7bbb30"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "112540b70f0d0624b112fb01764d135e58f3ae1d8801a8a26ca5e0d1000d7427"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0b21fee967f14e5b4834e2115bdbead2d3f96852ab05f055b97828b8f2bdd9ed"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a32ad9e30171b22dfc08f3e9fa23e6ffb7980d0a8f9325b4e5b294b38c91fb47"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c238983a6a9a9394b676ff8a229e41546e07006c9f91411b3859359fc55d6f24"
+    sha256 cellar: :any_skip_relocation, ventura:       "e17b49c69ee6f1e38527ce406c4b70cd4aeb72b57c8fa3f4f108dbc7c0b96a45"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5970508dd04c6c75d2251249e482d1117a2699174eb606e788d12903f2ac81ab"
   end
 
   depends_on "rust" => :build

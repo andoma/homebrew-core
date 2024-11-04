@@ -1,9 +1,9 @@
 class Umple < Formula
   desc "Modeling tool/programming language that enables Model-Oriented Programming"
   homepage "https://www.umple.org"
-  url "https://github.com/umple/umple/releases/download/v1.33.0/umple-1.33.0.6934.a386b0a58.jar"
-  version "1.33.0"
-  sha256 "de6a76e25e2c7de1e4d2fc2f23ffbc5dfc60c404e1eb5466e64c682f2dba8138"
+  url "https://github.com/umple/umple/releases/download/v1.35.0/umple-1.35.0.7523.c616a4dce.jar"
+  version "1.35.0"
+  sha256 "493b637b7432396418ebf9dcd90f4b08ec0f91a0a3247de8dbb326e0a0f80bb3"
   license "MIT"
   version_scheme 1
 
@@ -13,7 +13,7 @@ class Umple < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "d500ab2f39de119a46b6e2e5906b716998248fb3ef0eddcf4abec50f0942725d"
+    sha256 cellar: :any_skip_relocation, all: "8f29200d94979325078d9073338ed60413e7cde1392125b72d43e1e2105e8d3a"
   end
 
   depends_on "openjdk"
@@ -27,7 +27,7 @@ class Umple < Formula
 
   test do
     (testpath/"test.ump").write("class X{ a; }")
-    system "#{bin}/umple", "test.ump", "-c", "-"
+    system bin/"umple", "test.ump", "-c", "-"
     assert_predicate testpath/"X.java", :exist?
     assert_predicate testpath/"X.class", :exist?
   end

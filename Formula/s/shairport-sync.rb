@@ -1,8 +1,8 @@
 class ShairportSync < Formula
   desc "AirTunes emulator that adds multi-room capability"
   homepage "https://github.com/mikebrady/shairport-sync"
-  url "https://github.com/mikebrady/shairport-sync/archive/refs/tags/4.3.2.tar.gz"
-  sha256 "dfb485c0603398032a00e51f84b874749bbf155b257adda3d270d5989de08bfd"
+  url "https://github.com/mikebrady/shairport-sync/archive/refs/tags/4.3.4.tar.gz"
+  sha256 "3173cc54d06f6186a04509947697b56c7eac09c48153d7dea5f702042620a2df"
   license "MIT"
   head "https://github.com/mikebrady/shairport-sync.git", branch: "master"
 
@@ -12,13 +12,14 @@ class ShairportSync < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "8a0b846236e2d90acf2e4d7d200e323ec9e2ef8f675757956a8088f7be499bee"
-    sha256 arm64_ventura:  "d7ac35a7d7a96aad49ad3c4be638d3f5710c8a0ee4a351e01399dd233d6556b1"
-    sha256 arm64_monterey: "2fa0c6b74bb3d514a44628e5eadfb9e151c4150a29751ea00be9df9b6105919c"
-    sha256 sonoma:         "158c27be36e99bb8d1a5478b2fd569cba883f6b045f8ae3ca5bf8caa5771631d"
-    sha256 ventura:        "f264ac95675cd0c667c1c4fd08241d808d47b36cf43488d2d2490766a9a7dc65"
-    sha256 monterey:       "22d3fce14acd9dbfbf876e4d765bf7c20a1931b064e160d56ca3a38ca2d915df"
-    sha256 x86_64_linux:   "7be24efb3ec2c3b1aee23b5cf6022e58e298eb2651e244e07e58caf28c0b6f78"
+    sha256 arm64_sequoia:  "d9b6b11867be65a4177595aaf8583bf66c11d61f4c595a122546b324ea0f88d7"
+    sha256 arm64_sonoma:   "3ac27bf42aa216391c1f1b2c05a5e322b032e4f2f2cff51efe5447755c5027e3"
+    sha256 arm64_ventura:  "77c18154023144ff4789edbffa7d1e6e168ad1ffc40d00ee9937fbdced36aae9"
+    sha256 arm64_monterey: "7987d05e9b78cf528a84f37aa79c0d9853311510e8c172c66bd851e708642960"
+    sha256 sonoma:         "e9dbf27608fafad55da29029d02e4f7e214a81e1a4820555c41c4e2fae26e887"
+    sha256 ventura:        "5f3f0bb020de0b5c5f12ad9a6c979cdcb7ffbf742358d27c6961afcaac5aa6fe"
+    sha256 monterey:       "45fdb0ec804521006e50ec1682a20434cadb042842d53a41f07e9f9e7f88dd8b"
+    sha256 x86_64_linux:   "828edfc5d9301bfec852f6d387ef6080201643edb3c4b60d12d5202581cfbc87"
   end
 
   depends_on "autoconf" => :build

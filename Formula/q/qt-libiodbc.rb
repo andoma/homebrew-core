@@ -1,8 +1,8 @@
 class QtLibiodbc < Formula
   desc "Qt SQL Database Driver"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.6/6.6.2/submodules/qtbase-everywhere-src-6.6.2.tar.xz"
-  sha256 "b89b426b9852a17d3e96230ab0871346574d635c7914480a2a27f98ff942677b"
+  url "https://download.qt.io/official_releases/qt/6.7/6.7.2/submodules/qtbase-everywhere-src-6.7.2.tar.xz"
+  sha256 "c5f22a5e10fb162895ded7de0963328e7307611c688487b5d152c9ee64767599"
   license any_of: ["GPL-2.0-only", "GPL-3.0-only", "LGPL-3.0-only"]
 
   livecheck do
@@ -10,13 +10,11 @@ class QtLibiodbc < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "d8cfce9782eb437d6d262387ad144fe49efdbefc970ca77e10e820270c24a71d"
-    sha256 cellar: :any,                 arm64_ventura:  "594cbd1bf692e6ab13be599e6930d2511f877a3822b7729195841dec92c5a9ec"
-    sha256 cellar: :any,                 arm64_monterey: "2cd0dfd90d14cf4c7ab4ac28e01c7aa831f3b0cb63da8994c0556f468089a2df"
-    sha256 cellar: :any,                 sonoma:         "d9a3c786ab3014f7881ed6dd3526da27706894e40d4392f7fb7c56fcfbc40ed2"
-    sha256 cellar: :any,                 ventura:        "286c9e655ccc02f3732bebf2900938320b1b436b7793261557a9f711ce72dd62"
-    sha256 cellar: :any,                 monterey:       "3513e8bcdfd5cb7bfb26e9e34d0bf1673b84a5d934bcff74ecaa77a22f5e6552"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "65101b0e1432715ff5294983fa1f4ee9f11fde7ac3a4771a63552eb7d7b611f2"
+    sha256 cellar: :any,                 arm64_sonoma:  "8f43f74f2a0aa0bf7e22e5ea226e1272b833df73c6f0ee604fb4c3efa8a29eaa"
+    sha256 cellar: :any,                 arm64_ventura: "e2259483c959add5aee6d48f889f22d2cd2e7185e84c9f0883e7414f02950ad3"
+    sha256 cellar: :any,                 sonoma:        "7d2a660380d9e2e4fe89e5de6f5f79a434ee7c15ab735755900bc5a7a76917a7"
+    sha256 cellar: :any,                 ventura:       "9bb661d5c4c68e93a95065ce3f0e823bcd18fad2de24b41ad281523302049555"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b71297703d3021e2780190faa15b5503473dd0fa5c2de26ebbb9af311d4a3378"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -30,9 +28,8 @@ class QtLibiodbc < Formula
   fails_with gcc: "5"
 
   def install
-    args = std_cmake_args + %W[
+    args = %W[
       -DCMAKE_STAGING_PREFIX=#{prefix}
-
       -DFEATURE_sql_ibase=OFF
       -DFEATURE_sql_mysql=OFF
       -DFEATURE_sql_oci=OFF
@@ -41,15 +38,13 @@ class QtLibiodbc < Formula
       -DFEATURE_sql_sqlite=OFF
     ]
 
-    cd "src/plugins/sqldrivers" do
-      system "cmake", ".", *args
-      system "cmake", "--build", "."
-      system "cmake", "--install", "."
-    end
+    system "cmake", "-S", "src/plugins/sqldrivers", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"CMakeLists.txt").write <<~EOS
+    (testpath/"CMakeLists.txt").write <<~CMAKE
       cmake_minimum_required(VERSION #{Formula["cmake"].version})
       project(test VERSION 1.0.0 LANGUAGES CXX)
       set(CMAKE_CXX_STANDARD 17)
@@ -58,23 +53,21 @@ class QtLibiodbc < Formula
       set(CMAKE_AUTORCC ON)
       set(CMAKE_AUTOUIC ON)
       find_package(Qt6 COMPONENTS Core Sql REQUIRED)
-      add_executable(test
-          main.cpp
-      )
+      add_executable(test main.cpp)
       target_link_libraries(test PRIVATE Qt6::Core Qt6::Sql)
-    EOS
+    CMAKE
 
     (testpath/"test.pro").write <<~EOS
-      QT       += core sql
-      QT       -= gui
-      TARGET = test
-      CONFIG   += console debug
-      CONFIG   -= app_bundle
+      QT      += core sql
+      QT      -= gui
+      TARGET   = test
+      CONFIG  += console debug
+      CONFIG  -= app_bundle
       TEMPLATE = app
       SOURCES += main.cpp
     EOS
 
-    (testpath/"main.cpp").write <<~EOS
+    (testpath/"main.cpp").write <<~CPP
       #include <QCoreApplication>
       #include <QtSql>
       #include <cassert>
@@ -86,8 +79,9 @@ class QtLibiodbc < Formula
         assert(db.isValid());
         return 0;
       }
-    EOS
+    CPP
 
+    ENV["LC_ALL"] = "en_US.UTF-8"
     system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Debug"
     system "cmake", "--build", "build"
     system "./build/test"

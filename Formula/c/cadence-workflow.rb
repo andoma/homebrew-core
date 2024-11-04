@@ -2,8 +2,8 @@ class CadenceWorkflow < Formula
   desc "Distributed, scalable, durable, and highly available orchestration engine"
   homepage "https://cadenceworkflow.io/"
   url "https://github.com/uber/cadence.git",
-      tag:      "v1.2.7",
-      revision: "08d5994a655cee07c9128a0865747b3db05efaa3"
+      tag:      "v1.2.13",
+      revision: "f6e4360c99e083e4b64c7b3b3e781c8205074e79"
   license "MIT"
   head "https://github.com/uber/cadence.git", branch: "master"
 
@@ -16,13 +16,12 @@ class CadenceWorkflow < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "61073e4fe4f4ec2b29ef94ff9034e9c19ab0aadc431e70729510ae2a401ea9a1"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "966b6f7aaf2c82186c38c52351d5c7cbd0957784cead5947bd3128a434a5e0ce"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "85c9356e595a2177c3a9a2a87f795af747282570f1bd334b5d9122e6eed91c82"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ff3f0c71741ed15785896b4ed4a96d9a3b8bf5b6decfae07b88c0737f64315d8"
-    sha256 cellar: :any_skip_relocation, ventura:        "f96a4873873cddc76df4d720b4dd5bae826a7d62704f472ebf1fede22d1a6a44"
-    sha256 cellar: :any_skip_relocation, monterey:       "ad29b7587789a7d9d06dd0a138c74d1d68b027cb6310f6905c9cbe05b3ab3ee9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "692dfcc884733b7d7f87d885dc641a12ca12090935960b304bbb074a3b208cba"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "205a9723f7e6df58788e4877f7bb2c10f01523954eebb6aa3a72ba0ba638e971"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8745c730e6d878189ec1c5b7bc3ced909127323cd1603d09996cdce6349916e1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "92d5c58f4c29946bcc120b4f16fbd3d72672cf46d4ee3bb6f3df7f88eaea2cb8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ef3dc802ab13fc51e00722a4a699d0ff1df040162505eb94762fcf86b3a4e747"
+    sha256 cellar: :any_skip_relocation, ventura:       "204e80cbaa6284a7f5198f98f411c815b988ed4b0cb82e3ee7accfd8298e844b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9f2ac143064b276e89649214a4ba8b344bfcfbca905b5157a8d041e1319af38f"
   end
 
   depends_on "go" => :build
@@ -30,11 +29,6 @@ class CadenceWorkflow < Formula
   conflicts_with "cadence", because: "both install an `cadence` executable"
 
   def install
-    # `go` version is hardcoded in Makefile
-    inreplace "Makefile" do |s|
-      s.change_make_var! "EXPECTED_GO_VERSION", Formula["go"].version.to_s
-    end
-
     system "make", ".just-build"
     make_args = %w[
       cadence

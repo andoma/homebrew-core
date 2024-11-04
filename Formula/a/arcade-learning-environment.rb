@@ -2,50 +2,42 @@ class ArcadeLearningEnvironment < Formula
   include Language::Python::Virtualenv
 
   desc "Platform for AI research"
-  homepage "https://github.com/mgbellemare/Arcade-Learning-Environment"
-  url "https://github.com/mgbellemare/Arcade-Learning-Environment/archive/refs/tags/v0.8.1.tar.gz"
-  sha256 "28960616cd89c18925ced7bbdeec01ab0b2ebd2d8ce5b7c88930e97381b4c3b5"
+  homepage "https://github.com/Farama-Foundation/Arcade-Learning-Environment"
+  url "https://github.com/Farama-Foundation/Arcade-Learning-Environment/archive/refs/tags/v0.10.1.tar.gz"
+  sha256 "7e0473de29b63f59054f8a165a968cf5a168bd9c07444d377a1f70401d268894"
   license "GPL-2.0-only"
-  head "https://github.com/mgbellemare/Arcade-Learning-Environment.git", branch: "master"
+  head "https://github.com/Farama-Foundation/Arcade-Learning-Environment.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c810cfd1c114453a2680a98616eb6655ed4e77d826c297808f116535263cacc9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2b83fafd9f9ba1938c7afa2ba873825379cd45b3cd169d3baf35688000cfba8e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2f1ad5d707bbfe02484dcf7d26f1a198fb9d6bec141eabad5692e14b12f342b6"
-    sha256 cellar: :any_skip_relocation, sonoma:         "854b443122257bbb7b8667b2e9f828b252e3aace232673bf98ad69ecca5e2c69"
-    sha256 cellar: :any_skip_relocation, ventura:        "fd24aee3582a77d3db5a74d7ec2faf2f64a8c44dbc16500c1585205a8175e963"
-    sha256 cellar: :any_skip_relocation, monterey:       "ca022cfbef7d0b2f6d68b03bf14300d600df758b72743473a4960daa6cbb6368"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "055912b9b89d3c61cad420eaa394554ab75c1465489f0a70519466ec6d2d4778"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5d2dc919768a30ae5a1eb6c9f14fc17dc0c147d31f605da455c209c3c19a41d6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e6158a024610dcc4152be365fd0a2207d893c9cfbdb9f517738a9044aade0669"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d8015a500d5336680a7abe821b1df3a5bdb5b33c19e233879523ab3ca2b85d85"
+    sha256 cellar: :any_skip_relocation, sonoma:        "83feffd8c4a60349927a1db51771d4b15e01e703e1a27b22c161a2269152789c"
+    sha256 cellar: :any_skip_relocation, ventura:       "bbbaa60dd14855a7bc812370a90fe5c7f50bf26eb0c71cfec076869b68389755"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3b8980ab1f4041955854a8801dfa13117fec012ce3a338ed52044ea84709e016"
   end
 
   depends_on "cmake" => :build
+  depends_on "pybind11" => :build
   depends_on "python-setuptools" => :build
   depends_on macos: :catalina # requires std::filesystem
   depends_on "numpy"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "sdl2"
 
   uses_from_macos "zlib"
 
   fails_with gcc: "5"
 
-  # Don't require importlib-resources for recent pythons
-  # https://github.com/mgbellemare/Arcade-Learning-Environment/pull/491
-  patch do
-    url "https://github.com/mgbellemare/Arcade-Learning-Environment/commit/61da474b8e3b3993969c9e4de3933559598613e1.patch?full_index=1"
-    sha256 "72baf458430b81a6b8e56f1fc8edde732ba210c3540a6775000d6393dbcb73dd"
-  end
-
-  # Allow building from tarball
-  # https://github.com/mgbellemare/Arcade-Learning-Environment/pull/492
-  patch do
-    url "https://github.com/mgbellemare/Arcade-Learning-Environment/commit/7e3d9ffbca6d97b49f48e46c030b4236eb09019b.patch?full_index=1"
-    sha256 "64cf83625fe19bc32097b34853db6752fcf835a3d42909a9ac88315dfca2b85f"
+  # See https://github.com/Farama-Foundation/Arcade-Learning-Environment/blob/master/scripts/download_unpack_roms.sh
+  resource "roms" do
+    url "https://gist.githubusercontent.com/jjshoots/61b22aefce4456920ba99f2c36906eda/raw/00046ac3403768bfe45857610a3d333b8e35e026/Roms.tar.gz.b64"
+    sha256 "02ca777c16476a72fa36680a2ba78f24c3ac31b2155033549a5f37a0653117de"
   end
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
@@ -56,6 +48,18 @@ class ArcadeLearningEnvironment < Formula
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
     pkgshare.install "tests/resources/tetris.bin"
+
+    # Install ROMs
+    resource("roms").stage do
+      require "base64"
+
+      pwd = Pathname.pwd
+      encoded = (pwd/"Roms.tar.gz.b64").read
+      (pwd/"Roms.tar.gz").write Base64.decode64(encoded)
+
+      system "tar", "-xzf", "Roms.tar.gz"
+      (buildpath/"src/python/roms").install pwd.glob("ROM/*/*.bin")
+    end
 
     # error: no member named 'signbit' in the global namespace
     inreplace "setup.py", "cmake_args = [", "\\0\"-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}\"," if OS.mac?
@@ -71,15 +75,13 @@ class ArcadeLearningEnvironment < Formula
   end
 
   test do
-    output = shell_output("#{bin}/ale-import-roms 2>&1", 2)
-    assert_match "one of the arguments --import-from-pkg romdir is required", output
-    output = shell_output("#{bin}/ale-import-roms .").lines.last.chomp
-    assert_equal "Imported 0 / 0 ROMs", output
+    (testpath/"roms.py").write <<~EOS
+      from ale_py.roms import get_all_rom_ids
+      print(get_all_rom_ids())
+    EOS
+    assert_match "adventure", shell_output("#{python3} roms.py")
 
     cp pkgshare/"tetris.bin", testpath
-    output = shell_output("#{bin}/ale-import-roms --dry-run .").lines.first.chomp
-    assert_match(/\[SUPPORTED\].*tetris\.bin/, output)
-
     (testpath/"test.py").write <<~EOS
       from ale_py import ALEInterface, SDL_SUPPORT
       assert SDL_SUPPORT

@@ -1,21 +1,20 @@
 class Hpack < Formula
   desc "Modern format for Haskell packages"
   homepage "https://github.com/sol/hpack"
-  url "https://github.com/sol/hpack/archive/refs/tags/0.36.0.tar.gz"
-  sha256 "f9b903b040d6736335fc2210c9243b0f18c41f52b7da2560a700ba6d8648bd77"
+  url "https://github.com/sol/hpack/archive/refs/tags/0.37.0.tar.gz"
+  sha256 "5d292d70744435d67586f9a8a759debbf160cb70a069a8d65403f123fac84091"
   license "MIT"
   head "https://github.com/sol/hpack.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "cd6577e594dd7884e7180d1c1ae35c52c4f1817e0502d3db5d055a28e4d81221"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c3c6c86f8c69d05d398b67f519dcffddf176710bcb26245ef6133f621724d748"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4a35250a53a92907675395adac052a3746143e44907bf1ef1139d2c6cb9f12d8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "efb26df571e245ac808bc8223a0922b9b3b21698af7e96b9495dbb1bec3f1bac"
-    sha256 cellar: :any_skip_relocation, sonoma:         "19098f168af3ff78083d72bdc9d353697ef3d04bdc348c35dcba99984f8cd699"
-    sha256 cellar: :any_skip_relocation, ventura:        "2dc6b0594b45dccc62034c59eafe73f4cd19f19c175c2134b0aba58ee65d3645"
-    sha256 cellar: :any_skip_relocation, monterey:       "dab4df2eb5b914455a9809b82a986083259ecd62cc208d4f06edadc474a09044"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f46c67af38ca32fc51c6cf8e07dc42fd5eb4208a85d5855b559290a22d7081f4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "69e9bb29b6200ed0d609387e37e0dc3e8eaf21e741f415a34310b15e4d1e89e0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e23ea1c56e7a987105a80b4c54d14ac248ac89731b13af28c49f8dbba17a51a2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5c9a4675bb72bc2fe3e8335fc830c16a6c56e879d1979acfff71ec995de5eca0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e5d0c25fba0d13f0c209bd62a4645c6a9d580a7f80f75d0d795a6eb51d52f814"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "57e145e9a7bf924201a002e423ae6a137d1e018b8eb3daa18ad42ba43712ac7c"
+    sha256 cellar: :any_skip_relocation, sonoma:         "77832296bb8708c4aac8643bd20e5fe2fd0516e543799e1d1ca01b7586a9c1ab"
+    sha256 cellar: :any_skip_relocation, ventura:        "b7d2d5abf43bb2f0a489d5b106317fb456a8e88bfee0dbfdebd5378f3bae8ccd"
+    sha256 cellar: :any_skip_relocation, monterey:       "7f556437b6cc2b49f48e11d3dc2ba23af7352ca79218b3cfb98cc919c545f861"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "87c5256ee39899b3842e8faf9d9bdbfbdacfbd0cf10e45ec8bea4c6592e248f5"
   end
 
   depends_on "cabal-install" => :build
@@ -55,7 +54,7 @@ class Hpack < Formula
         default-language: Haskell2010
     EOS
 
-    system "#{bin}/hpack"
+    system bin/"hpack"
 
     # Skip the first lines because they contain the hpack version number.
     assert_equal expected, (testpath/"homebrew.cabal").read.lines[6..].join

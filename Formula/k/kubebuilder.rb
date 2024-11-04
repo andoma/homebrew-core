@@ -2,19 +2,18 @@ class Kubebuilder < Formula
   desc "SDK for building Kubernetes APIs using CRDs"
   homepage "https://github.com/kubernetes-sigs/kubebuilder"
   url "https://github.com/kubernetes-sigs/kubebuilder.git",
-      tag:      "v3.14.0",
-      revision: "11053630918ac421cb6eb6f0a3225e2a2ad49535"
+      tag:      "v4.3.0",
+      revision: "eae8b2182a65df49eb04ed63d6c45043b454905c"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/kubebuilder.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "168a9dc40ec48b37f101b2816f591cedfed87b8c89a89edc743a31fcd1090755"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d803646014bab2958dfa8db954bf0acd50fb3dcae1462247d07009dd48f89cc5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8fe3acaf6e8227ce2a71cf52aa50da3f0540e7406cb7e834d4083320f7bc9673"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e2dc00af9eb27a19329778ce34e97dd6d0bd33fb873b0650ba2b76bcc6f33a82"
-    sha256 cellar: :any_skip_relocation, ventura:        "ea6fb03192306098f7a60b6b5fe8e6808d6708f83a9a35ae0a98033605179c9d"
-    sha256 cellar: :any_skip_relocation, monterey:       "ad28fcf1d3d37f425458135dee7f06fd96a5841fabaaa988da6bef7f221210f9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "55e401f56c613da42292140eda4794347ba26969a9e4750b5cc8de4bc1f67b45"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d7860e00b9d761d20361903d544cf6f65de0660196837439310e75c21799464b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d7860e00b9d761d20361903d544cf6f65de0660196837439310e75c21799464b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d7860e00b9d761d20361903d544cf6f65de0660196837439310e75c21799464b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b68410ccb1257390c4f51b61b1a034975024365272c82c49d4a3d7d1294cc266"
+    sha256 cellar: :any_skip_relocation, ventura:       "b68410ccb1257390c4f51b61b1a034975024365272c82c49d4a3d7d1294cc266"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d8260ad68fc4ad2c57f09f0c89a3621c9c578d7f98d327afc172002e001a8b89"
   end
 
   depends_on "go"
@@ -29,18 +28,29 @@ class Kubebuilder < Formula
       -X main.gitCommit=#{Utils.git_head}
       -X main.buildDate=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd"
+    system "go", "build", *std_go_args(ldflags:), "./cmd"
 
     generate_completions_from_executable(bin/"kubebuilder", "completion")
   end
 
   test do
-    assert_match "KubeBuilderVersion:\"#{version}\"", shell_output("#{bin}/kubebuilder version 2>&1")
     mkdir "test" do
       system "go", "mod", "init", "example.com"
-      system "#{bin}/kubebuilder", "init",
-        "--plugins", "go/v3", "--project-version", "3",
-        "--skip-go-version-check"
+      system bin/"kubebuilder", "init",
+                 "--plugins", "go.kubebuilder.io/v4",
+                 "--project-version", "3",
+                 "--skip-go-version-check"
     end
+
+    assert_match <<~EOS, (testpath/"test/PROJECT").read
+      domain: my.domain
+      layout:
+      - go.kubebuilder.io/v4
+      projectName: test
+      repo: example.com
+      version: "3"
+    EOS
+
+    assert_match version.to_s, shell_output("#{bin}/kubebuilder version")
   end
 end

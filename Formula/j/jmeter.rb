@@ -7,10 +7,11 @@ class Jmeter < Formula
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "5107d96ba3897ce857dc916c88874fe857b6eb4b5b1a05a67a25008d38e8bf89"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "13c89a34f46a525ba7131741a8c7c8f0ea789ed231762b20ac6e5dc5f0757b04"
   end
 
-  depends_on "openjdk"
+  depends_on "openjdk@21"
 
   resource "jmeter-plugins-manager" do
     url "https://search.maven.org/remotecontent?filepath=kg/apc/jmeter-plugins-manager/1.9/jmeter-plugins-manager-1.9.jar"
@@ -19,10 +20,10 @@ class Jmeter < Formula
 
   def install
     # Remove windows files
-    rm_f Dir["bin/*.bat"]
-    prefix.install_metafiles
+    rm(Dir["bin/*.bat"])
+
     libexec.install Dir["*"]
-    (bin/"jmeter").write_env_script libexec/"bin/jmeter", JAVA_HOME: Formula["openjdk"].opt_prefix
+    (bin/"jmeter").write_env_script libexec/"bin/jmeter", JAVA_HOME: Formula["openjdk@21"].opt_prefix
 
     resource("jmeter-plugins-manager").stage do
       (libexec/"lib/ext").install Dir["*"]

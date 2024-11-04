@@ -1,19 +1,20 @@
 class Vhs < Formula
   desc "Your CLI home video recorder"
   homepage "https://github.com/charmbracelet/vhs"
-  url "https://github.com/charmbracelet/vhs/archive/refs/tags/v0.7.1.tar.gz"
-  sha256 "90b3a38a76776fad1e6d989b4f4a6da2f877e6f832ad1d123ff608cffe2aab1c"
+  url "https://github.com/charmbracelet/vhs/archive/refs/tags/v0.8.0.tar.gz"
+  sha256 "ff89dba4d40109ffc87d4201f46ec1e9b8dcc02242e32ffc94a5379241b56ef8"
   license "MIT"
   head "https://github.com/charmbracelet/vhs.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6d1157d42611a31811ce97f8d6cee515cbb978d34462ecfea43e4aac4af6e6b4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cf1ef52de81dc8c8e0e363d85a362f210e9eb50b22f4dd378978fa9543025a57"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "204e20d34eed4b00dab8c47db9c7e11acb9f5a335973fd6351b9a29b36af767c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ab34febe3b12d519b719dbe883728ab185cafc6d55157481cae92c591d9ce6b4"
-    sha256 cellar: :any_skip_relocation, ventura:        "f6a8e1e670cd293aa7fe011e0af1d1049bfe9da06c2f65253d6c34a7f3da258c"
-    sha256 cellar: :any_skip_relocation, monterey:       "6034cffd2d8df5b6d6e155cafe9d0bbaa7d2489af7e657883e932c02961d8cc3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd8c00472c34a63eebc1b6dff9325b4c14637b352664637648cce260ce96dedc"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f1d1ec17d501b7882fd7d854da0d6f314626709be2729d1aeac7f61aa5746c08"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7deb17cb2b97a8fa6c260b39e0c99a78aefc0ce74e823c3755f4f473d2fc34e8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7deb17cb2b97a8fa6c260b39e0c99a78aefc0ce74e823c3755f4f473d2fc34e8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7deb17cb2b97a8fa6c260b39e0c99a78aefc0ce74e823c3755f4f473d2fc34e8"
+    sha256 cellar: :any_skip_relocation, sonoma:         "10a5ce042e1310f02092eaeebc3a1938fa168c27104c85989b1ed732de4d5c0c"
+    sha256 cellar: :any_skip_relocation, ventura:        "10a5ce042e1310f02092eaeebc3a1938fa168c27104c85989b1ed732de4d5c0c"
+    sha256 cellar: :any_skip_relocation, monterey:       "10a5ce042e1310f02092eaeebc3a1938fa168c27104c85989b1ed732de4d5c0c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d539b877d0b3ed12eed5ebafc770308ab82c20c45b0b9a144adfb58872be812c"
   end
 
   depends_on "go" => :build
@@ -36,7 +37,7 @@ class Vhs < Formula
     Sleep 1s
     TAPE
 
-    system "#{bin}/vhs", "validate", "test.tape"
+    system bin/"vhs", "validate", "test.tape"
 
     assert_match version.to_s, shell_output("#{bin}/vhs --version")
   end

@@ -1,18 +1,17 @@
 class Vale < Formula
   desc "Syntax-aware linter for prose"
   homepage "https://vale.sh/"
-  url "https://github.com/errata-ai/vale/archive/refs/tags/v3.1.0.tar.gz"
-  sha256 "17722be52a8ab919e26adeb077818de47ef275141a047aee789c9516d9c96ea7"
+  url "https://github.com/errata-ai/vale/archive/refs/tags/v3.8.0.tar.gz"
+  sha256 "fe460aaddab7ccffdb0f01981ae44f34e648000dcc83b43f1c3e8e636b231298"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3988298cdabf5fcdae6a0ff97b7142585827756b984f0c78e3a083ea7fe83318"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f6e429f599be615779ee0d79319ff64f35f3177eef8fc4d6eb7a255365bae2f2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "93123352b325116a4e1f5a63122661fc7fb22649eaa9c667ae22474ea6fe6ef7"
-    sha256 cellar: :any_skip_relocation, sonoma:         "19497fe992e7e1b52082270ae35c19be82cbd5127a050c29f040590304e6a2e8"
-    sha256 cellar: :any_skip_relocation, ventura:        "41312e16e5442b8c3ceb7fe9de2402a98ad9f1f8945e5129fe7c1ecb08507c63"
-    sha256 cellar: :any_skip_relocation, monterey:       "8da770902613293f01f8b7134e0912ed1428f73bf158da9ca977580b5caec9e5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1ffae401fa6c1ce20e47c6e40438af51d94c5b40a7bf905296e50a073a072ced"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a8b54ffb2458237cdaf420c4b12307c0bc580ec04a41a26831c4f178c6ec0f66"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0da7bf559a4a3f63422ed9f1629342b14d202e70cf946b0a0160b8a4b0347749"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a869328505e5e724ff386345d39fd27553c28c7d0b1d610c7ce712d73479a2dc"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9aa6517f7f996ba76e72647d19a255f752a91150d17e9f4e0fb0a3c05b49e968"
+    sha256 cellar: :any_skip_relocation, ventura:       "c5c77ae6ee3311fc30576eabe7b82500f7cde5ba6b7ccbcaba3a52b5c3d69a7a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "91a7f06589c246db7ae38d4927dce91496a8e5bd02f2cdaaa1d22da941507782"
   end
 
   depends_on "go" => :build

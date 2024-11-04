@@ -1,18 +1,17 @@
 class Primesieve < Formula
   desc "Fast C/C++ prime number generator"
   homepage "https://github.com/kimwalisch/primesieve"
-  url "https://github.com/kimwalisch/primesieve/archive/refs/tags/v12.0.tar.gz"
-  sha256 "4278bf145a74a5a4405deaaa92a7cd2ee22a50dc8dcae082c33c8e4cfa25ebe4"
+  url "https://github.com/kimwalisch/primesieve/archive/refs/tags/v12.5.tar.gz"
+  sha256 "20b06975a909dd58b956445948f7460086d8b49f2bc58880eac56400dcc66d64"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "0d9fe2fe27a89de5b5fadcdccd7e7446636c50fef43eedf00ccb144c51bd5ed0"
-    sha256 cellar: :any,                 arm64_ventura:  "e5e29f8389457fd94c5a01a3b68a00c51cb6f7620b23ae2a0706bb88293f17ab"
-    sha256 cellar: :any,                 arm64_monterey: "f3bc95620fce53821276b736d3b44fa6398e387abbce78c8fe9036cec7280bae"
-    sha256 cellar: :any,                 sonoma:         "d9b32e4a4e2f8e7741ae4aa446532bf8e2109253896291aad4f13f71eadc2ac1"
-    sha256 cellar: :any,                 ventura:        "04880d4fc273713eb4421beab4b29e3ebb0d3b33f37b0215c293b29036fb580f"
-    sha256 cellar: :any,                 monterey:       "ba68aad11914a674cad2c130885703933e423ea3f3db6d486a95da316f149fcd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e93f69c0d7d514b5dd3802457c923bbc20c5f0c97e871e1245aae16ae0f55cfe"
+    sha256 cellar: :any,                 arm64_sequoia: "a760b30ac3779213cd8798599ec2d889e31405a34ff94ec47ed9b28ded5d3246"
+    sha256 cellar: :any,                 arm64_sonoma:  "848827d9dbe541bdf487753c2590295690dd430ab9172d5340e453979b452dcc"
+    sha256 cellar: :any,                 arm64_ventura: "c1b28f8fef3a7258d04a9e5afd36267b02afbdfc240fd405ed44fe7286245e96"
+    sha256 cellar: :any,                 sonoma:        "24d1c178ad26ce5570b3d57bee1240a33c7e6f9ffe1733bad7972baba6a76387"
+    sha256 cellar: :any,                 ventura:       "5cb007a8433e4ea8359d3aa10c19c48c5ba2c35a2bf1bb690ef6a8e44e31be07"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "01cd70df767e35da8c19077f8372353cd190542e29ffe7e89fe1b4b5a2f0d608"
   end
 
   depends_on "cmake" => :build
@@ -24,6 +23,6 @@ class Primesieve < Formula
   end
 
   test do
-    system "#{bin}/primesieve", "100", "--count", "--print"
+    system bin/"primesieve", "100", "--count", "--print"
   end
 end

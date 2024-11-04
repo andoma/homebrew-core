@@ -7,6 +7,7 @@ class JsonTable < Formula
   head "https://github.com/micha/json-table.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2a0e4783bbce7faa941caf2506f8b7d00503c2fd904f4902add6f3e1f29882f6"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4a11c671903d3c7095c3c9f650e1162afd2f6ccc189c8109162886182d8fd68f"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "2e92d06b25f370ab9811406799e31be9e8f775e88ae9a9417940f4e8a54940c3"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "b90e09e62cd09817662e86c0c9854cd7a6e02b128dec008eeaa24d6c89482f11"
@@ -22,6 +23,8 @@ class JsonTable < Formula
     sha256 cellar: :any_skip_relocation, el_capitan:     "3240813838be9e797fd443e5f51d6bb53fc56a8d958dd361cbc865de003619bd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c2a8b0576a8a0be8e8bc9bcafcb70ad0fd98197a2f465d4713163fff48ba7696"
   end
+
+  conflicts_with "jot", because: "both install `jt` binaries"
 
   def install
     system "make", "install", "PREFIX=#{prefix}"

@@ -1,18 +1,19 @@
 class Libx11 < Formula
   desc "X.Org: Core X11 protocol client library"
   homepage "https://www.x.org/"
-  url "https://www.x.org/archive/individual/lib/libX11-1.8.7.tar.gz"
-  sha256 "793ebebf569f12c864b77401798d38814b51790fce206e01a431e5feb982e20b"
+  url "https://www.x.org/archive/individual/lib/libX11-1.8.10.tar.gz"
+  sha256 "b7a1a90d881bb7b94df5cf31509e6b03f15c0972d3ac25ab0441f5fbc789650f"
   license "MIT"
 
   bottle do
-    sha256 arm64_sonoma:   "0894f5a7c09c10a989dc12b792cff2f1d1ae7d1d49f7c8c559e79b9d911ca998"
-    sha256 arm64_ventura:  "1b8f10d203c34bae4a94f89ce2d491374a6820c5cca87e1504bf92d2ce43d49f"
-    sha256 arm64_monterey: "975cbce1a6e7a0fe341781e70ceea78a1dff3e18ccb5d4277d99443c887c13f2"
-    sha256 sonoma:         "be011cbeeade38719d0d43d00d40176087c2182cd53086e30dcb263eea4ec62f"
-    sha256 ventura:        "60a6a9eff38b882a536a124a18216788fdb20f885e65d011129e57b92eecaec9"
-    sha256 monterey:       "7f5eae59e701671a0ba8704ebc2cfa9f3087d8d085f22f69897f44ff8694cf62"
-    sha256 x86_64_linux:   "0a5c1964c4e0293561b77353ab916b7869eff803f3c664a01f05d2ced1e67f1f"
+    sha256 arm64_sequoia:  "c6f87c76459254b07fff761beac4092db78f520edc26b0fb489b5f9c6b767fa5"
+    sha256 arm64_sonoma:   "5467d41501260e483586e9b05ed3137393f7faf7d49901c31bbeb0b25bd7caf5"
+    sha256 arm64_ventura:  "144c9ca0fd07301773ec072adf505ba73a2c2561ad211cc7067b98b92034cb72"
+    sha256 arm64_monterey: "f323202b5650d3114a7215bcf8017cc144140c49baf122501a8bc31d3b24bfa7"
+    sha256 sonoma:         "ae4c27d75532011351ec195f21e63640a1df4393a66985bf5078df0a446fee73"
+    sha256 ventura:        "220bce8f5d80d6894f7e25d02c32f1a3ec1d4d3f0ecf5f4ba619de7a80986a1a"
+    sha256 monterey:       "0989016905547b3899a956bbb45a95b6dc50fffab2af5afd6685486bea03281f"
+    sha256 x86_64_linux:   "12f965d5b1d09327b0040b9e0f385ca5d4db9ceb29f8c89e6fcbe6e98ecf71c6"
   end
 
   depends_on "pkg-config" => :build
@@ -42,7 +43,7 @@ class Libx11 < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <X11/Xlib.h>
       #include <stdio.h>
       int main() {
@@ -72,7 +73,7 @@ class Libx11 < Formula
 
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lX11", "-o", "test", "-I#{include}"
     system "./test"
   end

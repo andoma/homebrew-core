@@ -1,8 +1,8 @@
 class Dwarfutils < Formula
   desc "Dump and produce DWARF debug information in ELF objects"
   homepage "https://www.prevanders.net/dwarf.html"
-  url "https://www.prevanders.net/libdwarf-0.9.1.tar.xz"
-  sha256 "877e81b189edbb075e3e086f6593457d8353d4df09b02e69f3c0c8aa19b51bf4"
+  url "https://www.prevanders.net/libdwarf-0.11.0.tar.xz"
+  sha256 "846071fb220ac1952f9f15ebbac6c7831ef50d0369b772c07a8a8139a42e07d2"
   license all_of: ["BSD-2-Clause", "LGPL-2.1-or-later", "GPL-2.0-or-later"]
   version_scheme 1
 
@@ -12,13 +12,13 @@ class Dwarfutils < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "5aaf16647266817f201e22d6845657353c69b89d92d78b4ff0cad5708cb123a4"
-    sha256 arm64_ventura:  "7485040808b9700297168b9d76226e9a9c32cafc76df20274d311db21b3b424a"
-    sha256 arm64_monterey: "49274eff4d1f9782d24ff29e6a53b6e5f498b7c2614e3e937093dc66cc54b541"
-    sha256 sonoma:         "fcc3aeacd34156ba3b768ddffce8c7b0cabd44efb78a049909de75950c3807a8"
-    sha256 ventura:        "14afe15542d14c33c0e58cbe948cc684fd6d44f2a9dde9d98f22c07e174210de"
-    sha256 monterey:       "28fd7a2935109578b97f0f69fbe1546ee88ca17686401645bc19e7a30b405df5"
-    sha256 x86_64_linux:   "391c6c7928b215ed1cc947609614450b55374444940640a57e6827dd698dc9b9"
+    rebuild 1
+    sha256 arm64_sequoia: "006a219229a3010e9ada7ffbe0aaaff557b7b0ed50e74ad59535545170da23d6"
+    sha256 arm64_sonoma:  "5a59b9a8502c5a66cd7106e7af4f64e20ea8e1bfacab1746a45e0db1c8a28fcb"
+    sha256 arm64_ventura: "5cfc8adbd5391bb3f2198b09389caabeab41e73633354bf62442d7965095d793"
+    sha256 sonoma:        "f4fa659ba9f7cb092b47afe653bf0698e0e83077ea74d4143a7efad5df58bc84"
+    sha256 ventura:       "1b9718e58bc84826f8669b5f2ca8d395dec7936cfcac096cc28ac4ae7acb7e26"
+    sha256 x86_64_linux:  "feb60defc574c40271d8b4afae3963aafb239112b0004ece1f1bd1a733c95cbb"
   end
 
   head do
@@ -35,14 +35,14 @@ class Dwarfutils < Formula
 
   def install
     system "sh", "autogen.sh" if build.head?
-    system "./configure", *std_configure_args, "--enable-shared"
+    system "./configure", "--enable-shared", *std_configure_args
     system "make", "install"
   end
 
   test do
     system bin/"dwarfdump", "-V"
 
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <dwarf.h>
       #include <libdwarf.h>
       #include <stdio.h>
@@ -64,7 +64,7 @@ class Dwarfutils < Formula
 
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "-I#{include}/libdwarf-0", "test.c", "-L#{lib}", "-ldwarf", "-o", "test"
     system "./test"
   end

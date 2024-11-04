@@ -1,25 +1,24 @@
 class Goose < Formula
   desc "Go Language's command-line interface for database migrations"
   homepage "https://pressly.github.io/goose/"
-  url "https://github.com/pressly/goose/archive/refs/tags/v3.18.0.tar.gz"
-  sha256 "cccc427333efbbb3f713560eff12e934b0946a0d3ea789948cb671a357f193d8"
+  url "https://github.com/pressly/goose/archive/refs/tags/v3.22.1.tar.gz"
+  sha256 "fc62967a9e4c1d94ce7cf706b727f5af622d004ebb6a6fd73e94b489fb2efe28"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b0c8b22de0e4aaee575591da02a8547deb6bff332d594691a4e42d70e6d44bc8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c9e1b3124a2b53732b4c6f48a6f715600e1ac5bd7c25a960cd647024f560c696"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "820299416a3c486067e936d56f9f1d8a929d66a8564e346969c187f9c13bba08"
-    sha256 cellar: :any_skip_relocation, sonoma:         "aa31a6772291a3aae5cad1f8d747f5dbcd9abea8f459b19b56071f944722bbea"
-    sha256 cellar: :any_skip_relocation, ventura:        "b1213d3c7cfba497cd323865069e29cc46648bdcbf7a6068cf39ef1db9d85c6b"
-    sha256 cellar: :any_skip_relocation, monterey:       "ec39363017586f9f5516d7a15c1024a70b2f8a8817359e9d4ef0b204547980d5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "69906894762e10be4a5f148490437ccf393e6eaea609d7df7af5e9173c4d4455"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8d59a515c55392ca7b40b94018ad95ae61332c63e97b2db567243db90b3038d0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a0cc4d2f156e35028cc86af4d973dd17eb16a9becccfa4c9c4d8c03edd8c180f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d447fa19b49d72b9bea260d6d2c1b685c54910194359bbcd18baadd2d7a51e9b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fea0894276eba28727508487c0dde32d4997320d0072733e072bc4e72d4a0144"
+    sha256 cellar: :any_skip_relocation, ventura:       "95bc713edd46cc6a19f51f65a93bad6a7b9502f94349f53030e117c8c8a78856"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "caa3e726cec91e14d50c2a87a7653c042468ec6b7dc6923851bb56fd90f71bc6"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = %W[-s -w -X main.version=v#{version}]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/goose"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/goose"
   end
 
   test do

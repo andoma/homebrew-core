@@ -1,8 +1,8 @@
 class Pmix < Formula
   desc "Process Management Interface for HPC environments"
   homepage "https://openpmix.github.io/"
-  url "https://github.com/openpmix/openpmix/releases/download/v4.2.9/pmix-4.2.9.tar.bz2"
-  sha256 "6b11f4fd5c9d7f8e55fc6ebdee9af04b839f44d06044e58cea38c87c168784b3"
+  url "https://github.com/openpmix/openpmix/releases/download/v5.0.3/pmix-5.0.3.tar.bz2"
+  sha256 "3f779434ed59fc3d63e4f77f170605ac3a80cd40b1f324112214b0efbdc34f13"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,13 +11,14 @@ class Pmix < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "7534c07deb72ae5959aacf9ed49de22302cb043cee37ee828adf005b4c2021e0"
-    sha256 arm64_ventura:  "cbe3c310a455283c40f9cd387661ae2310e62acca9dc106eb836c6caaf37dbaf"
-    sha256 arm64_monterey: "008391906fc8577402975247333c6be1c5626b98501606e1eb99fed34fb5f628"
-    sha256 sonoma:         "61e063ae000d60e98c508a5a0adb3244395422363642956911194ee88b3c97e7"
-    sha256 ventura:        "fe4acd1ae9fbf99199d721dddb66099fba02479381a590da220aef729237ed64"
-    sha256 monterey:       "9c214c1379e3fe27e390f1b8c2d5e2b52cc5f979106e267929cb9b11fbeb5cf2"
-    sha256 x86_64_linux:   "aae3cda6ed8e0af8918a7b63346b47528979093f6899a6333297c92cb184d9d0"
+    sha256 arm64_sequoia:  "33cec8bbbc0471911bb5a771e4e06dbbbc8c0bd891d4fb8dca8fa8783966fdcf"
+    sha256 arm64_sonoma:   "1bb946832094eaf4ecd78549b1181a43951eb0c2ebf4c23af834263f3a39ff07"
+    sha256 arm64_ventura:  "b82da6ad74dcc27768c9d113e0999eade722e537ca917bfc6861bc68cc301c6e"
+    sha256 arm64_monterey: "5dd890f4c203eb25ed381d774e9a2f545ceffe931d8079a5a6b0315ac23123a0"
+    sha256 sonoma:         "22ea4e40253d3f2cf622ae00a807ac7b51a4a88e88ed733b91a3b8bda7634de3"
+    sha256 ventura:        "1a86b55384410e3e6c5ff8475c2a914edf129353703b3f57bb688585671a99e1"
+    sha256 monterey:       "0a674c9dd2072fe0ffdef3d8ae69eaa82bd7b06df49924080d8ed41f41cae5a8"
+    sha256 x86_64_linux:   "25efde60eb0f20026a88f62786eccb14b14260449fa5405922a3160cc83d3d96"
   end
 
   head do
@@ -54,7 +55,7 @@ class Pmix < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <pmix.h>
 
@@ -65,7 +66,7 @@ class Pmix < Formula
 
         return 0;
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lpmix", "-o", "test"
     system "./test"

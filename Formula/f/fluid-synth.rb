@@ -1,20 +1,18 @@
 class FluidSynth < Formula
   desc "Real-time software synthesizer based on the SoundFont 2 specs"
   homepage "https://www.fluidsynth.org"
-  url "https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.3.4.tar.gz"
-  sha256 "1529ef5bc3b9ef3adc2a7964505912f7305103e269e50cc0316f500b22053ac9"
+  url "https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.0.tar.gz"
+  sha256 "fd4d216a3030abc56a339985ab0506328660cd77b2d71dd98c240c58c03d8f7f"
   license "LGPL-2.1-or-later"
   head "https://github.com/FluidSynth/fluidsynth.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "eb5b92efe4db87de731240de9e564a366147833ea6be304cef69ffe6aa3883f6"
-    sha256 cellar: :any,                 arm64_ventura:  "3056b2d1d3c5e7aeac387d932842c26725a1d7e164e6e9b96437c2d7d7f35942"
-    sha256 cellar: :any,                 arm64_monterey: "c0cc616c2b5c697bee492f1c381afe537c5ed333105a8e78dd79c71dafb06172"
-    sha256 cellar: :any,                 sonoma:         "2d81640079d0881771c927a3940a7696af4a7ca7d195dcb11720fc670b5b4fa5"
-    sha256 cellar: :any,                 ventura:        "47162296f6ab760740525f63627c39c2a60a20a77b6c53a4739b2628c169a3aa"
-    sha256 cellar: :any,                 monterey:       "ebe07a9607d56956128d0fdb27ca832c4f43e8104ba9670169775b8ecd091e89"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b181d4d1881d63d6ce88f4cc82b835545fde6e06dbf582cc1b91330bdff50f57"
+    sha256 cellar: :any,                 arm64_sequoia: "5872180e75e90bb83e4929c10f64639fddcc341a8e1f5516589c2b7803baba7c"
+    sha256 cellar: :any,                 arm64_sonoma:  "99d675800c64673ba3f77fe7c5ae89ed149e053d18ccd38f6facde7eaffb9cbc"
+    sha256 cellar: :any,                 arm64_ventura: "1b14f8eac778e1601baa6534df6aacc3db1e84c150c34c1542eedce9402afcf2"
+    sha256 cellar: :any,                 sonoma:        "421f8fea695b9891048becefa4036bb1c8ddda017c4187d91071890213bb82ee"
+    sha256 cellar: :any,                 ventura:       "2773618749ec8705a63a2f60d0ba35c2c4b448d5d32722a7b6704db2390c06d1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ae6257f67ab94ff5a3f830a55b0c0cc76623bad2c1130593df13c06e12f98aa3"
   end
 
   depends_on "cmake" => :build

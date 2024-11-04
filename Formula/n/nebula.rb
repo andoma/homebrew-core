@@ -1,19 +1,20 @@
 class Nebula < Formula
   desc "Scalable overlay networking tool for connecting computers anywhere"
   homepage "https://github.com/slackhq/nebula"
-  url "https://github.com/slackhq/nebula/archive/refs/tags/v1.8.2.tar.gz"
-  sha256 "203713c58d0ec8a10df2f605af791a77a33f825454911ac3a5313ced591547fd"
+  url "https://github.com/slackhq/nebula/archive/refs/tags/v1.9.4.tar.gz"
+  sha256 "7feb8337a8ce791bb97211a70fddfc9cb936e2a9bfbb3bc8ac714c868da3fc86"
   license "MIT"
   head "https://github.com/slackhq/nebula.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "97c069d2558e559571828faefb949635ed65885760afaa9f7bf35b68605aa8f5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "97c069d2558e559571828faefb949635ed65885760afaa9f7bf35b68605aa8f5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "97c069d2558e559571828faefb949635ed65885760afaa9f7bf35b68605aa8f5"
-    sha256 cellar: :any_skip_relocation, sonoma:         "dcc7f6d0fcbb525234dfe4658fab0fb918a6a525f06ff39fc27ee94ca2e3d243"
-    sha256 cellar: :any_skip_relocation, ventura:        "dcc7f6d0fcbb525234dfe4658fab0fb918a6a525f06ff39fc27ee94ca2e3d243"
-    sha256 cellar: :any_skip_relocation, monterey:       "dcc7f6d0fcbb525234dfe4658fab0fb918a6a525f06ff39fc27ee94ca2e3d243"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "128748bb848277bb6470ac199c258bb7e21c84cc0552c80bed4c44e3f2bcc4b8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "02628b6ec323eeaa31833f3561af8eba7679d57c082b8ab644f48e2937d2c28e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "02628b6ec323eeaa31833f3561af8eba7679d57c082b8ab644f48e2937d2c28e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "02628b6ec323eeaa31833f3561af8eba7679d57c082b8ab644f48e2937d2c28e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "02628b6ec323eeaa31833f3561af8eba7679d57c082b8ab644f48e2937d2c28e"
+    sha256 cellar: :any_skip_relocation, sonoma:         "768c505ba1596f1973144647d81b7a4185315ec26fd1b00da632944d81580ced"
+    sha256 cellar: :any_skip_relocation, ventura:        "768c505ba1596f1973144647d81b7a4185315ec26fd1b00da632944d81580ced"
+    sha256 cellar: :any_skip_relocation, monterey:       "768c505ba1596f1973144647d81b7a4185315ec26fd1b00da632944d81580ced"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "901dc2cb116c094a96a28a2711da1791f9b2367365cfd7358464a79f2ae1ba24"
   end
 
   depends_on "go" => :build
@@ -23,7 +24,6 @@ class Nebula < Formula
     system "make", "service"
     bin.install "./nebula"
     bin.install "./nebula-cert"
-    prefix.install_metafiles
   end
 
   service do
@@ -35,14 +35,14 @@ class Nebula < Formula
   end
 
   test do
-    system "#{bin}/nebula-cert", "ca", "-name", "testorg"
-    system "#{bin}/nebula-cert", "sign", "-name", "host", "-ip", "192.168.100.1/24"
+    system bin/"nebula-cert", "ca", "-name", "testorg"
+    system bin/"nebula-cert", "sign", "-name", "host", "-ip", "192.168.100.1/24"
     (testpath/"config.yml").write <<~EOS
       pki:
         ca: #{testpath}/ca.crt
         cert: #{testpath}/host.crt
         key: #{testpath}/host.key
     EOS
-    system "#{bin}/nebula", "-test", "-config", "config.yml"
+    system bin/"nebula", "-test", "-config", "config.yml"
   end
 end

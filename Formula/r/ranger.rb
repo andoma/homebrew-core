@@ -1,34 +1,35 @@
 class Ranger < Formula
-  include Language::Python::Shebang
+  include Language::Python::Virtualenv
 
   desc "File browser"
   homepage "https://ranger.github.io"
-  url "https://ranger.github.io/ranger-1.9.3.tar.gz"
-  sha256 "ce088a04c91c25263a9675dc5c43514b7ec1b38c8ea43d9a9d00923ff6cdd251"
   license "GPL-3.0-or-later"
   revision 2
   head "https://github.com/ranger/ranger.git", branch: "master"
 
+  stable do
+    url "https://ranger.github.io/ranger-1.9.3.tar.gz"
+    sha256 "ce088a04c91c25263a9675dc5c43514b7ec1b38c8ea43d9a9d00923ff6cdd251"
+
+    # Drop `imghdr` for python 3.13
+    # Backport of https://github.com/ranger/ranger/commit/9c0d3ba3495bac80142fad518e29b9061be94cc6
+    patch :DATA
+  end
+
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6eea9359688d3ebaf9673aa35279778e16fdd977446ba6d0e8bef5a7bfe8aadc"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0861bca3b40f43d04603621ac2862a9fa24cf76149fa3bf98e701b074fac4f89"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "602e6439d7dd6b29ac631e7ac60d04079d898e56b099a614970eb8343b28f5a9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "854b27af8c3fbaed381c35078026a685c84b04067bd5437de657c7a6b42d6426"
-    sha256 cellar: :any_skip_relocation, ventura:        "a03c4e877b00a78bc49ad03be5aac198350e8eb9456672cfb7b5df3f24f705dd"
-    sha256 cellar: :any_skip_relocation, monterey:       "45fd5e64d17483293b05ff8b376e2d4b081073279c8542ef375252d3c077d939"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa2faf4fe8116fc48ba789940320882c5bed58b7c5900e827200021f38d62c83"
+    rebuild 4
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "29f94668e81c45db4b87f46d183450c306196f58315d34c948090d87552d81a0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "29f94668e81c45db4b87f46d183450c306196f58315d34c948090d87552d81a0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "29f94668e81c45db4b87f46d183450c306196f58315d34c948090d87552d81a0"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c4a0c957609a0dbc3c20f6bb0e420d1166bb65de6c205acca14ee85c880b68da"
+    sha256 cellar: :any_skip_relocation, ventura:       "c4a0c957609a0dbc3c20f6bb0e420d1166bb65de6c205acca14ee85c880b68da"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "29f94668e81c45db4b87f46d183450c306196f58315d34c948090d87552d81a0"
   end
 
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.12"
-
-  def python
-    Formula["python@3.12"].opt_libexec/"bin/python"
-  end
+  depends_on "python@3.13"
 
   def install
-    system python, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
   end
 
   test do
@@ -38,7 +39,51 @@ class Ranger < Formula
     (testpath/"test.py").write code
     assert_equal code, shell_output("#{bin}/rifle -w cat test.py")
 
-    ENV.prepend_path "PATH", python.parent
+    ENV.prepend_path "PATH", Formula["python@3.13"].opt_libexec/"bin"
     assert_equal "Hello World!\n", shell_output("#{bin}/rifle -p 2 test.py")
   end
 end
+
+__END__
+diff --git a/ranger/ext/img_display.py b/ranger/ext/img_display.py
+index ffaa4c0..a7e027e 100644
+--- a/ranger/ext/img_display.py
++++ b/ranger/ext/img_display.py
+@@ -15,7 +15,6 @@ import base64
+ import curses
+ import errno
+ import fcntl
+-import imghdr
+ import os
+ import struct
+ import sys
+@@ -341,12 +340,28 @@ class ITerm2ImageDisplayer(ImageDisplayer, FileManagerAware):
+         with open(path, 'rb') as fobj:
+             return base64.b64encode(fobj.read()).decode('utf-8')
+ 
++    @staticmethod
++    def imghdr_what(path):
++        """Replacement for the deprecated imghdr module"""
++        with open(path, "rb") as img_file:
++            header = img_file.read(32)
++            if header[6:10] in (b'JFIF', b'Exif'):
++                return 'jpeg'
++            elif header[:4] == b'\xff\xd8\xff\xdb':
++                return 'jpeg'
++            elif header.startswith(b'\211PNG\r\n\032\n'):
++                return 'png'
++            if header[:6] in (b'GIF87a', b'GIF89a'):
++                return 'gif'
++            else:
++                return None
++
+     @staticmethod
+     def _get_image_dimensions(path):
+         """Determine image size using imghdr"""
+         file_handle = open(path, 'rb')
+         file_header = file_handle.read(24)
+-        image_type = imghdr.what(path)
++        image_type = ITerm2ImageDisplayer.imghdr_what(path)
+         if len(file_header) != 24:
+             file_handle.close()
+             return 0, 0

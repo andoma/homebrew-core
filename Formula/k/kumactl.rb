@@ -1,8 +1,8 @@
 class Kumactl < Formula
   desc "Kuma control plane command-line utility"
   homepage "https://kuma.io/"
-  url "https://github.com/kumahq/kuma/archive/refs/tags/2.6.1.tar.gz"
-  sha256 "9d09c09b98f1ddd9c611794e8782bcc53fa61829525a0a2b543a7b952fee81fd"
+  url "https://github.com/kumahq/kuma/archive/refs/tags/2.9.0.tar.gz"
+  sha256 "21f2353ad23e688d6c87be012b53e8cac9d6e2269a2acf486b6622855b3abe64"
   license "Apache-2.0"
 
   livecheck do
@@ -11,13 +11,12 @@ class Kumactl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b621fbd922416effcb946e0d9b5dfd6908a9a90f3026e5ca55ea2f1f0b538f6c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a02b72d76f1156e1bff11c1071cd6959bb1cc5dae53d72f9d791041972fe9926"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b581b3d59b498bcd930cc593965986bae75203ee342ef3992b753c6f5095fa85"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ce0d212b22a563b2dc112f679f691c2f2ba247a5ddcfa3a7bcd3c0295868f4a3"
-    sha256 cellar: :any_skip_relocation, ventura:        "2c9d691fdf8c317725cd208fd90719959b29557ef9f592cf9630c871082b4cc0"
-    sha256 cellar: :any_skip_relocation, monterey:       "15f7dba048b8ceec4d8ac7beff0f4334516827c808b7a1787e0d0ba24702b896"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d3c36c9c63db2b64479b307a8b15bf1a7edc8200fbb9a4441e12a3e51600759"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "726483ebec55231cb0366621452d90ee668c9861f50a0139320698a9d9616b4c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "726483ebec55231cb0366621452d90ee668c9861f50a0139320698a9d9616b4c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "726483ebec55231cb0366621452d90ee668c9861f50a0139320698a9d9616b4c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a7c1c6bc51c4133e3c6af9c97facba3c4d393d557061a3888387c5c405afcd28"
+    sha256 cellar: :any_skip_relocation, ventura:       "a7c1c6bc51c4133e3c6af9c97facba3c4d393d557061a3888387c5c405afcd28"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a73aa97bcbe455e1a84a1f3c3e0f5a5039b402b95567e6e403aa30843f1d024e"
   end
 
   depends_on "go" => :build
@@ -30,13 +29,13 @@ class Kumactl < Formula
       -X github.com/kumahq/kuma/pkg/version.buildDate=#{time.strftime("%F")}
     ]
 
-    system "go", "build", *std_go_args(ldflags: ldflags), "./app/kumactl"
+    system "go", "build", *std_go_args(ldflags:), "./app/kumactl"
 
     generate_completions_from_executable(bin/"kumactl", "completion")
   end
 
   test do
-    assert_match "Management tool for Kuma.", shell_output("#{bin}/kumactl")
+    assert_match "Management tool for Kuma.", shell_output(bin/"kumactl")
     assert_match version.to_s, shell_output("#{bin}/kumactl version 2>&1")
 
     touch testpath/"config.yml"

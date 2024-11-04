@@ -1,6 +1,6 @@
 class Libvterm < Formula
   desc "C99 library which implements a VT220 or xterm terminal emulator"
-  homepage "http://www.leonerd.org.uk/code/libvterm/"
+  homepage "https://www.leonerd.org.uk/code/libvterm/"
   url "https://launchpad.net/libvterm/trunk/v0.3/+download/libvterm-0.3.3.tar.gz"
   sha256 "09156f43dd2128bd347cbeebe50d9a571d32c64e0cf18d211197946aff7226e0"
   license "MIT"
@@ -12,6 +12,7 @@ class Libvterm < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "1f9b512f3881f954e48acad23f8c6bcdc76ee979c89baaf0cabb9438843be999"
     sha256 cellar: :any,                 arm64_sonoma:   "bed130ed0997c0946d15e1452aa9abd30048b6d193878f027cf836648864ab7a"
     sha256 cellar: :any,                 arm64_ventura:  "0e2015cf46c8c515721f3200ed53ad9b98385985ed3eb91cb4503270469bed17"
     sha256 cellar: :any,                 arm64_monterey: "dca8ab45e261d0c21e697a37a517ea23e545b4f8487dd7131ff5d933f80db5dc"
@@ -28,13 +29,13 @@ class Libvterm < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <vterm.h>
 
       int main() {
         vterm_free(vterm_new(1, 1));
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-L#{lib}", "-lvterm", "-o", "test"
     system "./test"

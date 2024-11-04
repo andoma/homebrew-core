@@ -1,24 +1,23 @@
 class Papilo < Formula
   desc "Parallel Presolve for Integer and Linear Optimization"
   homepage "https://www.scipopt.org"
-  url "https://github.com/scipopt/papilo/archive/refs/tags/v2.2.0.tar.gz"
-  sha256 "4ed759e55fe1c74be779137e4e3cdae67e1b64bd62ca31793ca3b321509c27a8"
+  url "https://github.com/scipopt/papilo/archive/refs/tags/v2.3.1.tar.gz"
+  sha256 "7491ebec89480b124e24c74e05d5fd4bb289ed7ada01f218145734ad65ec3fd8"
   license all_of: ["LGPL-3.0-only", "GPL-3.0-only"]
   version_scheme 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "958527cd51754682973ac64e9f8901d103c6b6649803640e4e2b71bf1a1d4529"
-    sha256 cellar: :any,                 arm64_ventura:  "6876abbf312a5ad04d49a3dec30a7ce7ceda2fd20b2adab8630bdb6aac7e3f6e"
-    sha256 cellar: :any,                 arm64_monterey: "2418cd6ec2b0455720016c81642bf7b5d68c18d9902632069db3c1d5a86ed75b"
-    sha256 cellar: :any,                 sonoma:         "f81be3508e45256f46bacd0e1bf55b5e6bfc57e001aad21fc1cd71aea810da93"
-    sha256 cellar: :any,                 ventura:        "9833a04af914865695383aaaf77865b4e445f138572367b5afc8c8a1f8c09d0c"
-    sha256 cellar: :any,                 monterey:       "6f2e051ddaae35108cf6c9a7648ee85ba701fa338207649b23cb5b24a817d8ce"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4e3422b58b18d3001ea16e31fbc16e87e041c19f4d6c1e82a4b166ab251675cc"
+    sha256 cellar: :any,                 arm64_sequoia: "a5eebdb6be06d3aeca007dbdb30692b21aaa6f298531a194d783ec5a48f2e23d"
+    sha256 cellar: :any,                 arm64_sonoma:  "426c9cbda9247dbc835d9ffb5d4e282425877e697a6b8677aa2baf3cbe526afb"
+    sha256 cellar: :any,                 arm64_ventura: "2b38a6f936a7a09ab0b30a5363cca533f286776dd88cbca5669695e88e6ac755"
+    sha256 cellar: :any,                 sonoma:        "f4cc5a507afd948db0978cfbf0ae492291353c57a09aac181bed5c7707e2d1da"
+    sha256 cellar: :any,                 ventura:       "78e9849c6b3d9e3756739f8eca4ba098a1d179360c45b12d2a2fac400c5192c7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "61f7b8bb39a67a66786a9eca8cb64a25fe72ff3e6b3315e0dc5f14abc736763b"
   end
 
   depends_on "cmake" => :build
-  depends_on "gcc" => :build
   depends_on "boost"
+  depends_on "gcc"
   depends_on "gmp"
   depends_on "openblas"
   depends_on "tbb"

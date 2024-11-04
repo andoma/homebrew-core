@@ -1,8 +1,8 @@
 class Dar < Formula
   desc "Backup directory tree and files"
   homepage "http://dar.linux.free.fr/doc/index.html"
-  url "https://downloads.sourceforge.net/project/dar/dar/2.7.13/dar-2.7.13.tar.gz"
-  sha256 "2d563b5d1d928a3eecab719cc22d43320786c52053f4e3a557cdf1c84b120f4c"
+  url "https://downloads.sourceforge.net/project/dar/dar/2.7.15/dar-2.7.15.tar.gz"
+  sha256 "fac56b59b78b5435ee19541ff4bd3dc329c8252ff78749ffea240f6421534bfe"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,13 +11,14 @@ class Dar < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "79faef259c0d53438d62e448080bd0b43ebf91a5d08166256c42fb1a6a121f56"
-    sha256 arm64_ventura:  "578950a4f7d2c08b07661414bea515e3c9f04748f372f7f13c96b2f6689a6b7a"
-    sha256 arm64_monterey: "dba12c07665fbfadf24d50e773555552730a7c2adbb04f9074303cba7db042b8"
-    sha256 sonoma:         "12447460314fdebd367f4b0c23f3a43343d1e63daddb903d4481d64e16de4e76"
-    sha256 ventura:        "d9bde386d0f3e4b6b6c426b8723047f2550df3d36c13dd8b358c276d5dd1ca52"
-    sha256 monterey:       "3832482d20a969113fc4fe3db3cadc23568711bc250728673870cb58045e9159"
-    sha256 x86_64_linux:   "948d8e31cba588405237c54501feb2a3187c0b2019afab9d30898ecd1d6f98b7"
+    sha256 arm64_sequoia:  "a1fe2166abd91e99aa2d813f02d8bcf5f00ec69d958a83d77a58cf8d52d7034a"
+    sha256 arm64_sonoma:   "79f05ae92d1ccba3e57273d8db60335098b819f3b33df7e4c5b04c5a76043df3"
+    sha256 arm64_ventura:  "b83527a092546bbdc2a8af12c3f1a4eb648669d535d0ba8662138855e92b545c"
+    sha256 arm64_monterey: "8894d4a9043e1bca1e7916a01fa7e207bd894f83a99ad0b5f7aa60ef7a8fa209"
+    sha256 sonoma:         "0c31fb296286cfb881a4ad2220ae1b4b2d4f50d5b223af64cd06492a79bc87fd"
+    sha256 ventura:        "239601d4bd4fc347239f7b1360d588c4596752f7ad5d33c34f93847a191da871"
+    sha256 monterey:       "65961ced78cb512e29cff86fcf218fa1c818a47f6088351a966fde66eb3e4fe3"
+    sha256 x86_64_linux:   "85301842381745b10952ce739ba6af415c897e1adc1863748dbf8ae80885c672"
   end
 
   depends_on "argon2"
@@ -37,6 +38,7 @@ class Dar < Formula
   end
 
   test do
+    mkdir "Library"
     system bin/"dar", "-c", "test", "-R", "./Library"
     system bin/"dar", "-d", "test", "-R", "./Library"
   end

@@ -1,8 +1,8 @@
 class OpenlibertyWebprofile8 < Formula
   desc "Lightweight open framework for Java (Jakarta EE Web Profile 8)"
   homepage "https://openliberty.io"
-  url "https://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/release/23.0.0.12/openliberty-webProfile8-23.0.0.12.zip"
-  sha256 "457e573ed36ba2694fef8237fe31006b7bc6f2f3a62355d06c7c250d19bd1552"
+  url "https://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/release/24.0.0.10/openliberty-webProfile8-24.0.0.10.zip"
+  sha256 "c3ea55a3a2d375d4b2b5311f3ba20db29ab2e2afcdd4085e12c60c56310e5590"
   license "EPL-1.0"
 
   livecheck do
@@ -11,15 +11,14 @@ class OpenlibertyWebprofile8 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "c91ef5993566ec27eb27a62e465f9c8215ba2ec46d812ae33eba3885c2bdfd9a"
+    sha256 cellar: :any_skip_relocation, all: "cbd7ff0f6bf897607bf4305fc6c8f649422213cec52e5d19c51e6933d1e7962e"
   end
 
   depends_on "openjdk"
 
   def install
-    rm_rf Dir["bin/**/*.bat"]
+    rm_r(Dir["bin/**/*.bat"])
 
-    prefix.install_metafiles
     libexec.install Dir["*"]
     (bin/"openliberty-webprofile8").write_env_script "#{libexec}/bin/server",
                                                      Language::Java.overridable_java_home_env

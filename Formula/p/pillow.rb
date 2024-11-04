@@ -1,26 +1,24 @@
 class Pillow < Formula
   desc "Friendly PIL fork (Python Imaging Library)"
   homepage "https://python-pillow.org"
-  url "https://files.pythonhosted.org/packages/f8/3e/32cbd0129a28686621434cbf17bb64bf1458bfb838f1f668262fefce145c/pillow-10.2.0.tar.gz"
-  sha256 "e87f0b2c78157e12d7686b27d63c070fd65d994e8ddae6f328e0dcf4a0cd007e"
+  url "https://files.pythonhosted.org/packages/a5/26/0d95c04c868f6bdb0c447e3ee2de5564411845e36a858cfd63766bc7b563/pillow-11.0.0.tar.gz"
+  sha256 "72bacbaf24ac003fea9bff9837d1eedb6088758d41e100c1552930151f677739"
   license "HPND"
-  revision 1
   head "https://github.com/python-pillow/Pillow.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "344b9bf598d2749475fdb00d098e4f08ace4c56c23b2f6a2f4e2e82ce6f3f5b0"
-    sha256 cellar: :any, arm64_ventura:  "b6ff62222cae0cab0df03f03edc42abf00062ef11ab97cdb847cc89b6f2a70f3"
-    sha256 cellar: :any, arm64_monterey: "5df526faf2300c6065cffef6878086594398d8a651a11cbf9cb107eb0cf05ebe"
-    sha256 cellar: :any, sonoma:         "f4dadb09517e41e8d68c69ce1f3507e3f1a1e75d1f5b304229b44e4f991f767a"
-    sha256 cellar: :any, ventura:        "15a236051dd33bc086004f44b6cc7e607f5d9a84af20f1720f0ac9d731890290"
-    sha256 cellar: :any, monterey:       "edde70d3b868f6481de4c83eb8d7903f72c89983ce3ef7e99768706348537366"
-    sha256               x86_64_linux:   "9def1cf7f369fd27399f3621f90e54909e03177fd1f8adfae6cae3173ff5e8eb"
+    sha256 cellar: :any, arm64_sequoia: "e1022c34f56ee10daf647e70fd3305c2653718bf78c0cd89dffe23d29873c24a"
+    sha256 cellar: :any, arm64_sonoma:  "148cc0c608021690b06360208e525f2606abfd50dafd0d14322bfbfc44da6a38"
+    sha256 cellar: :any, arm64_ventura: "3718c3be4bd1d28965815082d32f59d89ca3c0c6a001797c13ebe43bbab539ee"
+    sha256 cellar: :any, sonoma:        "83f710a136956297d32039e22be79d12612cc6b254910d1834f3554390971f79"
+    sha256 cellar: :any, ventura:       "527c15b9d868eae0cfa0b60d4affb0b76441c9194f34d60eb58619cbad644665"
+    sha256               x86_64_linux:  "e7a618cba484da3cb05fcaec9d300cde908124f17d3d82c1a69dbe54b782fca0"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.11" => [:build, :test]
   depends_on "python@3.12" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
+  depends_on "freetype"
   depends_on "jpeg-turbo"
   depends_on "libimagequant"
   depends_on "libraqm"
@@ -49,7 +47,7 @@ class Pillow < Formula
     end
 
     pythons.each do |python|
-      system python, "-m", "pip", "install", *std_pip_args,
+      system python, "-m", "pip", "install", *std_pip_args(build_isolation: true),
                      "-C", "debug=true", # Useful in case of build failures.
                      "-C", "tiff=enable",
                      "-C", "freetype=enable",

@@ -1,9 +1,9 @@
 class Mame < Formula
   desc "Multiple Arcade Machine Emulator"
   homepage "https://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/refs/tags/mame0262.tar.gz"
-  version "0.262"
-  sha256 "64e482f3dd13be4e91c5dfa076fb7a71f450f2879118c6ae452b0037b661aaae"
+  url "https://github.com/mamedev/mame/archive/refs/tags/mame0271.tar.gz"
+  version "0.271"
+  sha256 "79960f4c57715b2d08c3eba12933d04dd91ad1d95b0c1059306a75bf07fd6027"
   license "GPL-2.0-or-later"
   head "https://github.com/mamedev/mame.git", branch: "master"
 
@@ -19,13 +19,12 @@ class Mame < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "fb21f7a8078c53f3552dc2cd9603388c29a11183483a74265e4d21393bcd24d7"
-    sha256 cellar: :any,                 arm64_ventura:  "6a49c4b19963af7eba1466ee9148f91125c5cf1087511244389b208200442b0f"
-    sha256 cellar: :any,                 arm64_monterey: "96f038cd1805b0e71477d9100883e82b8200a87beef705291f0331396ffa41ad"
-    sha256 cellar: :any,                 sonoma:         "b460d463d09f125ba38979a3f1c98bc6dc436037596384048d89b74db6067f99"
-    sha256 cellar: :any,                 ventura:        "2933b2bf9d42d7aacaf19ab6394341c81b999fb3aa043d1aad1c7978d990741f"
-    sha256 cellar: :any,                 monterey:       "56d6443122a7bc2ce622a25dd09282663c64141a005b4bf916de6b1e399170dc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ca8269f5cf40c36bb5e2f037a124bd27bb0f7066cc2908904f13828b2624a726"
+    sha256 cellar: :any,                 arm64_sequoia: "4c06ec92104a1def0cc5fbf66be4fc05f716971ecaa7605329352838f42a1dee"
+    sha256 cellar: :any,                 arm64_sonoma:  "438c3eb0bcfa3854e63159c2df4b1f91f7ab9b85ba618d12adddcc4a3bb2e810"
+    sha256 cellar: :any,                 arm64_ventura: "03013bf23127e61c9b9ed0383c5755f7fe2d5013f1fc58250e06f0be38a3b8c7"
+    sha256 cellar: :any,                 sonoma:        "8ae26a6e52af24a80d89be9bc8190dfcd2d5f1518bce7cf70d6f56e0b5af2670"
+    sha256 cellar: :any,                 ventura:       "39423f7dd71ff42d89f0ee44389f157f85e1b4c87e682255eead6fb2a490f8ca"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "daa53875a6cb637119d6ef09ee23908d7a01acd2006b4ffd2cfd850e687b3a8b"
   end
 
   depends_on "asio" => :build
@@ -43,21 +42,25 @@ class Mame < Formula
   depends_on "sdl2"
   depends_on "sqlite"
   depends_on "utf8proc"
+  depends_on "zstd"
 
   uses_from_macos "python" => :build
   uses_from_macos "expat"
   uses_from_macos "zlib"
 
   on_linux do
+    depends_on "fontconfig"
+    depends_on "libx11"
+    depends_on "libxi"
+    depends_on "mesa"
     depends_on "pulseaudio"
-    depends_on "qt@5"
+    depends_on "qt"
     depends_on "sdl2_ttf"
   end
 
-  fails_with gcc: "5"
-  fails_with gcc: "6"
-
   def install
+    ENV["QT_HOME"] = Formula["qt"].opt_prefix if OS.linux?
+
     # Cut sdl2-config's invalid option.
     inreplace "scripts/src/osd/sdl.lua", "--static", ""
 
@@ -68,7 +71,6 @@ class Mame < Formula
                    "USE_SYSTEM_LIB_EXPAT=1",
                    "USE_SYSTEM_LIB_ZLIB=1",
                    "USE_SYSTEM_LIB_ASIO=1",
-                   "USE_SYSTEM_LIB_LUA=",
                    "USE_SYSTEM_LIB_FLAC=1",
                    "USE_SYSTEM_LIB_GLM=1",
                    "USE_SYSTEM_LIB_JPEG=1",
@@ -77,7 +79,9 @@ class Mame < Formula
                    "USE_SYSTEM_LIB_PUGIXML=1",
                    "USE_SYSTEM_LIB_RAPIDJSON=1",
                    "USE_SYSTEM_LIB_SQLITE3=1",
-                   "USE_SYSTEM_LIB_UTF8PROC=1"
+                   "USE_SYSTEM_LIB_UTF8PROC=1",
+                   "USE_SYSTEM_LIB_ZSTD=1",
+                   "VERBOSE=1"
     bin.install "mame"
     cd "docs" do
       # We don't convert SVG files into PDF files, don't load the related extensions.

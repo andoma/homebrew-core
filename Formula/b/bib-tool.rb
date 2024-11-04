@@ -1,11 +1,12 @@
 class BibTool < Formula
   desc "Manipulates BibTeX databases"
-  homepage "http://www.gerd-neugebauer.de/software/TeX/BibTool/en/"
+  homepage "https://www.gerd-neugebauer.de/software/TeX/BibTool/en/"
   url "https://github.com/ge-ne/bibtool/releases/download/BibTool_2_68/BibTool-2.68.tar.gz"
   sha256 "e1964d199b0726f431f9a1dc4ff7257bb3dba879b9fa221803e0aa7840dee0e0"
   license "GPL-2.0-or-later"
 
   bottle do
+    sha256                               arm64_sequoia:  "ce609aa4354f5b345611a48f17823affc614c23600940ec1c90b9945b7199512"
     sha256                               arm64_sonoma:   "20a1020682e98e6b692a2096aea9d9963c6294f12c810ce0aa9135ca26bf6da1"
     sha256                               arm64_ventura:  "7cb1325a01c1b3516c543d5911f0b10eeb6e68df2abe4b3541ff68242ffc356e"
     sha256                               arm64_monterey: "d9e9e76159ba4398731428fd7ab2523d9066c325b28efc7b6012b5e9784bfd95"
@@ -37,6 +38,7 @@ class BibTool < Formula
           pages   = {3--4}
       }
     EOS
-    system "#{bin}/bibtool", "test.bib"
+
+    system bin/"bibtool", "test.bib"
   end
 end

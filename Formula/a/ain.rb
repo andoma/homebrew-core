@@ -1,8 +1,8 @@
 class Ain < Formula
   desc "HTTP API client for the terminal"
   homepage "https://github.com/jonaslu/ain"
-  url "https://github.com/jonaslu/ain/archive/refs/tags/v1.3.0.tar.gz"
-  sha256 "af77c16f50a0ee2439f984e126b3b14da6efbd224617c59ca8ccffd62dbf11b9"
+  url "https://github.com/jonaslu/ain/archive/refs/tags/v1.5.0.tar.gz"
+  sha256 "f886d5df83abd6788ac4f1875844f51d609fa1f466b8af5a5cc8acab92781cc5"
   license "MIT"
   head "https://github.com/jonaslu/ain.git", branch: "main"
 
@@ -15,20 +15,21 @@ class Ain < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ea25b30846e0726917a3657c40e6ea27f1ff562de9fea12c521df1e3350c5918"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ea25b30846e0726917a3657c40e6ea27f1ff562de9fea12c521df1e3350c5918"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ea25b30846e0726917a3657c40e6ea27f1ff562de9fea12c521df1e3350c5918"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5e06f44649af98a5b34a120f52dc20175932fe35b634566d7387e302ab9808dd"
-    sha256 cellar: :any_skip_relocation, ventura:        "5e06f44649af98a5b34a120f52dc20175932fe35b634566d7387e302ab9808dd"
-    sha256 cellar: :any_skip_relocation, monterey:       "5e06f44649af98a5b34a120f52dc20175932fe35b634566d7387e302ab9808dd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "939940932807210dfe45f6bb26c9a43dac10e77003670841a1f92a94b8635246"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "661cc461e836d8df796083906bfa40af3689af26ee9dfcf52abefc6f5bc7f164"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1ed631c64904849f645f34d812545b8c33fe8ab92b01b8225a295c4ebe6e4012"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1ed631c64904849f645f34d812545b8c33fe8ab92b01b8225a295c4ebe6e4012"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1ed631c64904849f645f34d812545b8c33fe8ab92b01b8225a295c4ebe6e4012"
+    sha256 cellar: :any_skip_relocation, sonoma:         "12231aa6ee4849a06f073e2030da41626d9f28de97b12ce206755b841ee256ef"
+    sha256 cellar: :any_skip_relocation, ventura:        "12231aa6ee4849a06f073e2030da41626d9f28de97b12ce206755b841ee256ef"
+    sha256 cellar: :any_skip_relocation, monterey:       "12231aa6ee4849a06f073e2030da41626d9f28de97b12ce206755b841ee256ef"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "24edf0665a2356575689840d7a04971f351d28dd074e3f9ca5b5692f7125ffa2"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X main.gitSha=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/ain"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/ain"
   end
 
   test do

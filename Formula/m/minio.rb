@@ -2,9 +2,9 @@ class Minio < Formula
   desc "High Performance, Kubernetes Native Object Storage"
   homepage "https://min.io"
   url "https://github.com/minio/minio.git",
-      tag:      "RELEASE.2024-02-24T17-11-14Z",
-      revision: "c2b54d92f66ea02642be4ede26f2b7ecac1f2056"
-  version "20240224171114"
+      tag:      "RELEASE.2024-10-29T16-01-48Z",
+      revision: "c4239ced225b9fead5f6b44e3665c5ccd7eacc89"
+  version "20241029160148"
   license "AGPL-3.0-or-later"
   head "https://github.com/minio/minio.git", branch: "master"
 
@@ -17,13 +17,12 @@ class Minio < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7bd060c78e86ef0170f8f5c389604ff61815e58e968c8d15be808637c15669e5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ab0247e27379cf010c8fa29e79412287d6fdcbcaa906d5aac15c0fafb0353400"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f52b044b97df982aeced9ce1bc993720c188656c61bf8fd9abf0451167447fdf"
-    sha256 cellar: :any_skip_relocation, sonoma:         "eacdae3facec8f6cce2217fe51bb21a47ddfaefaeae92e79a6cf15eafcf6c6cf"
-    sha256 cellar: :any_skip_relocation, ventura:        "dba9c2a782f42d4d165b35c0f13ea43097c615c1775c70c412021d38c5951586"
-    sha256 cellar: :any_skip_relocation, monterey:       "9d94aa6bcaf28b2f4cb5019a46be3654771ef4946de8884b1b7fa4a5c3863d21"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd1b372c7cd048e3f47aca55eb863459a7672655612c7a6d0eef1dae5eb6d957"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "90965ac115d253e8bbb1084a1ac73d52a81e36fed14e15a0aac03b3cc570a54c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5c839283ea2743a7d552466f346b4fa40b128bcf280695d6c8b766c2c3704b05"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "33cbe6703e00c3b0df9d5c2a95fec32b8b6caf04513d5c0002ce40cdf0aa9e29"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2b32ac3bba226b7202cdd19530050b3f2d31610155e0d2169ddb8d7cfdcac72a"
+    sha256 cellar: :any_skip_relocation, ventura:       "7a50b969d63c0d64af689bfabae1368b84526f36d439d6a0e95d454e631c6b41"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a55bfd768fec5ddc2fe1ce8a2b6e51145632b52d6b0e7f5216bae9cbd56a32ca"
   end
 
   depends_on "go" => :build
@@ -42,7 +41,7 @@ class Minio < Formula
         -X github.com/minio/minio/cmd.CommitID=#{Utils.git_head}
       ]
 
-      system "go", "build", *std_go_args(ldflags: ldflags)
+      system "go", "build", *std_go_args(ldflags:)
     end
   end
 

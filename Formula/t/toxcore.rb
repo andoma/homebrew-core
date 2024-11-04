@@ -3,20 +3,19 @@ class Toxcore < Formula
   homepage "https://tox.chat/"
   # This repo is a fork, but it is the source used by Debian, Fedora, and Arch,
   # and is the repo linked in the homepage.
-  url "https://github.com/TokTok/c-toxcore/releases/download/v0.2.18/c-toxcore-0.2.18.tar.gz"
-  sha256 "f2940537998863593e28bc6a6b5f56f09675f6cd8a28326b7bc31b4836c08942"
+  url "https://github.com/TokTok/c-toxcore/releases/download/v0.2.19/c-toxcore-0.2.19.tar.gz"
+  sha256 "8b418f6470db085cf59a9915685613556556df2bf427148f1814b7b118628594"
   license "GPL-3.0-or-later"
-  revision 2
+  revision 1
   head "https://github.com/TokTok/c-toxcore.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "e970ecd155d6e65fdc327afb6f35048c53f8e78a896e268bc97e1c53365430ce"
-    sha256 cellar: :any,                 arm64_ventura:  "83142dfc025243981093b3fc6bee44be73b9c3050b9d1f5a40ef3b7920fb5775"
-    sha256 cellar: :any,                 arm64_monterey: "38c3e60372ce9ce1b4d4cbaf1dba6bcd83237fcae2de5fc333830dbfd3555cc7"
-    sha256 cellar: :any,                 sonoma:         "fdf422e77dbba5bad498a305dbcae5b8a2917c525e4fbd8a52406a3519cdfc0b"
-    sha256 cellar: :any,                 ventura:        "4386814e7f8fcd090c58e1e329d63383407fb8b5389917bf4413af9cf5b7ffb7"
-    sha256 cellar: :any,                 monterey:       "3fa8b26eb52818e128cf62441cf6fbe025034472bc0953d5e70fa138f3995216"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd442a9f9a372103190e5d6490cf84de89632e0fb656c8bbd38fe1d38042ccdb"
+    sha256 cellar: :any,                 arm64_sequoia: "8115a1b7420fe04e3317b34b23089616c585c58741bf3248e3b2004d09b49a74"
+    sha256 cellar: :any,                 arm64_sonoma:  "4447d4c8882c0f794fd933d3b771306acf67e8f3638ae7125f08b5bda5c1851d"
+    sha256 cellar: :any,                 arm64_ventura: "e4bb9510c529cc113e795c9063c331976f7bdd1dcdb8e8285150b4925f877406"
+    sha256 cellar: :any,                 sonoma:        "4f9b719b1748fb5e54996a487c301857d5d40c2104a41a2d60d86c6b1eb40abc"
+    sha256 cellar: :any,                 ventura:       "5ce4ae2f7d9270d9912b2fb3a8a332626b21bae85e73b816d50c43cb41bb1b5d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "28260047bfcfeb5441f1b73d8f58eaad3d1609bc0660a4b54e79467ca32771a4"
   end
 
   depends_on "cmake" => :build
@@ -33,7 +32,7 @@ class Toxcore < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <tox/tox.h>
       int main() {
         TOX_ERR_NEW err_new;
@@ -43,7 +42,7 @@ class Toxcore < Formula
         }
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "-I#{include}/toxcore", testpath/"test.c",
                    "-L#{lib}", "-ltoxcore", "-o", "test"
     system "./test"

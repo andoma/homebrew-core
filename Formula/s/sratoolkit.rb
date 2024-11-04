@@ -4,12 +4,12 @@ class Sratoolkit < Formula
   license all_of: [:public_domain, "GPL-3.0-or-later", "MIT"]
 
   stable do
-    url "https://github.com/ncbi/sra-tools/archive/refs/tags/3.0.10.tar.gz"
-    sha256 "93cfa802938506866b9d565a18a31ac84fd26f2929636b23f1f8dd9f39cf977d"
+    url "https://github.com/ncbi/sra-tools/archive/refs/tags/3.1.1.tar.gz"
+    sha256 "96b110bd5a30ad312e2f02552062b48a77d40c763e6aba5bb84e83662a505cf1"
 
     resource "ncbi-vdb" do
-      url "https://github.com/ncbi/ncbi-vdb/archive/refs/tags/3.0.10.tar.gz"
-      sha256 "2e088a8542e6c3bc1aad01a5d2fca2ef5b745c36a3aafd3b0b42cb53b42b345d"
+      url "https://github.com/ncbi/ncbi-vdb/archive/refs/tags/3.1.1.tar.gz"
+      sha256 "e9766f259853c696be48e289b08cb5ae6e198d82d7ffee79f09ce7f720487991"
     end
   end
 
@@ -19,13 +19,14 @@ class Sratoolkit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "5bc5d225da76c6e57a12ebe4027e454a2c2bfb3229306daac46df538d446b057"
-    sha256 cellar: :any,                 arm64_ventura:  "4faeeca177bf726e5650f714fa64ceb56c8ce80ef3eaf652ae14dd44038ae42c"
-    sha256 cellar: :any,                 arm64_monterey: "89218c6322857efe88d4efe757d6126b39ece00445fee8af52d9cdff1da2d1c7"
-    sha256 cellar: :any,                 sonoma:         "47548e36720f03d2733188779bf9ba735e62c0fe5515d541c3bde330f01e0802"
-    sha256 cellar: :any,                 ventura:        "de7883c9c8c5ce4f4f326c51e6e68ef1935cd0486e09324d20da4ba84d4ac9fe"
-    sha256 cellar: :any,                 monterey:       "b6167481dee77e6372e7743f673cd0d3146b9ae478ecee9a28ac006cd863b3e2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "166edd71fecff71213c8b68992872518600c0cc16aeec8de5ed83cc0ec002174"
+    sha256 cellar: :any,                 arm64_sequoia:  "9d051a20976c9212f9b57d78fbd7043d6c03380c598757c147b0fe3f8364c646"
+    sha256 cellar: :any,                 arm64_sonoma:   "8b6581068ebb4d42908bed8f9be8fe44f896483d7f19cb15107ab315294513ef"
+    sha256 cellar: :any,                 arm64_ventura:  "edf975289e9caef050ae49d59b2b677d44483b49583977175514422135eae15d"
+    sha256 cellar: :any,                 arm64_monterey: "7dcf55c2e3ac299e2cecb44d71dcb1f0c50badeac8169076288217d4ce19187f"
+    sha256 cellar: :any,                 sonoma:         "9e2e37314105274979ba40b006398cff75639fc0cbda5508d50f7b9f69ac10bf"
+    sha256 cellar: :any,                 ventura:        "d2b5f395687e8546a3a85409aa307f15c7ae4c72d5aca87c6b98b4ca3c27193a"
+    sha256 cellar: :any,                 monterey:       "466af9c6aa160bb2be60fa1b4e57de7a00a7104cf70cce89eaa5a3705c7169e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d4562ca1d63b5f4638dd94c2d99e8254cb7b8703e32d754f30ce4f23e1e96492"
   end
 
   head do
@@ -43,11 +44,9 @@ class Sratoolkit < Formula
   uses_from_macos "libxml2"
 
   def install
-    (buildpath/"ncbi-vdb-source").install resource("ncbi-vdb")
+    odie "ncbi-vdb resource needs to be updated" if build.stable? && version != resource("ncbi-vdb").version
 
-    # Workaround to allow clang/aarch64 build to use the gcc/arm64 directory
-    # Issue ref: https://github.com/ncbi/ncbi-vdb/issues/65
-    ln_s "../gcc/arm64", buildpath/"ncbi-vdb-source/interfaces/cc/clang/arm64" if Hardware::CPU.arm?
+    (buildpath/"ncbi-vdb-source").install resource("ncbi-vdb")
 
     # Need to use HDF 1.10 API: error: too few arguments to function call, expected 5, have 4
     # herr_t h5e = H5Oget_info_by_name( self->hdf5_handle, buffer, &obj_info, H5P_DEFAULT );
@@ -65,12 +64,10 @@ class Sratoolkit < Formula
     system "cmake", "--install", "sra-tools-build"
 
     # Remove non-executable files.
-    (bin/"ncbi").rmtree
+    rm_r(bin/"ncbi")
   end
 
   test do
-    assert_equal version, resource("ncbi-vdb").version, "`ncbi-vdb` resource needs updating!" if build.stable?
-
     # For testing purposes, generate a sample config noninteractively in lieu of running vdb-config --interactive
     # See upstream issue: https://github.com/ncbi/sra-tools/issues/291
     require "securerandom"

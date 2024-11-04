@@ -12,7 +12,8 @@ class Onedpl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "5f78ee41677887fa9c4ef1dbaf559f29e6754fbdc57550634d2c8e2dd12686c1"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "41a83601bb2bb9542dcdbfa8c3f8dcfd542834ef0277013c85d21199759f9af7"
   end
 
   depends_on "cmake" => :build
@@ -27,7 +28,7 @@ class Onedpl < Formula
   test do
     tbb = Formula["tbb"]
 
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <oneapi/dpl/execution>
       #include <oneapi/dpl/algorithm>
       #include <array>
@@ -40,7 +41,7 @@ class Onedpl < Formula
           assert(i==arr.at(i));
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-std=c++17", "-L#{tbb.opt_lib}", "-ltbb", "-I#{tbb.opt_include}",
                     "-I#{prefix}/stdlib", "-I#{include}", "-o", "test"
     system "./test"

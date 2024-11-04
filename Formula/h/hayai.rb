@@ -6,6 +6,7 @@ class Hayai < Formula
   license "Apache-2.0"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "550f637f1d8b57e9b2127a31da69c37b88928c44d67805b6126eb1b5c4119acc"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "761e7c56fb8d74f8803deda44ba43cf8e483937a173f74fce264fb12a345a285"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "dd6a2a14ff0cd666059ddf5aecbbca1679a1fd40248c981566223c308f3dd659"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "9dccf9e4fa4cd6918a8bf6e37008b59044af49aedf965a878d35fe5200d42062"
@@ -22,6 +23,8 @@ class Hayai < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "568a29e0dee5f8da2adcce268ca50150ab1f4f06e3badecf5aa2adf6fd1cb940"
   end
 
+  deprecate! date: "2024-04-18", because: :repo_archived
+
   depends_on "cmake" => :build
 
   def install
@@ -30,7 +33,7 @@ class Hayai < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <hayai/hayai.hpp>
       #include <iostream>
       int main() {
@@ -42,7 +45,7 @@ class Hayai < Formula
       {
         std::cout << "Hayai works!" << std::endl;
       }
-    EOS
+    CPP
 
     system ENV.cxx, "test.cpp", "-L#{lib}", "-lhayai_main", "-o", "test"
     system "./test"

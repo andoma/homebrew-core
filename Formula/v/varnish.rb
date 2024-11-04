@@ -1,9 +1,9 @@
 class Varnish < Formula
   desc "High-performance HTTP accelerator"
   homepage "https://www.varnish-cache.org/"
-  url "https://varnish-cache.org/_downloads/varnish-7.4.2.tgz"
-  mirror "https://fossies.org/linux/www/varnish-7.4.2.tgz"
-  sha256 "6d3d03c67514e6bb4e8584e40a381f51e708607d39337a63dc4ae42061d9a46f"
+  url "https://varnish-cache.org/_downloads/varnish-7.6.0.tgz"
+  mirror "https://fossies.org/linux/www/varnish-7.6.0.tgz"
+  sha256 "aba283c5a31baaa5356a6db38f38748cbb9158feca018193445ccc8514715d5c"
   license "BSD-2-Clause"
 
   livecheck do
@@ -12,13 +12,12 @@ class Varnish < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "05ca605a315ea6a326c9abaf7037f794c58939fed838cc5078acd88f0ec8ddf6"
-    sha256 arm64_ventura:  "bb8f52011862abaf26f45082b11e44455747b64fad5998de980023bfdb701a42"
-    sha256 arm64_monterey: "2a1d0434bf0df77afaed7930f836c0f0247c2833c8d691f361754b8c8edd2cbb"
-    sha256 sonoma:         "f99ec704f81ef63bc861fd4306681a8ac58392c182813e41e435fad35d1d37ed"
-    sha256 ventura:        "bc1ab78a6465477ddf05aa268aa841ed8c352010c62a12c341d4fed79a6635d5"
-    sha256 monterey:       "54ef03c825b0677c218dceb588505c79b026492f55a8ef17c076707c40756f94"
-    sha256 x86_64_linux:   "5e3efd58286811d442ef30b836a17c6d46a1d10d931f7517afa56ba9deeb9cb2"
+    sha256 arm64_sequoia: "0cfc073c2158e6dcb2af053cdfcef99688993f62c37664bf1417e77cb355c283"
+    sha256 arm64_sonoma:  "1aaab04a079d9cbe8d35a1b3dfb80f128d1f34dfa7badb137104c23e256aecc9"
+    sha256 arm64_ventura: "d4f1b0b7c46dfe7d116a09787a19d9aefd3e5b3811f99681c10e8c29f7536a2a"
+    sha256 sonoma:        "2c14d407cead72f4dfdcb4aa68f538224170d31397e9cb61fd5ed2d0a3a3ab86"
+    sha256 ventura:       "cbd7fb43946486f9b967bc0c9829e339a92c674f00fc45f16855bacb6309707d"
+    sha256 x86_64_linux:  "9ab568dc9dd39df73ea8e03a8ee9d4d3ba1315b6114ed0001ce01e8615f7fab2"
   end
 
   depends_on "docutils" => :build
@@ -75,6 +74,8 @@ class Varnish < Formula
     timeout_tests = [
       testpath/"m00000.vtc",
       testpath/"b00047.vtc",
+      testpath/"b00084.vtc",
+      testpath/"b00086.vtc",
       testpath/"u00008.vtc",
     ]
     tests = testpath.glob("[bmu]*.vtc") - timeout_tests

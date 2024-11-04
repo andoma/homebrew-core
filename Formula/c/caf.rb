@@ -2,19 +2,18 @@ class Caf < Formula
   # Renamed from libccpa
   desc "Implementation of the Actor Model for C++"
   homepage "https://www.actor-framework.org/"
-  url "https://github.com/actor-framework/actor-framework/archive/refs/tags/0.19.6.tar.gz"
-  sha256 "48dc4c4abf5ab5a7c6f84b9259cc8be1b02c601d31893647ab44e143cdc4b6d5"
+  url "https://github.com/actor-framework/actor-framework/archive/refs/tags/1.0.2.tar.gz"
+  sha256 "ef4dd00ca7c59cd61dc336b6a8efbd6150ca85c404d213ecb61f6bcee4094ffc"
   license "BSD-3-Clause"
   head "https://github.com/actor-framework/actor-framework.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "5f4f687cb5f7e16d21e1bc428ea3ce722f4fb34947a1439e2799beebfdf78d43"
-    sha256 cellar: :any,                 arm64_ventura:  "b9e51260c62dee7a1fd792c52ef6ff977c5dc42d2169e1e2757741bb8cdfab7c"
-    sha256 cellar: :any,                 arm64_monterey: "d204562f38a7acd860b71bdcafebceaadf75dddd71995a4ed9df72d59e95b2e4"
-    sha256 cellar: :any,                 sonoma:         "251c016b181f8cba05f6366fe28eb6e85dac757ec8b0e4d9fef293f6c02980d6"
-    sha256 cellar: :any,                 ventura:        "211a49f431d819f2b8652764b6397b278707e1ff6d6642ee03acf3cfb616b9e7"
-    sha256 cellar: :any,                 monterey:       "c5295508f8ef5bdf5dcff3bff9c4710658f5d9694b82b15a4989ea0dd953d00a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db803ebdc24f1e44baaebda7b899705ab8493f87b3420823a47f0db5e302bb94"
+    sha256 cellar: :any,                 arm64_sequoia: "9537e004e941d95aac0be101fdb15af8482210717eec4ff76dcb467837cbbe18"
+    sha256 cellar: :any,                 arm64_sonoma:  "4b8e61e0a9dba95d2b2894b31a370cddacfc030bd1ac9d8876fa3c80e9ed88c6"
+    sha256 cellar: :any,                 arm64_ventura: "acbf088b4337573a0710635d25ae8bb4828a8913b552443206b1c92ed0a555cc"
+    sha256 cellar: :any,                 sonoma:        "418ac2c0d3b64145b22f801ba4868490d9306babce62ce2e315da9ccf4b8228d"
+    sha256 cellar: :any,                 ventura:       "0d94e1fd5b0d827b48ae36871873a7f574635ca36256616912bfc1a3f02b390a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "891cd444eefd7ff0c2ca32273b9d7734a43a33f6758b343a126dfb99a8006b3d"
   end
 
   depends_on "cmake" => :build
@@ -33,7 +32,7 @@ class Caf < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       #include <caf/all.hpp>
       using namespace caf;
@@ -44,7 +43,7 @@ class Caf < Formula
         });
       }
       CAF_MAIN()
-    EOS
+    CPP
     system ENV.cxx, "-std=c++17", "test.cpp", "-L#{lib}", "-lcaf_core", "-o", "test"
     system "./test"
   end

@@ -2,10 +2,10 @@ class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage "https://www.percona.com"
   # TODO: Check if we can use unversioned `protobuf` at version bump
-  url "https://downloads.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.35-27/source/tarball/percona-server-8.0.35-27.tar.gz"
-  sha256 "631ad9063f1235ee793a35b602e712476628b7b0cc7135dd54856dbb58b41d45"
+  url "https://downloads.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.36-28/source/tarball/percona-server-8.0.36-28.tar.gz"
+  sha256 "8a4b44bd9cf79a38e6275e8f5f9d4e8d2c308854b71fd5bf5d1728fff43a6844"
   license "BSD-3-Clause"
-  revision 1
+  revision 2
 
   livecheck do
     url "https://docs.percona.com/percona-server/latest/"
@@ -20,19 +20,18 @@ class PerconaServer < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "ec59297cf7d37f88ac3d758a078373f1fa22df63aec0c8164562903b50f4f9d5"
-    sha256 arm64_ventura:  "4ca36aab3da46c8f19c0d2de0bfc2391eaf139e7a75dcfbca05a5ddedfe67073"
-    sha256 arm64_monterey: "938db173ae59b6c3775ac3bb436d4e579f7bd8784a9b9916beca9fca24851447"
-    sha256 sonoma:         "e574175ae95082ebbc56b39a2ca0fa78d5b47c6c02ce9a3154a5e09b54047ff2"
-    sha256 ventura:        "57e4086330da88d313045d5fde37c5f122c5ff17964b86b2831e40537a7560a4"
-    sha256 monterey:       "4d853a972fd830ad7e68af8eb2c4adf5f7db7ade50e8dcfcc27ab79ac143a4c0"
-    sha256 x86_64_linux:   "9b8252c05414dcc611d1ceb8340c7ae6c73b4d4fcd50725393a7c86aabef2e85"
+    sha256 arm64_sequoia: "f33ab3853ad5d77d832172a84bc26d7caff044417c9f4eb6aace70a4ad962a41"
+    sha256 arm64_sonoma:  "d3a25c59d673eb187a0de78311a22327632966e4b55ea7a929288d28e5c1a6a0"
+    sha256 arm64_ventura: "326320bf4026b8a1e01a615e71521b336b6ce7467e9c6efcea6961f2504d0815"
+    sha256 sonoma:        "44a4869d90907cf599832f67d59ab2b2719fbdd3a2efc4a8e4c38c8a573b35b4"
+    sha256 ventura:       "5d482f723ab038acaf8a355db7d464bbe74d1a50d84795627091ae758213f216"
+    sha256 x86_64_linux:  "28712e5fe869747e2a045981475ddb7c35ca138f8588510d68c241e946fb5805"
   end
 
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "libevent"
   depends_on "libfido2"
   depends_on "lz4"
@@ -44,6 +43,7 @@ class PerconaServer < Formula
 
   uses_from_macos "curl"
   uses_from_macos "cyrus-sasl"
+  uses_from_macos "krb5"
   uses_from_macos "libedit"
 
   on_linux do
@@ -148,11 +148,7 @@ class PerconaServer < Formula
     end
 
     # Remove the tests directory
-    rm_rf prefix/"mysql-test"
-
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix/"data"
+    rm_r(prefix/"mysql-test")
 
     # Fix up the control script and link into bin.
     inreplace "#{prefix}/support-files/mysql.server",
@@ -214,12 +210,12 @@ class PerconaServer < Formula
       "--basedir=#{prefix}", "--datadir=#{testpath}/mysql", "--tmpdir=#{testpath}/tmp"
     port = free_port
     fork do
-      system "#{bin}/mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
+      system bin/"mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
         "--datadir=#{testpath}/mysql", "--port=#{port}", "--tmpdir=#{testpath}/tmp"
     end
     sleep 5
     assert_match "information_schema",
       shell_output("#{bin}/mysql --port=#{port} --user=root --password= --execute='show databases;'")
-    system "#{bin}/mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
+    system bin/"mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
   end
 end

@@ -1,30 +1,21 @@
 class Cpplint < Formula
+  include Language::Python::Virtualenv
+
   desc "Static code checker for C++"
   homepage "https://pypi.org/project/cpplint/"
-  url "https://files.pythonhosted.org/packages/18/72/ea0f4035bcf35d8f8df053657d7f3370d56ff4d4e6617021b6544b9958d4/cpplint-1.6.1.tar.gz"
-  sha256 "d430ce8f67afc1839340e60daa89e90de08b874bc27149833077bba726dfc13a"
+  url "https://files.pythonhosted.org/packages/e7/1d/6965acf4f85495956ebdb80ab2cafd803e39ba866b8370618a120d72938b/cpplint-2.0.0.tar.gz"
+  sha256 "330daf6bf9a9006b9161af6693661df8f8373d54b2ea6527cd515a8e61d41abb"
   license "Apache-2.0"
 
   bottle do
-    rebuild 3
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bb957a97eaad0daeb98d695b945e8aea09267cf91421ff1fc5c13df7ff65363f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2fd37f88b0709432fde61363cf1f122af4b62cc6b9f61e903ad3efeb2ee75b75"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7a421073e0f1a6913f84a606bb6d0f2255939d551ff72b0d88fa342719478a25"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1199dfcd041ae8d60e1a40c2f5af0aef7220d299e8393a7347daf7e8b25abc2e"
-    sha256 cellar: :any_skip_relocation, ventura:        "51ff0b8faa6a9a54bcc265aaf307fbcb8bb759381723161745536e1b1033572b"
-    sha256 cellar: :any_skip_relocation, monterey:       "19b3b02254b54bb04fcbe8defa2b3d0954d5ca4b17c3999fa168d15460df71ed"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dfe77e381361892a458fa4851680be39db2a287bb5954ca9cab86d9d781ebc8d"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "e54c0d69ee5326844ebd9b9c1f6278292c7c7bea77b589b3dba81a25ce8cbf0b"
   end
 
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.12"
-
-  def python3
-    "python3.12"
-  end
+  depends_on "python@3.13"
 
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
 
     # install test data
     pkgshare.install "samples"

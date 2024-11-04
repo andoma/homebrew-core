@@ -1,8 +1,8 @@
 class DsdaDoom < Formula
   desc "Fork of prboom+ with a focus on speedrunning"
   homepage "https://github.com/kraflab/dsda-doom"
-  url "https://github.com/kraflab/dsda-doom/archive/refs/tags/v0.27.5.tar.gz"
-  sha256 "5e01be417033e1abf708bb22509d4d910b158a159a2790c4d5b46690daba67f0"
+  url "https://github.com/kraflab/dsda-doom/archive/refs/tags/v0.28.2.tar.gz"
+  sha256 "5cab9227a5ab1c6fded71321c2d9ae2b481e8defc7f04ea9ca232cb13b856ce6"
   license "GPL-2.0-only"
   head "https://github.com/kraflab/dsda-doom.git", branch: "master"
 
@@ -12,16 +12,16 @@ class DsdaDoom < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "ae9d41065eab382aa05fa2336596aa74da372c87eb8d64cf71946f9576c37947"
-    sha256 arm64_ventura:  "96210b4f7fb9c4c92a6df291c2d4ed6de2670129325359efe85997ba3cef96fe"
-    sha256 arm64_monterey: "53c0f6f7bd3136ba9203db9b2815c0faa52ec30667ae34875c553d391f948212"
-    sha256 sonoma:         "5ae8098b88dc69ea6411dbc6ad95aea4e8e9c4ad9b0fe26185bf577c58f04c31"
-    sha256 ventura:        "dfd1dbb2f8da602147d652f809d6f2f79eb21a532927f56248d726c9ebf63b51"
-    sha256 monterey:       "c8afe23068fcefc108567f2ac07f9c1e98a1aaf259c021b1f9e13082d02158f4"
-    sha256 x86_64_linux:   "1f4dead38e177c76badd2618757a679ea4ef103aaddf42cece93788be99a11de"
+    sha256 arm64_sequoia: "db6649329c85718257a641fe1e7fb9786aeb269b472117f4c46c8e225476507e"
+    sha256 arm64_sonoma:  "672879822807be377967aed7039acac226ca7da4242f49f04f697a7cd4bc7bb5"
+    sha256 arm64_ventura: "4fc7d8a2c44c191d1d6eb0d679dbdb38ce63b0d76858fea613bf1fe4edeecbb5"
+    sha256 sonoma:        "5eb2c7e28e9c677dbd6d2b70e6ac704c9f90d809e04cf06133f9101130a685a6"
+    sha256 ventura:       "263b370dcd5a634a5eae6cfe4f0f14ccf5e121cd4750806912616e9d30973d8b"
+    sha256 x86_64_linux:  "bea4d211577ca8450b598010d90ab9f915918bcc7ecbb80bd1d8ff63688029f9"
   end
 
   depends_on "cmake" => :build
+
   depends_on "dumb"
   depends_on "fluid-synth"
   depends_on "libvorbis"
@@ -31,9 +31,15 @@ class DsdaDoom < Formula
   depends_on "sdl2"
   depends_on "sdl2_image"
   depends_on "sdl2_mixer"
+
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "libogg"
+  end
+
   on_linux do
+    depends_on "mesa"
     depends_on "mesa-glu"
   end
 
@@ -68,6 +74,10 @@ class DsdaDoom < Formula
   end
 
   test do
+    ENV["HOME"] = testpath
+    ENV["XDG_DATA_HOME"] = testpath
+    mkdir testpath/"Library/Application Support"
+
     expected_output = "dsda-doom v#{version.major_minor_patch}"
     assert_match expected_output, shell_output("#{bin}/dsda-doom -iwad invalid_wad 2>&1", 255)
   end

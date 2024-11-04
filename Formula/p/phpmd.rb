@@ -6,8 +6,12 @@ class Phpmd < Formula
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "e5471e871a390181f97c13a9c2bc6e3c5a9be1a8d1854c6941c9000c0f3fbf8b"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "28cd360f0eea58782927875c91b4d709764ae46076f79d88681e2fcb73cf041e"
   end
+
+  # Upstream does not support Phar download anymore, see https://github.com/phpmd/phpmd/issues/971
+  deprecate! date: "2024-10-18", because: :unsupported
 
   depends_on "php"
 

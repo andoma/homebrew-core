@@ -3,31 +3,49 @@ class Virtualenvwrapper < Formula
 
   desc "Python virtualenv extensions"
   homepage "https://virtualenvwrapper.readthedocs.io/"
-  url "https://files.pythonhosted.org/packages/4e/00/71629f631867c434e49fa276d659894c7cb5715f5de2233c10bc47c1fcc6/virtualenvwrapper-6.1.0.tar.gz"
-  sha256 "d467beac5a44be00fb5cd1bcf332398c3dab5fb3bd3af7815ea86b4d6bb3d3a4"
+  url "https://files.pythonhosted.org/packages/97/0b/1f6daec2e0bd25275953256f83f98fb337b78b9d03d44b7eb9619b72b046/virtualenvwrapper-6.1.1.tar.gz"
+  sha256 "112e7ea34a9a3ce90aaea54182f0d3afef4d1a913eeb75e98a263b4978cd73c6"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6a90e2263d38d0d3ab6dc6d1bafbd9e75d3d05471d078b3f16046aa4b61cfcde"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4c1072ed62c67138b7424ed34069cd8325564a2e0294cf7974cbffe4823dd7bf"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "22013ed67797a18484d863188024430bb64951f6766ac51bb98cbd75696b4ea6"
-    sha256 cellar: :any_skip_relocation, sonoma:         "fe67aba6cc7c349860a5afe5813f8d8eb5d998196cf3155f8ad5a4f1eb7e8b7a"
-    sha256 cellar: :any_skip_relocation, ventura:        "de96173160e4b3185109f10d51ee254b73f567b7cc73abbb73b0c807b4a0c4ca"
-    sha256 cellar: :any_skip_relocation, monterey:       "5931223a14d8c89970297f6298041b4b0fdbeb46ba41d8565aea9589b5180356"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e98d276306cbdc9df1ee2f7fe5bfca450525492923c3b634b9dc1544a8be5016"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e51d9ccf87aee13767c929170db8e7012d2ada9085798e262868fda6388252b5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e51d9ccf87aee13767c929170db8e7012d2ada9085798e262868fda6388252b5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e51d9ccf87aee13767c929170db8e7012d2ada9085798e262868fda6388252b5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8e47b3f80979e56edd1b3bec6e2513b941508a182773534c9c9f63a84c5f59ac"
+    sha256 cellar: :any_skip_relocation, ventura:       "8e47b3f80979e56edd1b3bec6e2513b941508a182773534c9c9f63a84c5f59ac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "41c4a7cb2fdb39da69b11eb2e7a89f0772b43df9d8f98100b986f1d6e480b998"
   end
 
-  depends_on "python@3.12"
-  depends_on "virtualenv"
+  depends_on "python@3.13"
+
+  resource "distlib" do
+    url "https://files.pythonhosted.org/packages/0d/dd/1bec4c5ddb504ca60fc29472f3d27e8d4da1257a854e1d96742f15c1d02d/distlib-0.3.9.tar.gz"
+    sha256 "a60f20dea646b8a33f3e7772f74dc0b2d0772d2837ee1342a00645c81edf9403"
+  end
+
+  resource "filelock" do
+    url "https://files.pythonhosted.org/packages/9d/db/3ef5bb276dae18d6ec2124224403d1d67bccdbefc17af4cc8f553e341ab1/filelock-3.16.1.tar.gz"
+    sha256 "c249fbfcd5db47e5e2d6d62198e565475ee65e4831e2561c8e313fa7eb961435"
+  end
 
   resource "pbr" do
-    url "https://files.pythonhosted.org/packages/8d/c2/ee43b3b11bf2b40e56536183fc9f22afbb04e882720332b6276ee2454c24/pbr-6.0.0.tar.gz"
-    sha256 "d1377122a5a00e2f940ee482999518efe16d745d423a670c27773dfbc3c9a7d9"
+    url "https://files.pythonhosted.org/packages/b2/35/80cf8f6a4f34017a7fe28242dc45161a1baa55c41563c354d8147e8358b2/pbr-6.1.0.tar.gz"
+    sha256 "788183e382e3d1d7707db08978239965e8b9e4e5ed42669bf4758186734d5f24"
+  end
+
+  resource "platformdirs" do
+    url "https://files.pythonhosted.org/packages/13/fc/128cc9cb8f03208bdbf93d3aa862e16d376844a14f9a0ce5cf4507372de4/platformdirs-4.3.6.tar.gz"
+    sha256 "357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907"
   end
 
   resource "stevedore" do
-    url "https://files.pythonhosted.org/packages/ac/d6/77387d3fc81f07bc8877e6f29507bd7943569093583b0a07b28cfa286780/stevedore-5.1.0.tar.gz"
-    sha256 "a54534acf9b89bc7ed264807013b505bf07f74dbe4bcfa37d32bd063870b087c"
+    url "https://files.pythonhosted.org/packages/c4/59/f8aefa21020054f553bf7e3b405caec7f8d1f432d9cb47e34aaa244d8d03/stevedore-5.3.0.tar.gz"
+    sha256 "9a64265f4060312828151c204efbe9b7a9852a0d9228756344dbc7e4023e375a"
+  end
+
+  resource "virtualenv" do
+    url "https://files.pythonhosted.org/packages/3f/40/abc5a766da6b0b2457f819feab8e9203cbeae29327bd241359f866a3da9d/virtualenv-20.26.6.tar.gz"
+    sha256 "280aede09a2a5c317e409a00102e7077c6432c5a38f0ef938e643805a7ad2c48"
   end
 
   resource "virtualenv-clone" do
@@ -36,15 +54,14 @@ class Virtualenvwrapper < Formula
   end
 
   def install
-    python3 = "python3.12"
-    venv = virtualenv_create(libexec, python3)
-    venv.pip_install resources
-    venv.pip_install buildpath
+    virtualenv_install_with_resources
 
-    bin.install_symlink libexec/"bin/virtualenvwrapper_lazy.sh"
+    (bin/"virtualenvwrapper.sh").unlink
     (bin/"virtualenvwrapper.sh").write <<~SH
       #!/bin/sh
-      export VIRTUALENVWRAPPER_PYTHON="#{libexec}/bin/#{python3}"
+      export VIRTUALENVWRAPPER_PYTHON="#{libexec}/bin/python"
+      export VIRTUALENVWRAPPER_VIRTUALENV="${VIRTUALENVWRAPPER_VIRTUALENV:-#{libexec}/bin/virtualenv}"
+      export VIRTUALENVWRAPPER_VIRTUALENV_CLONE="${VIRTUALENVWRAPPER_VIRTUALENV_CLONE:-#{libexec}/bin/virtualenv-clone}"
       source "#{libexec}/bin/virtualenvwrapper.sh"
     SH
   end

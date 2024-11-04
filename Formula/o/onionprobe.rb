@@ -3,42 +3,41 @@ class Onionprobe < Formula
 
   desc "Test and monitoring tool for Tor Onion Services"
   homepage "https://tpo.pages.torproject.net/onion-services/onionprobe/"
-  url "https://files.pythonhosted.org/packages/9d/5f/c685af3ff4b8833f961ba27c12506c835150710ca84afd37847897be84d9/onionprobe-1.1.2.tar.gz"
-  sha256 "200a31ab2c8b1f6bafec1828a4e3b374d01fc80a8fefd9f75698b70cb6d04903"
+  url "https://files.pythonhosted.org/packages/aa/a7/881b66594477795314e4a5029f098eb78cf21c843b63bed8d3c7cfcf5fe4/onionprobe-1.2.0.tar.gz"
+  sha256 "65ef77047e2cb24de999dcfeeb759de04f6ec952612a5aa9225dc92488696dc5"
   license "GPL-3.0-or-later"
-  revision 1
+  revision 2
   head "https://gitlab.torproject.org/tpo/onion-services/onionprobe.git", branch: "main"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sonoma:   "faf9724f520fe25602a63dc0eeee17091e7213fe26be1359d8c0be5d45dcb08d"
-    sha256 cellar: :any,                 arm64_ventura:  "c0d0e3ed019f40004af5c7e8e85b85030e2f68da054474080a9e4105f95d8909"
-    sha256 cellar: :any,                 arm64_monterey: "febf38067b2fddff2e8f2925b540d6b360e79e5e38471ced0a51416afcaf95a1"
-    sha256 cellar: :any,                 sonoma:         "76a3dd7fbbf00dd77d495bdca9341c9354c394cb8c529c1a91ebd419b7d82ae6"
-    sha256 cellar: :any,                 ventura:        "1e8a87eb802f01638808336971bd5b76abb79bc5becfd9721eb1cc4d65796729"
-    sha256 cellar: :any,                 monterey:       "6d1c465db61749e27bfea9f3468c14b8b7b8b0a35bf3e7bf54de18eb0fd03170"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "601b9287417aface80a01cf2d57fe44cf5e7d6abe2efb7d1a253629b084e4cf8"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "3e82006a15ea00cd837933aaa31251ff103abfd778f8ebbbef9bce49ff4bde72"
+    sha256 cellar: :any,                 arm64_sonoma:  "cd6b2b66dfbc2a38791fa61a0f546844ad53e13d70e926424852ba60e3b98c12"
+    sha256 cellar: :any,                 arm64_ventura: "3a17b6ab40162a561db3a94e2ed8ee52368bf0f30e5e63fa90d17cabbfb8fc26"
+    sha256 cellar: :any,                 sonoma:        "5371c35e61dfae1384a4d370fd812e6dd9fd6a222b9ce31523a2c2281efbc338"
+    sha256 cellar: :any,                 ventura:       "cf1c2a0eb660c5af658a9193251bc33ae386538914cd45d96314a0978f0c0669"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "77527d81a1f281d219577cc01bcc4f31a87f67466cf743ad2decdfb9f74e1019"
   end
 
+  depends_on "certifi"
+  depends_on "cryptography"
   depends_on "libyaml"
-  depends_on "python-certifi"
-  depends_on "python-cryptography"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "tor"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
-    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
-    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "prometheus-client" do
-    url "https://files.pythonhosted.org/packages/3d/39/3be07741a33356127c4fe633768ee450422c1231c6d34b951fee1458308d/prometheus_client-0.20.0.tar.gz"
-    sha256 "287629d00b147a32dcb2be0b9df905da599b2d82f80377083ec8463309a4bb89"
+    url "https://files.pythonhosted.org/packages/e1/54/a369868ed7a7f1ea5163030f4fc07d85d22d7a1d270560dab675188fb612/prometheus_client-0.21.0.tar.gz"
+    sha256 "96c83c606b71ff2b0a433c98889d275f51ffec6c5e267de37c7a2b5c9aa9233e"
   end
 
   resource "pysocks" do
@@ -47,18 +46,13 @@ class Onionprobe < Formula
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
-  end
-
-  resource "six" do
-    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
-    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "stem" do
@@ -67,8 +61,8 @@ class Onionprobe < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install

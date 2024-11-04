@@ -1,9 +1,9 @@
 class Teleport < Formula
   desc "Modern SSH server for teams managing distributed infrastructure"
   homepage "https://goteleport.com/"
-  url "https://github.com/gravitational/teleport/archive/refs/tags/v14.3.3.tar.gz"
-  sha256 "c30cefedae3df3cacef78e385a369773820f9ed00432b3c1bd12b0026b01f144"
-  license "AGPL-3.0-or-later"
+  url "https://github.com/gravitational/teleport/archive/refs/tags/v16.4.6.tar.gz"
+  sha256 "4c8b8f48c58649441502cf11d675036561ecf6a407351bc204af50ec6e5973f1"
+  license all_of: ["AGPL-3.0-or-later", "Apache-2.0"]
   head "https://github.com/gravitational/teleport.git", branch: "master"
 
   # As of writing, two major versions of `teleport` are being maintained
@@ -18,18 +18,23 @@ class Teleport < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "327c97012b954c9e17e46926ff6d46e919bc9a32ca55ccf9dce95e0bf1c1b8b0"
-    sha256 cellar: :any,                 arm64_ventura:  "f569c4a8b34f93e23bb76d05e76df1b16b22f7a8cc36c2d9916e67c7873be825"
-    sha256 cellar: :any,                 arm64_monterey: "4e7c7c7d068bf972f65dff941b457db1a663cf26ac163e274a303ccfd6b4759b"
-    sha256 cellar: :any,                 sonoma:         "04bf1dceb7b1dc5864dd0c7f9e192fb0972791f3c9ee9be9e7914ae9471f1101"
-    sha256 cellar: :any,                 ventura:        "1283a664b51ebfc02a78163ba49739a6d990ec023f1898b7dba672cccfb60362"
-    sha256 cellar: :any,                 monterey:       "5f098515fa8e90a07e8274e44fb1ad24cb61db1fa74ed10106d78c82d4f4677d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "906b35b2c7dcc5bed2b1a9897b2464b113ba6c568340f3a193cfc665f041831a"
+    sha256 cellar: :any,                 arm64_sequoia: "0c4918f4f741014fa82f5f1e267863f38b04b3e62fa1a75458cd92e60b95d6bd"
+    sha256 cellar: :any,                 arm64_sonoma:  "890427e93fc2a97fb40ed7219288b62c3ac4eac0df365cdb4735ef2fe5473f24"
+    sha256 cellar: :any,                 arm64_ventura: "7b23cd79f65acf7a2a3e06fd7e1e44bec627f0551acdc65f2eedfa9a91a48438"
+    sha256 cellar: :any,                 sonoma:        "560333dd05ec9f53cdc381ff704a7a2dd9072a3828d1dc11c16b20f788514b24"
+    sha256 cellar: :any,                 ventura:       "eaac7023290fe2ea193358cba07ef0167349fd23f0c2cc449e39f998e402d3c4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0e36eac1d5423401cf7412fe0538ac8c846f998bd58627a7ac844ca6167e4b70"
   end
 
-  depends_on "go" => :build
+  # Use "go" again after https://github.com/gravitational/teleport/commit/e4010172501f0ed18bb260655c83606dfa872fbd
+  # is released, likely in a version 17.x.x (or later?):
+  depends_on "go@1.22" => :build
   depends_on "pkg-config" => :build
-  depends_on "yarn" => :build
+  depends_on "pnpm" => :build
+  depends_on "rust" => :build
+  # TODO: try to remove rustup dependancy, see https://github.com/Homebrew/homebrew-core/pull/191633#discussion_r1774378671
+  depends_on "rustup" => :build
+  depends_on "wasm-pack" => :build
   depends_on "libfido2"
   depends_on "node"
   depends_on "openssl@3"
@@ -39,8 +44,13 @@ class Teleport < Formula
   uses_from_macos "zip"
 
   conflicts_with "etsh", because: "both install `tsh` binaries"
+  conflicts_with "tctl", because: "both install `tctl` binaries"
 
   def install
+    ENV.prepend_path "PATH", Formula["rustup"].bin
+    system "rustup", "default", "stable"
+    system "rustup", "set", "profile", "minimal"
+
     ENV.deparallelize { system "make", "full", "FIDO2=dynamic" }
     bin.install Dir["build/*"]
   end

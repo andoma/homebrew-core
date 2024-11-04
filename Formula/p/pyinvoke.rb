@@ -10,24 +10,14 @@ class Pyinvoke < Formula
   head "https://github.com/pyinvoke/invoke.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dd344c952cc84ca26a60d956c247b3fb14b52e00361efd41c1bf70e350220d91"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "86673d4fe059d11933734acf43f671b653fd0195278c66d52ac8abbec6a998ab"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7c020ca468cd9020b099df8bab9c17ea8126f98576d199430a6dfd61ad1bbd94"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1e8ce934460c66273e213bbe989f64a0028ea7cbedbb86d98f1b2aca3792afc7"
-    sha256 cellar: :any_skip_relocation, ventura:        "9c343ae486cd25d94a3b66ec8c4828fe7f6896e82e8769906744da414263e41a"
-    sha256 cellar: :any_skip_relocation, monterey:       "35a68e0cf99d7869aeaa4c0c5e26dd65bf30144829512584952c6235b3e6e0a8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2ee356e6c29cbead91c18d814a4598d9470dd82fc879937ec57bc6825ebfe7c9"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "0244d25e686d6574fcaf35d14725a415c00b33dd0b2c697fc66a78160d9227a1"
   end
 
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.12" # Do not remove runtime dependency https://github.com/Homebrew/homebrew-core/issues/151248
-
-  def python3
-    "python3.12"
-  end
+  depends_on "python@3.13" # Do not remove runtime dependency https://github.com/Homebrew/homebrew-core/issues/151248
 
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
   end
 
   test do

@@ -7,13 +7,9 @@ class Taskd < Formula
   revision 1
   head "https://github.com/GothenburgBitFactory/taskserver.git", branch: "1.2.0"
 
-  livecheck do
-    url "https://taskwarrior.org/download/"
-    regex(/href=.*?taskd[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
-
   bottle do
     rebuild 2
+    sha256 cellar: :any,                 arm64_sequoia:  "61cffe43c79c6f9b87120529a75db6303a304526f47426999b22a3115418ee7a"
     sha256 cellar: :any,                 arm64_sonoma:   "e3bb75dc9d5d281fcdd7a9eb5604d5d17f36791458bf69c91a88403c385913f3"
     sha256 cellar: :any,                 arm64_ventura:  "dff5f74888539c8a37113ff4f0cdb5c4753a6bcfd8cba312978eada666286b6e"
     sha256 cellar: :any,                 arm64_monterey: "d965204a53afd9cb1f71824fffda964a63ca016560d31d8eabe7d1e2d87f804a"
@@ -22,6 +18,8 @@ class Taskd < Formula
     sha256 cellar: :any,                 monterey:       "a0131221a82276fc6feb0bec88b260d6731d346e05c84570b7f8ba376d1714eb"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d81536e57b798ded725ca302e02ff8b57e49445b02346508a5a707c925608a8e"
   end
+
+  deprecate! date: "2024-07-04", because: :repo_archived
 
   depends_on "cmake" => :build
   depends_on "gnutls"
@@ -36,6 +34,6 @@ class Taskd < Formula
   end
 
   test do
-    system "#{bin}/taskd", "init", "--data", testpath
+    system bin/"taskd", "init", "--data", testpath
   end
 end

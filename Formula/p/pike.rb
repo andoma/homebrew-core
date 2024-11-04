@@ -3,7 +3,7 @@ class Pike < Formula
   homepage "https://pike.lysator.liu.se/"
   # Homepage has an expired SSL cert as of 16/12/2020, so we add a Debian mirror
   url "https://pike.lysator.liu.se/pub/pike/latest-stable/Pike-v8.0.1738.tar.gz"
-  mirror "http://deb.debian.org/debian/pool/main/p/pike8.0/pike8.0_8.0.1738.orig.tar.gz"
+  mirror "https://deb.debian.org/debian/pool/main/p/pike8.0/pike8.0_8.0.1738.orig.tar.gz"
   sha256 "1033bc90621896ef6145df448b48fdfa342dbdf01b48fd9ae8acf64f6a31b92a"
   license any_of: ["GPL-2.0-only", "LGPL-2.1-only", "MPL-1.1"]
   revision 3
@@ -14,6 +14,7 @@ class Pike < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "68afe655f82c2d097fefafb82f5133063d1afe41d14b22552142e55cae905052"
     sha256 arm64_sonoma:   "70b0fbdddedbb800cb84877cc859c3f877809937e372ce220d7b01d0526948c7"
     sha256 arm64_ventura:  "6e208572c05918a3f7b848e774ca2399c513e1f5f016f3c6c6af4d28f1000080"
     sha256 arm64_monterey: "92ed5696e91b3f72bdc57a1558857113d166deb19688442518f3c26f9e2e435a"

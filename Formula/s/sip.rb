@@ -1,57 +1,49 @@
 class Sip < Formula
+  include Language::Python::Virtualenv
+
   desc "Tool to create Python bindings for C and C++ libraries"
-  # upstream page 404 report, https://github.com/Python-SIP/sip/issues/7
   homepage "https://python-sip.readthedocs.io/en/latest/"
-  url "https://files.pythonhosted.org/packages/99/85/261c41cc709f65d5b87669f42e502d05cc544c24884121bc594ab0329d8e/sip-6.8.3.tar.gz"
-  sha256 "888547b018bb24c36aded519e93d3e513d4c6aa0ba55b7cc1affbd45cf10762c"
-  license any_of: ["GPL-2.0-only", "GPL-3.0-only"]
-  head "https://www.riverbankcomputing.com/hg/sip", using: :hg
+  url "https://files.pythonhosted.org/packages/6e/52/36987b182711104d5e9f8831dd989085b1241fc627829c36ddf81640c372/sip-6.8.6.tar.gz"
+  sha256 "7fc959e48e6ec5d5af8bd026f69f5e24d08b3cb8abb342176f5ab8030cc07d7a"
+  license "BSD-2-Clause"
+  head "https://github.com/Python-SIP/sip.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c72ef903a6273a299314786f62bb0dd7514c671e815e03f1986637e50b389fa3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1215a87c1cd9ebf7a19c58591a4947d7e01669ea188cf38169ec6f84d2563616"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "161ac2919ec3990d7462fffbabc623301b02db130ddcdbf11f44b6ff84f8b976"
-    sha256 cellar: :any_skip_relocation, sonoma:         "abedf2f58e97a6bd15b937cad168225e7f56b5998ed5898307d4021ba3a51638"
-    sha256 cellar: :any_skip_relocation, ventura:        "0b83c01077f716d62be770898c1d718e81285f2969e3998d9675e70061110e83"
-    sha256 cellar: :any_skip_relocation, monterey:       "6c34630d0ec9a45a2a5270079d2aa6ce1a930bb4e0dd20a0e5b812f45d098e9d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "12eb797765c96258bc8e1bff5bb62689d9ee3fed08419ca8d4312a3c86d811e6"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1dcb80371d8d2a7e940566060a8808cd6debcc403ab46b75e605715be8f775b7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1dcb80371d8d2a7e940566060a8808cd6debcc403ab46b75e605715be8f775b7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1dcb80371d8d2a7e940566060a8808cd6debcc403ab46b75e605715be8f775b7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7e1e1de1fa68a594442699d1ad606342b5acc01441d3011d6908abe02604d985"
+    sha256 cellar: :any_skip_relocation, ventura:       "7e1e1de1fa68a594442699d1ad606342b5acc01441d3011d6908abe02604d985"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "231c036c97e370aa86a8a80c3fb1720a05f0a13d5f6cc62edf048764dd90c8a7"
   end
 
-  depends_on "python@3.11" => [:build, :test]
-  depends_on "python@3.12" => [:build, :test]
-  depends_on "python-packaging"
-  depends_on "python-ply"
-  depends_on "python-setuptools"
+  depends_on "python@3.13"
 
-  def pythons
-    deps.map(&:to_formula)
-        .select { |f| f.name.start_with?("python@") }
-        .sort_by(&:version)
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
+  end
+
+  def python3
+    "python3.13"
   end
 
   def install
-    clis = %w[sip-build sip-distinfo sip-install sip-module sip-sdist sip-wheel]
+    venv = virtualenv_install_with_resources
 
-    pythons.each do |python|
-      python_exe = python.opt_libexec/"bin/python"
-      system python_exe, "-m", "pip", "install", *std_pip_args, "."
-
-      pyversion = Language::Python.major_minor_version(python_exe)
-      clis.each do |cli|
-        bin.install bin/cli => "#{cli}-#{pyversion}"
-      end
-
-      next if python != pythons.max_by(&:version)
-
-      # The newest one is used as the default
-      clis.each do |cli|
-        bin.install_symlink "#{cli}-#{pyversion}" => cli
-      end
-    end
+    # Modify the path sip-install writes in scripts as we install into a
+    # virtualenv but expect dependents to run with path to Python formula
+    inreplace venv.site_packages/"sipbuild/builder.py", /\bsys\.executable\b/, "\"#{which(python3)}\""
   end
 
   test do
-    (testpath/"pyproject.toml").write <<~EOS
+    (testpath/"pyproject.toml").write <<~TOML
       # Specify sip v6 as the build system for the package.
       [build-system]
       requires = ["sip >=6, <7"]
@@ -60,7 +52,7 @@ class Sip < Formula
       # Specify the PEP 566 metadata for the project.
       [tool.sip.metadata]
       name = "fib"
-    EOS
+    TOML
 
     (testpath/"fib.sip").write <<~EOS
       // Define the SIP wrapper to the (theoretical) fib library.
@@ -89,11 +81,6 @@ class Sip < Formula
       %End
     EOS
 
-    pythons.each do |python|
-      python_exe = python.opt_libexec/"bin/python"
-      pyversion = Language::Python.major_minor_version(python_exe)
-
-      system "#{bin}/sip-install-#{pyversion}", "--target-dir", "."
-    end
+    system bin/"sip-install", "--target-dir", "."
   end
 end

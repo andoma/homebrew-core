@@ -1,19 +1,20 @@
 class Joker < Formula
   desc "Small Clojure interpreter, linter and formatter"
   homepage "https://joker-lang.org/"
-  url "https://github.com/candid82/joker/archive/refs/tags/v1.3.4.tar.gz"
-  sha256 "aeb70b3f7731ebaa05e1807ef58c14383fdd6f9ff08ef8b2ea24b5c071248a4f"
+  url "https://github.com/candid82/joker/archive/refs/tags/v1.4.0.tar.gz"
+  sha256 "8744e077e420a40a78c215fe9c61adad2aa59e8a985ec5d59aeb75f93b2706f3"
   license "EPL-1.0"
   head "https://github.com/candid82/joker.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "43462d548c528749396fb097301a8a39463490ae673bdc1a6bb1c23560f63235"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d5d0f9065d678adc766cc7740a0a45a468a18dc3cc27bafc073c069317688f17"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8783057d106f56690ca2e37dbf796dc0dbc3d2fd944e9751e0e24ea778efef15"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e6e317d9646b231f6157697ca542e9d2932b08f3069134c8e2ed3e371e8826de"
-    sha256 cellar: :any_skip_relocation, ventura:        "1995c6f0a5df30b3befbe4a4a8ebaa490b8312f1d4259fa74ba0b5c64b322688"
-    sha256 cellar: :any_skip_relocation, monterey:       "ab2910d21adabe4b1871a748b5281a0abe5e16f9f43f97c7763521f32c68b5ca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "077ed2e51b3a16882e2cb3e210991ffe96b4ffa14fdac6c2c78e82561b4c216f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d3dd3f5c3079375a0c270b02ed15dcd70e2b3b1c961339316a6c372b097ddd67"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "45f922906c1e3e0b22ab4c7dd32c66b8ac7e0592108fce64ecc89e0845a9f7df"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f311bf231ff5825e3142c472693279006ba5c1fbdec8c69b40fe17b0bf4484de"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "58313fc78a9229e99bc802cbd89d70f750cd93e26b560b68fbf0577be0382d18"
+    sha256 cellar: :any_skip_relocation, sonoma:         "5c99770603ec565d3f94b6b1d83fe3ac27267a543d437fe647677f7c59b970b8"
+    sha256 cellar: :any_skip_relocation, ventura:        "cbb4b1ee7c4cef4f043361b73086d695a1406198ff06cdf37e49e7f53c11daa2"
+    sha256 cellar: :any_skip_relocation, monterey:       "703526cbbde67f9eea2850ea7c8ef7c6dd5b4b537a45371b73f307afd4677c1a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd2f8a60afb0bba85d14fb489a94481076b07b3eae3a4e3a790a43460da7b1fc"
   end
 
   depends_on "go" => :build

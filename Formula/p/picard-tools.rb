@@ -1,8 +1,8 @@
 class PicardTools < Formula
   desc "Tools for manipulating HTS data and formats"
   homepage "https://broadinstitute.github.io/picard/"
-  url "https://github.com/broadinstitute/picard/releases/download/3.1.1/picard.jar"
-  sha256 "15c79f51fd0ac001049f9dd7b9bac1dbdf759dcb0230a89c7f6d1f246e8bbab4"
+  url "https://github.com/broadinstitute/picard/releases/download/3.3.0/picard.jar"
+  sha256 "58819a7660646b74b34e282f5d4d21c8dbaea22ddeff96e3258755dafa0f86dc"
   license "MIT"
 
   livecheck do
@@ -11,13 +11,7 @@ class PicardTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b6d4384bf8e7db693cfc1abf288c23df975101696e0d2b233563c7f592ddf5ec"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b6d4384bf8e7db693cfc1abf288c23df975101696e0d2b233563c7f592ddf5ec"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b6d4384bf8e7db693cfc1abf288c23df975101696e0d2b233563c7f592ddf5ec"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b6d4384bf8e7db693cfc1abf288c23df975101696e0d2b233563c7f592ddf5ec"
-    sha256 cellar: :any_skip_relocation, ventura:        "b6d4384bf8e7db693cfc1abf288c23df975101696e0d2b233563c7f592ddf5ec"
-    sha256 cellar: :any_skip_relocation, monterey:       "b6d4384bf8e7db693cfc1abf288c23df975101696e0d2b233563c7f592ddf5ec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8a28bf7a2ec15062ff9d3c84f4a02d15750e1ca95905423fac2318e79314d989"
+    sha256 cellar: :any_skip_relocation, all: "706381105c8a7bdfe612eb03926a01c5ad852ece5a7ef4f438e9b8eb07debd14"
   end
 
   depends_on "openjdk"

@@ -1,19 +1,18 @@
 class Flow < Formula
   desc "Static type checker for JavaScript"
   homepage "https://flow.org/"
-  url "https://github.com/facebook/flow/archive/refs/tags/v0.229.2.tar.gz"
-  sha256 "5b05406ec1b37808b546a936fb9c0fb1aeba551d07c42d28d9e3006472cdfa36"
+  url "https://github.com/facebook/flow/archive/refs/tags/v0.251.1.tar.gz"
+  sha256 "07d0d439f2f0f339c0b8f7d680d85a47a1edbafecdea793dad399cc1d3baa107"
   license "MIT"
   head "https://github.com/facebook/flow.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "be0ddceb66548d2a384a9e82e6b897cae509de58d705e9ac4f83865facc5ce06"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "907e1efacf0b33511b8fa4313bd6198d5af11696ae4dab542c0940502ccc3f66"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d9b7633210d280fe5846c9d787fc7b31a9d5ef4f5ff5d66e0a87b2ec76c83c14"
-    sha256 cellar: :any_skip_relocation, sonoma:         "abaae4a2f451ac7cf61873795f3129e8e10528889a467ac84c8fa0f9cff7820c"
-    sha256 cellar: :any_skip_relocation, ventura:        "c69c41ff6a8d8e948b33f76a1dc1c47bf50a472386d79a8a5430e8caad98c4a1"
-    sha256 cellar: :any_skip_relocation, monterey:       "ba007b1ac70972c2ce52178d7f067ce6e5f043d50ff6796ab013a2d9f330d48d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e5e295b4769486c00d7742da9b4b4b83a2657233f6193d113396166a736fc8c6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8989886630f8e33d7f2abbc53031580a49b2d168f30b95a4a2d249eb3bb97f55"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "698be02705f59bd5c94c95c00c036c287f3428657ec2e8ff961c4fd930463fd8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e377d8c57f1d61ff82038109180ec516969719f68a2e9d0f251b606c732e30f3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c85bde0bc0b6c5fb6913ec6f284b0cb1a73f631e5761435714c20dbb38cb41cd"
+    sha256 cellar: :any_skip_relocation, ventura:       "afda482370089aca5e29ef9af88bce51d20fb9c1a0bbf230172d1675bdede2c8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "45fc8b0b766483c55e514b8a5354e28055b350bcdba3279bb7494af3a7f9d9fc"
   end
 
   depends_on "ocaml" => :build
@@ -22,6 +21,8 @@ class Flow < Formula
   uses_from_macos "m4" => :build
   uses_from_macos "rsync" => :build
   uses_from_macos "unzip" => :build
+
+  conflicts_with "flow-cli", because: "both install `flow` binaries"
 
   def install
     system "make", "all-homebrew"
@@ -33,7 +34,7 @@ class Flow < Formula
   end
 
   test do
-    system "#{bin}/flow", "init", testpath
+    system bin/"flow", "init", testpath
     (testpath/"test.js").write <<~EOS
       /* @flow */
       var x: string = 123;

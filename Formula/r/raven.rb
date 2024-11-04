@@ -3,24 +3,23 @@ class Raven < Formula
 
   desc "Risk Analysis and Vulnerability Enumeration for CI/CD"
   homepage "https://github.com/CycodeLabs/raven"
-  url "https://files.pythonhosted.org/packages/96/0e/796a4c20e3afc2a88268e189fda9ffc8b0a29b79c8e973f445aad3da6e20/raven-cycode-1.0.7.tar.gz"
-  sha256 "746da92efcdc34b6801ce78456a804ee4765ece6b56ccf323c894a4df07b74c1"
+  url "https://files.pythonhosted.org/packages/d8/b6/4bc5aecae28382720fca4e9492a623e3d821d96e8f4d06e4335c77779ebd/raven_cycode-1.0.9.tar.gz"
+  sha256 "a7cb02102b43dbaad3b50970f92090b86a3b3bb65aae9976a3887f4c8c935238"
   license "Apache-2.0"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "607a5e37cf25c7f72d3cd4ab69e2d67c0d114aded4b9400135768fd21c483abc"
-    sha256 cellar: :any,                 arm64_ventura:  "69d77f0df70c8e8c3aea877c05c38648da60981a91c2fab1347c9c6bcc64a40c"
-    sha256 cellar: :any,                 arm64_monterey: "d95470ef7f9426aca7ff07099197a7c4c37b3fd4ac639543e20b7de0e24445cd"
-    sha256 cellar: :any,                 sonoma:         "0764b6047853f2d32b8c3bd91f90f9f812314ca29b86b112135895d78088cf6c"
-    sha256 cellar: :any,                 ventura:        "62ea286aeba9445f30e9c6fd0ab1f899819e5d6f6501376697cdd7d5b4825664"
-    sha256 cellar: :any,                 monterey:       "f12fda72a8d0a287e7fd3da15a915f9ecd472428289abb17c12fb8fd7000e786"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "38bd7503b92390ea9801e79cb86db0ff4e650f8eb3a25624df784b096507693b"
+    sha256 cellar: :any,                 arm64_sequoia: "ad40e6057f424f0191313b075aaa3fa70b8314c8407a35b36378730cfa40921c"
+    sha256 cellar: :any,                 arm64_sonoma:  "21a4807ad67f5eb40c57cf361d07f5c80a0f3e20a76ec24eb6cc591e0399764b"
+    sha256 cellar: :any,                 arm64_ventura: "e87feeaf89d0ec69e5bcd8e74192d96044ce04de4709eff119f6d78c8a73fae4"
+    sha256 cellar: :any,                 sonoma:        "42c2241ddee62dbf8aa4560bb76ef906fbdb9d5f1452bef9bf97bc72329206a9"
+    sha256 cellar: :any,                 ventura:       "b540f6776eead96815c3284d76817239a9220c4a1b3c8aa4f446b311b6dbb1e1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "73b55d7ea7f06c758090bf97b18ee033450550dda37255753f83a31ebb8df288"
   end
 
+  depends_on "certifi"
   depends_on "libyaml"
-  depends_on "python-certifi"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "charset-normalizer" do
     url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
@@ -33,8 +32,8 @@ class Raven < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
-    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+    url "https://files.pythonhosted.org/packages/21/ed/f86a79a07470cb07819390452f178b3bef1d375f2ec021ecfc709fc7cf07/idna-3.7.tar.gz"
+    sha256 "028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc"
   end
 
   resource "iniconfig" do
@@ -58,8 +57,8 @@ class Raven < Formula
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+    url "https://files.pythonhosted.org/packages/ee/b5/b43a27ac7472e1818c4bafd44430e69605baefe1f34440593e0332ec8b4d/packaging-24.0.tar.gz"
+    sha256 "eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9"
   end
 
   resource "pansi" do
@@ -68,8 +67,8 @@ class Raven < Formula
   end
 
   resource "pluggy" do
-    url "https://files.pythonhosted.org/packages/36/51/04defc761583568cae5fd533abda3d40164cbdcf22dee5b7126ffef68a40/pluggy-1.3.0.tar.gz"
-    sha256 "cf61ae8f126ac6f7c451172cf30e3e43d3ca77615509771b3a984a0730651e12"
+    url "https://files.pythonhosted.org/packages/54/c6/43f9d44d92aed815e781ca25ba8c174257e27253a94630d21be8725a2b59/pluggy-1.4.0.tar.gz"
+    sha256 "8c85c2876142a764e5b7548e7d9a0e0ddb46f5185161049a79b7e974454223be"
   end
 
   resource "py2neo" do
@@ -83,8 +82,8 @@ class Raven < Formula
   end
 
   resource "pytest" do
-    url "https://files.pythonhosted.org/packages/80/1f/9d8e98e4133ffb16c90f3b405c43e38d3abb715bb5d7a63a5a684f7e46a3/pytest-7.4.4.tar.gz"
-    sha256 "2cf0005922c6ace4a3e2ec8b4080eb0d9753fdc93107415332f50ce9e7994280"
+    url "https://files.pythonhosted.org/packages/30/b7/7d44bbc04c531dcc753056920e0988032e5871ac674b5a84cb979de6e7af/pytest-8.1.1.tar.gz"
+    sha256 "ac978141a75948948817d360297b7aae0fcb9d6ff6bc9ec6d514b85d5a65c044"
   end
 
   resource "pytz" do
@@ -93,13 +92,13 @@ class Raven < Formula
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "redis" do
-    url "https://files.pythonhosted.org/packages/4a/4c/3c3b766f4ecbb3f0bec91ef342ee98d179e040c25b6ecc99e510c2570f2a/redis-5.0.1.tar.gz"
-    sha256 "0dab495cd5753069d3bc650a0dde8a8f9edde16fc5691b689a566eda58100d0f"
+    url "https://files.pythonhosted.org/packages/eb/fc/8e822fd1e0a023c5ff80ca8c469b1d854c905ebb526ba38a90e7487c9897/redis-5.0.3.tar.gz"
+    sha256 "4973bae7444c0fbed64a06b87446f79361cb7e4ec1538c022d696ed7a5015580"
   end
 
   resource "requests" do
@@ -113,18 +112,18 @@ class Raven < Formula
   end
 
   resource "slack-sdk" do
-    url "https://files.pythonhosted.org/packages/ee/0f/f9ec7337003e39cdbeba9421f195e0b85d81810ddb6279bfa79a33bcb5a4/slack_sdk-3.26.2.tar.gz"
-    sha256 "bcdac5e688fa50e9357ecd00b803b6a8bad766aa614d35d8dc0636f40adc48bf"
+    url "https://files.pythonhosted.org/packages/f8/77/e567bfc892a352ea2c6bc7e29830bed763b4a14681e7fefaf82974a9f775/slack_sdk-3.27.1.tar.gz"
+    sha256 "85d86b34d807c26c8bb33c1569ec0985876f06ae4a2692afba765b7a5490d28c"
   end
 
   resource "tqdm" do
-    url "https://files.pythonhosted.org/packages/62/06/d5604a70d160f6a6ca5fd2ba25597c24abd5c5ca5f437263d177ac242308/tqdm-4.66.1.tar.gz"
-    sha256 "d88e651f9db8d8551a62556d3cff9e3034274ca5d66e93197cf2490e2dcb69c7"
+    url "https://files.pythonhosted.org/packages/ea/85/3ce0f9f7d3f596e7ea57f4e5ce8c18cb44e4a9daa58ddb46ee0d13d6bff8/tqdm-4.66.2.tar.gz"
+    sha256 "6cd52cdf0fef0e0f543299cfc96fec90d7b8a7e88745f411ec33eb44d5ed3531"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/36/dd/a6b232f449e1bc71802a5b7950dc3675d32c6dbc2a1bd6d71f065551adb6/urllib3-2.1.0.tar.gz"
-    sha256 "df7aa8afb0148fa78488e7899b2c59b5f4ffcfa82e6c54ccb9dd37c1d7b52d54"
+    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
+    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
   end
 
   def install

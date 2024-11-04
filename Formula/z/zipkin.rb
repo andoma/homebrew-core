@@ -1,8 +1,8 @@
 class Zipkin < Formula
   desc "Collect and visualize traces written in Zipkin format"
   homepage "https://zipkin.io"
-  url "https://search.maven.org/remotecontent?filepath=io/zipkin/zipkin-server/3.0.6/zipkin-server-3.0.6-exec.jar"
-  sha256 "1120e20df587fe3e09b6a7338f2c36381c3806efd7f621619a4330ec5edc55d8"
+  url "https://search.maven.org/remotecontent?filepath=io/zipkin/zipkin-server/3.4.2/zipkin-server-3.4.2-exec.jar"
+  sha256 "c9c07923d5a96fc71c0d0f548280097d77c4ceea515033bc6961b171934dd737"
   license "Apache-2.0"
 
   livecheck do
@@ -11,7 +11,7 @@ class Zipkin < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "1ebd604ce58553fcfad9ee3bb9439e88d55c6e86214f144827fc4b21607dac11"
+    sha256 cellar: :any_skip_relocation, all: "0c4626aba497e97052002a071ed59110e869843c8b087a3ec6c0165bdbc6ded3"
   end
 
   depends_on "openjdk"
@@ -35,7 +35,7 @@ class Zipkin < Formula
     fork do
       exec bin/"zipkin"
     end
-    sleep 10
+    sleep 20
     assert_match "UP", shell_output("curl -s 127.0.0.1:#{port}/health")
   end
 end

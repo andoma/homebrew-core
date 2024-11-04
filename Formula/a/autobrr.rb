@@ -1,31 +1,31 @@
 class Autobrr < Formula
   desc "Modern, easy to use download automation for torrents and usenet"
   homepage "https://autobrr.com/"
-  url "https://github.com/autobrr/autobrr/archive/refs/tags/v1.38.1.tar.gz"
-  sha256 "b04e477c6632023530f106365757e5d0954a19e3a0025cc66a4a41815e0e942c"
+  url "https://github.com/autobrr/autobrr/archive/refs/tags/v1.48.0.tar.gz"
+  sha256 "0f5e59e82589335d7961767bd1f74b65567b1544719a79eb50ec7dffbdc06239"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b7897f1dcdd7a36565676e4ba4981f0cc1e236e733d0ec37cce00fe6f031ee48"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bcbf2729754d7d26d2d4883a9c65d6f3467eafcfa0a55aa1b43f922118fd6f4c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1be9a9b4805d06663572ed8d2bc27f3b836861d4d6bc8dad4ae425728ac1c38b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b4b6120e1b96d2aa0546c8fbd9fe3a2a18b16fe3d63681d2e9f8f33c1eec91f6"
-    sha256 cellar: :any_skip_relocation, ventura:        "b8367762892738f6fb7c5087d7ac10965a5457a807ba426dcf115c312504fe74"
-    sha256 cellar: :any_skip_relocation, monterey:       "8bd282b1811a7387165098fafc6321786db7fa7ec3ececb5408c4cc661b5800c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bde718bd1a49a0c168810bc2b222b5e4b0a717b33ce28d1aead3a59142779de2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "16c2e8f19c231f1fca7057b447c33370362f299fe8c0f0b6119cccc98d472f7a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "16c2e8f19c231f1fca7057b447c33370362f299fe8c0f0b6119cccc98d472f7a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "16c2e8f19c231f1fca7057b447c33370362f299fe8c0f0b6119cccc98d472f7a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "52a6561d8506c2cbf9db943759e7b73d1ea75905525de86ceb8b311f46c54ebe"
+    sha256 cellar: :any_skip_relocation, ventura:       "52a6561d8506c2cbf9db943759e7b73d1ea75905525de86ceb8b311f46c54ebe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2bce4e9de20c7306c9098baa7ba3ed59764bc7cee746a6cfbb49d5c6bc5ff8da"
   end
 
   depends_on "go" => :build
   depends_on "node" => :build
+  depends_on "pnpm" => :build
 
   def install
-    system "npx", "pnpm", "install", "--dir", "web"
-    system "npx", "pnpm", "--dir", "web", "run", "build"
+    system "pnpm", "install", "--dir", "web"
+    system "pnpm", "--dir", "web", "run", "build"
 
     ldflags = "-s -w -X main.version=#{version} -X main.commit=#{tap.user}"
 
-    system "go", "build", *std_go_args(output: bin/"autobrr", ldflags: ldflags), "./cmd/autobrr"
-    system "go", "build", *std_go_args(output: bin/"autobrrctl", ldflags: ldflags), "./cmd/autobrrctl"
+    system "go", "build", *std_go_args(output: bin/"autobrr", ldflags:), "./cmd/autobrr"
+    system "go", "build", *std_go_args(output: bin/"autobrrctl", ldflags:), "./cmd/autobrrctl"
   end
 
   def post_install
@@ -43,16 +43,16 @@ class Autobrr < Formula
 
     port = free_port
 
-    (testpath/"config.toml").write <<~EOS
+    (testpath/"config.toml").write <<~TOML
       host = "127.0.0.1"
       port = #{port}
       logLevel = "INFO"
       checkForUpdates = false
       sessionSecret = "secret-session-key"
-    EOS
+    TOML
 
     pid = fork do
-      exec "#{bin}/autobrr", "--config", "#{testpath}/"
+      exec bin/"autobrr", "--config", "#{testpath}/"
     end
     sleep 4
 

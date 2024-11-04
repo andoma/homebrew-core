@@ -1,16 +1,10 @@
-require "language/perl"
-
 class PerconaToolkit < Formula
-  include Language::Perl::Shebang
-
   desc "Command-line tools for MySQL, MariaDB and system tasks"
   homepage "https://www.percona.com/software/percona-toolkit/"
-  # Check if mysql-client@8.0 can be updated to latest with next version
-  # if DBD::mysql > 5.003 - https://github.com/perl5-dbi/DBD-mysql/issues/375
-  url "https://www.percona.com/downloads/percona-toolkit/3.5.5/source/tarball/percona-toolkit-3.5.5.tar.gz"
-  sha256 "629a3c619c9f81c8451689b7840e50d13c656073a239d1ef2e5bcc250a80f884"
+  url "https://www.percona.com/downloads/percona-toolkit/3.6.0/source/tarball/percona-toolkit-3.6.0.tar.gz"
+  sha256 "48c2a0f7cfc987e683f60e9c7a29b0ca189e2f4b503f6d01c5baca403c09eb8d"
   license any_of: ["GPL-2.0-only", "Artistic-1.0-Perl"]
-  revision 1
+  revision 2
   head "lp:percona-toolkit", using: :bzr
 
   livecheck do
@@ -19,17 +13,16 @@ class PerconaToolkit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f6bb5b6cd4b4b23b68ee688dff583ec7f86239266ee9296084cc9aa6c63f0cd3"
-    sha256 cellar: :any,                 arm64_ventura:  "6a730c277a8d7e1dabfc9a8d644f6e28eb6b416d67d238e07cb20e62aec9441d"
-    sha256 cellar: :any,                 arm64_monterey: "392cc5d58b83f2df591860a959d16163160e8356c5f59585a9f00a3607260f0a"
-    sha256 cellar: :any,                 sonoma:         "7ec024c441956d3dad59afdbbad08340dfa9cf806e5cab1bff4a3d29b901fdcf"
-    sha256 cellar: :any,                 ventura:        "6199ef6d49670b9621463c6ed1c238e2e5b9141f4732ce6e6f3e63286a138b1f"
-    sha256 cellar: :any,                 monterey:       "4246e5fb174b129c1dc96fe85abc3f41f560f16470ce75482e289398bb58dd88"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7bbb1879e552c4bd7904097d0016f18462fd1df7901a9ff2f64a94f800b55ba5"
+    sha256 cellar: :any,                 arm64_sequoia: "a1134b153a117ab438762c198f47170b24eb8b09aa4bc5eecfd0c5511dc6e8e4"
+    sha256 cellar: :any,                 arm64_sonoma:  "5f0de6236a3b694a6d6789fd33546ccbbf7fafd3926f6c428693c67bfba1c6de"
+    sha256 cellar: :any,                 arm64_ventura: "b2946e3784bab092642da4a5031e9ca0607accd6952584d026c5b00b46e2bee6"
+    sha256 cellar: :any,                 sonoma:        "6d42bf7568d502d97272e1ebbf7a3cf5c7b996b46d028310acdcf38ad0cb601a"
+    sha256 cellar: :any,                 ventura:       "7f01e906b9474648465bb533e93ed918b27f295e6ad00b056e0ce03b1687c829"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7ebe3d5dc418029eb174269d47e4b2d7f74bff8581f11653b5de8b48a6514a00"
   end
 
-  depends_on "mysql-client@8.0"
-  depends_on "openssl@3"
+  depends_on "go" => :build
+  depends_on "mysql-client"
 
   uses_from_macos "perl"
 
@@ -45,8 +38,8 @@ class PerconaToolkit < Formula
   end
 
   resource "DBD::mysql" do
-    url "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-5.002.tar.gz"
-    sha256 "8dbf87c2b5b8eaf79cd16507cc07597caaf4af49bc521ec51c0ea275e8332e25"
+    url "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-5.008.tar.gz"
+    sha256 "a2324566883b6538823c263ec8d7849b326414482a108e7650edc0bed55bcd89"
   end
 
   resource "JSON" do
@@ -66,20 +59,17 @@ class PerconaToolkit < Formula
         else
           libexec
         end
+
+        make_args = []
+        make_args << "OTHERLDFLAGS=-Wl,-dead_strip_dylibs" if r.name == "DBD::mysql" && OS.mac?
+
         system "perl", "Makefile.PL", "INSTALL_BASE=#{install_base}", "NO_PERLLOCAL=1", "NO_PACKLIST=1"
-        system "make", "install"
+        system "make", "install", *make_args
       end
     end
 
-    system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}"
+    system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}", "INSTALLSITEMAN1DIR=#{man1}"
     system "make", "install"
-    share.install prefix/"man"
-
-    # Disable dynamic selection of perl which may cause segfault when an
-    # incompatible perl is picked up.
-    # https://github.com/Homebrew/homebrew-core/issues/4936
-    rewrite_shebang detected_perl_shebang, *bin.children
-
     bin.env_script_all_files(libexec/"bin", PERL5LIB: libexec/"lib/perl5")
   end
 

@@ -2,8 +2,8 @@ class Zeek < Formula
   desc "Network security monitor"
   homepage "https://www.zeek.org"
   url "https://github.com/zeek/zeek.git",
-      tag:      "v6.1.1",
-      revision: "37c47f17511762ab08d4a2494fa0555450f056d0"
+      tag:      "v7.0.3",
+      revision: "7a73f817929b72b8c7acf697bf52b7267606a207"
   license "BSD-3-Clause"
   head "https://github.com/zeek/zeek.git", branch: "master"
 
@@ -13,13 +13,13 @@ class Zeek < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "434443bc076238b859448e01d6fc4190549c9d56730f85997c757f14ca3832bb"
-    sha256 arm64_ventura:  "b048285859b4a31cce624bef46a374a30e90dcba83d6497dfabd98bd266801df"
-    sha256 arm64_monterey: "1a365659ad8f333bd8524d988c1490ba5575e7a3b03d818ca7ef20f70980b05d"
-    sha256 sonoma:         "742df8d11c549112aa7130679d5ad3349298de2956e45a3d72c10f1159b7e837"
-    sha256 ventura:        "0539f1fafd366b261167ecfb96a71e50d5a6a2ae506bf99a701e3fa0ba05a225"
-    sha256 monterey:       "87eb635e5f79e75ce35af1b0efa6ed5d1e3a0388bdfe62264741e282c4994724"
-    sha256 x86_64_linux:   "2b13cad7b7ac0acab4962b355590ceb1bab52b01e1b88fb1590dafb9ca6b8c90"
+    rebuild 1
+    sha256 arm64_sequoia: "ce92ee784b8b302175a1f29e31fc292cf7fef775fa506ee78fadf3f45b759177"
+    sha256 arm64_sonoma:  "d5b8f011c59888ac864fe9b0c4be5a30d0d0b9817df178bb524e1062ddcd289c"
+    sha256 arm64_ventura: "21efb12b934dc15638b60052ef638c1ed1c1aaf9809bfab0c76177b4591076dd"
+    sha256 sonoma:        "99f4c4cbacb50db354127e5d9e46f17d7288b02d9ee6893060e49976a0353af5"
+    sha256 ventura:       "b4c634b6c6da782915437cbad88432169b83c5057275331101752de234be418e"
+    sha256 x86_64_linux:  "e96efe18a7ad36db69d738674573f55d177e61ef5883ac9d17851b32c7a2f83a"
   end
 
   depends_on "bison" => :build
@@ -30,8 +30,9 @@ class Zeek < Formula
   depends_on "libmaxminddb"
   depends_on macos: :mojave
   depends_on "openssl@3"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
+  uses_from_macos "krb5"
   uses_from_macos "libpcap"
   uses_from_macos "libxcrypt"
   uses_from_macos "zlib"
@@ -58,7 +59,7 @@ class Zeek < Formula
                     "-DCARES_LIBRARIES=#{Formula["c-ares"].opt_lib/shared_library("libcares")}",
                     "-DLibMMDB_LIBRARY=#{Formula["libmaxminddb"].opt_lib/shared_library("libmaxminddb")}",
                     "-DOPENSSL_ROOT_DIR=#{Formula["openssl@3"].opt_prefix}",
-                    "-DPYTHON_EXECUTABLE=#{which("python3.12")}",
+                    "-DPYTHON_EXECUTABLE=#{which("python3.13")}",
                     "-DZEEK_ETC_INSTALL_DIR=#{etc}",
                     "-DZEEK_LOCAL_STATE_DIR=#{var}",
                     *std_cmake_args

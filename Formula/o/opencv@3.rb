@@ -58,7 +58,7 @@ class OpencvAT3 < Formula
 
     # Remove bundled libraries to make sure formula dependencies are used
     libdirs = %w[ffmpeg libjasper libjpeg libjpeg-turbo libpng libtiff libwebp openexr protobuf tbb zlib]
-    libdirs.each { |l| (buildpath/"3rdparty"/l).rmtree }
+    libdirs.each { |l| rm_r(buildpath/"3rdparty"/l) }
 
     args = std_cmake_args + %W[
       -DCMAKE_CXX_STANDARD=11
@@ -115,14 +115,14 @@ class OpencvAT3 < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <opencv/cv.h>
       #include <iostream>
       int main() {
         std::cout << CV_VERSION << std::endl;
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-I#{include}", "-L#{lib}", "-o", "test"
     assert_equal shell_output("./test").strip, version.to_s
 

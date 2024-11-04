@@ -1,9 +1,10 @@
 class Wxmaxima < Formula
   desc "Cross platform GUI for Maxima"
   homepage "https://wxmaxima-developers.github.io/wxmaxima/"
-  url "https://github.com/wxMaxima-developers/wxmaxima/archive/refs/tags/Version-23.12.0.tar.gz"
-  sha256 "abec636e96474adf6451e81728b16afaa83ed1a70b86a695fa083ecec65aaae1"
+  url "https://github.com/wxMaxima-developers/wxmaxima/archive/refs/tags/Version-24.08.0.tar.gz"
+  sha256 "a0957c1852ca2d93e34f8f0329673f40af065e7648739d088da28bd33627b758"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/wxMaxima-developers/wxmaxima.git", branch: "main"
 
   livecheck do
@@ -12,17 +13,18 @@ class Wxmaxima < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "3389d145b4c41a69ee6154a5b89ccf1b33938046c6a3c4c7b62891d16e6c0ec2"
-    sha256 arm64_ventura:  "e475bc0bb93506345dfd5646d478c73ddc9f9b12b7178c2b8f329cb59d579739"
-    sha256 arm64_monterey: "96a47686631c9d0d54d66e53ba2bd2b639607b0ef90e472eb661809ce3e6cfcc"
-    sha256 sonoma:         "93beca1e64db35b18695d9b95f39faf8da5d735b917ee91517d99b1694a38b8b"
-    sha256 ventura:        "8d3c0085ade32975df48151021395acbdcb356d4fa664937fc2fa9367711948b"
-    sha256 monterey:       "8f005c78e73f559b4b4ecab2ad72d11cd8812f695aa71282c3365f3089f298e3"
+    sha256 arm64_sonoma:   "0eeda3a7b713fd21cb1e016f65d73f5affd0b3d6785c0259d8c8ed1abf383cd9"
+    sha256 arm64_ventura:  "68800dc51d4e13f01814472d80b906f5976487d3c4c77156f6bf67b039e6f5b3"
+    sha256 arm64_monterey: "639c86d978ddaee16e23c0f5dc892ba3cc282a66dd11337eb9e6e42a9337b7a1"
+    sha256 sonoma:         "9ef91f92fc84d0f06743bb449f2e89621dbab5b45a30fecf8b44d7d26b19df6e"
+    sha256 ventura:        "fe84da6ef807ee8bda2dc98ce1bdd4a378efa66805d88908c02f1d1b90c812ed"
+    sha256 monterey:       "ea1ad330fa139f2e9c0c2657a84e1a788301bc2ca430941338b28693240aeee4"
   end
 
   depends_on "cmake" => :build
   depends_on "gettext" => :build
   depends_on "ninja" => :build
+
   depends_on "maxima"
   depends_on "wxwidgets"
 
@@ -38,6 +40,12 @@ class Wxmaxima < Formula
         return tree;
                ^~~~
     EOS
+  end
+
+  # fix version output, upstream patch ref, https://github.com/wxMaxima-developers/wxmaxima/pull/1937
+  patch do
+    url "https://github.com/wxMaxima-developers/wxmaxima/commit/077ec646a11bfb5aa83a478e636a715a38a9b68b.patch?full_index=1"
+    sha256 "15fb4db52cb7e1237ee5d0934653db06809d172e2bf54709435ec24d1f7ab7a9"
   end
 
   def install
@@ -72,6 +80,7 @@ class Wxmaxima < Formula
     # Error: Unable to initialize GTK+, is DISPLAY set properly
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    assert_match "algebra", shell_output("#{bin}/wxmaxima --help 2>&1")
+    assert_equal "wxMaxima #{version}", shell_output(bin/"wxmaxima --version 2>&1").chomp
+    assert_match "extra Maxima arguments", shell_output("#{bin}/wxmaxima --help 2>&1", 1)
   end
 end

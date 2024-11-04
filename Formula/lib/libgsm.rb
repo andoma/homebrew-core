@@ -11,6 +11,7 @@ class Libgsm < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "93cefc094ad064330c51f5fc139343cfe13d3554ca3e1fcd28bf1af3240829fc"
     sha256 cellar: :any,                 arm64_sonoma:   "7733596095803d3248e23e37224e5914d39560ae476b9d282f79b59f6a5b05c5"
     sha256 cellar: :any,                 arm64_ventura:  "99fc0cf57ca6ccb2fca847f53f5201347e58c10b2a50c9f766319029d57a6556"
     sha256 cellar: :any,                 arm64_monterey: "3adbd0618b07bd0546aed790ae76275b5a5c4ea4f822f5375b358339f8c73e53"
@@ -22,6 +23,8 @@ class Libgsm < Formula
     sha256 cellar: :any,                 catalina:       "fc559f8e94bc509708df438b830ec4276260e108f91ece47b5a7d3a1293fa498"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2398c2265658796adac35f2494dc97e0bd4fa6e20d1fd7bd70d15ea389782a05"
   end
+
+  conflicts_with "toast", because: "both install `toast` binaries"
 
   def install
     # Only the targets for which a directory exists will be installed
@@ -73,7 +76,7 @@ class Libgsm < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <gsm.h>
 
       int main()
@@ -85,7 +88,7 @@ class Libgsm < Formula
         }
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lgsm", "-o", "test"
     system "./test"
   end

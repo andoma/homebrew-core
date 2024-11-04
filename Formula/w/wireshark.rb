@@ -1,9 +1,9 @@
 class Wireshark < Formula
-  desc "Graphical network analyzer and capture tool"
+  desc "Network analyzer and capture tool - without graphical user interface"
   homepage "https://www.wireshark.org"
-  url "https://www.wireshark.org/download/src/all-versions/wireshark-4.2.3.tar.xz"
-  mirror "https://1.eu.dl.wireshark.org/src/all-versions/wireshark-4.2.3.tar.xz"
-  sha256 "958bd5996f543d91779b1a4e7e952dcd7b0245fe82194202c3333a8f78795811"
+  url "https://www.wireshark.org/download/src/all-versions/wireshark-4.4.1.tar.xz"
+  mirror "https://1.eu.dl.wireshark.org/src/all-versions/wireshark-4.4.1.tar.xz"
+  sha256 "2b9e96572a7002c3e53b79683cf92f8172217e64c17ecaaf612eb68c2a7556ec"
   license "GPL-2.0-or-later"
   head "https://gitlab.com/wireshark/wireshark.git", branch: "master"
 
@@ -15,13 +15,12 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha256                               arm64_sonoma:   "3a4219eccb172df79578894c935993a509052c9b264d63054582a4ec5670a3a8"
-    sha256                               arm64_ventura:  "1229d43d3d6bab5eff31fdd7d22d7a7522171b0fd6f104709bcecba533e3df1d"
-    sha256                               arm64_monterey: "51f597407d1cbf8e486fcc0615821aac915be94afffbf2c7ab90eb1caeb3ff89"
-    sha256                               sonoma:         "f46b12dfa19dfe516f9ab6b6f17e1d0f7eef9fabef0111de03b8c0a905774fea"
-    sha256                               ventura:        "159df18d974367a4532389684f96ef78ff7204d51da5845a10943e4a90ec5d57"
-    sha256                               monterey:       "1aa964d736ff8b025b73b01959344edb185766071800687f5905fcff31902ba4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "88a167db0562c7319968565aff599fb3872636a6c2625125afc05afba38786a0"
+    sha256                               arm64_sequoia: "4492a409863cf5e48e787ef610ae85508343193b5aacdb230d0a3e4c522166b0"
+    sha256                               arm64_sonoma:  "027764b3957ac55d50ccdbf2b9d3f11ecff640675bf96eb9ab174484506f20dd"
+    sha256                               arm64_ventura: "8754cbc2945fd85daf9fd3180b52c704a0ab76951d0ebe23c9145467e1522ebd"
+    sha256                               sonoma:        "d460a287851a1a1d9f2bada6e8089fb38c0ef567394794b8290f4187278f952c"
+    sha256                               ventura:       "56c237a15f31fde4a159f224d8d9242ca2d87484a33e4747e4c2e15953734f01"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "97d9a8c25d008aedeaac0de889e7d5a3033cad836f69cca3c73dc5a540a15b16"
   end
 
   depends_on "cmake" => :build
@@ -31,38 +30,36 @@ class Wireshark < Formula
   depends_on "libgcrypt"
   depends_on "libmaxminddb"
   depends_on "libnghttp2"
+  depends_on "libnghttp3"
   depends_on "libsmi"
   depends_on "libssh"
   depends_on "lua"
+  depends_on "pcre2"
   depends_on "speexdsp"
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
   uses_from_macos "python" => :build
+  uses_from_macos "krb5"
   uses_from_macos "libpcap"
   uses_from_macos "libxml2"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "libgpg-error"
+  end
 
   def install
     args = %W[
-      -DENABLE_CARES=ON
-      -DENABLE_GNUTLS=ON
-      -DENABLE_MAXMINDDB=ON
-      -DBUILD_wireshark_gtk=OFF
-      -DENABLE_PORTAUDIO=OFF
-      -DENABLE_LUA=ON
       -DLUA_INCLUDE_DIR=#{Formula["lua"].opt_include}/lua
       -DLUA_LIBRARY=#{Formula["lua"].opt_lib/shared_library("liblua")}
       -DCARES_INCLUDE_DIR=#{Formula["c-ares"].opt_include}
       -DGCRYPT_INCLUDE_DIR=#{Formula["libgcrypt"].opt_include}
       -DGNUTLS_INCLUDE_DIR=#{Formula["gnutls"].opt_include}
       -DMAXMINDDB_INCLUDE_DIR=#{Formula["libmaxminddb"].opt_include}
-      -DENABLE_SMI=ON
-      -DBUILD_sshdump=ON
-      -DBUILD_ciscodump=ON
-      -DENABLE_NGHTTP2=ON
       -DBUILD_wireshark=OFF
+      -DBUILD_logray=OFF
       -DENABLE_APPLICATION_BUNDLE=OFF
-      -DENABLE_QT5=OFF
       -DCMAKE_INSTALL_NAME_DIR:STRING=#{lib}
     ]
 

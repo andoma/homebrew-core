@@ -2,9 +2,8 @@ class Languagetool < Formula
   desc "Style and grammar checker"
   homepage "https://www.languagetool.org/"
   url "https://github.com/languagetool-org/languagetool.git",
-      tag:      "v6.3-branch",
-      revision: "fb238b2a32bc72714632a399c9b47abbe9f1c0c1"
-  version "6.3"
+      tag:      "v6.5",
+      revision: "5c6be17808cee3edc84ce53df97236521f8a8f7e"
   license "LGPL-2.1-or-later"
   head "https://github.com/languagetool-org/languagetool.git", branch: "master"
 
@@ -14,14 +13,12 @@ class Languagetool < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "163baadef2742f9834b15361d6209f259dce2482e8f4a0b1807bc36428da7940"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a8bc52897bdd1d2444ae039df4d0f5359dcf84b91c47c10036f27b8e6733304c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "671b706c4d3c2e9375bf0b9333961c60ed2e063c76acec6853040273139ed20d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "d05f3fd432d7a7870c2099d55a8cd5526c43c8404e77fab0678d4a7cf81dfd52"
-    sha256 cellar: :any_skip_relocation, ventura:        "37871ac7ea214080971f665b44ec893872136464e48b4edfe5794c9992eca18e"
-    sha256 cellar: :any_skip_relocation, monterey:       "00ffc52cf265b2aea5b46dee28461eecb945b4f187d71ac800f01f11828039e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8c9966fabe2e8f8462b77f6bc681b9a40c6fe287030842c8f42b313ef62feeda"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "97c26d8e5411371399984b4885cb6ffd4eccf8eae64f3ea7b362c34d21b22b6f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0869f074714fb4c31fa49c57af0dc47609176b9f00d6258239a31502e2ec0c37"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e9389d2adcd583ec4e1885b48d2e7325c50ac70a9cc292e5dbc1403ef34ca4e0"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a0271c888c528c6392a9f96798dc665bc98ab84c6ecf2cb28ec0a03862979874"
+    sha256 cellar: :any_skip_relocation, ventura:       "ae84393965f3efa95ce9527168dd8e89b46187e0a71960ab93d38a15827afc1c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3231ad327caaf0cfc04a8fc015dcef3acc2994ba5706fac55a6b7c4da6b53ede"
   end
 
   depends_on "maven" => :build
@@ -39,8 +36,8 @@ class Languagetool < Formula
       libexec.install Dir["*/*"]
     end
 
-    bin.write_jar_script libexec/"languagetool-commandline.jar", "languagetool", java_version: java_version
-    bin.write_jar_script libexec/"languagetool.jar", "languagetool-gui", java_version: java_version
+    bin.write_jar_script(libexec/"languagetool-commandline.jar", "languagetool", java_version:)
+    bin.write_jar_script(libexec/"languagetool.jar", "languagetool-gui", java_version:)
     (bin/"languagetool-server").write <<~EOS
       #!/bin/bash
       export JAVA_HOME="#{Language::Java.overridable_java_home_env(java_version)[:JAVA_HOME]}"

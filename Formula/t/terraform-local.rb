@@ -3,32 +3,26 @@ class TerraformLocal < Formula
 
   desc "CLI wrapper to deploy your Terraform applications directly to LocalStack"
   homepage "https://localstack.cloud/"
-  url "https://files.pythonhosted.org/packages/0d/01/d29f952e15bbcad0b2fcaa2194aefa95d3cdb2179ad504bacef82d4920f4/terraform-local-0.17.1.tar.gz"
-  sha256 "88d1c150a9fa0b6d9876caebc4bd0b4ed3301410e552a566a97fc7770f65b0df"
+  url "https://files.pythonhosted.org/packages/3f/c8/e80071e1de6b2c3f9b069ae78cc2c0bfb0688ee4c2467742891ea254bb11/terraform_local-0.20.0.tar.gz"
+  sha256 "2f1c7f82d8cbb9f1595b372f3a2892514a6d33b26d1678a004dec31be9614318"
   license "Apache-2.0"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a5c956fc9e4e400e66aa5ba94e1a933f53e8ccff7750a7023e48707f1b728307"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4f2248f4e9bcf8c3e7de23363e69ee7cae48a7698bffa44ec103c405fc399c0d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c076d8a8bc4ac61bf52d2d7fc82caa0e7f09b0cbad3a84b019020321f4d53ef3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "88604ba047fc601f7e04946918636a4730e249d219b2773e845d7d471361443c"
-    sha256 cellar: :any_skip_relocation, ventura:        "740885ac7fe72a9153200b51344142de214a90ff44c01e0732f41699bedffe7b"
-    sha256 cellar: :any_skip_relocation, monterey:       "866886ab54398dfeeedf4520317a0d7619c1062791bc3ad85de0e45d8c3d3690"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "49e268a72290ca7fb3762fab0f6c5bbd3318110988fb50dc5da1cb15e512c8f6"
+    sha256 cellar: :any_skip_relocation, all: "ec6ed8799b1f83f34e6f74b8920b0ca8ece70d1c5be9fd0bb1c2c8e1a4aea92e"
   end
 
   depends_on "localstack"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "boto3" do
-    url "https://files.pythonhosted.org/packages/89/51/8b7c07768bef5756cdc38b3168b228139d2ff1ddd782e515f1c0f2c35a2a/boto3-1.34.47.tar.gz"
-    sha256 "7574afd70c767fdbb19726565a67b47291e1e35ec792c9fbb8ee63cb3f630d45"
+    url "https://files.pythonhosted.org/packages/b8/29/10988ceaa300ddc628cb899875d85d9998e3da4803226398e002d95b2741/boto3-1.35.39.tar.gz"
+    sha256 "670f811c65e3c5fe4ed8c8d69be0b44b1d649e992c0fc16de43816d1188f88f1"
   end
 
   resource "botocore" do
-    url "https://files.pythonhosted.org/packages/93/cf/8c9516f6b1fb859e7fcb7413942b51573b54113307a92db46a44497a3b96/botocore-1.34.47.tar.gz"
-    sha256 "29f1d6659602c5d79749eca7430857f7a48dd02e597d0ea4a95a83c47847993e"
+    url "https://files.pythonhosted.org/packages/f7/28/d83dbd69d7015892b53ada4fded79a5bc1b7d77259361eb8302f88c2da81/botocore-1.35.39.tar.gz"
+    sha256 "cb7f851933b5ccc2fba4f0a8b846252410aa0efac5bfbe93b82d10801f5f8e90"
   end
 
   resource "jmespath" do
@@ -37,33 +31,33 @@ class TerraformLocal < Formula
   end
 
   resource "lark" do
-    url "https://files.pythonhosted.org/packages/2c/e1/804b6196b3fbdd0f8ba785fc62837b034782a891d6f663eea2f30ca23cfa/lark-1.1.9.tar.gz"
-    sha256 "15fa5236490824c2c4aba0e22d2d6d823575dcaf4cdd1848e34b6ad836240fba"
+    url "https://files.pythonhosted.org/packages/af/60/bc7622aefb2aee1c0b4ba23c1446d3e30225c8770b38d7aedbfb65ca9d5a/lark-1.2.2.tar.gz"
+    sha256 "ca807d0162cd16cef15a8feecb862d7319e7a09bdb13aef927968e45040fed80"
   end
 
   resource "localstack-client" do
-    url "https://files.pythonhosted.org/packages/ce/f6/7c19f1249cdcdc946616387e8aa93472f879624eb6acdd31a78a76fc046f/localstack-client-2.5.tar.gz"
-    sha256 "8b8b2ee6013265a55d3e312a4513efccd222131bed79395545a4f643704f9213"
+    url "https://files.pythonhosted.org/packages/c4/40/6858a5fe70654ef4878188e0c330c8a22ce4dfc457e09231cb82228de075/localstack_client-2.7.tar.gz"
+    sha256 "14993119901a4bcbef7c32d899b24f4a58a875a6765693edf1064d66b8a68408"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
   end
 
   resource "python-hcl2" do
-    url "https://files.pythonhosted.org/packages/ef/94/cc6f7100a857a5a4a676c2c71322ca476051278fad4ec956f0116c1d3834/python-hcl2-4.3.2.tar.gz"
-    sha256 "7122661438be27ccd8b8f3db71969d8ef2cce3b3cf183e88f8172575e7405a65"
+    url "https://files.pythonhosted.org/packages/c4/7a/7a6d45ca4bc53ddcd298facc7a9d79ba3c24930bfb368f11bed2155aafd1/python-hcl2-5.0.0.tar.gz"
+    sha256 "af454beae19cd0c8295130c7c36ffa8d7050775b13472e082b593b1f47bb1198"
   end
 
   resource "s3transfer" do
-    url "https://files.pythonhosted.org/packages/a0/b5/4c570b08cb85fdcc65037b5229e00412583bb38d974efecb7ec3495f40ba/s3transfer-0.10.0.tar.gz"
-    sha256 "d0c8bbf672d5eebbe4e57945e23b972d963f07d82f661cabf678a5c88831595b"
+    url "https://files.pythonhosted.org/packages/a0/a8/e0a98fd7bd874914f0608ef7c90ffde17e116aefad765021de0f012690a2/s3transfer-0.10.3.tar.gz"
+    sha256 "4f50ed74ab84d474ce614475e0b8d5047ff080810aac5d01ea25231cfc944b0c"
   end
 
   resource "six" do
@@ -72,8 +66,8 @@ class TerraformLocal < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/af/47/b215df9f71b4fdba1025fc05a77db2ad243fa0926755a52c5e71659f4e3c/urllib3-2.0.7.tar.gz"
-    sha256 "c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install

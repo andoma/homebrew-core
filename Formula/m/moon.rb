@@ -1,23 +1,29 @@
 class Moon < Formula
   desc "Task runner and repo management tool for the web ecosystem, written in Rust"
   homepage "https://moonrepo.dev/moon"
-  url "https://github.com/moonrepo/moon/archive/refs/tags/v1.21.3.tar.gz"
-  sha256 "eba7b5d2d66c872e06e746acff9e7eb30081ce1876dba3f0280d36cc5fad654e"
+  url "https://github.com/moonrepo/moon/archive/refs/tags/v1.29.4.tar.gz"
+  sha256 "4d34851b666805ee368edbe9aa679605122f63bd1bc7bab5d4de52463b8aa6c7"
   license "MIT"
   head "https://github.com/moonrepo/moon.git", branch: "master"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e4d2ca4be50b2f8e574a8cee7b99a52dcadbdf139a11a1dd26520622bb84fb58"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1e783011d52483ecabe4e82c749e80ec82abd90c549d57b3879cec96e17ffc9f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a31f07a34503fb31c2ada92530678778b36eb454291d2656f4baf00a46625468"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1c1ba9cf9c52c52b95e87ae9b3cdd6f23cd2cf1c1eca9170f0443521b8f94da0"
-    sha256 cellar: :any_skip_relocation, ventura:        "8e786388d57722190d7af6108d680f4f287e8d255e0c4d58aa78d2738654e230"
-    sha256 cellar: :any_skip_relocation, monterey:       "fdc8690010810e8af06f6d8d29342bd5ec042f678f13cafb9f297a8684b879d3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "829f92fc0eb450cc5b1d385c8298862719f7cd8d41b416d5de907c3acb91c498"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6f54f43f234aafe238b3fd58dbb71f6562e5775214b10d6d67954bbea1673bcc"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "83219e8ea564e4871dd1824e454612e911982f2ad86ad9ac33f16e9dad08fab0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "8929cd336235661dccf2cca43d7925df261a0e21f8c6f57c53d58b274d0877a6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b1c6b7e484e83bbac3a60208ead76ce6fa16216e6e5720653ddee66619f392a2"
+    sha256 cellar: :any_skip_relocation, ventura:       "cdcfe069cf63edc5fba6c3c7dbca9d4b2984c6b30d74092303ac98dea8204baa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5fef0cfb489bc789fe14e585fe36af1123c4c4cc16d7aec333feeae81f12f16a"
   end
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
+
+  uses_from_macos "bzip2"
 
   on_linux do
     depends_on "openssl@3"

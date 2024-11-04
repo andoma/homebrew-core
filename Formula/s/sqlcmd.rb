@@ -1,8 +1,8 @@
 class Sqlcmd < Formula
   desc "Microsoft SQL Server command-line interface"
   homepage "https://github.com/microsoft/go-sqlcmd"
-  url "https://github.com/microsoft/go-sqlcmd/archive/refs/tags/v1.6.0.tar.gz"
-  sha256 "f200155b4233fc7d8f632800705bae19eaa338a9c82c3f9d9106cbf3dcb78a8e"
+  url "https://github.com/microsoft/go-sqlcmd/archive/refs/tags/v1.8.0.tar.gz"
+  sha256 "c9ab499a5177a57b1464234b795ca704d00b384486cc4e34c2cfdac12d072374"
   license "MIT"
 
   livecheck do
@@ -11,20 +11,21 @@ class Sqlcmd < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "adf2a7f2de30f08ce50776011df042fd69b02ce58fde3efc0398c5348c6ae670"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5e43a2a3e5c78153c19d87681ea905e1d040eb54cbed84a599e13dc6617f12e5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5893be6a21490849d0e6888e92d322888688771f1ccc81134dfcfc533c295d49"
-    sha256 cellar: :any_skip_relocation, sonoma:         "278d8128f315b98b7560523c39fe01d5f9ab21893a0d133111d9cfaa72835852"
-    sha256 cellar: :any_skip_relocation, ventura:        "d62ceaaee735d31ac6505a18037f4d198f8d1d002cc26466478adc57a759b044"
-    sha256 cellar: :any_skip_relocation, monterey:       "3a3c1b8f8a89cd67f8645eb18325694b18e6591f25701204b9cbe0c498c66325"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3d5b669bcbd378a11dc3259f3992ef0d9da9d55fd8da9ac5f79f93892b07645a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ca8c13d4ff8fee4d6e270017abe8e062966a37815994634a82ab1a7237f4d099"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ccb0f7a97c9de585144516a1d0eec4b5355fd08a0a665d62e31324cc964e2a63"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d9a357a1c8c8fdbc0ba87753481cf1596587676095245f16a8a59f3a0635085b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1c4845c438031d490fbecdd99873c9d1acdf46effbc17e371ba2935cfe543e3b"
+    sha256 cellar: :any_skip_relocation, sonoma:         "20b5e85b7ee1684cb498b9a7dcdebc21d8ddeea098e026ee648324c8e95bafca"
+    sha256 cellar: :any_skip_relocation, ventura:        "94a5be641140ea52ad138a24c020d0ba4d543495d2dead1140de4d0cac6cb3e1"
+    sha256 cellar: :any_skip_relocation, monterey:       "ba6392afc75363b2e75f95361ea67bc599f827d69a5e4f8e03d3ab4176f1d4c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a86b88df2d9462fb934e218f6830e756462e9f69eb17e286069cfe2245c71d77"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X main.version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/modern"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/modern"
 
     generate_completions_from_executable(bin/"sqlcmd", "completion")
   end

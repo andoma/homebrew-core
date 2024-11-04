@@ -2,27 +2,26 @@ class Coconut < Formula
   include Language::Python::Virtualenv
 
   desc "Simple, elegant, Pythonic functional programming"
-  homepage "http://coconut-lang.org/"
-  url "https://files.pythonhosted.org/packages/ba/5c/b6bc3583a01c11ccf205bfe3a10d46f20de0645e5cbd613881b320d00b80/coconut-3.0.4.tar.gz"
-  sha256 "106f092f91e6cf509415cc627bf52ecda71a065158614cbfe73fa73dceeed98a"
+  homepage "https://coconut-lang.org/"
+  url "https://files.pythonhosted.org/packages/93/75/414f33186846444da53b4e834d5ccfb0577d0e09b997819c183fa509f70a/coconut-3.1.2.tar.gz"
+  sha256 "ef0656ee2df4594007f998f4a9c2a1b9bfbc40541a400cbaa00ccbbac50e5414"
   license "Apache-2.0"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "24bfe2cd7d55f4b559f40786a08586507ae0b7647a401ab4865b58732739c034"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bef926d9b3f851d35356ea62327a96e7526742c43a75c52f7e8dede545c1dc72"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a616344e7845c7f92c72e616728cb722acec304a3e15be5e09dcca96f7c8d311"
-    sha256 cellar: :any_skip_relocation, sonoma:         "24fe9a78ee797061b64ff96b8f61dab130e7d5bd83cbc89615c9982d77439d4e"
-    sha256 cellar: :any_skip_relocation, ventura:        "4352de9210e7a6fa36d46c7a248696f6bc7665ccf7fb3b2bc9b502a4bd2dd2a7"
-    sha256 cellar: :any_skip_relocation, monterey:       "9e10d50938b8813c2413e236873d8983ebe2ed5ec0ab3825fab07560efb9f3b4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "74a2c654f63132e71568e340d6be7747e16d538dede45953c6e98b4d105ffa37"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "25a6f46e119a250f8d10b8dd2df6a214823c1068b28fb5c332867e7b8ab8d2fd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d6b8cf2ffa687f0c101bdc413edf820eb96c6642b31f94fba3142499e0f507e2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "19088d74ca2b35b02d63aec0edd71d0e38c6ec3054879b542f029f65f25a22e2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "edeff6b15686362384e4fa5334bca7d95393e27e47f9ca5a1401d4f6d1e596b8"
+    sha256 cellar: :any_skip_relocation, ventura:       "5ea59853688e12fa9585572ecbfed6d46633eb9ac63aae0b4a22f7cef6babe0c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "54bd43552fdf9f556039fdba27670f50e5fd699df7b967ff9648c05b3bd26059"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "anyio" do
-    url "https://files.pythonhosted.org/packages/db/4d/3970183622f0330d3c23d9b8a5f52e365e50381fd484d08e3285104333d3/anyio-4.3.0.tar.gz"
-    sha256 "f75253795a87df48568485fd18cdd2a3fa5c4f7c5be8e5e36637733fce06fed6"
+    url "https://files.pythonhosted.org/packages/78/49/f3f17ec11c4a91fe79275c426658e509b07547f874b14c1a526d86a83fc8/anyio-4.6.0.tar.gz"
+    sha256 "137b4559cbb034c477165047febb6ff83f390fc3b20bf181c1fc0a728cb8beeb"
   end
 
   resource "async-generator" do
@@ -31,43 +30,43 @@ class Coconut < Formula
   end
 
   resource "cpyparsing" do
-    url "https://files.pythonhosted.org/packages/f1/2c/be67465b34206c24be7230746f589f0d4adbb60f96e889fc248fd51b9e3d/cPyparsing-2.4.7.2.3.2.tar.gz"
-    sha256 "746c6a780f7e64dc717ac1cc28ffbab7841df0672cad851d26cf15faa11a4692"
+    url "https://files.pythonhosted.org/packages/74/fe/7d45fc7fb67dd3cdaef4430c882b0b655e18ca45cf792d5feefb15f18ca2/cpyparsing-2.4.7.2.4.0.tar.gz"
+    sha256 "ee3d2f262712ad252a640131687d1b25985127a5d9ba2e1200f3017165f2ee7d"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
-    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "prompt-toolkit" do
-    url "https://files.pythonhosted.org/packages/cc/c6/25b6a3d5cd295304de1e32c9edbcf319a52e965b339629d37d42bb7126ca/prompt_toolkit-3.0.43.tar.gz"
-    sha256 "3527b7af26106cbc65a040bcc84839a3566ec1b051bb0bfe953631e704b0ff7d"
+    url "https://files.pythonhosted.org/packages/2d/4f/feb5e137aff82f7c7f3248267b97451da3644f6cdc218edfe549fb354127/prompt_toolkit-3.0.48.tar.gz"
+    sha256 "d6623ab0477a80df74e646bdbc93621143f5caf104206aa29294d53de1a03d90"
   end
 
   resource "psutil" do
-    url "https://files.pythonhosted.org/packages/90/c7/6dc0a455d111f68ee43f27793971cf03fe29b6ef972042549db29eec39a2/psutil-5.9.8.tar.gz"
-    sha256 "6be126e3225486dff286a8fb9a06246a5253f4c7c53b475ea5f5ac934e64194c"
+    url "https://files.pythonhosted.org/packages/18/c7/8c6872f7372eb6a6b2e4708b88419fb46b857f7a2e1892966b851cc79fc9/psutil-6.0.0.tar.gz"
+    sha256 "8faae4f310b6d969fa26ca0545338b21f73c6b15db7c4a8d934a5482faa818f2"
   end
 
   resource "pygments" do
-    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
-    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
   end
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/c8/1f/e026746e5885a83e1af99002ae63650b7c577af5c424d4c27edcf729ab44/setuptools-69.1.1.tar.gz"
-    sha256 "5c0806c7d9af348e6dd3777b4f4dbb42c7ad85b190104837488eab9a7c945cf8"
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
   end
 
   resource "sniffio" do
-    url "https://files.pythonhosted.org/packages/cd/50/d49c388cae4ec10e8109b1b833fd265511840706808576df3ada99ecb0ac/sniffio-1.3.0.tar.gz"
-    sha256 "e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101"
+    url "https://files.pythonhosted.org/packages/a2/87/a6771e1546d97e7e041b6ae58d80074f81b7d5121207425c964ddf5cfdbd/sniffio-1.3.1.tar.gz"
+    sha256 "f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc"
   end
 
   resource "typing-extensions" do
-    url "https://files.pythonhosted.org/packages/0c/1d/eb26f5e75100d531d7399ae800814b069bc2ed2a7410834d57374d010d96/typing_extensions-4.9.0.tar.gz"
-    sha256 "23478f88c37f27d76ac8aee6c905017a143b0b1b886c3c9f66bc2fd94f9f5783"
+    url "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz"
+    sha256 "1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"
   end
 
   resource "wcwidth" do

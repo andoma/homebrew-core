@@ -1,19 +1,20 @@
 class Gearman < Formula
   desc "Application framework to farm out work to other machines or processes"
-  homepage "http://gearman.org/"
+  homepage "https://gearman.org/"
   url "https://github.com/gearman/gearmand/releases/download/1.1.21/gearmand-1.1.21.tar.gz"
   sha256 "2688b83e48f26fdcd4fbaef2413ff1a76c9ecb067d1621d0e0986196efecd308"
   license "BSD-3-Clause"
-  revision 1
+  revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f37a97052a0c768f6474c07ee6dc636720099622645e1c3c7ba0f4c9c8f6b4bc"
-    sha256 cellar: :any,                 arm64_ventura:  "479948561c6e4e081bb53d3bd3128b9ab52b7455d4a4848a421328b2dc2baa25"
-    sha256 cellar: :any,                 arm64_monterey: "9c5707a987732d2186688e7a394cd365d4b95b2fcb65243ee978a9dca6030961"
-    sha256 cellar: :any,                 sonoma:         "912859d0ae86ffacf41772d91f5d1ed426ed0cf8c19e7a6c961696502b0ff6d5"
-    sha256 cellar: :any,                 ventura:        "5bdc353fd35e643166441a9a4f1421b048f8b8a47939fcb1bfd61600870b7619"
-    sha256 cellar: :any,                 monterey:       "73bde1653a0fd68c2e6e978a3a9ba70c2066c152dcb75364d984a53e61c9fbe2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a58ca217f1d747007d9796533836368b7cb598541b412a33336f86e072af0472"
+    sha256 cellar: :any,                 arm64_sequoia:  "5cdfdb84c2102f65926d2265929435a919eca018f7535e7cc68c022923065b18"
+    sha256 cellar: :any,                 arm64_sonoma:   "9d1da4a4f4163500fa5526812bc3a0568378e01a89001545bf45cee7c61d5ed7"
+    sha256 cellar: :any,                 arm64_ventura:  "4b43f495ded047c9a8bbf9cd1007151049cebf7cefcde392d00b9e3bb16b6bdb"
+    sha256 cellar: :any,                 arm64_monterey: "93ccbc7bf2fe168924a57d16851206fbf781f3ff78460c66f1e97e5551287bfd"
+    sha256 cellar: :any,                 sonoma:         "af960e8b7736a776909060bb4544f46058ab065a4bef2472b02bd4119142f2c1"
+    sha256 cellar: :any,                 ventura:        "30f5a814200b4eef0fa30ed3a26d526c18cf8fd03e9466e37699c1f16a09ad07"
+    sha256 cellar: :any,                 monterey:       "157e08eabcf0400b1f4c79a678b77433fc3d6c10390b372c641478ed4e5352c4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "285adf59fe86f27e59a6292255c4d62b281db259ec4f6f49a88469a8e0491e3a"
   end
 
   depends_on "pkg-config" => :build

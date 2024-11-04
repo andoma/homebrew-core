@@ -3,7 +3,7 @@ class Svg2png < Formula
   homepage "https://cairographics.org/"
   url "https://cairographics.org/snapshots/svg2png-0.1.3.tar.gz"
   sha256 "e658fde141eb7ce981ad63d319339be5fa6d15e495d1315ee310079cbacae52b"
-  license "LGPL-2.1"
+  license "LGPL-2.1-only"
   revision 2
 
   livecheck do
@@ -12,6 +12,7 @@ class Svg2png < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "35e0958cd39141bcefea89ffb6938e60c495151fff2d0c09c22cc3cb2d5a2d90"
     sha256 cellar: :any,                 arm64_sonoma:   "e12447c3d9303d05526006e0264334788b9420770964e4fa621368f38b099905"
     sha256 cellar: :any,                 arm64_ventura:  "6ea6d9de3e844679b033653d791e7b4e9d323e9851d5d69ae88e2aedcf9de01d"
     sha256 cellar: :any,                 arm64_monterey: "d27d975e6029a87783131f8c4dc4aa41da61901f01d13a44aebf1a69b27be9f3"
@@ -25,7 +26,13 @@ class Svg2png < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "cairo"
+  depends_on "jpeg-turbo"
+  depends_on "libpng"
+  depends_on "libsvg"
   depends_on "libsvg-cairo"
+
+  conflicts_with "mapnik", because: "both install `svg2png` binaries"
 
   def install
     # svg2png.c:53:9: note: include the header <string.h> or explicitly provide a declaration for 'strcmp'
@@ -45,7 +52,7 @@ class Svg2png < Formula
   end
 
   test do
-    system "#{bin}/svg2png", test_fixtures("test.svg"), "test.png"
+    system bin/"svg2png", test_fixtures("test.svg"), "test.png"
     assert_predicate testpath/"test.png", :exist?
   end
 end

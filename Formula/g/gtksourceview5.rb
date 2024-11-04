@@ -1,8 +1,8 @@
 class Gtksourceview5 < Formula
   desc "Text view with syntax, undo/redo, and text marks"
   homepage "https://projects.gnome.org/gtksourceview/"
-  url "https://download.gnome.org/sources/gtksourceview/5.10/gtksourceview-5.10.0.tar.xz"
-  sha256 "b38a3010c34f59e13b05175e9d20ca02a3110443fec2b1e5747413801bc9c23f"
+  url "https://download.gnome.org/sources/gtksourceview/5.14/gtksourceview-5.14.1.tar.xz"
+  sha256 "009862e87b929da5a724ece079f01f8cee29e74797a1ecac349f58c15a3cbc58"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,15 +11,12 @@ class Gtksourceview5 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "1ac4ed566b842c7f3208d10b3824e02ee0598ed5e23b5107834d9559494a6e93"
-    sha256 arm64_ventura:  "2cce39cb260822ecb6995d7f0533df4b61f312248e1ccb494dd73fe4a32292f1"
-    sha256 arm64_monterey: "af6509c2c368a83453961feea538fff54198a0b9a751d63baa03c5eba7dab790"
-    sha256 arm64_big_sur:  "c2d27258f21f8487b937989b846bba7deb0d000bebedca73247434ed3dbb2073"
-    sha256 sonoma:         "6731abcd2f86dd1b0ff36674450c48575c176132abaea9e069b81c555fb7c940"
-    sha256 ventura:        "cbd0420335ccef393978ba5b546407e1522b3de54a6dafbe18baef3e00a3240f"
-    sha256 monterey:       "c6524d3679f3458b98805ab024354779052e93f44a5e170d2458a4ba40600d8c"
-    sha256 big_sur:        "254f81f448773bb659113cccd55b53938ddc7f31b583f546335ffc214d41824d"
-    sha256 x86_64_linux:   "b257c6940131db2d41b2dfd926101cfd67a986b68aa0053dea17d67119949129"
+    sha256 arm64_sequoia: "089a65704275a9abed6d5755ddcfc598b137e56f654d92df9044dc9ee5199f1a"
+    sha256 arm64_sonoma:  "338321310c2cf103732b57df6e2339787b0639fac7adb22d284aa971415a0cb4"
+    sha256 arm64_ventura: "93ef5085c82b1e3c3fd1695ba9054b21f627e444e29ceb37c7995ee7313b0279"
+    sha256 sonoma:        "58c34a136f3f452f3dba0cec265440daed7549ce3076a8508e7cd9959fd774af"
+    sha256 ventura:       "3bad6976cb3afd66027201a78ad8af1bceeb18d37b560588be994b1943723691"
+    sha256 x86_64_linux:  "5cec825fdf9590375c3945f66fa9cfa679fe4a4794db8f7de4e546e96a04dd8e"
   end
 
   depends_on "gobject-introspection" => :build
@@ -27,8 +24,21 @@ class Gtksourceview5 < Formula
   depends_on "ninja" => :build
   depends_on "pkg-config" => [:build, :test]
   depends_on "vala" => :build
+
+  depends_on "cairo"
+  depends_on "fontconfig"
+  depends_on "fribidi"
+  depends_on "gdk-pixbuf"
+  depends_on "glib"
   depends_on "gtk4"
+  depends_on "pango"
   depends_on "pcre2"
+
+  uses_from_macos "libxml2"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     args = %w[
@@ -42,14 +52,14 @@ class Gtksourceview5 < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <gtksourceview/gtksource.h>
 
       int main(int argc, char *argv[]) {
         gchar *text = gtk_source_utils_unescape_search_text("hello world");
         return 0;
       }
-    EOS
+    C
 
     pkg_config_cflags = shell_output("pkg-config --cflags --libs gtksourceview-5").chomp.split
     system ENV.cc, "test.c", *pkg_config_cflags, "-o", "test"

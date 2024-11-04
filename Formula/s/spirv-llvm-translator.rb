@@ -1,24 +1,22 @@
 class SpirvLlvmTranslator < Formula
   desc "Tool and a library for bi-directional translation between SPIR-V and LLVM IR"
   homepage "https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
-  url "https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/refs/tags/v17.0.0.tar.gz"
-  sha256 "eba381e1dd99b4ff6c672a28f52755d1adf2d810a97b51e6074ad4fa67937fb2"
+  url "https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/refs/tags/v19.1.1.tar.gz"
+  sha256 "7f6f7a1af0eb40910ddf3a7647d2186c8c5dc5a47945afa935aeec56bacf4336"
   license "Apache-2.0" => { with: "LLVM-exception" }
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "fb08f283d690ee4edd312aaad2b8a0c7f0c2fbd3cf98f34390f1af9a670650de"
-    sha256 cellar: :any,                 arm64_ventura:  "d3aa7e4ab52318d5817ba74dc88872b5e5eaea275895defbb362bfd544f8f674"
-    sha256 cellar: :any,                 arm64_monterey: "f0ae081b3fcf344299a2c188a5a3d22edfbe688fa502f6becc01a96e60f48d79"
-    sha256 cellar: :any,                 arm64_big_sur:  "2afb73ee7cff207e91ca52c5ec5a9a9e07862aa538f4ebbec0fffcae4f3650a2"
-    sha256 cellar: :any,                 sonoma:         "2c74a9a13e149870a414f3a34e8d5f4be3f528489bd09fe0e2cc0e554dc28e90"
-    sha256 cellar: :any,                 ventura:        "c72f01cafc7dec197aa30a77f6239fa334408749d095b5b9b3cbce3dce6d13e0"
-    sha256 cellar: :any,                 monterey:       "af50fdc162830bff76ffa70abce9eed9656d6a30a0319637e6da01d48459c756"
-    sha256 cellar: :any,                 big_sur:        "d31c664d90e519943c2804e8980df4876314bb87756f8abf9fe6cee51bc652eb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c37b469b72e54d21f3eb58ef356c9a8d052589cd768ac3d7382cd385677b43a"
+    sha256 cellar: :any,                 arm64_sequoia: "62d76c96df71b0aa9f7257c036ff8d8342e13380433e1daa273e7d2454d0aff2"
+    sha256 cellar: :any,                 arm64_sonoma:  "4aad85a9f27af462b66cfcea86dffb97512d473f3cd9080cc9afeae2b67d0d86"
+    sha256 cellar: :any,                 arm64_ventura: "eb001b3a78850766e51973ab4ff11c2c17e4c7614c33c95158404f5b94a75662"
+    sha256 cellar: :any,                 sonoma:        "57b763cbe611d7337efcefddff2726dc20f310040671490cdb52fed6711dbd05"
+    sha256 cellar: :any,                 ventura:       "d202af3ab5a2eede7ab4b6f376548ff8fcbc7620684f06af7c4d7253a0fa56dc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3963067069c2ca89dc384241a9e01cc3edb91e558ea7684eb9cc67a3abf5fcf7"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "spirv-headers" => :build
   depends_on "llvm"
 
   # See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=56480
@@ -29,7 +27,13 @@ class SpirvLlvmTranslator < Formula
   end
 
   def install
-    system "cmake", "-S", ".", "-B", "build", "-DLLVM_BUILD_TOOLS=ON", *std_cmake_args
+    ENV.append "LDFLAGS", "-Wl,-rpath,#{rpath(target: llvm.opt_lib)}" if OS.linux?
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DBUILD_SHARED_LIBS=ON",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    "-DLLVM_BUILD_TOOLS=ON",
+                    "-DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=#{Formula["spirv-headers"].opt_prefix}",
+                    *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

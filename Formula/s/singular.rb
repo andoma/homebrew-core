@@ -1,9 +1,9 @@
 class Singular < Formula
   desc "Computer algebra system for polynomial computations"
   homepage "https://www.singular.uni-kl.de/"
-  url "https://www.singular.uni-kl.de/ftp/pub/Math/Singular/SOURCES/4-3-2/singular-4.3.2p10.tar.gz"
-  version "4.3.2p10"
-  sha256 "28c2c9fcfee954e00dfa56eb1a7d418d5b1de67c4398d25a0f2b8f73e71552a8"
+  url "https://www.singular.uni-kl.de/ftp/pub/Math/Singular/SOURCES/4-4-0/singular-4.4.0p6.tar.gz"
+  version "4.4.0p6"
+  sha256 "23a7674d1cf734b436c26c145dc22cb51f71a14d61e6ca17084293ccd0148902"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -37,13 +37,12 @@ class Singular < Formula
 
   bottle do
     rebuild 1
-    sha256 arm64_sonoma:   "f0bddb5da1c198e218dcd79b585cf0398770f9decbf5b2ac454721ecb0f5d015"
-    sha256 arm64_ventura:  "e4a22b79e5ccf17a46e0ce271cdf61ba32d7459e8f6d24a0e256af3dfc5957e2"
-    sha256 arm64_monterey: "098334fdfc30955cb547398be691c51e4946ab5ebdfc904f08313ce77a1aefc7"
-    sha256 sonoma:         "7ed4d7303a1267240d6361547b46f98219b153032c47667c60e500eeb4d90b2d"
-    sha256 ventura:        "b8be00bbe12c3807b700663611d8a566cb87b1cd6f807e67bf49ec2df92e40e3"
-    sha256 monterey:       "b6b9a45728e90034875d3cfd1bdaf39bd2081e00d84bead8f920ae19047b23f4"
-    sha256 x86_64_linux:   "64c5c20f4a2d54099bb692ec0a7af371fbd19b81ecd197c7dc0ac5167d0dfb7e"
+    sha256 arm64_sequoia: "ac4346f71a06f0ae9ec36bdc498414d61cd9b6161f39ebfa4327817423f96e9e"
+    sha256 arm64_sonoma:  "4e18563cd04ba72fe3c22cc9a1146b21e02b14427adba5363bc5a9ca681604af"
+    sha256 arm64_ventura: "559b2f2a8d17deae3d3e47e1f0cfabf047e35c87232a7a59b1fb482a0b23e671"
+    sha256 sonoma:        "697102f51dc8667ddf7773a52ebae51f150cb15b248491c465ac653d9ce364a2"
+    sha256 ventura:       "7a114e9f033ff75acb94bf101359e68c63874b8698c85b71807fd82ac518fbe7"
+    sha256 x86_64_linux:  "1da41f69eaeba4d66f62b448514235837cfecc2193a433610bd18528eec35f3b"
   end
 
   head do
@@ -57,13 +56,14 @@ class Singular < Formula
   depends_on "gmp"
   depends_on "mpfr"
   depends_on "ntl"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
+  depends_on "readline"
 
   def install
     system "./autogen.sh" if build.head?
     system "./configure", *std_configure_args,
                           "--disable-silent-rules",
-                          "--with-python=#{which("python3.12")}",
+                          "--with-python=#{which("python3.13")}",
                           "CXXFLAGS=-std=c++11"
     system "make", "install"
   end

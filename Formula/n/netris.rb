@@ -1,6 +1,6 @@
 class Netris < Formula
   desc "Networked variant of tetris"
-  homepage "https://web.archive.org/web/20071223041235/www.netris.be/"
+  homepage "https://packages.debian.org/sid/netris"
   url "https://deb.debian.org/debian/pool/main/n/netris/netris_0.52.orig.tar.gz"
   sha256 "8bc770ebb2c3ead1611ca7a1a2f3d833e169536c78d53b3fcf49381164ee9706"
   license "GPL-2.0-or-later"
@@ -10,6 +10,7 @@ class Netris < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "45fd383811db400a50896723b5c7f9e05015d19208c678d14e52e68031dd6887"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "311ecb7d3b6ba50544169823f78960a2da39290fed321d2f0328fd0b4da72359"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "7d1b2e0308a1ac7d02f0d76d91c805c32241191fc396d2a95e22b9456370e8af"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "325a86274ce6276ebecbf44fd386861b02ca96a8aa982da845c21ba0932aca00"
@@ -81,7 +82,15 @@ class Netris < Formula
   end
 
   def install
-    system "sh", "Configure"
+    configure_args = []
+    # Workaround for newer Clang
+    if DevelopmentTools.clang_build_version >= 1403
+      configure_args = [
+        "--cextra",
+        "-Wno-implicit-function-declaration -Wno-implicit-int",
+      ]
+    end
+    system "sh", "Configure", *configure_args
     system "make"
     bin.install "netris"
   end

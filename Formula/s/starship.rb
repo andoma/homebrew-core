@@ -1,19 +1,18 @@
 class Starship < Formula
   desc "Cross-shell prompt for astronauts"
   homepage "https://starship.rs"
-  url "https://github.com/starship/starship/archive/refs/tags/v1.17.1.tar.gz"
-  sha256 "2b2fc84feb0197104982e8baf17952449375917da66b7a98b3e3fd0be63e5dba"
+  url "https://github.com/starship/starship/archive/refs/tags/v1.21.1.tar.gz"
+  sha256 "f543dfa3229441ca2a55b8a625ce4bad5756a896378b019f4d0f0e00cf34dcc8"
   license "ISC"
   head "https://github.com/starship/starship.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "58efc19ef25c237ed5d6272fd4dbaa4124901384f80f16dacba99bad617dfab3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "51eb13f179f91c5c507c818c895191c078b81f89e870a5015a1d4ac092520efd"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a224fae1f0ca4c773609bb788983248bce98741245a03fdc9cc13d409ac9ea37"
-    sha256 cellar: :any_skip_relocation, sonoma:         "0aba709eb27b0b45a38650a4982d3fe7fd66538ce5c668762ae8977bdf6431bd"
-    sha256 cellar: :any_skip_relocation, ventura:        "ef1ca68886814af8eec77a8063cff0158ead9074efba593ad8a4dc575dab5fdd"
-    sha256 cellar: :any_skip_relocation, monterey:       "f37a8ae5e7ab4f6785eda4ddb71c89d1d99a2ea4f4b9b061b8b328cf0d258dad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1258810fd14a8b9896c09969f04f401a7d54d5d44398eb5ff8a95a2b3552fe06"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2bcf17d726950f2a9658a5efba92923f2fa898d972a494818e48cc9e6c68d9f9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "856287a509adf492e5bc07561a8a88f5932cbfac917df5a22ce5fb8ef6b860ba"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a20e48b1522f4ed5dd0129b66d04434f61c224ce3e529330437e8f986b0fffba"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6182681db64704a0883119d2bd69469cb82e236e13b0e82978d2e5f5024eae01"
+    sha256 cellar: :any_skip_relocation, ventura:       "0c129e5d081e44c0bd65f0a27713180ce6e3eb24ba1d772fdbd25a32b37454a5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f5e13f280511bf5df92ebca6b49b2391352d4c775060fe9dc24839a57392e677"
   end
 
   depends_on "cmake" => :build

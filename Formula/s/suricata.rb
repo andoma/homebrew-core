@@ -1,8 +1,10 @@
 class Suricata < Formula
+  include Language::Python::Virtualenv
+
   desc "Network IDS, IPS, and security monitoring engine"
   homepage "https://suricata.io"
-  url "https://www.openinfosecfoundation.org/download/suricata-7.0.3.tar.gz"
-  sha256 "ea0742d7a98783f1af4a57661af6068bc2d850ac3eca04b3204d28ce165e35ff"
+  url "https://www.openinfosecfoundation.org/download/suricata-7.0.7.tar.gz"
+  sha256 "26d0a36194d53080fc8b09b999b2b5a83c4049f40ad07ef6ae69c7225a728b86"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,13 +13,13 @@ class Suricata < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "809b4d95dcef62769c1760e7d6bdda61814b4baf136ae4c1a3ff68c3bdd8449a"
-    sha256 arm64_ventura:  "3c85d806ae4ddda99b50a90d8af38a797eb893ea68d0e19ccc649275537e1ace"
-    sha256 arm64_monterey: "892982ab6ab0f8802a3d6002ab50a10396bd863fa3e815f9597dde1798131c5b"
-    sha256 sonoma:         "8acb1413d037bc6a20c2584edb11baab6451ca0d7733999f46dd62bb7b2e9c0a"
-    sha256 ventura:        "065977357ede5156a659a1199ef3cdd4316822500491a050b218f4575bb523bc"
-    sha256 monterey:       "d859b99ef160ecaea338a6a99983250f7bf93d6c737f156a9979c3f2dadc40bd"
-    sha256 x86_64_linux:   "5b943c20cfbce30654e0a7587cf872800d8e24e4e4694fc20a659fa28673b050"
+    rebuild 1
+    sha256 arm64_sequoia: "e2ab474e372175d8f3905c33eb6b88498757c6d7589bf214344a79653c468b51"
+    sha256 arm64_sonoma:  "c1919fb164c68206031353fc6c7ac54afbcdc2bab06e6f202fa8f68802c050d6"
+    sha256 arm64_ventura: "ed28589c2b7f42021a350bd779a7a76e8e5f790eec03fa02f1ed34108bca89cf"
+    sha256 sonoma:        "6f2845a8a5000a06213834b5f795cc07e132fd419e9b7ce86f68a8257506c466"
+    sha256 ventura:       "0bcea933496d59cf8950f33f8084ae29c4835bcb811181b23573d56bad6cf2c9"
+    sha256 x86_64_linux:  "a7c52934a4c8f2df71be5d154b0308ebc8c1c92b103c5d33cc2c72301427568c"
   end
 
   depends_on "pkg-config" => :build
@@ -25,14 +27,28 @@ class Suricata < Formula
   depends_on "jansson"
   depends_on "libmagic"
   depends_on "libnet"
+  depends_on "libyaml"
   depends_on "lz4"
   depends_on "pcre2"
-  depends_on "python@3.12"
-  depends_on "pyyaml"
+  depends_on "python@3.13"
 
   uses_from_macos "libpcap"
+  uses_from_macos "zlib"
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+  end
+
+  def python3
+    "python3.13"
+  end
 
   def install
+    venv = virtualenv_create(libexec, python3)
+    venv.pip_install resources
+    ENV.prepend_path "PATH", venv.root/"bin"
+
     jansson = Formula["jansson"]
     libmagic = Formula["libmagic"]
     libnet = Formula["libnet"]
@@ -58,11 +74,8 @@ class Suricata < Formula
       args << "--with-libpcap-libraries=#{Formula["libpcap"].opt_lib}"
     end
 
-    inreplace "configure", "for ac_prog in python3 ", "for ac_prog in python3.12 "
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args
     system "make", "install-full"
-
-    bin.env_script_all_files(libexec/"bin", PYTHONPATH: lib/"suricata/python")
 
     # Leave the magic-file: prefix in otherwise it overrides a commented out line rather than intended line.
     inreplace etc/"suricata/suricata.yaml", %r{magic-file: /.+/magic}, "magic-file: #{libmagic.opt_share}/misc/magic"

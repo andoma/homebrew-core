@@ -1,22 +1,22 @@
 class Libaec < Formula
   desc "Adaptive Entropy Coding implementing Golomb-Rice algorithm"
   homepage "https://gitlab.dkrz.de/k202009/libaec"
-  url "https://gitlab.dkrz.de/k202009/libaec/-/archive/v1.1.2/libaec-v1.1.2.tar.bz2"
-  sha256 "bdad8c7923537c3695327aa85afdcd714fb3d30a5f956a27ba2971ef98c043ac"
+  url "https://gitlab.dkrz.de/k202009/libaec/-/archive/v1.1.3/libaec-v1.1.3.tar.bz2"
+  sha256 "46216f9d2f2d3ffea4c61c9198fe0236f7f316d702f49065c811447186d18222"
   license "BSD-2-Clause"
   head "https://gitlab.dkrz.de/k202009/libaec.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "cdf50fb48fbe330bb9b925c8c77db35184d72153fcfa5b35e44f8af7fd043167"
-    sha256 cellar: :any,                 arm64_ventura:  "039a503bf9b043b1bfa509291887e083a11656169d27570b3fd5aa5c6dce203d"
-    sha256 cellar: :any,                 arm64_monterey: "e01189e1d9f536cb14b7bb52b3714161c270a4e3decd180d9b7fc00109b98a4e"
-    sha256 cellar: :any,                 sonoma:         "ecc061efd6237f7e8f2b075cb3c878798bf344a9e882d9b331787bbabb8a9616"
-    sha256 cellar: :any,                 ventura:        "5f42304a1ff88ca94ec7ff8f8e2f7ccdc9910312823a61f4ced2b60f61f4115a"
-    sha256 cellar: :any,                 monterey:       "9624bac0ca98f63c38fea833d383559f0e43110b50a24cab4e3e99861495de59"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2aabeaeb8f71d4810ed9ad0ad375785878f1efd7515556f11fec3045c3be02c8"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "541259dd6c03672bfbfe4a251ebe70643d5c9a72f264c94315a54b3aafd3e815"
+    sha256 cellar: :any,                 arm64_sonoma:  "a663972f5eec805fe10beac16c80701375f3f192c4efd7c42788716437fc113d"
+    sha256 cellar: :any,                 arm64_ventura: "6eb5fcc80ba76dbf96d4c686d1596124c2f1cc21648e3b25b95e9a459fa982b4"
+    sha256 cellar: :any,                 sonoma:        "60215c8f7af6e44926030f05c6ebc1344f2b23766c234268bf7ea5eb2fc2a1ad"
+    sha256 cellar: :any,                 ventura:       "ea401973cd11d71d719097d9611d243ea5eaff7cc110a97136c18d8c74fb2c9c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "abf37dff4d0fd06ecc1086b33ed1a6fe308509c5b65dd063ff4ef0ca212d8d7e"
   end
 
-  depends_on "cmake" => :build
+  depends_on "cmake" => [:build, :test]
 
   # These may have been linked by `szip` before keg_only change
   link_overwrite "include/szlib.h"
@@ -27,16 +27,28 @@ class Libaec < Formula
   link_overwrite "lib/libsz.so.2"
 
   def install
-    mkdir "build" do
-      # We run `make test` for libraries
-      system "cmake", "..", *std_cmake_args, "-DBUILD_TESTING=ON"
-      system "make", "install"
-      system "make", "test"
-    end
+    # run ctest for libraries, also added `"-DBUILD_TESTING=ON` in the end as
+    # `std_cmake_args` has `BUILD_TESTING` off
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DBUILD_TESTING=ON"
+    system "cmake", "--build", "build"
+    system "ctest", "--test-dir", "build", "--verbose"
+    system "cmake", "--install", "build"
+
+    # Symlink CMake files to a common linked location. Similar to Linux distros
+    # like Arch Linux[^1] and Alpine[^2], but we add an extra subdirectory so that
+    # CMake can automatically find them using the default search procedure[^3].
+    #
+    # [^1]: https://gitlab.archlinux.org/archlinux/packaging/packages/libaec/-/blob/main/PKGBUILD?ref_type=heads#L25
+    # [^2]: https://gitlab.alpinelinux.org/alpine/aports/-/blob/master/community/libaec/APKBUILD#L43
+    # [^3]: https://cmake.org/cmake/help/latest/command/find_package.html#config-mode-search-procedure
+    (lib/"cmake").install_symlink prefix/"cmake" => "libaec"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    # Check directory structure of CMake file in case new release changed layout
+    assert_predicate lib/"cmake/libaec/libaec-config.cmake", :exist?
+
+    (testpath/"test.cpp").write <<~CPP
       #include <cassert>
       #include <cstddef>
       #include <cstdlib>
@@ -62,8 +74,20 @@ class Libaec < Formula
         free(compressed);
         return 0;
       }
-    EOS
-    system ENV.cc, "test.cpp", "-I#{include}", "-L#{lib}", "-laec", "-o", "test"
+    CPP
+
+    # Test CMake config package can be automatically found
+    (testpath/"CMakeLists.txt").write <<~CMAKE
+      cmake_minimum_required(VERSION 3.5)
+      project(test LANGUAGES CXX)
+
+      find_package(libaec CONFIG REQUIRED)
+
+      add_executable(test test.cpp)
+      target_link_libraries(test libaec::aec)
+    CMAKE
+    system "cmake", ".", *std_cmake_args
+    system "cmake", "--build", "."
     system "./test"
   end
 end

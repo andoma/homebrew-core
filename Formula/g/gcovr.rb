@@ -3,22 +3,21 @@ class Gcovr < Formula
 
   desc "Reports from gcov test coverage program"
   homepage "https://gcovr.com/"
-  url "https://files.pythonhosted.org/packages/ed/9b/119d9b9501a9d0bc91be6b163be98125a9345e37871f4f3243b112d456e6/gcovr-7.2.tar.gz"
-  sha256 "e3e95cb56ca88dbbe741cb5d69aa2be494eb2fc2a09ee4f651644a670ee5aeb3"
+  url "https://files.pythonhosted.org/packages/32/21/7f9967a2d5a37d8f77e793ba4c173d0e1e59195028c997a9947b73b652f4/gcovr-8.2.tar.gz"
+  sha256 "9a1dddd4585d13ec77555db5d6b6a31ee81587ea6fc604ff9fcd232cb0782df5"
   license "BSD-3-Clause"
   head "https://github.com/gcovr/gcovr.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a2e8e56803500d490cdae9a7432b35e59f3d2dacdcab6c78bfcfb19fbb2c9354"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ed19a515f8e44706eb7661ce5c0a385f77746b9d027522cee7ff158c88de1ca3"
-    sha256 cellar: :any,                 arm64_monterey: "6f993463057ac80e8d7d02cbfbba217ef87a8963496f13fe665091cf60df97b8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "dc88fb7fecdb8b3c34b7d79c232e4b308447e055ebe92ee30e3b65712e6ae859"
-    sha256 cellar: :any_skip_relocation, ventura:        "ce0a70ccb0a96f7aec1609441a4ff0fcdcf78b1b199e4586c4d59b86af964c10"
-    sha256 cellar: :any,                 monterey:       "b9973ee5a8773a6cf4c9c57d70fb4962fd700d49027ffd047a07c61799d3c439"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f6be24c6c49b5ed519c4c246ab30d856f6c00372c1d9e3ba15cd7276034445e8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2f7f77441e25db28d5cc139e25d0da7ea0b9b2b0c7bbb58993940ab5657fde4b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "06781eb1ecbc23c17eea3c2afae02943ab7426a182a624e7c4646cb5567de0ea"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2a25c3ff943643010a69b455916cd4013d3cdf8cc8f3d5feffd3268fed8acba1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "899ad67d226162abaa2605d48206670ca0fae72cebeb6723296b3040ce510c35"
+    sha256 cellar: :any_skip_relocation, ventura:       "8d862a1fbff7976bcd5b23216d3967b5689a3af5d667fa5b9b2b6fa06481370c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fdae1740841ad220dbbe6daff2479e5e3f0a3988d0777e61d2dbb5eee557d766"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   uses_from_macos "libxml2", since: :ventura
   uses_from_macos "libxslt"
@@ -29,23 +28,23 @@ class Gcovr < Formula
   end
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/b2/5e/3a21abf3cd467d7876045335e681d276ac32492febe6d98ad89562d1a7e1/Jinja2-3.1.3.tar.gz"
-    sha256 "ac8bd6544d4bb2c9792bf3a159e80bba8fda7f07e81bc3aed565432d5925ba90"
+    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
+    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
   end
 
   resource "lxml" do
-    url "https://files.pythonhosted.org/packages/2b/b4/bbccb250adbee490553b6a52712c46c20ea1ba533a643f1424b27ffc6845/lxml-5.1.0.tar.gz"
-    sha256 "3eea6ed6e6c918e468e693c41ef07f3c3acc310b70ddd9cc72d9ef84bc9564ca"
+    url "https://files.pythonhosted.org/packages/e7/6b/20c3a4b24751377aaa6307eb230b66701024012c29dd374999cc92983269/lxml-5.3.0.tar.gz"
+    sha256 "4e109ca30d1edec1ac60cdbe341905dc3b8f55b16855e03a54aaf59e51ec8c6f"
   end
 
   resource "markupsafe" do
-    url "https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz"
-    sha256 "d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b"
+    url "https://files.pythonhosted.org/packages/b4/d2/38ff920762f2247c3af5cbbbbc40756f575d9692d381d7c520f45deb9b8f/markupsafe-3.0.1.tar.gz"
+    sha256 "3e683ee4f5d0fa2dde4db77ed8dd8a876686e3fc417655c2ece9a90576905344"
   end
 
   resource "pygments" do
-    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
-    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
   end
 
   def install

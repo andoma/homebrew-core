@@ -7,6 +7,7 @@ class Gokart < Formula
   head "https://github.com/praetorian-inc/gokart.git", branch: "main"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "507a041c828e63ce0dc9aab9e1813c8d3d88953a36f0c7d78d6b26494e061feb"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a79a35e7badd5894d6080b74b28f701b14d680a6480b78ab237ebb77083a559f"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "3adae6ff7cc756f194a906f77d25a0d4680cb69241c670c3b3b36323c69ce39f"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "50f225b023198e9ecb44e854f37cd84c0638cb17bef5b1d43bcb31a2bb8d58d0"
@@ -18,6 +19,8 @@ class Gokart < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "4bdf138ac774192e8984fbe34033c0673a4e0a8f173441ede2af1c1cf3ab2f20"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "272ab63250f847c8749b0ea407a5947e8472288f8bb21da400df45a01e9ecb4a"
   end
+
+  deprecate! date: "2024-06-20", because: :repo_archived
 
   depends_on "go" => [:build, :test]
 

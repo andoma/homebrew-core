@@ -2,19 +2,18 @@ class PrometheusCpp < Formula
   desc "Prometheus Client Library for Modern C++"
   homepage "https://github.com/jupp0r/prometheus-cpp"
   url "https://github.com/jupp0r/prometheus-cpp.git",
-      tag:      "v1.2.3",
-      revision: "4bd38da318ec54af8e2d8d5d0bdbd5eb9bc0784f"
+      tag:      "v1.3.0",
+      revision: "e5fada43131d251e9c4786b04263ce98b6767ba5"
   license "MIT"
   head "https://github.com/jupp0r/prometheus-cpp.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1b611b4be621623c435c1007699868d5314725ff20b1077e93af93181fcd08fd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "37d9a7a09e4c6ce562ad2687702b4a16fc4fa657f3b08ee2b92f5906654c0c7b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "434a050fa1496ac647044cbca54b32dbcedb26972a87b272550c092b18a12840"
-    sha256 cellar: :any_skip_relocation, sonoma:         "f4496955575abbb2f9707f5fb3901bf89d94f9f4602c96ebdd4180cd351175d2"
-    sha256 cellar: :any_skip_relocation, ventura:        "e01ff1a61beee01bd0968b0c58f0c5030a5eadf4b1cf55ce86fc9ad5b7adcf45"
-    sha256 cellar: :any_skip_relocation, monterey:       "aa6885bcf92df9dcffe593494431eb1e48a166505718c653859e68a095576b4b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fe705f86f7112cfa7c4b99e6114c6c53b825b7df14473aa5ef84fe812f88d4fa"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0469944a3e069184d8a5d5747c8df6c6126912ec2e12e794ec425c768273dfa8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "991b7601d5774cef31131ea9cd59e5278962567803bd45841a9425a664d9e1b5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d6e9b1c1da33cf8f36891e0e628ca217aa85a6c5c657638b243c6fd873221ab5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fa88788cb92e0e1396228550dabaf5f8f69fc377eb6e0998035aa02744eb250b"
+    sha256 cellar: :any_skip_relocation, ventura:       "306bb5a7cfe366723b2d07ee15a7ee3b05eca2ccda33ae8c7f959d43aed7632c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "52dd7c5aeb41b13044d540efe21ac41f3428334a8390f0599bf5b7d4e2dd90b6"
   end
 
   depends_on "cmake" => :build
@@ -27,13 +26,13 @@ class PrometheusCpp < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <prometheus/registry.h>
       int main() {
         prometheus::Registry reg;
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++14", "test.cpp", "-I#{include}", "-L#{lib}", "-lprometheus-cpp-core", "-o", "test"
     system "./test"
   end

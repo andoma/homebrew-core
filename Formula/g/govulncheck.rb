@@ -1,19 +1,20 @@
 class Govulncheck < Formula
   desc "Database client and tools for the Go vulnerability database"
   homepage "https://github.com/golang/vuln"
-  url "https://github.com/golang/vuln/archive/refs/tags/v1.0.4.tar.gz"
-  sha256 "11fc5678f7d1d838b4dd38032baf32cd244d029dbe6a4a3e7d88a5e7ccdaf4f0"
+  url "https://github.com/golang/vuln/archive/refs/tags/v1.1.3.tar.gz"
+  sha256 "9609756c03d8ce810a1a65434ad15d35213cf97414341644777308ae9753370e"
   license "BSD-3-Clause"
   revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "339969e5c8be49d8d644c3344eaa8c69ea83d80ac13b67bfb4229c64e8928db4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2e814e3e23711563653150bfb3d4245e78650c7610731558d56f74cb69359715"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2809402175a076fa83fc251e2655a1b1e8485435a5a81ae5f6c47cfe3d87376c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e3e076fc31da44da9d6a2d14dcc78cbe38b38ebdddbaf06c03474a12d8f9ee13"
-    sha256 cellar: :any_skip_relocation, ventura:        "87d995cdbcefec40769bc92e684b566d620f24545b5c19c1d3e89b26498ec7c0"
-    sha256 cellar: :any_skip_relocation, monterey:       "fbd9611c2e38eacb5de157dfe70e2ade52450bd83791abc6cbb363d8d8fb987a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f7677c8a27ead3d06d5f92a51840f01bc448e02dd8d36fffa09f0525995b97d5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "241264db9449a92aee067de28f0e3f29d20fc1bcbf33f8d7f87ba088885542e2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "45cacfa3490e92ae8db85cbae1eb85d5d2242264ef18299c96f69c33b09ba769"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "45cacfa3490e92ae8db85cbae1eb85d5d2242264ef18299c96f69c33b09ba769"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "45cacfa3490e92ae8db85cbae1eb85d5d2242264ef18299c96f69c33b09ba769"
+    sha256 cellar: :any_skip_relocation, sonoma:         "bad51736276a2a11ceecff012ac9b1294309cdb4aa28228a416d3d61811599f9"
+    sha256 cellar: :any_skip_relocation, ventura:        "bad51736276a2a11ceecff012ac9b1294309cdb4aa28228a416d3d61811599f9"
+    sha256 cellar: :any_skip_relocation, monterey:       "bad51736276a2a11ceecff012ac9b1294309cdb4aa28228a416d3d61811599f9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6aa83918d5c88c5f171e209d3b3edf61e55150dcb7e2350784e37688ea036fcd"
   end
 
   depends_on "go" => [:build, :test]

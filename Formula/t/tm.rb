@@ -7,6 +7,7 @@ class Tm < Formula
   head "https://github.com/triggermesh/tm.git", branch: "main"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b87ee9cdc5bff6989252c305af1da3540d847784eea6f895acb5cd589abdafd1"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bb35c98edad2b1a8ea811001ca4c9df94cd4313717622b0da3ee0b04e518e6fd"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "a457f9d2f739486050e6f0e952f881c804cd15eba2007375523bf5cb85e92f25"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "a55ee1208229d3940370f20a88131eadeb396084a07720000c3484fa5b82d56a"
@@ -19,6 +20,8 @@ class Tm < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "58105d9cd50de7d0aa4e130051b6819670acbb2c53702ed9c783d90f92b610ff"
   end
 
+  deprecate! date: "2024-03-15", because: :repo_archived
+
   depends_on "go" => :build
 
   def install
@@ -27,7 +30,7 @@ class Tm < Formula
       -X github.com/triggermesh/tm/cmd.version=v#{version}
     ].join(" ")
 
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do
@@ -59,7 +62,7 @@ class Tm < Formula
     assert_match "Triggermesh CLI, version v#{version}", version_output
 
     # node
-    system "#{bin}/tm", "generate", "node", "foo-node"
+    system bin/"tm", "generate", "node", "foo-node"
     assert_predicate testpath/"foo-node/serverless.yaml", :exist?
     assert_predicate testpath/"foo-node/handler.js", :exist?
 
@@ -68,7 +71,7 @@ class Tm < Formula
     assert_match "runtime: #{runtime}", yaml
 
     # python
-    system "#{bin}/tm", "generate", "python", "foo-python"
+    system bin/"tm", "generate", "python", "foo-python"
     assert_predicate testpath/"foo-python/serverless.yaml", :exist?
     assert_predicate testpath/"foo-python/handler.py", :exist?
 
@@ -77,7 +80,7 @@ class Tm < Formula
     assert_match "runtime: #{runtime}", yaml
 
     # go
-    system "#{bin}/tm", "generate", "go", "foo-go"
+    system bin/"tm", "generate", "go", "foo-go"
     assert_predicate testpath/"foo-go/serverless.yaml", :exist?
     assert_predicate testpath/"foo-go/main.go", :exist?
 
@@ -86,7 +89,7 @@ class Tm < Formula
     assert_match "runtime: #{runtime}", yaml
 
     # ruby
-    system "#{bin}/tm", "generate", "ruby", "foo-ruby"
+    system bin/"tm", "generate", "ruby", "foo-ruby"
     assert_predicate testpath/"foo-ruby/serverless.yaml", :exist?
     assert_predicate testpath/"foo-ruby/handler.rb", :exist?
 

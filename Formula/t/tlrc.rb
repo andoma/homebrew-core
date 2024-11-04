@@ -1,19 +1,20 @@
 class Tlrc < Formula
   desc "Official tldr client written in Rust"
   homepage "https://github.com/tldr-pages/tlrc"
-  url "https://github.com/tldr-pages/tlrc/archive/refs/tags/v1.8.0.tar.gz"
-  sha256 "900845c56bd87af990f6328b4762762bc7392cb93571080ee52df2c6d0fb9456"
+  url "https://github.com/tldr-pages/tlrc/archive/refs/tags/v1.9.3.tar.gz"
+  sha256 "5a103e9d77e5a5d02b4e7ef98a3ab8e5fb1e4a9a861ea0cd19ab3002daf89fed"
   license "MIT"
   head "https://github.com/tldr-pages/tlrc.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1be36419de69b877b8099e446872f6e713fa1ed1486270d8adfbb153fa9991b6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "69126e2e1f13ce69bfaf5ebd50c2ab96e39530559b2e7c4d3ef6eb67397091c4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e7c364e53bc94cfb822b9409d994cfb2604c04dfdd2754f1b1e08de55ca24b40"
-    sha256 cellar: :any_skip_relocation, sonoma:         "024983c93d178909f6851fc7d597e1867d2b2dfeae32d7bed5234f5308d53014"
-    sha256 cellar: :any_skip_relocation, ventura:        "6ffb5d854f92f44134be16b8e2b3ce9219625a8d05d7fff9955e7c50cf174ad7"
-    sha256 cellar: :any_skip_relocation, monterey:       "cb06ff3f3938a66e2fe59f93041d9687b4608c542df46e6be202fd265b7cd3ed"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fec66ae5e4927dc6eac0ce087c4dafad347416bf4d6bd61bf609b0be1f5a0f95"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c5c04dd949a1852ac74d47806edbf9d66a934bec8a25e2a7ef14c5cb561b74d5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "97c5f4c368464e2a079eb997db14556449c08f6dfb89858b6632bf788656c2b2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "39e600c9bb0e372fb96fa13ad6d21b19a50e5a12b2f71a57ab75420dfa67b32f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c4cab0cdcad86b09de10562690684780df7ab386b8d6123ed5e6e62e1d44996d"
+    sha256 cellar: :any_skip_relocation, sonoma:         "9624494a35da5d9c819e8bc326df3c443b5764f9715a44ce65ff0f3ed87ba40d"
+    sha256 cellar: :any_skip_relocation, ventura:        "5703ac062d93becf3a675c73e580e40833352824b72af8eba542ab26840fc1b1"
+    sha256 cellar: :any_skip_relocation, monterey:       "43352a252db7eb809704ec9a6b5d51efaa3de8c9c45792106b321121eb5858ff"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f434a74662a50b963fe7e58804f2d88aad7f637e041a95cd6e1001f4321c399b"
   end
 
   depends_on "rust" => :build
@@ -22,14 +23,13 @@ class Tlrc < Formula
   conflicts_with "tldr", because: "both install `tldr` binaries"
 
   def install
-    ENV["COMPLETION_DIR"] = buildpath
     system "cargo", "install", *std_cargo_args
 
     man1.install "tldr.1"
 
-    bash_completion.install "tldr.bash" => "tldr"
-    zsh_completion.install "_tldr"
-    fish_completion.install "tldr.fish"
+    bash_completion.install "completions/tldr.bash" => "tldr"
+    zsh_completion.install "completions/_tldr"
+    fish_completion.install "completions/tldr.fish"
   end
 
   test do

@@ -1,21 +1,19 @@
-require "language/node"
-
 class Retire < Formula
   desc "Scanner detecting the use of JavaScript libraries with known vulnerabilities"
   homepage "https://retirejs.github.io/retire.js/"
-  url "https://registry.npmjs.org/retire/-/retire-4.4.2.tgz"
-  sha256 "19931f371a31617c754b01c0a026b65de7014111b8dce63f5de16afce839ac3a"
+  url "https://registry.npmjs.org/retire/-/retire-5.2.5.tgz"
+  sha256 "efe906f585495df787e7bb30a3deee5fd49604051b9673a5b5d86fb122fca492"
   license "Apache-2.0"
   head "https://github.com/RetireJS/retire.js.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "715d0edc7da02fb0d92a4b86ae11f6b23314b7fc7c7ca41a3c3e6e12bbd6c059"
+    sha256 cellar: :any_skip_relocation, all: "fd05ff437a7512574133be70937a718b96d935e05f3840981fb29896e34e652f"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

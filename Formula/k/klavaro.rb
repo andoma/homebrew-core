@@ -12,6 +12,7 @@ class Klavaro < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "f51c0783c7004a02723e01896663c837923fe3ef5efc576821e68deb3383387c"
     sha256 arm64_sonoma:   "da78d9074c10ef13c0c188880d8c66d72aa130734a240d696a5ff67676f1557c"
     sha256 arm64_ventura:  "df780d1ae34c336fc12c7facbb053a3466cfa0a458d11744fd9cf8b650420cf5"
     sha256 arm64_monterey: "7ed497aacf317e009ccaf17e06e2652d7b1a51e2dd4621edeebead557513197e"
@@ -24,12 +25,23 @@ class Klavaro < Formula
   depends_on "gettext" => :build
   depends_on "intltool" => :build
   depends_on "pkg-config" => :build
+
   depends_on "adwaita-icon-theme"
+  depends_on "glib"
   depends_on "gtk+3"
   depends_on "gtkdatabox"
+  depends_on "pango"
 
   uses_from_macos "perl" => :build
   uses_from_macos "curl"
+
+  on_macos do
+    depends_on "at-spi2-core"
+    depends_on "cairo"
+    depends_on "gdk-pixbuf"
+    depends_on "gettext"
+    depends_on "harfbuzz"
+  end
 
   on_linux do
     depends_on "perl-xml-parser" => :build
@@ -38,10 +50,8 @@ class Klavaro < Formula
   def install
     ENV.prepend_path "PERL5LIB", Formula["perl-xml-parser"].libexec/"lib/perl5" unless OS.mac?
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"
-    rm_rf include
   end
 
   test do

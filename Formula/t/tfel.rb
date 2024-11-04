@@ -1,20 +1,21 @@
 class Tfel < Formula
   desc "Code generation tool dedicated to material knowledge for numerical mechanics"
   homepage "https://thelfer.github.io/tfel/web/index.html"
-  url "https://github.com/thelfer/tfel/archive/refs/tags/TFEL-4.2.0.tar.gz"
-  sha256 "cf8a309c4d19a8e36232f8540ff28aa0d6285645f8dfb1ac57dd481ba3453e02"
+  url "https://github.com/thelfer/tfel/archive/refs/tags/TFEL-4.2.1.tar.gz"
+  sha256 "14f27257014a992a4e511f35390e4b9a086f6a5ed74087f891f8c00306f1758f"
   license "GPL-1.0-or-later"
   revision 1
   head "https://github.com/thelfer/tfel.git", using: :git, branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:   "b02a5aeb285a83a9ab5a9a6e71d35150ad9b8fabcf580277705e9621f43a0528"
-    sha256 arm64_ventura:  "d4fe36a11d065b61b3abba0407b1e0581bbcd662ec5dd45ec7cdd65939202753"
-    sha256 arm64_monterey: "17e3bd76b2adc4fa6cb052404571da9e05a81ed3c4b62f0400838e5b1c817824"
-    sha256 sonoma:         "cc9749378a2e74e66505fe5218ad752abd445efbfd6ad664eede65529fde96a1"
-    sha256 ventura:        "f98c07cafabd508ade1421df78ca33f956ca9a3d3d55f5c77c64f1aae3edea1d"
-    sha256 monterey:       "4b5c82e9280af6faa77a534467dcab7bae14ca833721e24772e9fd4818176f1f"
-    sha256 x86_64_linux:   "6247ccab9ce4bbb59e433b0170fc8679be7f2b21b6b5fb6552e916386de128e3"
+    sha256 arm64_sequoia:  "a1dbd6aedfae723113d626035fc3c0dd826006b409f4a0e02bbe844fc377ec43"
+    sha256 arm64_sonoma:   "2c83f17aafe4803c5dcb76e75a1f0e065ddeb0c2a98cdde5284307c762850b73"
+    sha256 arm64_ventura:  "e151a64d0af704275ff311cfef7d56d653d9ede613dc8f66b5ab44cf471d9afa"
+    sha256 arm64_monterey: "349346beb4bc75a8275d72fc334d5788cf722d28675018259b61edebc9bd40e1"
+    sha256 sonoma:         "8622ce53d1eba3091833e9d490ef783d28ff79a880cd7b067d3de70e3f6fcd00"
+    sha256 ventura:        "f67f8d672f2eed887c9fb27db78f61bb5dfa6ae5275b9de38543e77c5d01e92c"
+    sha256 monterey:       "b372fb99af0111007958b9bd88687e5cb9b67efb131888bd8b3ff55964974cb1"
+    sha256 x86_64_linux:   "2d188e271109fa6cac8ef90708b3f3d4a83f20ec2d56b5d0fd99d14f7bad14c9"
   end
 
   depends_on "cmake" => :build

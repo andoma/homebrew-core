@@ -11,10 +11,11 @@ class Acl < Formula
   end
 
   bottle do
-    sha256 x86_64_linux: "1396de40585eeb80034e800377c3dcd69d26550ea39d29152145ea4a79174e94"
+    rebuild 1
+    sha256 x86_64_linux: "576bd92b4005247b37258f8c637e0158e7298e7e29779899e5a1287fd9f856cf"
   end
 
-  depends_on "attr"
+  depends_on "attr" => :build
   depends_on :linux
 
   def install
@@ -50,7 +51,7 @@ class Acl < Formula
       other::r-x
     EOS
 
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <sys/acl.h>
 
@@ -63,7 +64,7 @@ class Acl < Formula
         acl_free(acl_text);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-o", "test", "-I#{include}", "-L#{lib}", "-lacl"
     assert_equal <<~EOS, shell_output("./test").chomp
       user::rwx

@@ -1,6 +1,6 @@
 class Elektra < Formula
   desc "Framework to access config settings in a global key database"
-  homepage "https://www.libelektra.org/home"
+  homepage "https://www.libelektra.org"
   url "https://www.libelektra.org/ftp/elektra/releases/elektra-0.11.0.tar.gz"
   sha256 "4e1f7c986010555a1d30ef2d23c0636373e993bab88e5ec238cac18a469b5cc2"
   license "BSD-3-Clause"
@@ -12,6 +12,7 @@ class Elektra < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "b9880fd25ffb5e345973fbb4390edcce5c0fec8f438f417f771c14b118ac79a2"
     sha256 arm64_sonoma:   "145f4e7335c44640cb1b89fc077451ab1f0667d00fc9622d19754c8d7fda6fd0"
     sha256 arm64_ventura:  "225bf8018ed6d4ab4b17e06b0fd54734aa8549aa9014fb45fd3c169a1baa95ac"
     sha256 arm64_monterey: "b2adcbd5ee3af2902697b7a7ff66ff03c44f0606e4b3713f3040f5b65c529d6e"
@@ -27,11 +28,15 @@ class Elektra < Formula
   depends_on "doxygen" => :build
 
   def install
-    mkdir "build" do
-      system "cmake", "..", "-DBINDINGS=cpp", "-DTOOLS=kdb;",
-                            "-DPLUGINS=NODEP;-tracer", *std_cmake_args
-      system "make", "install"
-    end
+    args = %w[
+      -DBINDINGS=cpp
+      -DTOOLS=kdb;
+      -DPLUGINS=NODEP;-tracer
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
     bash_completion.install "scripts/completion/kdb-bash-completion" => "kdb"
     fish_completion.install "scripts/completion/kdb.fish"
@@ -42,7 +47,7 @@ class Elektra < Formula
     output = shell_output("#{bin}/kdb get system:/elektra/version/infos/licence")
     assert_match "BSD", output
     shell_output("#{bin}/kdb plugin-list").split.each do |plugin|
-      system "#{bin}/kdb", "plugin-check", plugin
+      system bin/"kdb", "plugin-check", plugin
     end
   end
 end

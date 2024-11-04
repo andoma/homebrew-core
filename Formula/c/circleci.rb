@@ -3,19 +3,20 @@ class Circleci < Formula
   homepage "https://circleci.com/docs/2.0/local-cli/"
   # Updates should be pushed no more frequently than once per week.
   url "https://github.com/CircleCI-Public/circleci-cli.git",
-      tag:      "v0.1.30163",
-      revision: "16acd3544085eabc1a54d4f10dd20787e8577f59"
+      tag:      "v0.1.30995",
+      revision: "77b1f5175a42e351a0104a22279fa72f1f1f9ea5"
   license "MIT"
   head "https://github.com/CircleCI-Public/circleci-cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b897f67b0c8d4380f3bfe1a71cf1edd45449b0901b66ad1113ef7b6930181638"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e2214ac4fec893714d447350a9082114cda1659f2f7b6353b430eed056582cf9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bfae77c7db8ba47ea72ace6c572dbe2e252e64654747246a22223c9ef8581611"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c07107406cc943175d877ce4e177d8a160fcbb8f5837013226bbe67dca81b97f"
-    sha256 cellar: :any_skip_relocation, ventura:        "4417c2bf85966f05eb95ded6bac1d01c4291a43711c70b23e8a6e22df461197f"
-    sha256 cellar: :any_skip_relocation, monterey:       "b5afa41a599037acacf63b0a4f2a17c3bcce544c37be8d1d8945258620e31001"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8daa6ab0fa89275bf7ac369849325aa516a27d6509458fd3e495f0503fafe25f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6be19f78ebddac0c3616f62f6ad564fb40109d6e7d395ec713056932208c540c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3c7c77d1e5648627c96cd3cfe8aad738074ea5f5c6c07e01469e5d3d56c53916"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3c7c77d1e5648627c96cd3cfe8aad738074ea5f5c6c07e01469e5d3d56c53916"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3c7c77d1e5648627c96cd3cfe8aad738074ea5f5c6c07e01469e5d3d56c53916"
+    sha256 cellar: :any_skip_relocation, sonoma:         "81eed0e31f4c1260d2270b6474522a6b5a83aa6ce0dc697997bff517c3fb8a33"
+    sha256 cellar: :any_skip_relocation, ventura:        "81eed0e31f4c1260d2270b6474522a6b5a83aa6ce0dc697997bff517c3fb8a33"
+    sha256 cellar: :any_skip_relocation, monterey:       "81eed0e31f4c1260d2270b6474522a6b5a83aa6ce0dc697997bff517c3fb8a33"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa851d9960c700716ff72091a125fdd68f5f65b911467a80bb7887a9263f3335"
   end
 
   depends_on "go" => :build
@@ -28,7 +29,7 @@ class Circleci < Formula
       -X github.com/CircleCI-Public/circleci-cli/version.Commit=#{Utils.git_short_head}
       -X github.com/CircleCI-Public/circleci-cli/telemetry.SegmentEndpoint=https://api.segment.io
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"circleci", "--skip-update-check", "completion",
                                         shells: [:bash, :zsh])

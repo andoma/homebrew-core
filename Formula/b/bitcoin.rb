@@ -1,9 +1,14 @@
 class Bitcoin < Formula
   desc "Decentralized, peer to peer payment network"
   homepage "https://bitcoincore.org/"
-  url "https://bitcoincore.org/bin/bitcoin-core-26.0/bitcoin-26.0.tar.gz"
-  sha256 "ab1d99276e28db62d1d9f3901e85ac358d7f1ebcb942d348a9c4e46f0fcdc0a1"
-  license "MIT"
+  url "https://bitcoincore.org/bin/bitcoin-core-28.0/bitcoin-28.0.tar.gz"
+  sha256 "700ae2d1e204602eb07f2779a6e6669893bc96c0dca290593f80ff8e102ff37f"
+  license all_of: [
+    "MIT",
+    "BSD-3-Clause", # src/crc32c, src/leveldb
+    "BSL-1.0", # src/tinyformat.h
+    "Sleepycat", # resource("bdb")
+  ]
   head "https://github.com/bitcoin/bitcoin.git", branch: "master"
 
   livecheck do
@@ -12,24 +17,19 @@ class Bitcoin < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "d0062252e0c931af07ab48ccd9163d80c729c798f7b8eb4f974025e158b8b2f5"
-    sha256 cellar: :any,                 arm64_ventura:  "05d45234ca89490c3867b0e0230c2b86ebc88a2ed5505887ec395776d5be20e9"
-    sha256 cellar: :any,                 arm64_monterey: "20edc14418354dbc01c6602a720625c7a7ec98b3dc157ddf0d4a4c5b34ceaba4"
-    sha256 cellar: :any,                 sonoma:         "87b42c2acf2b6ee314aabe41aaf603dff8c27c2aac5c933fe9118cd4ab55f621"
-    sha256 cellar: :any,                 ventura:        "adfa967969a20bb8010bccca9d39a44bd0951e68e55ae37e3b4d118b45424b84"
-    sha256 cellar: :any,                 monterey:       "448df06d285427ba72234be9dae4a240efa4024b0eb8076f38b48cca184e6a7d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "79ddee5896e3df6a980dc57819aea4ed567b0c1db6451e5f4a3680b7ab3da0d6"
+    sha256 cellar: :any,                 arm64_sequoia: "9827fe39470644c9e18c2e29a9cc50517d755ab23600dfc15fc73a4c436090df"
+    sha256 cellar: :any,                 arm64_sonoma:  "dadd606914dc46493f9c71f3b12975186f91d15cc139cb3f9630baa4f9207420"
+    sha256 cellar: :any,                 arm64_ventura: "c21b31a816054f9bb708a30d19b7168c4287a1262723d194925ec6550c7152bd"
+    sha256 cellar: :any,                 sonoma:        "0e2895408874d922a18a81df8bbaa65aa67215c8445d6ae7ce856613f18ffd1d"
+    sha256 cellar: :any,                 ventura:       "68e8ddb21ef1fe0a67e2e72f4b5b5f0092304e501deb2aa7ad98ba9850ea5774"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "082c20a351f23b99cb778ae5b643d3ba7d02feeca0cd9adc8474e350fd9c649a"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "boost" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
-  # berkeley db should be kept at version 4
-  # https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md
-  # https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md
-  depends_on "berkeley-db@4"
-  depends_on "boost"
   depends_on "libevent"
   depends_on macos: :big_sur
   depends_on "miniupnpc"
@@ -42,25 +42,61 @@ class Bitcoin < Formula
   end
 
   fails_with :gcc do
-    version "7" # fails with GCC 7.x and earlier
-    cause "Requires std::filesystem support"
+    version "10"
+    cause "Requires C++ 20"
   end
 
-  patch do
-    url "https://github.com/bitcoin/bitcoin/commit/e1e3396b890b79d6115dd325b68f456a0deda57f.patch?full_index=1"
-    sha256 "b9bb2d6d2ae302bc1bd3956c7e7e66a25e782df5dc154b9d2b17d28b23fda1ad"
+  # berkeley db should be kept at version 4
+  # https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md
+  # https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md
+  resource "bdb" do
+    url "https://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz"
+    sha256 "12edc0df75bf9abd7f82f821795bcee50f42cb2e5f76a6a281b85732798364ef"
+
+    # Fix build with recent clang
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/4c55b1/berkeley-db%404/clang.diff"
+      sha256 "86111b0965762f2c2611b302e4a95ac8df46ad24925bbb95a1961542a1542e40"
+    end
+    # Fix -flat_namespace being used on Big Sur and later.
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-pre-0.4.2.418-big_sur.diff"
+      sha256 "83af02f2aa2b746bb7225872cab29a253264be49db0ecebb12f841562d9a2923"
+      directory "dist"
+    end
   end
 
+  # Skip two tests that currently fail in the brew CI
   patch do
-    url "https://github.com/bitcoin/bitcoin/commit/9c144154bd755e3765a51faa42b8849316cfdeb9.patch?full_index=1"
-    sha256 "caeb3c04eda55b260272bfbdb4f512c99dbf2df06b950b51b162eaeb5a98507a"
+    url "https://github.com/fanquake/bitcoin/commit/9b03fb7603709395faaf0fac409465660bbd7d81.patch?full_index=1"
+    sha256 "1d56308672024260e127fbb77f630b54a0509c145e397ff708956188c96bbfb3"
   end
 
   def install
+    # https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md#berkeley-db
+    # https://github.com/bitcoin/bitcoin/blob/master/depends/packages/bdb.mk
+    resource("bdb").stage do
+      with_env(CFLAGS: ENV.cflags) do
+        # Fix compile with newer Clang
+        ENV.append "CFLAGS", "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1200
+        # BerkeleyDB requires you to build everything from the build_unix subdirectory
+        cd "build_unix" do
+          system "../dist/configure", "--disable-replication",
+                                      "--disable-shared",
+                                      "--enable-cxx",
+                                      *std_configure_args(prefix: buildpath/"bdb")
+          system "make", "libdb_cxx-4.8.a", "libdb-4.8.a"
+          system "make", "install_lib", "install_include"
+        end
+      end
+    end
+
     system "./autogen.sh"
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules",
-                          "--with-boost-libdir=#{Formula["boost"].opt_lib}"
+    system "./configure", "--disable-silent-rules",
+                          "--with-boost-libdir=#{Formula["boost"].opt_lib}",
+                          "BDB_LIBS=-L#{buildpath}/bdb/lib -ldb_cxx-4.8",
+                          "BDB_CFLAGS=-I#{buildpath}/bdb/include",
+                          *std_configure_args
     system "make", "install"
     pkgshare.install "share/rpcauth"
   end
@@ -70,7 +106,7 @@ class Bitcoin < Formula
   end
 
   test do
-    system "#{bin}/test_bitcoin"
+    system bin/"test_bitcoin"
 
     # Test that we're using the right version of `berkeley-db`.
     port = free_port

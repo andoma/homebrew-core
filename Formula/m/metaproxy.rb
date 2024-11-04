@@ -4,7 +4,7 @@ class Metaproxy < Formula
   url "https://ftp.indexdata.com/pub/metaproxy/metaproxy-1.21.0.tar.gz"
   sha256 "874223a820b15ee2626240c378eee71e31a4e6d3498a433c94409c949e654fae"
   license "GPL-2.0-or-later"
-  revision 3
+  revision 5
 
   # The homepage doesn't link to the latest source file, so we have to check
   # the directory listing page directly.
@@ -14,18 +14,24 @@ class Metaproxy < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "6d4784de2b96d61bc2c9f70f980bc409336ec734de79cf9c9f7d8c799f8cddeb"
-    sha256 cellar: :any,                 arm64_ventura:  "f3cc15c996632234d3cbf70c38b85a05263cb5582da0c0e5e899f572f02a5179"
-    sha256 cellar: :any,                 arm64_monterey: "e7756b846c0e8dea56bbc369ff9fa673bf1e045f203fd6fba1b1a0c3a55fdc0c"
-    sha256 cellar: :any,                 sonoma:         "1bafd1f9269564f8eb0978c2b8930a5d3aca02ff660c1346d6428937681da413"
-    sha256 cellar: :any,                 ventura:        "b12c725a35515fb97114831b565e5d9f4a43ef0fb0cf13648a8cbaaf3c496e6d"
-    sha256 cellar: :any,                 monterey:       "b729caf12f60fb6b55a1364445c4ce2828923c3b74168ac3c42c1921723f029c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "65c2515f668da7f4a85a385acfaec0ba0949b5e851aa24a11afe66e72945fcd6"
+    sha256 cellar: :any,                 arm64_sequoia:  "1d4baa3427aecbd1822d325dd5772d0e5631a766ca818b4622194d4e8043d78e"
+    sha256 cellar: :any,                 arm64_sonoma:   "ffb90c9755736aad5b6550da41cd76092c911bde384b2a861137bb75fe825931"
+    sha256 cellar: :any,                 arm64_ventura:  "c7f1d531b20ce456abfc44a9e9bd3264e92886aa4c22078f8a40ad176d6eeb6a"
+    sha256 cellar: :any,                 arm64_monterey: "324592b63eeaa2b09519704902931acd77873e4b3ffaac9eb8dcd464df6254bb"
+    sha256 cellar: :any,                 sonoma:         "288a4377a1da730b21bb30abb69aa538f4e7e196c0c355a06b70dc9d8838083a"
+    sha256 cellar: :any,                 ventura:        "3f39818e46442d8f649354b76a0c2cf332214b3437bd1881181330be0622c1cb"
+    sha256 cellar: :any,                 monterey:       "50429ace6ef86b4ddf96da9ab950bdc40cf237662434fc61ff6f6a8f08d8c2b8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a6b0f7dfee1364a2b5fa6bed0444dfc973f393ba576c06840643967a5da1f64f"
   end
 
   depends_on "pkg-config" => :build
+
   depends_on "boost"
+  depends_on "yaz"
   depends_on "yazpp"
+
+  uses_from_macos "libxml2"
+  uses_from_macos "libxslt"
 
   fails_with gcc: "5"
 
@@ -62,6 +68,6 @@ class Metaproxy < Formula
       </metaproxy>
     EOS
 
-    system "#{bin}/metaproxy", "-t", "--config", "#{testpath}/test-config.xml"
+    system bin/"metaproxy", "-t", "--config", testpath/"test-config.xml"
   end
 end

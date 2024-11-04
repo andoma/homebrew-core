@@ -1,19 +1,20 @@
 class Sdb < Formula
   desc "Ondisk/memory hashtable based on CDB"
   homepage "https://github.com/radareorg/sdb"
-  url "https://github.com/radareorg/sdb/archive/refs/tags/1.9.8.tar.gz"
-  sha256 "c519f10a56a0ab6a151b4e0f2f097b6c2af4709c5259463de50a94e8b7eea6a1"
+  url "https://github.com/radareorg/sdb/archive/refs/tags/2.0.1.tar.gz"
+  sha256 "053dd19eb642135d5726fa2b9cbeb394befe95e9fe607bed823de501cca34365"
   license "MIT"
   head "https://github.com/radareorg/sdb.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "46b13d892361f3f266dcc879f3b1356b80411d22e255be8d8be8b25dc110da2c"
-    sha256 cellar: :any,                 arm64_ventura:  "d26fdbe65f6fb61bae60ceeec8702602cfac3cb80551e2409eaad63a1baf5c40"
-    sha256 cellar: :any,                 arm64_monterey: "d9cc13db6eb2ed5ed2bb1c0e15fdc16c073ab7d3035e627159d5b848845116bf"
-    sha256 cellar: :any,                 sonoma:         "6cc22ba3df57f2b7370402324898032c9fa6055fe21947bb6c3beaa570ca5afd"
-    sha256 cellar: :any,                 ventura:        "b163afa2f7945d652f0a4ae77fb4c1cfaa46bfad8b71e9f27b7f1718d19c7dd0"
-    sha256 cellar: :any,                 monterey:       "d072e4bc318c08ee307a1740db311273e9ccc468076bd5217c91ada01c7a0fca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3f55490faa3255e320eefbcdbe11a9000db050dd2ccc26a42c35117a6e085045"
+    sha256 cellar: :any,                 arm64_sequoia:  "36e0f0e49588d3ea3b588335bd7d7afd72218e517332c1aae818d8acb8f3bef1"
+    sha256 cellar: :any,                 arm64_sonoma:   "93290582465ed3ba9fb67a8e9a609da68038bb657490a4735b8ddb75859f30ba"
+    sha256 cellar: :any,                 arm64_ventura:  "97e8c8df5c36921224815910ccd8aa3fdce8f66f7b51ab2658404b16d026c659"
+    sha256 cellar: :any,                 arm64_monterey: "930c20bd65468d75d7ad9c56573e19c11faf811e94300cde2aea8c14b77f7987"
+    sha256 cellar: :any,                 sonoma:         "e0aff0b588c6e3366646183995697338c5802536b7974f454d6454dd4f050001"
+    sha256 cellar: :any,                 ventura:        "85b9a8dcd0ad7e465c2dcdec26b62691bbd3be8458e7fcc87c4b0b46807c5d08"
+    sha256 cellar: :any,                 monterey:       "ea2dc0465223cc6149eb74bf30ebe01874dacb484b40a2a74169bf629cdc8bc0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "755428c13355b296d6bea89f02587b1252f29c05a73f1cdf2d88f71af73177d8"
   end
 
   depends_on "meson" => :build
@@ -22,9 +23,11 @@ class Sdb < Formula
   depends_on "vala" => :build
   depends_on "glib"
 
+  conflicts_with "snobol4", because: "both install `sdb` binaries"
+
   def install
-    system "meson", *std_meson_args, "build"
-    system "meson", "compile", "-C", "build", "-v"
+    system "meson", "setup", "build", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end
 

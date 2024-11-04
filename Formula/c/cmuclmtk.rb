@@ -14,9 +14,12 @@ class Cmuclmtk < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "17749777bf2cedd02ab511ce2bab36a69389ea9c1f0b03c8a92927e3e54a5fae"
+    sha256 cellar: :any,                 arm64_sonoma:   "1fe5f5fcb73a7580ae29500204bc6efb7073a5b9359dbadf0b045bc358de7697"
     sha256 cellar: :any,                 arm64_ventura:  "5c31b85c5a4c5696e53b70dca952b11cd009b4c2755dd8339d1fde8b61921047"
     sha256 cellar: :any,                 arm64_monterey: "6f336006d80dbcfce530db381fb28d6207953c9ba792f71c31f041b983b85c53"
     sha256 cellar: :any,                 arm64_big_sur:  "d3069c3fbd0f41bdb0b3435b7b388f9e6051639421658663185bde9a449185b8"
+    sha256 cellar: :any,                 sonoma:         "1585ae5f93e266d9189c985072808f6731b1ce52c75cc58d2caf4c27ec9edf4f"
     sha256 cellar: :any,                 ventura:        "a8e37d15ba21ee7acd391691ebf4f27b585ca9badde68492b828c1a218ef6799"
     sha256 cellar: :any,                 monterey:       "0d6891a3cb5d5be6b4071bcf68a9e3449d9a79c37b4c660f1044bbc93ecafcfa"
     sha256 cellar: :any,                 big_sur:        "e126c9d5de2e1f4e23d4fea7e8ac51c6fc2d4328a968c907879f4ea86524fbbc"
@@ -30,6 +33,12 @@ class Cmuclmtk < Formula
 
   depends_on "pkg-config" => :build
 
+  conflicts_with "julius", because: "both install `binlm2arpa` binaries"
+
+  # Fix errors: call to undeclared function '***';
+  # ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  patch :DATA
+
   # Fix -flat_namespace being used on Big Sur and later.
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-pre-0.4.2.418-big_sur.diff"
@@ -41,4 +50,69 @@ class Cmuclmtk < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    output = pipe_output("#{bin}/text2wfreq", "Hello Hello Homebrew")
+    assert_match "Hello 2", output
+    assert_match "Homebrew 1", output
+  end
 end
+
+__END__
+diff --git a/src/libs/rr_mkdtemp.c b/src/libs/rr_mkdtemp.c
+index 50441ce..ee1f1c5 100755
+--- a/src/libs/rr_mkdtemp.c
++++ b/src/libs/rr_mkdtemp.c
+@@ -36,6 +36,7 @@
+
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <sys/stat.h>
+
+ #include <../win32/compat.h>
+
+diff --git a/src/programs/text2idngram.c b/src/programs/text2idngram.c
+index 1ec1cc2..b9ba37b 100644
+--- a/src/programs/text2idngram.c
++++ b/src/programs/text2idngram.c
+@@ -53,6 +53,8 @@
+ #include <string.h>
+ #include <sys/types.h>
+ #include <errno.h>
++#include <sys/stat.h>
++#include <unistd.h>
+
+ #include "../liblmest/toolkit.h"
+ #include "../libs/general.h"
+diff --git a/src/programs/text2wngram.c b/src/programs/text2wngram.c
+index 22ba67d..2790fde 100644
+--- a/src/programs/text2wngram.c
++++ b/src/programs/text2wngram.c
+@@ -41,11 +41,14 @@
+ #include <string.h>
+ #include <stdlib.h>
+ #include <errno.h>
++#include <sys/stat.h>
++#include <unistd.h>
+
+ #include "../liblmest/toolkit.h"
+ #include "../libs/pc_general.h"
+ #include "../libs/general.h"
+ #include "../win32/compat.h"
++#include "../libs/ac_lmfunc_impl.h"
+
+ int cmp_strings(const void *string1,const void *string2) {
+
+diff --git a/src/programs/wngram2idngram.c b/src/programs/wngram2idngram.c
+index 3f2ba57..e363282 100644
+--- a/src/programs/wngram2idngram.c
++++ b/src/programs/wngram2idngram.c
+@@ -47,6 +47,8 @@
+ #include <string.h>
+ #include <sys/types.h>
+ #include <errno.h>
++#include <sys/stat.h>
++#include <unistd.h>
+
+ #include "../liblmest/toolkit.h"
+ #include "../libs/general.h"

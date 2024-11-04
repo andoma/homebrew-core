@@ -1,26 +1,33 @@
 class Swiftdraw < Formula
   desc "Convert SVG into PDF, PNG, JPEG or SF Symbol"
   homepage "https://github.com/swhitty/SwiftDraw"
-  url "https://github.com/swhitty/SwiftDraw/archive/refs/tags/0.16.2.tar.gz"
-  sha256 "bd2c5e770363276efb2c6c9f84decaca61327026069758ea08b2a73c28736a7b"
+  url "https://github.com/swhitty/SwiftDraw/archive/refs/tags/0.18.0.tar.gz"
+  sha256 "f29bfb19f1c89f1aa5b7eb15debd392d73f5617689c4acfba90b836eef5fa490"
   license "Zlib"
+  revision 1
   head "https://github.com/swhitty/SwiftDraw.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "94f3e84835305d03f7b9f41b31508d5460d49dbb5972e21895d861cfdd1b55ea"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7d8ba4caea041ece400915dc6d882c0fc2a36c2e6af592634c72c34bebaee793"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a898e4c5557b07c61d1377f9d84e63c577317670ffd61ebea3e3c8d8843b469d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "3d9fb2b865c6bd32131d248ef6678532df4fc7e37fc84b8f445c47ce595686e7"
-    sha256 cellar: :any_skip_relocation, ventura:        "7b559aeaa50f4b9fe5a45a1647e7b7e9003225443f3233933c4a5bb2ac439709"
-    sha256 cellar: :any_skip_relocation, monterey:       "2231502e890e31b32a461f1c81b6c8e895fbb29500ccce4170d26febd217c311"
-    sha256                               x86_64_linux:   "f14a4b0a2aaf6b87e843b6812cc98acc1be9bd320b8029f0c22a2acc3f3bd3d8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1b1af94f7194c5bce47b32f14116166e56c2368f2f37e3c78cd85f2b0a6d94bc"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a1c3e7efbdd631764ac744a02931b78727e5dd60659a645f88d7b8d02e7da030"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "6df270e63f5d958adc405d2ca4faeace9550626af82720a1d2ee99ef9a83de10"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4ddbd6b2b672551caf1fe9102decf996b83313aa3503ed0f7a0f1d691c719e91"
+    sha256 cellar: :any_skip_relocation, ventura:       "3391d8f1906ff7cbf57e7a60d5cfb2a79f678c1ec31f74c5705a27242f1157aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a453b6d2bcba450f9e31d702a0847164f2470b9277a850e535ecd8312077e8ac"
   end
 
-  depends_on xcode: ["12.5", :build]
-  uses_from_macos "swift"
+  depends_on xcode: ["14.0", :build]
+
+  uses_from_macos "swift" => :build
+  uses_from_macos "libxml2"
 
   def install
-    system "swift", "build", "--disable-sandbox", "--configuration", "release"
+    args = if OS.mac?
+      ["--disable-sandbox"]
+    else
+      ["--static-swift-stdlib"]
+    end
+    system "swift", "build", *args, "--configuration", "release"
     bin.install ".build/release/swiftdraw"
   end
 

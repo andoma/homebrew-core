@@ -1,19 +1,18 @@
 class Onefetch < Formula
   desc "Command-line Git information tool"
   homepage "https://onefetch.dev/"
-  url "https://github.com/o2sh/onefetch/archive/refs/tags/2.19.0.tar.gz"
-  sha256 "e6aa7504730de86f307d6c3671875b11a447a4088daf74df280c8f644dea4819"
+  url "https://github.com/o2sh/onefetch/archive/refs/tags/2.22.0.tar.gz"
+  sha256 "1741516c628bb70b432285aa78439c4acfeb5df19e48b8d85dba5f71336e190b"
   license "MIT"
   head "https://github.com/o2sh/onefetch.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "3be44fe6313ca0084e8c72a08bc59de0ec8cbf78b39d52ce4dd3d2ce59dc1d43"
-    sha256 cellar: :any,                 arm64_ventura:  "bb298ddf13ddb14cecd0f0cd5fdc40cda096b8dc5d849d922eb7a63206be54f4"
-    sha256 cellar: :any,                 arm64_monterey: "11736834baa60ed02ac4b0e8df44783ae2fe17b7ec12a6f2fa2a1ccd36b29948"
-    sha256 cellar: :any,                 sonoma:         "c596b6bbadccb7aaa995eb74a9e4eb14bbb16f70a4070996fbc30316f4007d7a"
-    sha256 cellar: :any,                 ventura:        "b3536a6c3969c52b6eb8716eb7ed827ec2d5bd7661821151bc378b97d96ef18c"
-    sha256 cellar: :any,                 monterey:       "543cdf04c1517054e74412709f34da1c22c888d5d8d2a6b4debab8d14e1e07be"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b8fec3b38c7e4d6fa520947d7580f4b30cc7ed09b31d722755b384955db5caf6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "32543d9359bf4d51a16bb0697ab1f9eef7922f9735e443b784cd980caaddfdb0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "413caa8752bdc098bde8f61cd443037367a1081e859260ec488d7396e780f820"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "87f7705ba92328a8cb550761a1f28a40bb5bb45b3cde81eb57ffe50e664f8c85"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7d7ec643430fe3b6253ffc108e7091a77dffd07b87099761b9101d334168f113"
+    sha256 cellar: :any_skip_relocation, ventura:       "7e842546e35a7ba31a3636c5bd7583d2b29c48443443a76d22bbec3312a0c4d6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d514014e3ddd400c50e57aecd7410e015a6bbc17eb93a16ec0e33ce8011ac63a"
   end
 
   # `cmake` is used to build `zlib`.
@@ -21,11 +20,9 @@ class Onefetch < Formula
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
-  depends_on "libgit2"
   depends_on "zstd"
 
   def install
-    ENV["LIBGIT2_NO_VENDOR"] = "1"
     ENV["ZSTD_SYS_USE_PKG_CONFIG"] = "1"
 
     system "cargo", "install", *std_cargo_args
@@ -35,7 +32,7 @@ class Onefetch < Formula
   end
 
   test do
-    system "#{bin}/onefetch", "--help"
+    system bin/"onefetch", "--help"
     assert_match "onefetch " + version.to_s, shell_output("#{bin}/onefetch -V").chomp
 
     system "git", "init"
@@ -45,14 +42,6 @@ class Onefetch < Formula
     (testpath/"main.rb").write "puts 'Hello, world'\n"
     system "git", "add", "main.rb"
     system "git", "commit", "-m", "First commit"
-    assert_match("Ruby (100.0 %)", shell_output("#{bin}/onefetch").chomp)
-
-    linkage_with_libgit2 = (bin/"onefetch").dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == (Formula["libgit2"].opt_lib/shared_library("libgit2")).realpath.to_s
-    end
-
-    assert linkage_with_libgit2, "No linkage with libgit2! Cargo is likely using a vendored version."
+    assert_match("Ruby (100.0 %)", shell_output(bin/"onefetch").chomp)
   end
 end

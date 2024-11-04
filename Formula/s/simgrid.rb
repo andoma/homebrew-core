@@ -3,10 +3,9 @@ class Simgrid < Formula
 
   desc "Studies behavior of large-scale distributed systems"
   homepage "https://simgrid.org/"
-  url "https://gitlab.inria.fr/simgrid/simgrid/-/archive/v3.35/simgrid-v3.35.tar.bz2"
-  sha256 "de4c34ea424d99702419736e51cb5ad425dc01502a39f303128483a70405c473"
+  url "https://gitlab.inria.fr/simgrid/simgrid/-/archive/v3.36/simgrid-v3.36.tar.bz2"
+  sha256 "408289f3d9b2eb2fb9d4904348437a035c6befa4197028c617ab2ef6e8e1260f"
   license "LGPL-2.1-only"
-  revision 1
 
   livecheck do
     url :homepage
@@ -14,13 +13,14 @@ class Simgrid < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "40386ba0790246cd370642864c7f1399a9c18a98f4428228da5311deed576392"
-    sha256 arm64_ventura:  "2e469f6b022648f342fab09dae9b3d9cec58ada032bd6703c5978f9be2fff2cd"
-    sha256 arm64_monterey: "8eb08fe2755ad9c06f11eaac9728992efce5b6b970030a9ba75a1e488e5b5c08"
-    sha256 sonoma:         "871e41f583dad25181d5997eef4bb49e843930928364b3f3f7a7064851530f9a"
-    sha256 ventura:        "3904e4db3862d1400fdc923e657224f2b52077ce4ea6b2b64aacfd66d6ac5091"
-    sha256 monterey:       "3fea1fdaa76249a434cba7a9845f39a04324c76cd6149a50d4261bead5f2c4fd"
-    sha256 x86_64_linux:   "3783a1bdc8dc4d5d5c130cf98b27fe40da6bf02c3fcc39db149b00265b2c32fa"
+    sha256 arm64_sequoia:  "c8cd8c9d34931a263eee8124c86441a7155d0c326f1d57d07bb23d7ffbe69480"
+    sha256 arm64_sonoma:   "cfb53c7c04538d063bcca99a645a68f316c5aa4216242605fd289ea965d90289"
+    sha256 arm64_ventura:  "0b80a356a9ab5eb95015c1efff95b9b8e4b12c74284329808b2f9573f07967ce"
+    sha256 arm64_monterey: "be80cac1b5d7186d57795220631d399bc36b8d63476337c17040ca2faff8fc33"
+    sha256 sonoma:         "c9838a28cbfe423b4395272c283ae8d4e380752bfaa7adb0019a1467e9683a8b"
+    sha256 ventura:        "b6e87e7233eb2eb3985efbeffc1f2297bfa65bb1fa18077afe5af11ceec4caa8"
+    sha256 monterey:       "58a03c6bf7ebdc3757122ba5a1c50d319828bca9992e76867539c042f43e90be"
+    sha256 x86_64_linux:   "6a0d24c2dc151ff567612f7540aa083ef681d94b8153928968f2a7456cf1a63f"
   end
 
   depends_on "cmake" => :build
@@ -53,7 +53,7 @@ class Simgrid < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <stdlib.h>
       #include <simgrid/engine.h>
@@ -62,7 +62,7 @@ class Simgrid < Formula
         printf("%f", simgrid_get_clock());
         return 0;
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lsimgrid",
                    "-o", "test"

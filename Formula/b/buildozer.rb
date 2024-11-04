@@ -1,19 +1,20 @@
 class Buildozer < Formula
   desc "Rewrite bazel BUILD files using standard commands"
   homepage "https://github.com/bazelbuild/buildtools"
-  url "https://github.com/bazelbuild/buildtools/archive/refs/tags/v6.4.0.tar.gz"
-  sha256 "05c3c3602d25aeda1e9dbc91d3b66e624c1f9fdadf273e5480b489e744ca7269"
+  url "https://github.com/bazelbuild/buildtools/archive/refs/tags/v7.3.1.tar.gz"
+  sha256 "051951c10ff8addeb4f10be3b0cf474b304b2ccd675f2cc7683cdd9010320ca9"
   license "Apache-2.0"
   head "https://github.com/bazelbuild/buildtools.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8fcd6f6d525761832e7d94ad75ba0b0d95d0f020327914ffa3ad6eb78e8f18b2"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8fcd6f6d525761832e7d94ad75ba0b0d95d0f020327914ffa3ad6eb78e8f18b2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8fcd6f6d525761832e7d94ad75ba0b0d95d0f020327914ffa3ad6eb78e8f18b2"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9ca9a3ccb5ad2f8371cb3afb5e1c33fc84860d6f84ef87b2b1750a958179b502"
-    sha256 cellar: :any_skip_relocation, ventura:        "9ca9a3ccb5ad2f8371cb3afb5e1c33fc84860d6f84ef87b2b1750a958179b502"
-    sha256 cellar: :any_skip_relocation, monterey:       "9ca9a3ccb5ad2f8371cb3afb5e1c33fc84860d6f84ef87b2b1750a958179b502"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c12a5c274374112824bd179a162e9afee1509d44a07b1d901d4a4486eb12edb1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5fd1ab10de9a60d460328907b840771d03320e16e6175b204e7f16d8f33d3d06"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ec336525cddfbc817e12947f539158a6803993dc077fd3c2ce2c3c0e5a4477c7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ec336525cddfbc817e12947f539158a6803993dc077fd3c2ce2c3c0e5a4477c7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ec336525cddfbc817e12947f539158a6803993dc077fd3c2ce2c3c0e5a4477c7"
+    sha256 cellar: :any_skip_relocation, sonoma:         "1b7814783caa02e02ff260d8db30aec997649161d5d1e936f35a3fe81b4c108a"
+    sha256 cellar: :any_skip_relocation, ventura:        "1b7814783caa02e02ff260d8db30aec997649161d5d1e936f35a3fe81b4c108a"
+    sha256 cellar: :any_skip_relocation, monterey:       "1b7814783caa02e02ff260d8db30aec997649161d5d1e936f35a3fe81b4c108a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "14fe5048886cb98d3e5163f8ac171f876089b5687432882965a697f2eb4aa5ba"
   end
 
   depends_on "go" => :build
@@ -26,7 +27,7 @@ class Buildozer < Formula
     build_file = testpath/"BUILD"
 
     touch build_file
-    system "#{bin}/buildozer", "new java_library brewed", "//:__pkg__"
+    system bin/"buildozer", "new java_library brewed", "//:__pkg__"
 
     assert_equal "java_library(name = \"brewed\")\n", build_file.read
   end

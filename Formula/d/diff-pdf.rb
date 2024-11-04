@@ -6,6 +6,7 @@ class DiffPdf < Formula
   license "GPL-2.0-only"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "53f6848c95819dd903f468dc4072a91a098c1639fee29b033c8a87dedf841ea8"
     sha256 cellar: :any,                 arm64_sonoma:   "aeebc69df89c64b855b491899951b9b19e9736924c7ffe824237cea86dd4301a"
     sha256 cellar: :any,                 arm64_ventura:  "5a9824bb9190b9bdc41c27dc0b435cddbd3ee6b31c74280c36513eb413b7fd1b"
     sha256 cellar: :any,                 arm64_monterey: "29339f3026c7bc502a35b2247ef1309d69e74b0efca3f08ce168d31c497f5c80"
@@ -19,23 +20,26 @@ class DiffPdf < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
+
   depends_on "cairo"
+  depends_on "glib"
   depends_on "poppler"
   depends_on "wxwidgets"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   fails_with gcc: "5"
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
-    system "make"
+    system "./configure", "--disable-silent-rules", *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"
   end
 
   test do
     testpdf = test_fixtures("test.pdf")
-    system "#{bin}/diff-pdf", "--output-diff=no_diff.pdf", testpdf, testpdf
-    assert (testpath/"no_diff.pdf").file?
+    system bin/"diff-pdf", "--output-diff=no_diff.pdf", testpdf, testpdf
+    assert_predicate testpath/"no_diff.pdf", :exist?
   end
 end

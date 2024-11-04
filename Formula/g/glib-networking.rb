@@ -1,28 +1,32 @@
 class GlibNetworking < Formula
   desc "Network related modules for glib"
   homepage "https://gitlab.gnome.org/GNOME/glib-networking"
-  url "https://download.gnome.org/sources/glib-networking/2.78/glib-networking-2.78.0.tar.xz"
-  sha256 "52fe4ce93f7dc51334b102894599858d23c8a65ac4a1110b30920565d68d3aba"
+  url "https://download.gnome.org/sources/glib-networking/2.80/glib-networking-2.80.0.tar.xz"
+  sha256 "d8f4f1aab213179ae3351617b59dab5de6bcc9e785021eee178998ebd4bb3acf"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256               arm64_sonoma:   "a3083f7530e810fdf56d5ba6e1f4b86e9b5982a30984e8c28aca1999ed3adb1b"
-    sha256               arm64_ventura:  "2a8bcf4a6c043f071fc979b7ddd324f484dadffeedef21a570b59d7200b2576f"
-    sha256               arm64_monterey: "c23398d9a8b19176bd8605b5687f40dd020761249ba731526c38a1fb7043e8ec"
-    sha256               arm64_big_sur:  "c2092ad9f0905d037464588813f8e833993e0a8c297fd24b6145b07c38d0b300"
-    sha256 cellar: :any, sonoma:         "a8154d33e0cc488e7378f76e4e7c68992b9ae37db2fa618bf29061046fa48359"
-    sha256 cellar: :any, ventura:        "8d45c1905c641b2cebaa6997bf5c194d481925e5313ef25534361b4fde198095"
-    sha256 cellar: :any, monterey:       "ea4fe701f3bc87f9f248e507e0c354c7601b31dc298a0c2972fe5b759e949d6b"
-    sha256 cellar: :any, big_sur:        "b90a3fd3f328c9decef3fd6e511f2fe64dded1d90b5432a54073cef5f902a68d"
-    sha256               x86_64_linux:   "8f138e69272a1138385c07d8bd9c3af09c8543ae7faeb5f1abd05c049f7c270d"
+    sha256               arm64_sequoia:  "3d424d6b858a6c4f66d44e51822d375a177c6e3f0b3c42a183c20037abd195ea"
+    sha256               arm64_sonoma:   "30b0bc73d7307c7c10eefefdab0d4e5cbada6062d3af70e87eda5cae0d384078"
+    sha256               arm64_ventura:  "77eaced4c03965b9708daa421f20d056f12e7bbf86b29d48aa5b942fe429d557"
+    sha256               arm64_monterey: "afda408dd3bcd96460597c803669eff4e9c9bf435c2e5201f5b7f20e0295d8c4"
+    sha256 cellar: :any, sonoma:         "c317dcff3c617af81233d1d14402f37142d2e30977349d700ba2b8246b4f2b91"
+    sha256 cellar: :any, ventura:        "e4f6a66cbd7b69a095ac7bdc13ebd23cfac4553ccbe954629d0c935c28164f6d"
+    sha256 cellar: :any, monterey:       "5f7a104feb68e3b2177090774108af661129297f194f84a3381e90a007d793c0"
+    sha256               x86_64_linux:   "b50d23dcdaa8cf997507be5876edc09b0f5afc0639a75051a4c738e1995f40ff"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+
   depends_on "glib"
   depends_on "gnutls"
   depends_on "gsettings-desktop-schemas"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   link_overwrite "lib/gio/modules"
 
@@ -30,10 +34,12 @@ class GlibNetworking < Formula
     # stop gnome.post_install from doing what needs to be done in the post_install step
     ENV["DESTDIR"] = "/"
 
-    system "meson", *std_meson_args, "build",
-                    "-Dlibproxy=disabled",
-                    "-Dopenssl=disabled",
-                    "-Dgnome_proxy=disabled"
+    args = %w[
+      -Dlibproxy=disabled
+      -Dopenssl=disabled
+      -Dgnome_proxy=disabled
+    ]
+    system "meson", "setup", "build", *args, *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end
@@ -43,7 +49,7 @@ class GlibNetworking < Formula
   end
 
   test do
-    (testpath/"gtls-test.c").write <<~EOS
+    (testpath/"gtls-test.c").write <<~C
       #include <gio/gio.h>
       int main (int argc, char *argv[])
       {
@@ -52,7 +58,7 @@ class GlibNetworking < Formula
         else
           return 1;
       }
-    EOS
+    C
 
     # From `pkg-config --cflags --libs gio-2.0`
     flags = [

@@ -1,7 +1,7 @@
 class Sgrep < Formula
   desc "Search SGML, XML, and HTML"
   homepage "https://www.cs.helsinki.fi/u/jjaakkol/sgrep.html"
-  url "http://deb.debian.org/debian/pool/main/s/sgrep/sgrep_1.94a.orig.tar.gz"
+  url "https://deb.debian.org/debian/pool/main/s/sgrep/sgrep_1.94a.orig.tar.gz"
   mirror "https://fossies.org/linux/misc/old/sgrep-1.94a.tar.gz"
   sha256 "d5b16478e3ab44735e24283d2d895d2c9c80139c95228df3bdb2ac446395faf9"
 
@@ -29,6 +29,13 @@ class Sgrep < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "a243589e79a4cde4f7bba21ec618e3c323c049589707bde6e2c20c4bf1014464"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b9d7e430b35750659c93cfd9308b5cf32211eb19b79a8ee3bf0c0b62ef2712b"
   end
+
+  # The README and source code mention `sgrep` is under a GPL license detailed
+  # in COPYING, but the COPYING file is blank. Previous release 1.92a did include
+  # GPL 2.0 license and had code in common.c that printed copyright notice
+  # that specified GPL-2.0-or-later. Due to unknown reason for removal of this
+  # information, the formula has been disabled.
+  disable! date: "2024-08-13", because: "has a blank COPYING and is missing details on which GPL license"
 
   uses_from_macos "m4"
 

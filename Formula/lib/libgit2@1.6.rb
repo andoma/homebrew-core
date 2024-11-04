@@ -4,14 +4,9 @@ class Libgit2AT16 < Formula
   url "https://github.com/libgit2/libgit2/archive/refs/tags/v1.6.5.tar.gz"
   sha256 "0f09dd49e409913c94df00eeb5b54f8b597905071b454c7f614f8c6e1ddb8d75"
   license "GPL-2.0-only" => { with: "GCC-exception-2.0" }
-  head "https://github.com/libgit2/libgit2.git", branch: "maint/v1.6"
-
-  livecheck do
-    url :stable
-    regex(/v?(1\.6(?:\.\d+)+)/i)
-  end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "8582aec95e53ef6fd672e6c2a5cb8f98f6b62b8e2ef18dce00e8488e5cc1262f"
     sha256 cellar: :any,                 arm64_sonoma:   "83f4ee26d02fbfda076cdebe727390dd4db92ec8cb3791115212f43d6047eeed"
     sha256 cellar: :any,                 arm64_ventura:  "fdd0c3045a62a5abd4668b43bb384e4586cb79520bfc89c53f96af6cbf86b362"
     sha256 cellar: :any,                 arm64_monterey: "735c54cafdf705104f516c73f808c7b58e746402c5e5fd7d9de991b26b0ee3a1"
@@ -22,6 +17,9 @@ class Libgit2AT16 < Formula
   end
 
   keg_only :versioned_formula
+
+  # https://github.com/libgit2/libgit2/?tab=security-ov-file
+  deprecate! date: "2024-04-11", because: :unmaintained
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
@@ -41,7 +39,7 @@ class Libgit2AT16 < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <git2.h>
       #include <assert.h>
 
@@ -50,7 +48,7 @@ class Libgit2AT16 < Formula
         assert(options & GIT_FEATURE_SSH);
         return 0;
       }
-    EOS
+    C
     libssh2 = Formula["libssh2"]
     flags = %W[
       -I#{include}

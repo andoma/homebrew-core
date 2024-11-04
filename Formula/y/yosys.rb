@@ -1,29 +1,32 @@
 class Yosys < Formula
   desc "Framework for Verilog RTL synthesis"
   homepage "https://yosyshq.net/yosys/"
-  url "https://github.com/YosysHQ/yosys/archive/refs/tags/yosys-0.38.tar.gz"
-  sha256 "5f3d7bb12c5371db00586700a658a9196008a9457839f046403a660fe0c7a1df"
+  # pull from git tag to get submodules
+  url "https://github.com/YosysHQ/yosys.git",
+      tag:      "0.46",
+      revision: "e97731b9dda91fa5fa53ed87df7c34163ba59a41"
   license "ISC"
-  head "https://github.com/YosysHQ/yosys.git", branch: "master"
+  head "https://github.com/YosysHQ/yosys.git", branch: "main"
 
   bottle do
-    sha256 arm64_sonoma:   "841482c6a27aa30ee2b1f14f4b0748a91e9f36f2a3e89462b8bdbc7960e47fe7"
-    sha256 arm64_ventura:  "490fb3491428ee1f4cb70c53789864ce937b7206909f46e440be611583c68a9b"
-    sha256 arm64_monterey: "d29c2a6d10dcdbc2b3b19ef0ad3257634e68bb0a6ca76d40adaeecd4cbb1ed95"
-    sha256 sonoma:         "6a2841b4ea0b9b12b6959cbaa41b6986d0869be25ede6316ccb906c42bb156a4"
-    sha256 ventura:        "97d2ce8c071864511d3d7fd65717555eee97642f3773c2c43cd7a3d9d7938528"
-    sha256 monterey:       "280eeea30d774610d3a961d87fd0c9c674b0793cafc03edebe9b66014c634e8a"
-    sha256 x86_64_linux:   "72bbfbb4818634cd98b3f0d8ab2fa404e3e76c4f60293aaca5a4e2bd1683cef0"
+    rebuild 1
+    sha256 arm64_sequoia: "150eebb45764504b9a880dd687cebd53b03bcefcde9d95ae94aa2f0208cd02d4"
+    sha256 arm64_sonoma:  "4c8a43953c8c65268234ab6dd32faab5d77e1aafa02513601c665946599253f0"
+    sha256 arm64_ventura: "fd87846951f944ee26825d5b7c4b169134edf5eee47cd2dd799f62a37ef1f5ac"
+    sha256 sonoma:        "a4b36a3d497ac225130467786bb24aa33cfd2749026b3cdcfd1167bfa26b9c6f"
+    sha256 ventura:       "aeba8681e8a94da79198633b8805fdd277084131f839bffb29ba5cce882440f9"
+    sha256 x86_64_linux:  "0a2052e45f665a9dd64754613ed4466eaccdecdd37326ce2726105bc39e3d2cd"
   end
 
   depends_on "bison" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.12"
   depends_on "readline"
 
   uses_from_macos "flex"
   uses_from_macos "libffi", since: :catalina
+  uses_from_macos "python"
   uses_from_macos "tcl-tk"
+  uses_from_macos "zlib"
 
   def install
     system "make", "install", "PREFIX=#{prefix}", "PRETTY=0"

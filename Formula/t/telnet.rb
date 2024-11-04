@@ -1,17 +1,18 @@
 class Telnet < Formula
   desc "User interface to the TELNET protocol"
   homepage "https://opensource.apple.com/"
-  url "https://github.com/apple-oss-distributions/remote_cmds/archive/refs/tags/remote_cmds-294.tar.gz"
-  sha256 "6e0a4a9cd79fa412f41185333588bc5d4e66a97dc6a2275418c97fb17abb3528"
+  url "https://github.com/apple-oss-distributions/remote_cmds/archive/refs/tags/remote_cmds-303.141.1.tar.gz"
+  sha256 "5b434a619008406a798af1d724591f6a71f691292ea20c07bfc32b783b8a08a9"
   license all_of: ["BSD-4-Clause-UC", "APSL-1.0"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "65ecacf9d9f7dbccce0052d3cb629dd207182004ec7b15922fa8d14b2603830f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7cbefbf43011476c9654555d91da826446f1e031f560300756b4e7d718334b59"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "87545e9d53b88d570faaf2dbf9324e34d17cc482f411d5a55e2149b5d035dea6"
-    sha256 cellar: :any_skip_relocation, sonoma:         "f41f5302e482420f00aaf510a8505c529be0363f0177c0a661b9cc4315947d10"
-    sha256 cellar: :any_skip_relocation, ventura:        "86a02f306e17b25e31e2a2c339305b90593846ac2099458c387eacea10b2fc11"
-    sha256 cellar: :any_skip_relocation, monterey:       "2df800b710be4d192dab548cb9a0386a04a21c422cb0dab951288a158ca637af"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7683b4348e7fc4f1170c3be8a3d282cf65572c82581eaa8ebf9151bd09fb7670"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "39af0c922c6db7c331dbcf63c14831c02dc9b8724b6aaa0ce893c79571437721"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "420b61c1995caeb463181faf7576a2e7d4688eead5c47a92c2f112a6ec02b494"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "451c787a0907689e34c433448e9428d72c330f72300256ae3faa42557647d9d8"
+    sha256 cellar: :any_skip_relocation, sonoma:         "cc24db7265b969fa2120ca97606aaed36ffde687c89bf7822be08f759cadcb46"
+    sha256 cellar: :any_skip_relocation, ventura:        "1be6b7b6a17a311fb3a2f1bffe7dae52284f3239b8af03f651c4fac11362f702"
+    sha256 cellar: :any_skip_relocation, monterey:       "d1f70d1634a9a81032516d0b9c7a5553fe9f643b1dd0563ec99bfd6e7d689e40"
   end
 
   depends_on xcode: :build

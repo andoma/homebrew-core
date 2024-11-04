@@ -1,24 +1,24 @@
 class OpensslAT30 < Formula
   desc "Cryptography and SSL/TLS Toolkit"
-  homepage "https://openssl.org/"
-  url "https://www.openssl.org/source/openssl-3.0.13.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-3.0.13.tar.gz"
-  sha256 "88525753f79d3bec27d2fa7c66aa0b92b3aa9498dafd93d7cfa4b3780cdae313"
+  homepage "https://openssl-library.org"
+  url "https://github.com/openssl/openssl/releases/download/openssl-3.0.15/openssl-3.0.15.tar.gz"
+  sha256 "23c666d0edf20f14249b3d8f0368acaee9ab585b09e1de82107c66e1f3ec9533"
   license "Apache-2.0"
 
   livecheck do
-    url "https://www.openssl.org/source/"
+    url "https://openssl-library.org/source/"
     regex(/href=.*?openssl[._-]v?(3\.0(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 arm64_sonoma:   "739fa204f539dcc3e8c3f071f1ade08507b86d5bee3bba3bc7d14e81a3b72884"
-    sha256 arm64_ventura:  "8f642837641918e4bde5659913c35575790015d036b827f225da387dada87e2b"
-    sha256 arm64_monterey: "d06a6235c4d9505dfa3f3d904d9bd004f4156a832dd63f239e9d8f0c9d6af762"
-    sha256 sonoma:         "94afa44b2e9c52d279228784daa3ceb69ed1133ab0540c5647c0f36eb713a0d3"
-    sha256 ventura:        "b22a1f742cbb67cf6639a03eaf6b6de0228c51fdec4e4d707a2aab8debe6a221"
-    sha256 monterey:       "257f44a4e1c85a4e916f2bcef3d992089f4069caf4d95f2b5a39c5f143f9c7cc"
-    sha256 x86_64_linux:   "e348eb201546c9a49f48036759e07c4b3e15b4c0afa34e28410ce1966c35449e"
+    sha256 arm64_sequoia:  "0fbecf9a927e6cb2432283e6cf06cfce59067556a91b496528a6bdf66217a2e8"
+    sha256 arm64_sonoma:   "5f48e4f3391e514597cf9959a95daaafc1295ce4df9a26964d3ce0cb705a041f"
+    sha256 arm64_ventura:  "90d988c61932197830a7962e9dfe3997a139689489763ffa55ec54a607b69d0e"
+    sha256 arm64_monterey: "4491fd5d9e0bd3f27cd45d6b3026f2f1e9f648b1dff73cd41514bdeb55d8bae4"
+    sha256 sonoma:         "49d60e1d467c46db85643ff1ec0fc0d7883698b878f0456467c4e36758ae6197"
+    sha256 ventura:        "2330210545b943f2989ef8b30f712eeca2b2ba6762b6ac6de19f82d6f9c2d41f"
+    sha256 monterey:       "e6815ce49c0657d581fac3ffdabbac99c47ea9903d43f5e812621091b8bd9921"
+    sha256 x86_64_linux:   "88feaacad8c06a6308c1b1bf4d322e812d069b9e7a9808982debf89c5a226e39"
   end
 
   keg_only :versioned_formula
@@ -27,15 +27,15 @@ class OpensslAT30 < Formula
 
   on_linux do
     resource "Test::Harness" do
-      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.44.tar.gz"
-      mirror "http://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.44.tar.gz"
-      sha256 "7eb591ea6b499ece6745ff3e80e60cee669f0037f9ccbc4e4511425f593e5297"
+      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.50.tar.gz"
+      mirror "http://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.50.tar.gz"
+      sha256 "79b6acdc444f1924cd4c2e9ed868bdc6e09580021aca8ff078ede2ffef8a6f54"
     end
 
     resource "Test::More" do
-      url "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302195.tar.gz"
-      mirror "http://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302195.tar.gz"
-      sha256 "b390bb23592e0b946c95adbb3c30b11bc634a286b2847be611ad929c57e39a6c"
+      url "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302201.tar.gz"
+      mirror "http://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302201.tar.gz"
+      sha256 "956185dc96c1f2942f310a549a2b206cc5dd1487558f4e36d87af7a8aacbc87c"
     end
 
     resource "ExtUtils::MakeMaker" do
@@ -101,7 +101,10 @@ class OpensslAT30 < Formula
     system "perl", "./Configure", *(configure_args + arch_args)
     system "make"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
-    system "make", "test"
+    system "make", "HARNESS_JOBS=#{ENV.make_jobs}", "test"
+
+    # Prevent `brew` from pruning the `certs` and `private` directories.
+    touch %w[certs private].map { |subdir| openssldir/subdir/".keepme" }
   end
 
   def openssldir
@@ -109,7 +112,7 @@ class OpensslAT30 < Formula
   end
 
   def post_install
-    rm_f openssldir/"cert.pem"
+    rm(openssldir/"cert.pem") if (openssldir/"cert.pem").exist?
     openssldir.install_symlink Formula["ca-certificates"].pkgetc/"cert.pem"
   end
 

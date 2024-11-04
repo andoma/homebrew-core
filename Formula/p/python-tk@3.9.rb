@@ -1,8 +1,8 @@
 class PythonTkAT39 < Formula
   desc "Python interface to Tcl/Tk"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.9.18/Python-3.9.18.tar.xz"
-  sha256 "01597db0132c1cf7b331eff68ae09b5a235a3c3caa9c944c29cac7d1c4c4c00a"
+  url "https://www.python.org/ftp/python/3.9.20/Python-3.9.20.tar.xz"
+  sha256 "6b281279efd85294d2d6993e173983a57464c0133956fbbb5536ec9646beaf0c"
   license "Python-2.0"
 
   livecheck do
@@ -10,15 +10,14 @@ class PythonTkAT39 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "6cf17300caeb9de0bedcb9be19b4f91ddc8e1ed02a05bac1dede7b89ec6e019e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "239544d688c136aa332a7cf19b099c8bb7c1ed18b935c91e7aae10838ed735f2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8feaaf7a0a9a189c4c4501b2b615c0593cd72c893c66931a12ac11db8422f528"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7880e183e7cdb45d62abcffff5cc40b17cba08aab202dfdd4a149760b99737a7"
-    sha256 cellar: :any,                 sonoma:         "ab7b792e607b5109719c52c03c3c5e9973ecf495b4bf42d79310ce9325765be0"
-    sha256 cellar: :any_skip_relocation, ventura:        "81664ef3893a689b3af8405fabb344e2d16fbad7ac802c3ae4758f558014b7b7"
-    sha256 cellar: :any_skip_relocation, monterey:       "99054c55d322d74e9998bbed0a1b79664eb0e043ade79c39e57940444b7afd95"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e21545af299a2aec6b9847815395df053cf169f7c6a53e709d2f11de4766c434"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "01e4e20eb6d8e953f0b68776e7c48a89e7946dac0830842b8679e55d953c5c4d"
+    sha256 cellar: :any,                 arm64_sequoia:  "69337728fbfe63387f3ee052e3cf13bcfea91fff4932594d8c568e5fc028b5a6"
+    sha256 cellar: :any,                 arm64_sonoma:   "d3e96db3185c125a680051a4984927651a69d9ecc832189f97f1c422944d9484"
+    sha256 cellar: :any,                 arm64_ventura:  "70aeb0283d3308c7a1f3a0ef6895c212499e9e3de7dc2892c815665d1e5a0a9e"
+    sha256 cellar: :any,                 arm64_monterey: "46c8166a4af72baa91d6ab36862fe0cd2acdef77813cd31e9658a4b94d808456"
+    sha256 cellar: :any,                 sonoma:         "e32cc2c7f3aca1968c0038ea6f001f0eb804b55548bfe0f7205d4b21c2180a79"
+    sha256 cellar: :any,                 ventura:        "5e1a52536fa875ec37b7a4ea42474ae8e1c13dea57f2973ce5db489685fd331f"
+    sha256 cellar: :any,                 monterey:       "93ef0db67efabc9e0f9ece2d93735baa7a1f315a26bed1dbcbb19bc39fe2b8d2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "10b7ce74afeed87b5374e042a7bb0a6d7db6e6a019815fc607e20c628217856d"
   end
 
   depends_on "python@3.9"
@@ -46,8 +45,8 @@ class PythonTkAT39 < Formula
               ]
         )
       EOS
-      system python3, *Language::Python.setup_install_args(libexec), "--install-lib=#{libexec}"
-      rm_r libexec.glob("*.egg-info")
+      system python3, "-m", "pip", "install", *std_pip_args(prefix: false), "--target=#{libexec}", "."
+      rm_r libexec.glob("*.dist-info")
     end
   end
 

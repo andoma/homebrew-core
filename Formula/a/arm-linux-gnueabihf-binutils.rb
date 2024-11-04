@@ -1,27 +1,28 @@
 class ArmLinuxGnueabihfBinutils < Formula
   desc "FSF/GNU binutils for cross-compiling to arm-linux"
   homepage "https://www.gnu.org/software/binutils/binutils.html"
-  url "https://ftp.gnu.org/gnu/binutils/binutils-2.41.tar.bz2"
-  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.41.tar.bz2"
-  sha256 "a4c4bec052f7b8370024e60389e194377f3f48b56618418ea51067f67aaab30b"
+  url "https://ftp.gnu.org/gnu/binutils/binutils-2.43.1.tar.bz2"
+  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.43.1.tar.bz2"
+  sha256 "becaac5d295e037587b63a42fad57fe3d9d7b83f478eb24b67f9eec5d0f1872f"
   license "GPL-3.0-or-later"
-  revision 1
 
   livecheck do
     formula "binutils"
   end
 
   bottle do
-    sha256 arm64_sonoma:   "ae60dae148c0c903a5ebc57282c6df9e9aa76161bb9311a73a3f943bb0f4806b"
-    sha256 arm64_ventura:  "e9f62b0f3c7aa06bf858df99dd38eabeae6bfba9234b360dfb58f7c3118abb7c"
-    sha256 arm64_monterey: "e5a90266cf3b3e347a8b5242e6b4bde64b443bbe168f7c0798e7d920d7fcc522"
-    sha256 sonoma:         "9afcd8cb32f113be993b15702f753e676bfb21f9c48aed4bea4362e686a83dfa"
-    sha256 ventura:        "995f49001c59c1a31a69921a4a727d5ca91de826b76f2c11987f5fe4d979abdd"
-    sha256 monterey:       "55080e306990e4fac4832b7ad39e6de6b56703ddddb44cc298c9f1d813c2be2d"
-    sha256 x86_64_linux:   "2e2a57cfe8267debac6a4b28022fa6329f64232b5b47797dd1e49e0ff539a9b6"
+    sha256 arm64_sequoia: "6942fe8a2cb9b5bf36dc3af17b5e0eaf7646c843fe599f924fe7ab8c1d31da6c"
+    sha256 arm64_sonoma:  "fc58d0db195365cfbae0778ddb159b972bba0f8025a4748d6a622b27b36a4a37"
+    sha256 arm64_ventura: "4b4b2e940fd37153d23adbe7a05fe7c191232cff01ed6fa7545e2ac4018c2ca1"
+    sha256 sonoma:        "14d772054e88d8a57c6f6d96968866130d49943bc72e4943198a988b8c4deab7"
+    sha256 ventura:       "2c8df1295a2dd0f809e069198378358caacd8688d180917d5216c2bda0dbb86c"
+    sha256 x86_64_linux:  "6dca015b099d6221e09b9acfba7514099d538d5bf57fa5b40940a7bf1bb256be"
   end
 
   depends_on "pkg-config" => :build
+  # Requires the <uchar.h> header
+  # https://sourceware.org/bugzilla/show_bug.cgi?id=31320
+  depends_on macos: :ventura
   depends_on "zstd"
 
   uses_from_macos "zlib"

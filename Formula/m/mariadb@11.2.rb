@@ -1,8 +1,8 @@
 class MariadbAT112 < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://archive.mariadb.org/mariadb-11.2.3/source/mariadb-11.2.3.tar.gz"
-  sha256 "14a0bba0c2847eb3f69a4637f55798f8abe10904cd1dd22899c9b0a39c43e35f"
+  url "https://archive.mariadb.org/mariadb-11.2.5/source/mariadb-11.2.5.tar.gz"
+  sha256 "25866734488ca09f212c3b1a5b4ac63cbb5d865787087a37ed6d7fe6fc124eb1"
   license "GPL-2.0-only"
 
   livecheck do
@@ -18,13 +18,14 @@ class MariadbAT112 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "342adcf290cc75007d4f1ad2664d4da293452bad231dcb518bd561b56600d6ec"
-    sha256 arm64_ventura:  "7a1e63956eacd755d84008503b091d8bca7c462189ab3f5ff30b7ddbf79e75b6"
-    sha256 arm64_monterey: "64d27c536ba0c6b93867ed753d316f59805d620fa3e6b659b6a3fa8340958566"
-    sha256 sonoma:         "c6cdae6aa1c2fa4dfbae970cd7f2f65e896c771efc42fc653e9c2d35ec5bd66e"
-    sha256 ventura:        "e58eb0a6b1bdcbbe28d496f1a53f34b32113b90d7981dbd37edc01b78fd3139f"
-    sha256 monterey:       "62674052f2d4264f681465b7c0b55be5955a0da6313c1311dbf27ff0c28f7d8f"
-    sha256 x86_64_linux:   "86afcc2d7a25d5803352f3b45390a585de896403c0527dabbafbcb081b2da00d"
+    sha256 arm64_sequoia:  "9be40fba8003e7910b91e3b1fccdf59b72e4d9deb0667b763310a12071113422"
+    sha256 arm64_sonoma:   "a1584791e34c659b71b883841663c8014c8f8a88d64c65b80d058855ef46b98b"
+    sha256 arm64_ventura:  "39f7fb1e65f8bffc43e3b7c72da0beb8ddf177ed9c62d0972e4af745ab155546"
+    sha256 arm64_monterey: "a6928f2d694a389e09e763c251d5fd67f9663220f5a28635849e63ff88198c05"
+    sha256 sonoma:         "68c763d2b756727a15c79efc9b743d73f606d4af02d419d5cb661c57f5ce5c67"
+    sha256 ventura:        "01202ecbd211d672731f4db7d03db5b236f69ad0f92d867ce2e5a1eb4804a334"
+    sha256 monterey:       "cf479aac3ba68c2b5720a8f59d741149a6d27f6d2b10b1750258e89a9e73dca2"
+    sha256 x86_64_linux:   "04a187ddaeb2e2676f2d5a7d64ccb7d306a098f0d9d0cbf04cb5c5ac13df30ce"
   end
 
   keg_only :versioned_formula
@@ -36,13 +37,20 @@ class MariadbAT112 < Formula
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "fmt" => :build
+  depends_on "openjdk" => :build
   depends_on "pkg-config" => :build
+
   depends_on "groonga"
+  depends_on "lz4"
+  depends_on "lzo"
   depends_on "openssl@3"
   depends_on "pcre2"
+  depends_on "xz"
   depends_on "zstd"
 
   uses_from_macos "bzip2"
+  uses_from_macos "krb5"
+  uses_from_macos "libedit"
   uses_from_macos "libxcrypt"
   uses_from_macos "libxml2"
   uses_from_macos "ncurses"
@@ -54,13 +62,6 @@ class MariadbAT112 < Formula
   end
 
   fails_with gcc: "5"
-
-  # upstream patch ref, https://github.com/MariaDB/server/pull/3064
-  # remove when it got merged and released
-  patch do
-    url "https://github.com/MariaDB/server/commit/3624a36aed0346380255b141cb8a59998aaca4ee.patch?full_index=1"
-    sha256 "c9d0aa64b34c43ac9e3077d74c18532125c459d9d867ade69ce283d27b595b22"
-  end
 
   def install
     ENV.cxx11
@@ -112,13 +113,9 @@ class MariadbAT112 < Formula
                                "!includedir #{etc}/my.cnf.d"
     touch etc/"my.cnf.d/.homebrew_dont_prune_me"
 
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix/"data"
-
     # Save space
-    (prefix/"mariadb-test").rmtree
-    (prefix/"sql-bench").rmtree
+    rm_r(prefix/"mariadb-test")
+    rm_r(prefix/"sql-bench")
 
     # Link the setup scripts into bin
     bin.install_symlink [
@@ -162,7 +159,7 @@ class MariadbAT112 < Formula
 
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV["TMPDIR"] = nil
-      system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
+      system bin/"mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
         "--basedir=#{prefix}", "--datadir=#{var}/mysql", "--tmpdir=/tmp"
     end
   end
@@ -190,12 +187,12 @@ class MariadbAT112 < Formula
       "--auth-root-authentication-method=normal"
     port = free_port
     fork do
-      system "#{bin}/mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
+      system bin/"mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
         "--datadir=#{testpath}/mysql", "--port=#{port}", "--tmpdir=#{testpath}/tmp"
     end
     sleep 5
     assert_match "information_schema",
       shell_output("#{bin}/mysql --port=#{port} --user=root --password= --execute='show databases;'")
-    system "#{bin}/mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
+    system bin/"mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
   end
 end

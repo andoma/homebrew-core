@@ -1,32 +1,26 @@
 class DockerMachine < Formula
   desc "Create Docker hosts locally and on cloud providers"
-  homepage "https://docs.docker.com/machine"
-  url "https://gitlab.com/gitlab-org/ci-cd/docker-machine/-/archive/v0.16.2-gitlab.24/docker-machine-v0.16.2-gitlab.24.tar.bz2"
-  version "0.16.2-gitlab.24"
-  sha256 "172bcf784745806f39551caa5f565ab0dc792f1d26538c872fe9bceff49015ee"
+  homepage "https://docs.gitlab.com/runner/executors/docker_machine.html"
+  url "https://gitlab.com/gitlab-org/ci-cd/docker-machine/-/archive/v0.16.2-gitlab.29/docker-machine-v0.16.2-gitlab.29.tar.bz2"
+  version "0.16.2-gitlab.29"
+  sha256 "e387387fb5cab607b6214fb7d08f1e0b39f501195a92ba85879b924f4504a2e3"
   license "Apache-2.0"
   head "https://gitlab.com/gitlab-org/ci-cd/docker-machine.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1d6f801470e111e4af61fec3a3251634245a0f05425e6a675937421ffc910c97"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9d9a7d404dc4476f427e6842a6b62eaec8235db0c5277a749721bca7b86936dd"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0249d159d91a5427d14b743ff999a4f22259dfec316ca860c08f3efb7e9a8ab5"
-    sha256 cellar: :any_skip_relocation, sonoma:         "98373c812405d274019105f482b7a1429bb9c7f79415da832e222ea9c544538a"
-    sha256 cellar: :any_skip_relocation, ventura:        "a02fdc6641e5b6a38bfda97b830bd36e5df04224ff167b565582a427d1631356"
-    sha256 cellar: :any_skip_relocation, monterey:       "550b3d0bf807293ab6c5eaf27e2da1f45e28bb64fb30a4344c3d795305bc947b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "80eb4fea152ea10942a349bdd9a9742d6d89b4f69dbccd3c18732efaec3558db"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "42890fcc319f76dc5694b6ffb6dd30a5b9a710bceecb5be0770f5be3c30c24dd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "42890fcc319f76dc5694b6ffb6dd30a5b9a710bceecb5be0770f5be3c30c24dd"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "42890fcc319f76dc5694b6ffb6dd30a5b9a710bceecb5be0770f5be3c30c24dd"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bc5474070d4d78c4031091d66f1609294f68bd126d5bef2899513c4b610ec011"
+    sha256 cellar: :any_skip_relocation, ventura:       "bc5474070d4d78c4031091d66f1609294f68bd126d5bef2899513c4b610ec011"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "63ec4e9e6d0f3b504166e5993d6a5dd3f7819840dfa71fb37cd2a03d2f0d9663"
   end
 
   depends_on "go" => :build
 
-  # upstream version patch PR, https://gitlab.com/gitlab-org/ci-cd/docker-machine/-/merge_requests/121
-  patch do
-    url "https://gitlab.com/gitlab-org/ci-cd/docker-machine/-/commit/8630d656313d791bd99a80e02b4efa9b3c95b250.diff"
-    sha256 "96ff340785c1e7e6ddb5cec71ed3f2c0fadd8381a270b7f7688fc46d2b568f1c"
-  end
-
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/docker-machine"
+    ldflags = "-s -w"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/docker-machine"
 
     bash_completion.install Dir["contrib/completion/bash/*.bash"]
     zsh_completion.install "contrib/completion/zsh/_docker-machine"

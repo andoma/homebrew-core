@@ -5,12 +5,6 @@ class Libgit2AT15 < Formula
   sha256 "57638ac0e319078f56a7e17570be754515e5b1276d3750904b4214c92e8fa196"
   license "GPL-2.0-only" => { with: "GCC-exception-2.0" }
   revision 1
-  head "https://github.com/libgit2/libgit2.git", branch: "maint/v1.5"
-
-  livecheck do
-    url :stable
-    regex(/v?(1\.5(?:\.\d+)+)/i)
-  end
 
   bottle do
     sha256 cellar: :any,                 arm64_sonoma:   "4064a3e2a44b267384af9b2e5e6476ca7928f609a700cdde11cedb84bb99ce78"
@@ -41,7 +35,7 @@ class Libgit2AT15 < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <git2.h>
       #include <assert.h>
 
@@ -50,7 +44,7 @@ class Libgit2AT15 < Formula
         assert(options & GIT_FEATURE_SSH);
         return 0;
       }
-    EOS
+    C
     libssh2 = Formula["libssh2"]
     flags = %W[
       -I#{include}

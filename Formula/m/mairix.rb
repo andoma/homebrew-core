@@ -1,17 +1,18 @@
 class Mairix < Formula
   desc "Email index and search tool"
-  homepage "http://www.rpcurnow.force9.co.uk/mairix/"
-  url "https://downloads.sourceforge.net/project/mairix/mairix/0.24/mairix-0.24.tar.gz"
+  homepage "https://github.com/vandry/mairix"
+  url "https://github.com/vandry/mairix/releases/download/0.24/mairix-0.24.tar.gz"
   sha256 "a0702e079c768b6fbe25687ebcbabe7965eb493d269a105998c7c1c2caef4a57"
-  license "GPL-2.0"
-  head "https://github.com/rc0/mairix.git", branch: "master"
+  license "GPL-2.0-only"
+  head "https://github.com/vandry/mairix.git", branch: "master"
 
   livecheck do
     url :stable
-    regex(%r{url=.*?/mairix[._-]v?(\d+(?:\.\d+)+)\.t}i)
+    strategy :github_latest
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4fe9dceecdc765588a0da520eac43995f92e4ee5b0c4c73debba1cc89bf24e26"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dc607dc417397d6c0d44c2665b7a47528d3db54f7099ae8827b3dafde391fefd"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "588fe8d2cc66f1f63c8ba35ed5fed8df99c839cecc867107371c8d8b9741dd8a"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "ca582c86e13846ea4d659ae4f63ebb6db21a7199d8ea713c9a764997b05925dc"
@@ -40,6 +41,6 @@ class Mairix < Formula
   end
 
   test do
-    system "#{bin}/mairix", "--version"
+    system bin/"mairix", "--version"
   end
 end

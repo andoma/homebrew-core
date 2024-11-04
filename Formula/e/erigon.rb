@@ -6,12 +6,8 @@ class Erigon < Formula
   license all_of: ["GPL-3.0-or-later", "LGPL-3.0-or-later"]
   head "https://github.com/ledgerwatch/erigon.git", branch: "devel"
 
-  livecheck do
-    url :stable
-    strategy :github_latest
-  end
-
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "450e82a964c4c0f8091ae2ffab8cfc741e77d44c1752ee6f2eaa660044c16975"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ae35586de98a7067a18a36323c65a8573fd2a5cf3c4467efa1daa7f625b72edc"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "1b3595711fe008717c82ccfa82836e9753f2319b7f66c2848ee4f891879737b5"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "e976d99a3ee32f34a3fa3dedfc5c84dbe348781034c72ba26510c954ca1076d2"
@@ -20,6 +16,11 @@ class Erigon < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "6e2fe466bbb29af8ef4d9d5f06767ac32188730a3bb276b9f0cfd4227ed64acd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d66f64987e1828b5098e40d6ec7e4fe4ece0240059d2151abca6f9959f6c88aa"
   end
+
+  # Upstream includes pre-built libsilkworm_capi inside silkworm-go and recommends copying to installation:
+  # https://github.com/ledgerwatch/erigon?tab=readme-ov-file#how-to-run-erigon-as-a-separate-user-eg-as-a-systemd-daemon
+  # Trying to build library from source only works with `conan` which would use their pre-built libraries.
+  deprecate! date: "2024-02-29", because: "needs a pre-built copy of libsilkworm_capi"
 
   depends_on "gcc" => :build
   depends_on "go" => :build
@@ -59,7 +60,7 @@ class Erigon < Formula
       --log.dir.verbosity debug
       --log.dir.path #{testpath}
     ]
-    system "#{bin}/erigon", *args, "init", "genesis.json"
+    system bin/"erigon", *args, "init", "genesis.json"
     assert_predicate testpath/"erigon.log", :exist?
   end
 end

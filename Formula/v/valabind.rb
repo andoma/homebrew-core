@@ -8,6 +8,7 @@ class Valabind < Formula
   head "https://github.com/radare/valabind.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "ec16d96176ce495628ccf3a5311f73bf79372b0f43916402658f889766a8d671"
     sha256 cellar: :any,                 arm64_sonoma:   "80030cd7d5a34964e901ca0423f7544e4303e8303f3d19f9bed8fe7d05e69944"
     sha256 cellar: :any,                 arm64_ventura:  "e28af78b2d274aed69831674e266fca2dd7d5d372c6fad894b781e2f7921441e"
     sha256 cellar: :any,                 arm64_monterey: "f97a49df3bd721459f95344eb6797f64dfc3179e3472c9fb559dd1e9a6f5407f"
@@ -21,13 +22,23 @@ class Valabind < Formula
   end
 
   depends_on "pkg-config" => :build
+
+  depends_on "glib"
   depends_on "swig"
   depends_on "vala"
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
 
+  on_macos do
+    depends_on "gettext"
+  end
+
   def install
+    # Workaround to build with newer clang
+    # Upstream bug report, https://github.com/radare/valabind/issues/61
+    ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
+
     system "make", "VALA_PKGLIBDIR=#{Formula["vala"].opt_lib}/vala-#{Formula["vala"].version.major_minor}"
     system "make", "install", "PREFIX=#{prefix}"
   end

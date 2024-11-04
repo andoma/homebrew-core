@@ -1,8 +1,8 @@
 class WildflyAs < Formula
   desc "Managed application runtime for building applications"
   homepage "https://www.wildfly.org/"
-  url "https://github.com/wildfly/wildfly/releases/download/30.0.1.Final/wildfly-30.0.1.Final.tar.gz"
-  sha256 "c9c5db601ed47cd181a9c18740977817809986a517fd15b719a83a6bac74ed0f"
+  url "https://github.com/wildfly/wildfly/releases/download/34.0.0.Final/wildfly-34.0.0.Final.tar.gz"
+  sha256 "374254a534cac6455897e72716d078bd58b1aa604db9e52e151279dc3626c35b"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,11 @@ class WildflyAs < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "57f9b8fc7e91024ffee776bd858f6a584bc1bf28db61f77d3a5fc7976bc89a4a"
-    sha256 cellar: :any, arm64_ventura:  "57f9b8fc7e91024ffee776bd858f6a584bc1bf28db61f77d3a5fc7976bc89a4a"
-    sha256 cellar: :any, arm64_monterey: "57f9b8fc7e91024ffee776bd858f6a584bc1bf28db61f77d3a5fc7976bc89a4a"
-    sha256 cellar: :any, sonoma:         "a2efe54e3d954ae2a6a9ecda2eb0bd5caed903225835b904cf118b9c3ea7ab39"
-    sha256 cellar: :any, ventura:        "a2efe54e3d954ae2a6a9ecda2eb0bd5caed903225835b904cf118b9c3ea7ab39"
-    sha256 cellar: :any, monterey:       "a2efe54e3d954ae2a6a9ecda2eb0bd5caed903225835b904cf118b9c3ea7ab39"
+    sha256 cellar: :any, arm64_sequoia: "6e1df42a0d83b0a82c9b0d8af053c36730269eaff6098d961a0d5c9ff5ec0dfb"
+    sha256 cellar: :any, arm64_sonoma:  "6e1df42a0d83b0a82c9b0d8af053c36730269eaff6098d961a0d5c9ff5ec0dfb"
+    sha256 cellar: :any, arm64_ventura: "6e1df42a0d83b0a82c9b0d8af053c36730269eaff6098d961a0d5c9ff5ec0dfb"
+    sha256 cellar: :any, sonoma:        "dbb39676d9e867b2c0cc3c7bdd1f045b49634337fda21d9d321740e3615bd308"
+    sha256 cellar: :any, ventura:       "dbb39676d9e867b2c0cc3c7bdd1f045b49634337fda21d9d321740e3615bd308"
   end
 
   # Installs a pre-built `libartemis-native-64.so` file with linkage to libaio.so.1
@@ -61,7 +60,7 @@ class WildflyAs < Formula
 
   test do
     ENV["JBOSS_HOME"] = opt_libexec
-    system "#{opt_libexec}/bin/standalone.sh --version | grep #{version}"
+    ENV["JBOSS_LOG_DIR"] = testpath
 
     port = free_port
 

@@ -1,18 +1,17 @@
 class Libre < Formula
   desc "Toolkit library for asynchronous network I/O with protocol stacks"
   homepage "https://github.com/baresip/re"
-  url "https://github.com/baresip/re/archive/refs/tags/v3.9.0.tar.gz"
-  sha256 "4192e65c8f36036c22f0cab30e88eea46b349a9a2d1a8d02396c4182ab662dd6"
+  url "https://github.com/baresip/re/archive/refs/tags/v3.16.0.tar.gz"
+  sha256 "11b3215064b6ef5a11b0f4645d6d4834f8ba899d5b65c66477f9c4afbd32e1ed"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "42374525f4d1e29ce8730b5dc1e3e23be5ade4ccdc4c722a33f2e40374d340ef"
-    sha256 cellar: :any,                 arm64_ventura:  "f102edc514da32e070fd69b00d67d67b3687a21d422d7cc531c3acaf69ab329e"
-    sha256 cellar: :any,                 arm64_monterey: "32fe987aa6c114bd8774fcf5c42622a7de8cb5fee39fbb21c83918fe141bdc68"
-    sha256 cellar: :any,                 sonoma:         "d97b57e23988503d9dd92526394750cd40a060793f8d2bac3f1437b7f18e7cff"
-    sha256 cellar: :any,                 ventura:        "bbc1af91df4df834d2fa54805e9efcc95b26b477c62d9614fd006583cacdab7b"
-    sha256 cellar: :any,                 monterey:       "63157e3499bde3b44edca7a31757bc0f0cdc8d0643d39dd0fdb26e383cec16cb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "45b03f1dc4b55109c1025580b1f82457eb07c932160fd02f528d127dc9200b6a"
+    sha256 cellar: :any,                 arm64_sequoia: "02558efbd753c2828ccc4f91524dca92a1c4fc2c5b75c96b58473f7357b05a20"
+    sha256 cellar: :any,                 arm64_sonoma:  "c301ade603751c88020715a54450b36c4f53e20554e645bc12da67172d1bba8d"
+    sha256 cellar: :any,                 arm64_ventura: "26bc4638e19d6e26b0e780e2041b4faaaf30b2970e51e7ce1bebd1456855e89e"
+    sha256 cellar: :any,                 sonoma:        "13693d80705176c802c502aeac1847868699cd8fd80986958bfa6a2ef013c044"
+    sha256 cellar: :any,                 ventura:       "813f09b9bcdad0d04438d6ced16cf743b754097dfc1a42a8048fc8cf9606d715"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c3d699e934426185b44b2603ac3e21a9981363b914c3a1401eb95943779ef20e"
   end
 
   depends_on "cmake" => :build
@@ -27,13 +26,13 @@ class Libre < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdint.h>
       #include <re/re.h>
       int main() {
         return libre_init();
       }
-    EOS
+    C
     system ENV.cc, "-I#{include}", "-I#{include}/re", "test.c", "-L#{lib}", "-lre"
   end
 end

@@ -1,18 +1,17 @@
 class Tt < Formula
   desc "Command-line utility to manage Tarantool applications"
   homepage "https://github.com/tarantool/tt"
-  url "https://github.com/tarantool/tt/releases/download/v2.1.2/tt-2.1.2-complete.tar.gz"
-  sha256 "9bd621f0e165f59409278dddaf9a13ed8f467d42d99c75d2b3c07c4e794e405f"
+  url "https://github.com/tarantool/tt/releases/download/v2.5.1/tt-2.5.1-complete.tar.gz"
+  sha256 "1668f7842dfbc158486a6fa6f2d0b96cfcacfdfe38d2356d18c74c01d39f6631"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "846eb23fbb4298d49f9059492309d74c9c353793d1a4a0210fd083988020b052"
-    sha256 cellar: :any,                 arm64_ventura:  "e395b546bc6fa0ea02a7518b709ce747bd825729cc0165b71b9e5856980e064b"
-    sha256 cellar: :any,                 arm64_monterey: "8922950cd37f03a578ad1caa07dd8e6fb852c31bfd2aea04655aade044f01309"
-    sha256                               sonoma:         "9bc1ff032b913b0387bc0e8903799f6368f2363473d88ed63d768778818fcb35"
-    sha256                               ventura:        "f18aca23a1ef3bf5f4141957e97a5e1b0acc0470b96ed6a4a0e772da92b654e0"
-    sha256                               monterey:       "7bcfd2f0a52a98cefaf833d3cec33a36123e90ebdd8eecebd8bb0dabc05bd74f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9804ab48ebb2796c3d5f0da3c8e3d0cf3ee2201833dc5ee97fecff007778364a"
+    sha256 cellar: :any,                 arm64_sequoia: "c5ac88f957377efdcafdc2a444f2f87434f60b2579817b44379da3c2a11cc29b"
+    sha256 cellar: :any,                 arm64_sonoma:  "a8a979f07948f545c2cea8511d1f869af7de6dc0a74f06028541309b31f7be6d"
+    sha256 cellar: :any,                 arm64_ventura: "51d4cf4016a5b94cbb5767b62a3a155b577dc880036cefedc2dea5d7a534883a"
+    sha256                               sonoma:        "76f2b6df86f033e64eb71cc6b606ca1b339a8b39b3b077e0062d1bc32c107467"
+    sha256                               ventura:       "6554678c3b83c011df6efbb35e1b4c2dd3a3718db87eb6422166f8cea92fd7a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7517f26fa7dfead01987fbb093e3b4bfe8e2869af74dba0c984b87deb18901ef"
   end
 
   depends_on "go" => :build
@@ -32,7 +31,8 @@ class Tt < Formula
     ENV["TT_CLI_BUILD_SSL"] = "shared"
     system "mage", "build"
     bin.install "tt"
-    (etc/"tarantool").install "tt.yaml.default" => "tt.yaml"
+    (etc/"tarantool").install "package/tt.yaml.default" => "tt.yaml"
+
     generate_completions_from_executable(bin/"tt", "completion", shells: [:bash, :zsh])
   end
 

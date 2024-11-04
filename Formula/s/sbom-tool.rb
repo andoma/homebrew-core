@@ -1,24 +1,30 @@
 class SbomTool < Formula
   desc "Scalable and enterprise ready tool to create SBOMs for any variety of artifacts"
   homepage "https://github.com/microsoft/sbom-tool"
-  url "https://github.com/microsoft/sbom-tool/archive/refs/tags/v2.2.2.tar.gz"
-  sha256 "c6ee17a84d1e16cf1ee81d6b8ed9f5ab80c35317a2f4bdc9cc7360f88248c9dd"
+  url "https://github.com/microsoft/sbom-tool/archive/refs/tags/v3.0.1.tar.gz"
+  sha256 "90085ab1f134f83d43767e46d6952be42a62dbb0f5368e293437620a96458867"
   license "MIT"
   head "https://github.com/microsoft/sbom-tool.git", branch: "main"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4c04c6c3f382672eeffd9b10995bdbf1ca5739c8d500c03f95af59041b33fadb"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "31e74da4ee4928e4d990d12be2b2bc7fc30e51304504e73409bdcb2d47487d36"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8ff54ab7537a50cc9bb3ea1312c2321867e25379589d7ca407ab449aede975ed"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b375236f623baaac85ed2b0464ac19ed69fdcc77bcc60946532eadf4043ef189"
-    sha256 cellar: :any_skip_relocation, ventura:        "8e48149a6e7a1ac6e65fed986c9db548548c13f9a85327247ff7bd30de06ced6"
-    sha256 cellar: :any_skip_relocation, monterey:       "c1fc2b0cbeddc236a84bbc9420a8c57ef00cb196282aa6153bb4f8fe16de87b1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "102e91117f030ecc17960ffab7afc7c4fd7e82cfd2efe20876ef7536c8265cb0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dd07cf8531b2d6120d052b498dd9e273b131e15f9cce5964996b083ec9b851ec"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "344c264ec814f20dead2e14aeb6888ed483d1003a8e91e4625b88ccc5e57b92d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "fa834547524901e2f6d4f0e891e48547378da7c722fb93981a8c19004ae284d7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "27d9f132d895097aa7454d9e3bc43adca410cab2c7088cbc184cf21174141c7a"
+    sha256 cellar: :any_skip_relocation, ventura:       "db0dcb0a4e6b7bfd6c131c9cfbd201403709d20561a2223931e75830aa5d893d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f7350a825d6b0e31ff02f6145487765ed899d95d1243f9d91d914b63b3102c59"
   end
 
   depends_on "dotnet"
 
-  uses_from_macos "icu4c" => :test
   uses_from_macos "zlib"
 
   def install
@@ -57,7 +63,7 @@ class SbomTool < Formula
       -pn TestProject
       -pv 1.2.3
       -ps Homebrew
-      -nsb http://formulae.brew.sh
+      -nsb https://formulae.brew.sh
     ]
 
     system bin/"sbom-tool", "generate", *args

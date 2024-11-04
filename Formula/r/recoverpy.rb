@@ -3,18 +3,18 @@ class Recoverpy < Formula
 
   desc "TUI to recover overwritten or deleted data"
   homepage "https://github.com/PabloLec/recoverpy"
-  url "https://files.pythonhosted.org/packages/86/bd/9613e994031ad1af3408db0ed5973562461178de8d85920f202e3d4bcf93/recoverpy-2.1.6.tar.gz"
-  sha256 "3b6f1eb510e46c85fa7631628f708b430f682ee308dbe0b07ca0f03b488be1fc"
+  url "https://files.pythonhosted.org/packages/ea/55/9b4c247c0988b791e25431269acd13ba0b784d84d3b8d46f1775fbf8693b/recoverpy-2.1.9.tar.gz"
+  sha256 "e04933f67020de3ed9d732a0daf87ea82ea9d5d985042e5371c7c96046d7a075"
   license "GPL-3.0-or-later"
   head "https://github.com/PabloLec/recoverpy.git", branch: "main"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "df5cccf7b1b7459b5ee9ea47bb5b8bffea03b9b60f524d27072fcb2fb0c7757b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "d852e58fb51a558d786aa6294ffe5db252d375fb7b687400ae702914f1ae15e8"
   end
 
   depends_on :linux
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "linkify-it-py" do
     url "https://files.pythonhosted.org/packages/2a/ae/bb56c6828e4797ba5a4821eec7c43b8bf40f69cda4d4f5f8c8a2810ec96a/linkify-it-py-2.0.3.tar.gz"
@@ -27,8 +27,8 @@ class Recoverpy < Formula
   end
 
   resource "mdit-py-plugins" do
-    url "https://files.pythonhosted.org/packages/b4/db/61960d68d5c39ff0dd48cb799a39ae4e297f6e9b96bf2f8da29d897fba0c/mdit_py_plugins-0.4.0.tar.gz"
-    sha256 "d8ab27e9aed6c38aa716819fedfde15ca275715955f8a185a8e1cf90fb1d2c1b"
+    url "https://files.pythonhosted.org/packages/19/03/a2ecab526543b152300717cf232bb4bb8605b6edb946c845016fa9c9c9fd/mdit_py_plugins-0.4.2.tar.gz"
+    sha256 "5f2cd1fdb606ddf152d37ec30e46101a60512bc0e5fa1a7002c36647b09e26b5"
   end
 
   resource "mdurl" do
@@ -37,23 +37,23 @@ class Recoverpy < Formula
   end
 
   resource "pygments" do
-    url "https://files.pythonhosted.org/packages/55/59/8bccf4157baf25e4aa5a0bb7fa3ba8600907de105ebc22b0c78cfbf6f565/pygments-2.17.2.tar.gz"
-    sha256 "da46cec9fd2de5be3a8a784f434e4c4ab670b4ff54d605c4c2717e9d49c4c367"
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
   end
 
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/a7/ec/4a7d80728bd429f7c0d4d51245287158a1516315cadbb146012439403a9d/rich-13.7.0.tar.gz"
-    sha256 "5cb5123b5cf9ee70584244246816e9114227e0b98ad9176eede6ad54bf5403fa"
+    url "https://files.pythonhosted.org/packages/aa/9e/1784d15b057b0075e5136445aaea92d23955aad2c93eaede673718a40d95/rich-13.9.2.tar.gz"
+    sha256 "51a2c62057461aaf7152b4d611168f93a9fc73068f8ded2790f29fe2b5366d0c"
   end
 
   resource "textual" do
-    url "https://files.pythonhosted.org/packages/64/b3/d33af0cacb5d8838e65b9d591ce5e47a063e1a0eba736568f3c222aa004f/textual-0.51.0.tar.gz"
-    sha256 "ca3d58c00a360ef1988a9be2dbb34d8a8526f2b9fe40c2ed7ac6687875422efd"
+    url "https://files.pythonhosted.org/packages/23/40/100a105ab455be14cc5b96e2ecb0196ba28c506dcfd0c497a796db3c90c5/textual-0.72.0.tar.gz"
+    sha256 "14174ce8d49016a85aa6c0669d0881b5419e98cf46d429f263314295409ed262"
   end
 
   resource "typing-extensions" do
-    url "https://files.pythonhosted.org/packages/0c/1d/eb26f5e75100d531d7399ae800814b069bc2ed2a7410834d57374d010d96/typing_extensions-4.9.0.tar.gz"
-    sha256 "23478f88c37f27d76ac8aee6c905017a143b0b1b886c3c9f66bc2fd94f9f5783"
+    url "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz"
+    sha256 "1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"
   end
 
   resource "uc-micro-py" do

@@ -1,8 +1,8 @@
 class Htslib < Formula
   desc "C library for high-throughput sequencing data formats"
   homepage "https://www.htslib.org/"
-  url "https://github.com/samtools/htslib/releases/download/1.19.1/htslib-1.19.1.tar.bz2"
-  sha256 "222d74d3574fb67b158c6988c980eeaaba8a0656f5e4ffb76b5fa57f035933ec"
+  url "https://github.com/samtools/htslib/releases/download/1.21/htslib-1.21.tar.bz2"
+  sha256 "84b510e735f4963641f26fd88c8abdee81ff4cb62168310ae716636aac0f1823"
   license "MIT"
 
   livecheck do
@@ -11,15 +11,17 @@ class Htslib < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "6733ceb8d7c9c4512bbd3ec267a846d71489cd638b5e0a8ce1650c8e2ff5505e"
-    sha256 cellar: :any,                 arm64_ventura:  "0d35d92009b48f4f60d7db899d37f14f1cce781c93ca279df822f61f81709a20"
-    sha256 cellar: :any,                 arm64_monterey: "2bbb4f2eabe5bb0a2eaec819ebe9947690b368b9e8160e5ac7f0042a363ec35b"
-    sha256 cellar: :any,                 sonoma:         "9c37fd9a563cf1b5a09e377efb3c9c43d15ee56c0c70688745e1177f0dd1cef3"
-    sha256 cellar: :any,                 ventura:        "58e74d9d0b90ef4da884a59f5aa808056e285f4dabd97fef6f134fb224ba6b42"
-    sha256 cellar: :any,                 monterey:       "87311767ab21be3a49eaa066e88d0534523e018b1e31988600e55e1f3aa4a509"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f770fd413989e4cc735e5c1c1ec60fc8122cb8221fb62045d524354feb5f76fe"
+    sha256 cellar: :any,                 arm64_sequoia:  "5666590893b28330ba567928e6c9a3f9df35f31bbe1141715f598943ea2792ac"
+    sha256 cellar: :any,                 arm64_sonoma:   "13cfebf52afda554d0356c9c15fadaf0361a13b63354f6fd6408070cc2189dc2"
+    sha256 cellar: :any,                 arm64_ventura:  "140f35781a6dca49898ee9b16cd8d9566b67147508604da63b1dc614cf4acad9"
+    sha256 cellar: :any,                 arm64_monterey: "6631954131f70ee19111f4c9f1c7920995333638a66959714d63bb81effdd07f"
+    sha256 cellar: :any,                 sonoma:         "9242245655ac588d50e779950bd07525c5a5ffa3fd84531d837336c67dd5c85c"
+    sha256 cellar: :any,                 ventura:        "5fb7968f1ee7824d0c42550ba6441559f3d2d61ded9b838fbc9e4681f8b9a0e7"
+    sha256 cellar: :any,                 monterey:       "7643426f0e6a8958f63fdc0cb0fe0c259e1da50eb22d19f74f26a53f62520309"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5a5a9b188b427ad39f32bd45f8420f46e7bb0d4fc03e1eb46a3b1f78d97d67d"
   end
 
+  depends_on "libdeflate"
   depends_on "xz"
 
   uses_from_macos "bzip2"
@@ -31,7 +33,7 @@ class Htslib < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--enable-libcurl"
+    system "./configure", "--prefix=#{prefix}", "--enable-libcurl", "--with-libdeflate"
     system "make", "install"
   end
 
@@ -43,9 +45,11 @@ class Htslib < Formula
       r2	0	chr1	200	0	4M	*	0	0	AATT	EFGH
     EOS
     assert_match "SAM", shell_output("#{bin}/htsfile #{sam}")
+
     system "#{bin}/bgzip -c #{sam} > sam.gz"
     assert_predicate testpath/"sam.gz", :exist?
-    system "#{bin}/tabix", "-p", "sam", "sam.gz"
+
+    system bin/"tabix", "-p", "sam", "sam.gz"
     assert_predicate testpath/"sam.gz.tbi", :exist?
   end
 end

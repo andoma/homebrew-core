@@ -1,26 +1,25 @@
 class Sops < Formula
   desc "Editor of encrypted files"
   homepage "https://github.com/getsops/sops"
-  url "https://github.com/getsops/sops/archive/refs/tags/v3.8.1.tar.gz"
-  sha256 "5ca70fb4f96797d09012c705a5bb935835896de7bcd063b98d498912b0e645a0"
+  url "https://github.com/getsops/sops/archive/refs/tags/v3.9.1.tar.gz"
+  sha256 "d79e8caaef3134d00f759231e8ef587b791996e2e45319ffe83dee1ab01aebda"
   license "MPL-2.0"
   head "https://github.com/getsops/sops.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0aa447922f3c179827253fd8d0fe2e087d24a227834b68da3c6ccacda89741d4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8625e5a465ed0f5c086108990af51526a01aee3e91de0b6256719fe7bf33f7f2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e057fcdf75857cfff891e09640263813730f80987d6d3c681f0473d328b3265b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "96e2377dd04ea9e2f6dc0942de2de7ba615846db960954380f34357f2516efc4"
-    sha256 cellar: :any_skip_relocation, ventura:        "1aa9ac1ac98054155066da4898ded3e8c0c792714b026c57414368a27d85f06a"
-    sha256 cellar: :any_skip_relocation, monterey:       "14178f64db4aa62340dd57d208f02d06336ea8465393171154560d64188ed5c9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a54849414c752566bfde2f0d26cc832c6312831ba7bdb94c35c40eb09e0eaf66"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e22f5ce17fed2e4704f79bdffc815f283426fb623b9420e0be89658a26040e9d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e22f5ce17fed2e4704f79bdffc815f283426fb623b9420e0be89658a26040e9d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e22f5ce17fed2e4704f79bdffc815f283426fb623b9420e0be89658a26040e9d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1f16877a71f0526a575d3777303bc4ad3d2e911a0c5b57e7cbcfd879e0f46b30"
+    sha256 cellar: :any_skip_relocation, ventura:       "1f16877a71f0526a575d3777303bc4ad3d2e911a0c5b57e7cbcfd879e0f46b30"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a964b4b1c32e6343dedfb934d0bd29b42591a9c6408123a7f4ced3b094059be5"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X github.com/getsops/sops/v3/version.Version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/sops"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/sops"
     pkgshare.install "example.yaml"
   end
 

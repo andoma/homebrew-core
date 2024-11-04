@@ -17,6 +17,7 @@ class OsmGpsMap < Formula
   end
 
   bottle do
+    sha256                               arm64_sequoia:  "86a72e93e60138253d415f0f8350e2a08f01cf670631f159cbcb9aef453991f0"
     sha256                               arm64_sonoma:   "4e99312645cad4b62bce40d08360aaf0071a7a5fce6e8331c3940fc9956d6a30"
     sha256                               arm64_ventura:  "2bc5f12b6808b31bbc6fb791a90a8561c33eb88ac4d937d9d48df795570fe2fb"
     sha256                               arm64_monterey: "8dddb7d2eee3341e52742fb0d9d2503a081dcf53777048e614ee0d873314af3a"
@@ -38,18 +39,27 @@ class OsmGpsMap < Formula
 
   depends_on "gobject-introspection" => :build
   depends_on "pkg-config" => :build
+
+  depends_on "cairo"
   depends_on "gdk-pixbuf"
   depends_on "glib"
   depends_on "gtk+3"
 
+  on_macos do
+    depends_on "at-spi2-core"
+    depends_on "gettext"
+    depends_on "harfbuzz"
+    depends_on "pango"
+  end
+
   def install
     configure = build.head? ? "./autogen.sh" : "./configure"
-    system configure, *std_configure_args, "--disable-silent-rules", "--enable-introspection"
+    system configure, "--disable-silent-rules", "--enable-introspection", *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <osm-gps-map.h>
 
       int main(int argc, char *argv[]) {
@@ -58,7 +68,7 @@ class OsmGpsMap < Formula
         map = g_object_new (OSM_TYPE_GPS_MAP, NULL);
         return 0;
       }
-    EOS
+    C
     atk = Formula["atk"]
     cairo = Formula["cairo"]
     glib = Formula["glib"]

@@ -1,19 +1,18 @@
 class Broot < Formula
   desc "New way to see and navigate directory trees"
   homepage "https://dystroy.org/broot/"
-  url "https://github.com/Canop/broot/archive/refs/tags/v1.34.0.tar.gz"
-  sha256 "a1a8e6f01abc135e587fc50664b38c58e1ee86203dcb7df1a1ab4f9b371b39c8"
+  url "https://github.com/Canop/broot/archive/refs/tags/v1.44.2.tar.gz"
+  sha256 "e1b78354c21680914a07ed4b856257c83ef873b878ef281bd2d1aed7fcba3828"
   license "MIT"
   head "https://github.com/Canop/broot.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "66a915b60d547e20bb41b124859c7c278c6866f39a1e6f560c951ec927d52959"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "713638c593b4f0e9609e6f8462dd325757c59f27f4f7c772c2dfcc3d91ae6eb9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7976e856e3aaa440e346d812a599d06c8a893cc6658653b57a8e693e36cef236"
-    sha256 cellar: :any_skip_relocation, sonoma:         "188e68a5a8a347fd3c8f519b1795350f7cc75e1ddb450282440d4b7c69f76ec4"
-    sha256 cellar: :any_skip_relocation, ventura:        "79a74e8e17763ecb0a0ed846fa1ab02e1b567708ab531e9552fe01d250210d1c"
-    sha256 cellar: :any_skip_relocation, monterey:       "c602f49dc7ffec08a0a0b8fe7e43e964d5245885b8b2f8f5c94e92ffa1897315"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cad98e87d5870dfe014ad46b80e830d96f33cc1527cfae0e384adc9538717355"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8a94de1e614521fab990d17d959bb71d2351311384517c7ad0b5e83ef8e1fd04"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7b4ba173f2232e82fe75e3d3acd846d89af63e6b5cb7b21f1aec992234bb2f19"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d68abb5035d1de6302fef8705ea8ff8da8a7604f7e4054469f445dfc00e0edf4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "518d3f8ff6274c925f4df10afd26472c54b6af326f83a2f355467f722e90070a"
+    sha256 cellar: :any_skip_relocation, ventura:       "436906062760a229b4a72c07402029e64c7c6980e8199f229b3c96b7e709d912"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b407acb85b70f6fb9077d67d51ab77c77c537595b7a8fd50e1427c72b45cc6b3"
   end
 
   depends_on "rust" => :build

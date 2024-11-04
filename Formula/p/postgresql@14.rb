@@ -1,31 +1,30 @@
 class PostgresqlAT14 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v14.11/postgresql-14.11.tar.bz2"
-  sha256 "a670bd7dce22dcad4297b261136b3b1d4a09a6f541719562aa14ca63bf2968a8"
+  url "https://ftp.postgresql.org/pub/source/v14.13/postgresql-14.13.tar.bz2"
+  sha256 "59aa3c4b495ab26a9ec69f3ad0a0228c51f0fe6facf3634dfad4d1197d613a56"
   license "PostgreSQL"
-  revision 1
+  revision 3
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
-    regex(%r{href=["']?v?(14+(?:\.\d+)+)/?["' >]}i)
+    regex(%r{href=["']?v?(14(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    sha256 arm64_sonoma:   "d49e8b487d6b7e696e74ebf7d0bddbb9b8c343d7861d760a39f0a37cf22a9554"
-    sha256 arm64_ventura:  "c676df20e5bdb6f4d37f8c7f4af0bf330669fc45baca90b55dadb83314430c20"
-    sha256 arm64_monterey: "d6f9955bcbcbf7c522cdf540c51b25198fad93a08d2e7315110fa875350afc67"
-    sha256 sonoma:         "8215acbfa15734c5f1742ec0d9a3fd415e0e082fc59186607b2ca5153af8f2bf"
-    sha256 ventura:        "e66cb34dafefb5e3250156325330ed5420e2fd2ac1d16fa46cd08cb5ed8551b4"
-    sha256 monterey:       "e3c300390188842367196f5b0502697cddb8e2da579adc8fe22331711dcead25"
-    sha256 x86_64_linux:   "9298be8e141b22173e5e1892a7b370ca09238656dabece13dd57575ae0dfd26a"
+    sha256 arm64_sequoia: "c1718c6a52e7af8f7a788225fbab94cf8fde46a5f0b2611756dfe01f8ca4835d"
+    sha256 arm64_sonoma:  "26b55f9137c6f503106a49659c753cfefc5c284f0ed16ef3bf4cc6e2c318ea48"
+    sha256 arm64_ventura: "3addca67130a3af596c1d20070dd78b09c85fe3c6417be0513de7f177f002bc1"
+    sha256 sonoma:        "bc885e75b856adbe14ad5a876d0caa2096418267b4e0142612abff688be52074"
+    sha256 ventura:       "73c7d10fc062a76107dc4d47f5af211648bb570fd125a5abc796262dc8405332"
+    sha256 x86_64_linux:  "47e44f202f5538f2531b3e63ed9494b0183f21935fd0f2b1f406b6b4e096e823"
   end
 
   # https://www.postgresql.org/support/versioning/
   deprecate! date: "2026-11-12", because: :unsupported
 
   depends_on "pkg-config" => :build
-  depends_on "icu4c"
+  depends_on "icu4c@76"
 
   # GSSAPI provided by Kerberos.framework crashes when forked.
   # See https://github.com/Homebrew/homebrew-core/issues/47494.
@@ -39,6 +38,7 @@ class PostgresqlAT14 < Formula
   uses_from_macos "libxslt"
   uses_from_macos "openldap"
   uses_from_macos "perl"
+  uses_from_macos "zlib"
 
   on_linux do
     depends_on "linux-pam"
@@ -68,12 +68,7 @@ class PostgresqlAT14 < Formula
       --with-uuid=e2fs
       --with-extra-version=\ (#{tap.user})
     ]
-    if OS.mac?
-      args += %w[
-        --with-bonjour
-        --with-tcl
-      ]
-    end
+    args += %w[--with-bonjour --with-tcl] if OS.mac?
 
     # PostgreSQL by default uses xcodebuild internally to determine this,
     # which does not work on CLT-only installs.
@@ -88,12 +83,11 @@ class PostgresqlAT14 < Formula
                                     "pkgincludedir=#{include}/#{name}",
                                     "includedir_server=#{include}/#{name}/server",
                                     "includedir_internal=#{include}/#{name}/internal"
+    return unless OS.linux?
 
-    if OS.linux?
-      inreplace lib/name/"pgxs/src/Makefile.global",
-                "LD = #{HOMEBREW_PREFIX}/Homebrew/Library/Homebrew/shims/linux/super/ld",
-                "LD = #{HOMEBREW_PREFIX}/bin/ld"
-    end
+    inreplace lib/name/"pgxs/src/Makefile.global",
+              "LD = #{Superenv.shims_path}/ld",
+              "LD = #{HOMEBREW_PREFIX}/bin/ld"
   end
 
   def post_install
@@ -105,7 +99,7 @@ class PostgresqlAT14 < Formula
     # Don't initialize database, it clashes when testing other PostgreSQL versions.
     return if ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    system "#{bin}/initdb", "--locale=C", "-E", "UTF-8", postgresql_datadir unless pg_version_exists?
+    system bin/"initdb", "--locale=C", "-E", "UTF-8", postgresql_datadir unless pg_version_exists?
   end
 
   def postgresql_datadir
@@ -161,8 +155,6 @@ class PostgresqlAT14 < Formula
     caveats += <<~EOS
       This formula has created a default database cluster with:
         initdb --locale=C -E UTF-8 #{postgresql_datadir}
-      For more details, read:
-        https://www.postgresql.org/docs/#{version.major}/app-initdb.html
     EOS
 
     caveats

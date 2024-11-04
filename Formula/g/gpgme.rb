@@ -4,6 +4,7 @@ class Gpgme < Formula
   url "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.23.2.tar.bz2"
   sha256 "9499e8b1f33cccb6815527a1bc16049d35a6198a6c5fae0185f2bd561bce5224"
   license "LGPL-2.1-or-later"
+  revision 2
 
   livecheck do
     url "https://gnupg.org/ftp/gcrypt/gpgme/"
@@ -11,14 +12,14 @@ class Gpgme < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "4b49bf5ea7e69c0c9cb5f13ca94398eb1a30a00e53d5193adb56f0aac5626ec3"
-    sha256 cellar: :any,                 arm64_ventura:  "2e549053a2c930e434bdef847fe2e819aef1e5ff7bb09ff9e5e803473f36effe"
-    sha256 cellar: :any,                 arm64_monterey: "4836f5e1527f50d698845d99ae67a92e28e302d8d0383d527c930d0e5e157cbc"
-    sha256 cellar: :any,                 sonoma:         "442157cb14484e7a8a4a0e83e6ff9f63841f48199d3eaac71ba80a282d41cc29"
-    sha256 cellar: :any,                 ventura:        "92aaa37de9c8f4376aa5a8bc21427f968bcf6cb8b971fe1dce805ad1bf31a2fc"
-    sha256 cellar: :any,                 monterey:       "47ca2ef9ba26f00419c1494b4213c5555fc7bb6dcad1689f481cc6ccbcd1eeda"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a7e1abe69918c83216b4394e4723eb37e19bfb7911fad6c359ea759e573726c8"
+    sha256 cellar: :any,                 arm64_sequoia:  "3be0ed36949874bc0c6b0b5936750b498cc6d74ff5949bef213c1bbc252ecc7c"
+    sha256 cellar: :any,                 arm64_sonoma:   "5990f0751f5bce504beaaa9379e0bb082cea842010a6f94f11cfe0c99baba01b"
+    sha256 cellar: :any,                 arm64_ventura:  "4cf824bf4138deda8878af6ad5ea2e6af519a8d7793c0a168f724799d5f97e42"
+    sha256 cellar: :any,                 arm64_monterey: "5b94224d8226e2e49d3ea30bf5bd3d76672a5fd1fb59cdfbf160c35e6d2a4fa3"
+    sha256 cellar: :any,                 sonoma:         "acb0a393ab4537dd314676d8dbbbf846fc14726cba00c32b027e18f11a603db3"
+    sha256 cellar: :any,                 ventura:        "3ffd9fce9f2862c9a35562462356530c4bc46d23e1b23e58e36aede36348fb74"
+    sha256 cellar: :any,                 monterey:       "05b1e5854b7a8eef9edb2a45208bfbdacd28bb243fabc60f350cabcd0b26080d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "691a6fb7cf753251e8feafa30229cbba63a976820b2d33522ef413774788e6c0"
   end
 
   depends_on "python-setuptools" => :build
@@ -30,6 +31,12 @@ class Gpgme < Formula
 
   def python3
     "python3.12"
+  end
+
+  # Backport fix for newer setuptools
+  patch do
+    url "https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gpgme.git;a=patch;h=ecd0c86d62351d267bdc9566286c532a394c711b"
+    sha256 "69202c576f5f9980bc88bf9e963fd6199093c89ab8dc3be02ab6c460d65fe1b4"
   end
 
   def install
@@ -48,14 +55,18 @@ class Gpgme < Formula
               /^\s*\$\$PYTHON setup\.py\s*\\/,
               "$$PYTHON -m pip install --use-pep517 #{std_pip_args.join(" ")} . && : \\"
 
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules",
-                          "--enable-static"
+    system "./configure", "--disable-silent-rules",
+                          "--enable-static",
+                          *std_configure_args
     system "make"
     system "make", "install"
 
     # avoid triggering mandatory rebuilds of software that hard-codes this path
     inreplace bin/"gpgme-config", prefix, opt_prefix
+
+    # replace libassuan Cellar paths to avoid breakage on libassuan version/revision bumps
+    dep_cellar_path_files = [bin/"gpgme-config", lib/"cmake/Gpgmepp/GpgmeppConfig.cmake"]
+    inreplace dep_cellar_path_files, Formula["libassuan"].prefix.realpath, Formula["libassuan"].opt_prefix
   end
 
   test do

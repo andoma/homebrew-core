@@ -1,34 +1,54 @@
 class PyqtBuilder < Formula
+  include Language::Python::Virtualenv
+
   desc "Tool to build PyQt"
-  homepage "https://www.riverbankcomputing.com/software/pyqt-builder/intro"
-  url "https://files.pythonhosted.org/packages/c0/75/a3384eea8770c17e77821368618a5140c4ae0c37f9c05a84ef55f4807172/PyQt-builder-1.15.4.tar.gz"
-  sha256 "39f8c75db17d9ce17cb6bbf3df1650b5cebc1ea4e5bd73843d21cc96612b2ae1"
-  license any_of: ["GPL-2.0-only", "GPL-3.0-only"]
-  head "https://www.riverbankcomputing.com/hg/PyQt-builder", using: :hg
+  homepage "https://pyqt-builder.readthedocs.io/"
+  url "https://files.pythonhosted.org/packages/e6/f5/daead7fd8ef3675ce55f4ef66dbe3287b0bdd74315f6b5a57718a020570b/pyqt_builder-1.16.4.tar.gz"
+  sha256 "4515e41ae379be2e54f88a89ecf47cd6e4cac43e862c4abfde18389c2666afdf"
+  license "BSD-2-Clause"
+  head "https://github.com/Python-PyQt/PyQt-builder.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fb9cb2df20660795abfd6ea2e89f23bf798d3f18431f50dfc7c1572def2f3511"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "744a018fc9c00e74ffbb29ddcd3d037f15523c0c4c49414605570045cf5e18f8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bf53c0b52cfff8b06c2f678f3434fccc0f2e84014cf3778b22b4222c94d5849a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ca71b526c655474b71220c684372d27ef64db07bf0d8728379b4ed4566996cf0"
-    sha256 cellar: :any_skip_relocation, ventura:        "339f953ca98cb45b6857d62e3c5a019841851c6a7fa1532c5e5035a99284916f"
-    sha256 cellar: :any_skip_relocation, monterey:       "5331dc9bbb738ff55b5c1d3e339170e6f82d458bfe3d5abf48f323a24a26c99e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7aeb1c3c1861d60289011c9b1dc52cce5fd8cc6c68bd7b977fcbc2c80787be87"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5043f2f1d35d5a4cb0225184869464fa99c9b4f59a5e9b0c40b9ecc56e7f38cf"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5043f2f1d35d5a4cb0225184869464fa99c9b4f59a5e9b0c40b9ecc56e7f38cf"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5043f2f1d35d5a4cb0225184869464fa99c9b4f59a5e9b0c40b9ecc56e7f38cf"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fd0f23d71c7e6d76163f3fd067407c99abf4ecea11ffabcb13fb83cc0ee471a8"
+    sha256 cellar: :any_skip_relocation, ventura:       "fd0f23d71c7e6d76163f3fd067407c99abf4ecea11ffabcb13fb83cc0ee471a8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8b7fc6031ad34bc6bdb55d1d20bea08cf89321779a7adb6e003cc0bb36dc2dd3"
   end
 
-  depends_on "python@3.12"
-  depends_on "sip"
+  depends_on "python@3.13"
+
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
+  end
+
+  resource "sip" do
+    url "https://files.pythonhosted.org/packages/6e/52/36987b182711104d5e9f8831dd989085b1241fc627829c36ddf81640c372/sip-6.8.6.tar.gz"
+    sha256 "7fc959e48e6ec5d5af8bd026f69f5e24d08b3cb8abb342176f5ab8030cc07d7a"
+  end
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    venv = virtualenv_install_with_resources
+
+    # Modify the path sip-install writes in scripts as we install into a
+    # virtualenv but expect dependents to run with path to Python formula
+    inreplace venv.site_packages/"sipbuild/builder.py", /\bsys\.executable\b/, "\"#{which(python3)}\""
   end
 
   test do
     system bin/"pyqt-bundle", "-V"
-    system python3, "-c", "import pyqtbuild"
+    system libexec/"bin/python", "-c", "import pyqtbuild"
   end
 end

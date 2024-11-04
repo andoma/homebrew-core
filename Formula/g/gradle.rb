@@ -1,8 +1,8 @@
 class Gradle < Formula
   desc "Open-source build automation tool based on the Groovy and Kotlin DSL"
   homepage "https://www.gradle.org/"
-  url "https://services.gradle.org/distributions/gradle-8.6-all.zip"
-  sha256 "85719317abd2112f021d4f41f09ec370534ba288432065f4b477b6a3b652910d"
+  url "https://services.gradle.org/distributions/gradle-8.10.2-all.zip"
+  sha256 "2ab88d6de2c23e6adae7363ae6e29cbdd2a709e992929b48b6530fd0c7133bd6"
   license "Apache-2.0"
 
   livecheck do
@@ -11,22 +11,21 @@ class Gradle < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "460b0107603d8f3244fcd0ebf1f5907623ddf9fd230c5e728f295c61609c9b59"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "460b0107603d8f3244fcd0ebf1f5907623ddf9fd230c5e728f295c61609c9b59"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "460b0107603d8f3244fcd0ebf1f5907623ddf9fd230c5e728f295c61609c9b59"
-    sha256 cellar: :any_skip_relocation, sonoma:         "34f7f03211986ae74c5504ea0b83e540cfb41770eebad3e1ce2a6d177dd8617c"
-    sha256 cellar: :any_skip_relocation, ventura:        "34f7f03211986ae74c5504ea0b83e540cfb41770eebad3e1ce2a6d177dd8617c"
-    sha256 cellar: :any_skip_relocation, monterey:       "34f7f03211986ae74c5504ea0b83e540cfb41770eebad3e1ce2a6d177dd8617c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "460b0107603d8f3244fcd0ebf1f5907623ddf9fd230c5e728f295c61609c9b59"
+    sha256 cellar: :any_skip_relocation, all: "dafd94cea91ba78ace18ab7f7201a6b2b9f4c2974b6d26125c5275bf226f7556"
   end
 
+  # https://github.com/gradle/gradle/blob/master/platforms/documentation/docs/src/docs/userguide/releases/compatibility.adoc
   depends_on "openjdk"
 
   def install
-    rm_f Dir["bin/*.bat"]
+    rm(Dir["bin/*.bat"])
     libexec.install %w[bin docs lib src]
     env = Language::Java.overridable_java_home_env
     (bin/"gradle").write_env_script libexec/"bin/gradle", env
+
+    # Ensure we have uniform bottles.
+    inreplace libexec/"src/jvm-services/org/gradle/jvm/toolchain/internal/LinuxInstallationSupplier.java",
+              "/usr/local", HOMEBREW_PREFIX
   end
 
   test do

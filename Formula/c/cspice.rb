@@ -14,6 +14,7 @@ class Cspice < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c978ab6a4a6d85e200924e49a41e2da477561637bbd46f49d150614777d8d1ec"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2e57b6904ce0cce29f3b74d3ca47e289dbdfd0eea10cf8762720986bad78fe5b"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "75fb24feb4462f0b49be4c6b1f473f2854b3b34a25bc9ec6e3fd4c2e91664250"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "4a3e9574c472567a3814aed8f11bcc0874d6dc4ce2e1e867351e5668366d60a6"
@@ -31,8 +32,8 @@ class Cspice < Formula
   end
 
   conflicts_with "openhmd", because: "both install `simple` binaries"
-  conflicts_with "libftdi0", because: "both install `simple` binaries"
   conflicts_with "enscript", because: "both install `states` binaries"
+  conflicts_with "pwntools", because: "both install `version` binaries"
 
   def install
     # Use brewed csh on Linux because it is not installed in CI.
@@ -42,8 +43,8 @@ class Cspice < Formula
       end
     end
 
-    rm_f Dir["lib/*"]
-    rm_f Dir["exe/*"]
+    rm(Dir["lib/*"])
+    rm(Dir["exe/*"])
     system "csh", "makeall.csh"
     mv "exe", "bin"
     pkgshare.install "doc", "data"
@@ -54,6 +55,6 @@ class Cspice < Formula
   end
 
   test do
-    system "#{bin}/tobin", "#{pkgshare}/data/cook_01.tsp", "DELME"
+    system bin/"tobin", "#{pkgshare}/data/cook_01.tsp", "DELME"
   end
 end

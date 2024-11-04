@@ -1,27 +1,28 @@
 class Libtrace < Formula
   desc "Library for trace processing supporting multiple inputs"
   homepage "https://github.com/LibtraceTeam/libtrace"
-  url "https://github.com/LibtraceTeam/libtrace/archive/refs/tags/4.0.24-1.tar.gz"
-  version "4.0.24"
-  sha256 "862aa272021e3883af6616e39882f29afa0ec33203e4b4e2abf08094b6cb0ae3"
+  url "https://github.com/LibtraceTeam/libtrace/archive/refs/tags/4.0.26-1.tar.gz"
+  version "4.0.26"
+  sha256 "8174322a0ca44398addf7dfabea926876ef0b88ea453023c8bd6749ac0333cab"
   license all_of: ["GPL-2.0-or-later", "LGPL-3.0-or-later"]
 
   livecheck do
     url :stable
     regex(/^v?(\d+(?:[.-]\d+)+)$/i)
     strategy :git do |tags, regex|
-      tags.map { |tag| tag[regex, 1]&.gsub(/-1$/, "") }.compact
+      tags.filter_map { |tag| tag[regex, 1]&.gsub(/-1$/, "") }
     end
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "a7894a52accc6f049aab873a43026357744753dbe018be78e2d7eee265eb32ca"
-    sha256 cellar: :any,                 arm64_ventura:  "ddd7d612ac62a4725e405a17d7d554bc176bffbc6e5d548ed19e51642cc52987"
-    sha256 cellar: :any,                 arm64_monterey: "d0847de41f4ace8fe1ba6ab96dad6f3be6eaa09db10d51a3e46271273ee381a3"
-    sha256 cellar: :any,                 sonoma:         "5d7c31a2c8676e65bbc9dd470e296bef5174e79c288625ad0b383aeea83842ee"
-    sha256 cellar: :any,                 ventura:        "498b355a65704ff475773bf7aa6517784ce2a4b2b6e1a1ba6447ca47cb2b0441"
-    sha256 cellar: :any,                 monterey:       "fba7945bbf904bd35c2e055399b58c1df52aa262a8226541936c18870c83795e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9e83968c31a6951a48cfc4af39a578a8573f6ee6b3ac933b58535d54cad9eb64"
+    sha256 cellar: :any,                 arm64_sequoia:  "f040acaba777d80b9cbe3562d2e07e9d72a44f3d7c7ebcfc4dcc729619a2da0c"
+    sha256 cellar: :any,                 arm64_sonoma:   "c49542e5eed197e539d27582727740ff8b3257e097b909af754b509e3d334692"
+    sha256 cellar: :any,                 arm64_ventura:  "cd56a08655316acaf06509af286f4d6a67b435ba148dff0b409decb76375fbef"
+    sha256 cellar: :any,                 arm64_monterey: "ad45eff84fa6e27d71c6dfa658e2925a4cacd13d5c671d9f8dd7f0ccaa812dfa"
+    sha256 cellar: :any,                 sonoma:         "b4337388980492dc3ceaa10afad268294a9798f380ce072ac82d052820ee426e"
+    sha256 cellar: :any,                 ventura:        "495861941cdc96b9dae525686f3f5b0a9814550d3ff4eb8f8f0823cdece8e3b9"
+    sha256 cellar: :any,                 monterey:       "56c217a1ff186488cec8757d6db571f12ad45cc025b157a8a9f62a7675355625"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9516685d9c526bca267db4d74a007e40363ff0ee955a126be75b9ef666ca7b81"
   end
 
   depends_on "autoconf" => :build
@@ -48,7 +49,7 @@ class Libtrace < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <libtrace.h>
       #include <inttypes.h>
       #include <stdio.h>
@@ -255,7 +256,7 @@ class Libtrace < Formula
               }
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-ltrace", "-o", "test"
     resource("homebrew-8021x.pcap").stage testpath
     system "./test", testpath/"8021x.pcap"

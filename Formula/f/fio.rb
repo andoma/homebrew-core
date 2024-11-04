@@ -1,8 +1,8 @@
 class Fio < Formula
   desc "I/O benchmark and stress test"
   homepage "https://github.com/axboe/fio"
-  url "https://github.com/axboe/fio/archive/refs/tags/fio-3.36.tar.gz"
-  sha256 "b34b8f3c5cd074c09ea487ffe3f444e95565c214b34a73042f35b00cbaab0e17"
+  url "https://github.com/axboe/fio/archive/refs/tags/fio-3.38.tar.gz"
+  sha256 "73b3ca18a66fb88a90dae73b9994fdd18d35161d914ffe2089380760af5533cf"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,13 +11,12 @@ class Fio < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0fa5f29acbc4d39001de9c520d6e638e4e8e7ed2b9f7261c3edccffaf5da20d3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "61aecb471bfb1d8f1f9c8b5a97414dabc957130d8b2d18ac0491c63c391b5be0"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "81e33797ea700cd1e2b463cb2df302d489ce56a1069c41cbcd4da1943c8502db"
-    sha256 cellar: :any_skip_relocation, sonoma:         "cfc26c572616aef25c16711be4c15c8c882f8f52dfd5cfa311ec9c5e033d3206"
-    sha256 cellar: :any_skip_relocation, ventura:        "b3c0ed99e6ce9210a06f8613610eff0bdecec2501eb53162645107e9bdbfe88d"
-    sha256 cellar: :any_skip_relocation, monterey:       "0047937e6a1b4e1988046b0b331ffc0795b4824a9a8a835406c7160e23ac263c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d792563e51ac3ae90c3b8540995cac1d3e49a0636eae52a62afe7537b887e3f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "654a917a60065aa8aebb4f1432956030130e0d94e36919bdd954062bf070f809"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "067e8d1d644620efa3a45d83077f9fcea61c0a7b1259841f3121fd1da032b874"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "201e1936bf800e1be7315bc53a1706ea3d45d22064c0b76755cdcb371a467c19"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ccc727fa315f45e7c596ba3f9ddd0e4247ecd17b6e96802db60feb28dc360a67"
+    sha256 cellar: :any_skip_relocation, ventura:       "2c49f227e53f2906dec0471c99ea4c3dc8d8b763c140fc5f4a021b493f68c4d8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e5894295d238757320da3650b40ca675cd4793ae050017f7ab211c319077bce4"
   end
 
   uses_from_macos "zlib"
@@ -34,6 +33,6 @@ class Fio < Formula
   end
 
   test do
-    system "#{bin}/fio", "--parse-only"
+    system bin/"fio", "--parse-only"
   end
 end

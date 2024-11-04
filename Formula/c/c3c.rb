@@ -1,40 +1,68 @@
 class C3c < Formula
   desc "Compiler for the C3 language"
   homepage "https://github.com/c3lang/c3c"
-  url "https://github.com/c3lang/c3c/archive/refs/tags/v0.5.1.tar.gz"
-  sha256 "6bc5b9a7c7f9b181700fb9d4e7f79246d09bef7ecb9608a98fc7ea60b9e91b5e"
+  url "https://github.com/c3lang/c3c/archive/refs/tags/v0.6.3.tar.gz"
+  sha256 "b6c51c19bcbad68de9caf98ad6cf399aa7a643d2fff82cee6cd2807aa532bdc7"
   license "LGPL-3.0-only"
   head "https://github.com/c3lang/c3c.git", branch: "master"
 
+  # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
+  # labeled as "pre-release" on GitHub before the version is released, so it's
+  # necessary to use the `GithubLatest` strategy.
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "59da593b5fed0a0acdc531ed9ea9102332de427be712cd44adf423f05fe63b29"
-    sha256 cellar: :any,                 arm64_ventura:  "604d8aa7d7361540002269c5bb6701af984d67fde0bb9547367a8a3ded53d69c"
-    sha256 cellar: :any,                 arm64_monterey: "3d34e5d9030c63d881c6b01f63d0723823b9ea8eb3a2ee16c4870226070add36"
-    sha256 cellar: :any,                 sonoma:         "db80f839f124bb1b8a5c526878887ae477c6e5ea2e7b3b6c1b76e80a936b507f"
-    sha256 cellar: :any,                 ventura:        "d83d6b6ae747f56ddfe092d7537fcd1d2461fa88eef8116dde1b57f43c38b116"
-    sha256 cellar: :any,                 monterey:       "8ca5d00c2e6f43ff82bcfe323908846235f3e344b0864a38f782a84442eda02f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2c3789ee2fe5656d38515b174bff1dd81efde2eef3b98af72f65c32b3d08899f"
+    sha256 cellar: :any, arm64_sequoia: "a74c6bdfea0083c9b475938b1bf6914b9c73edb9df58ed09e9505ea0d8cb3181"
+    sha256 cellar: :any, arm64_sonoma:  "9379e0611283f58e649b34ec762765f009caa1a38b5b5a57c324ca9922736ada"
+    sha256 cellar: :any, arm64_ventura: "3ccf1d2b5b3dd349d9c3e9dd2151e4fcc620ccabc7ee9000d8eab3767d64a068"
+    sha256 cellar: :any, sonoma:        "029b16211faf59d737995a6fbebd2df076edb8e1d191a432230bd85ff26e424c"
+    sha256 cellar: :any, ventura:       "e92d6f0202d19f5a75df3b2cd66509502e2b16722816232bd397368ceba961e0"
+    sha256               x86_64_linux:  "9feef7d3979c930d23546baa06726ac0b652a8932221387b6eb53d2d53b53166"
   end
 
   depends_on "cmake" => :build
+  depends_on "lld"
   depends_on "llvm"
   depends_on "zstd"
 
   uses_from_macos "curl"
-  uses_from_macos "libedit"
-  uses_from_macos "libxml2"
-  uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
+  # Linking dynamically with LLVM fails with GCC.
+  fails_with :gcc
+
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    args = [
+      "-DC3_LINK_DYNAMIC=ON",
+      "-DC3_USE_MIMALLOC=OFF",
+      "-DC3_USE_TB=OFF",
+      "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+      "-DLLVM=#{Formula["llvm"].opt_lib/shared_library("libLLVM")}",
+      "-DLLD_COFF=#{Formula["lld"].opt_lib/shared_library("liblldCOFF")}",
+      "-DLLD_COMMON=#{Formula["lld"].opt_lib/shared_library("liblldCommon")}",
+      "-DLLD_ELF=#{Formula["lld"].opt_lib/shared_library("liblldELF")}",
+      "-DLLD_MACHO=#{Formula["lld"].opt_lib/shared_library("liblldMachO")}",
+      "-DLLD_MINGW=#{Formula["lld"].opt_lib/shared_library("liblldMinGW")}",
+      "-DLLD_WASM=#{Formula["lld"].opt_lib/shared_library("liblldWasm")}",
+    ]
+
+    ENV.append "LDFLAGS", "-lzstd -lz"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+
+    return unless OS.mac?
+
+    # The build copies LLVM runtime libraries into its `bin` directory.
+    # Let's replace those copies with a symlink instead.
+    libexec.install bin.children
+    bin.install_symlink libexec.children.select { |child| child.file? && child.executable? }
+    rm_r libexec/"c3c_rt"
+    llvm = Formula["llvm"]
+    libexec.install_symlink llvm.opt_lib/"clang"/llvm.version.major/"lib/darwin" => "c3c_rt"
   end
 
   test do

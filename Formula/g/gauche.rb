@@ -1,8 +1,8 @@
 class Gauche < Formula
   desc "R7RS Scheme implementation, developed to be a handy script interpreter"
   homepage "https://practical-scheme.net/gauche/"
-  url "https://github.com/shirok/Gauche/releases/download/release0_9_14/Gauche-0.9.14.tgz"
-  sha256 "02928f8535cf83f23ed6097f1b07b1fdb487a5ad2cb81d8a34d5124d02db3d48"
+  url "https://github.com/shirok/Gauche/releases/download/release0_9_15/Gauche-0.9.15.tgz"
+  sha256 "3643e27bc7c8822cfd6fb2892db185f658e8e364938bc2ccfcedb239e35af783"
   license "BSD-3-Clause"
 
   livecheck do
@@ -14,13 +14,14 @@ class Gauche < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "fe92c5b0de6d21d096fa0456cdba79b34528c1e8405cf20dbe9d8c600e3200e4"
-    sha256 arm64_ventura:  "406542d6e05748b2521e0c39b953b0ac5dce067f9f44a4ba9a1b24dc9df592a9"
-    sha256 arm64_monterey: "99caf80d561bca4d7064a689fc029636764fa3241e3d32c5a903ebb7b91c5e9b"
-    sha256 sonoma:         "83343e62257a97eade0c710332b5127fbb346794fa0ea04a901bf9b0f92c3fbd"
-    sha256 ventura:        "4626fcb7cf265ad415ccfeecc4487628140adef8838e5101d3b553023c37ce2d"
-    sha256 monterey:       "d391026d354b14c2f58f2719818d326e1277953924db00602a42ce8b89d1b2ca"
-    sha256 x86_64_linux:   "1e0872e05354767fd1caec475859f42ba1fa2fe4196256b2f9fb637de07a9a99"
+    sha256 arm64_sequoia:  "34e7cab7687a3fad3c7a4e24cc869f71db411c4b9b83ca93daab9b3f205ae828"
+    sha256 arm64_sonoma:   "090ea0130482168c2f2c8ba1bce87c9b3e2c6cb5066dd89d311848a8d5b9a742"
+    sha256 arm64_ventura:  "1a6606f8577358fea7eae8a2de08c7f5d994796e7554578e57e17cc03cc350e2"
+    sha256 arm64_monterey: "2b960106887fc6c0bb983e472fed0f740ed5f7f0ff6fd81fb8072645f247bfa0"
+    sha256 sonoma:         "723aa7870618f0a7591472266d84817873b8f6956c3d68200bfa95b2cd62547d"
+    sha256 ventura:        "2fb60084dd73329026216d0ee1177d4a62ff5bbb6e2466ed6a6fc53816513edc"
+    sha256 monterey:       "2b079d1c270ec9ea36caed1f2762a88120f61326f2b81a67128aef54304d9295"
+    sha256 x86_64_linux:   "bdff2646649040e73891540a312c8280bfed6a5427a8a5748b57fee8560c1c63"
   end
 
   depends_on "ca-certificates"

@@ -7,6 +7,7 @@ class ProtobufAT3 < Formula
 
   bottle do
     rebuild 4
+    sha256 cellar: :any,                 arm64_sequoia:  "b6215fe7415a0af6a030e42af7cfce3c08b31ca8e29ed0f262989fc7ea38b12f"
     sha256 cellar: :any,                 arm64_sonoma:   "38970c2fb478351045c2c3be21876d4604f83e1ef8d0fab54b38f63a8f43a496"
     sha256 cellar: :any,                 arm64_ventura:  "fc53172db0444cca706a5d2d0283bed72e86536dba717da02822691cde488fb5"
     sha256 cellar: :any,                 arm64_monterey: "6412e052fbeb376013fd0be287332b6bba9d0a1698ca17df4a43c9eaecce468d"
@@ -18,7 +19,8 @@ class ProtobufAT3 < Formula
 
   keg_only :versioned_formula
 
-  depends_on "python-setuptools" => :build
+  disable! date: "2025-07-01", because: :versioned_formula
+
   depends_on "python@3.11" => [:build, :test]
   depends_on "python@3.12" => [:build, :test]
 
@@ -44,7 +46,7 @@ class ProtobufAT3 < Formula
     ENV.cxx11
 
     system "./autogen.sh" if build.head?
-    system "./configure", *std_configure_args, "--with-zlib", "--with-pic"
+    system "./configure", "--with-zlib", "--with-pic", *std_configure_args
     system "make"
     system "make", "install"
 
@@ -55,10 +57,10 @@ class ProtobufAT3 < Formula
     ENV.append_to_cflags "-I#{include}"
     ENV.append_to_cflags "-L#{lib}"
 
-    cd "python" do
-      pythons.each do |python|
-        system python, *Language::Python.setup_install_args(prefix, python), "--cpp_implementation"
-      end
+    pip_args = ["--config-settings=--build-option=--cpp_implementation"]
+    pythons.each do |python|
+      build_isolation = Language::Python.major_minor_version(python) >= "3.12"
+      system python, "-m", "pip", "install", *pip_args, *std_pip_args(build_isolation:), "./python"
     end
   end
 

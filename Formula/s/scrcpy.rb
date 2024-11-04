@@ -1,18 +1,22 @@
 class Scrcpy < Formula
   desc "Display and control your Android device"
   homepage "https://github.com/Genymobile/scrcpy"
-  url "https://github.com/Genymobile/scrcpy/archive/refs/tags/v2.3.1.tar.gz"
-  sha256 "76f38779f00d91d0b46a399ebca32c82ff1facdbd843871b7e46c2e7cad38a42"
+  url "https://github.com/Genymobile/scrcpy/archive/refs/tags/v2.7.tar.gz"
+  sha256 "3ceea215f6eccb59535f68a16db6db2b05a8a1c91bdcb4a6e222d3093a9daf8c"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 arm64_sonoma:   "2622646af93ea507ab817f69966c67fb13a87c8e6a4dcb58a25b84054e1399d4"
-    sha256 arm64_ventura:  "d4f260af82c6f6b2a293ce68dbb246d205c5a0c03255ecb1c6ffa9bb0a3a6c59"
-    sha256 arm64_monterey: "843f9da5d4a9e3bbe6f8a112c79d90f51eb72646f3fa861c80d1cee31599b2bc"
-    sha256 sonoma:         "436d404489fd28c4bb9f5eb3c95f584da0e25915853c3a126228838f78f7f760"
-    sha256 ventura:        "056862154ea1e0f6a2c44573a8b1a94a13783973b1f6b37f1c422160357a04e2"
-    sha256 monterey:       "60c11828a8319edd6c603ff6b2cbe813bb4f2909d9b3f6d155e209cc22f97b1d"
-    sha256 x86_64_linux:   "0c6fec4536fc30c03c8e1ed268505ae310e10fbec8882c22f8d6a2723d21b5a0"
+    sha256 arm64_sequoia: "f0fee1075318ee78ec35066cff51f5faef4d3af0c81ecdad25686f89394f3aa1"
+    sha256 arm64_sonoma:  "afaf0bf5fc3c48997ca8a36c626e40c673564c638ac951c44d667fc8782e1906"
+    sha256 arm64_ventura: "9ace7a93c8b40a371863463945b703f68424d78433803028bcd9a3b77f619920"
+    sha256 sonoma:        "f3b446582e45ca9972c8de85734ba16d293916479ae73e4f11a2884ef554df50"
+    sha256 ventura:       "84791d738ac1d933573c9ab27f773ab5b378257b4465122f8f1413caaa9d7545"
+    sha256 x86_64_linux:  "694bc1df5e0064f05df84169b5e07f7bbd1f54191d8d35892fc61eb771676d8e"
   end
 
   depends_on "meson" => :build
@@ -25,14 +29,15 @@ class Scrcpy < Formula
   fails_with gcc: "5"
 
   resource "prebuilt-server" do
-    url "https://github.com/Genymobile/scrcpy/releases/download/v2.3.1/scrcpy-server-v2.3.1"
-    sha256 "f6814822fc308a7a532f253485c9038183c6296a6c5df470a9e383b4f8e7605b"
+    url "https://github.com/Genymobile/scrcpy/releases/download/v2.7/scrcpy-server-v2.7", using: :nounzip
+    sha256 "a23c5659f36c260f105c022d27bcb3eafffa26070e7baa9eda66d01377a1adba"
   end
 
   def install
-    r = resource("prebuilt-server")
-    r.fetch
-    cp r.cached_download, buildpath/"prebuilt-server.jar"
+    odie "prebuilt-server resource needs to be updated" if version != resource("prebuilt-server").version
+
+    buildpath.install resource("prebuilt-server")
+    cp "scrcpy-server-v#{version}", "prebuilt-server.jar"
 
     system "meson", "setup", "build", "-Dprebuilt_server=#{buildpath}/prebuilt-server.jar",
                                       *std_meson_args
@@ -50,8 +55,6 @@ class Scrcpy < Formula
   end
 
   test do
-    assert_equal version, resource("prebuilt-server").version, "`prebuilt-server` resource needs updating!"
-
     fakeadb = (testpath/"fakeadb.sh")
 
     # When running, scrcpy calls adb five times:

@@ -3,23 +3,22 @@ class Cekit < Formula
 
   desc "Container Evolution Kit"
   homepage "https://cekit.io"
-  url "https://files.pythonhosted.org/packages/c4/cc/a948fb7fc87bb974f55b37da024734166d4981a4f43958f1efc84d2b1e3d/cekit-4.10.0.tar.gz"
-  sha256 "83909f20463073aeb2d5f56295b7446c39ea4605fe8640ccfb521c618c5663e6"
+  url "https://files.pythonhosted.org/packages/45/68/5adda4ed0c9f5443110ac7b3c41f5492f09d34d939c39fccba6b0a5a00e9/cekit-4.13.0.tar.gz"
+  sha256 "be38d96435c645504698afbc55b73c5737f7b79b574d3e796e19301012e91318"
   license "MIT"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "473ea6afdb211d88f5ef500d863eba46deee43ea76e3d34ee04ca51876ae5a2a"
-    sha256 cellar: :any,                 arm64_ventura:  "f528f533601a6a0958a55d7b015f510cfc1493fa1afab94799249b4905e59f78"
-    sha256 cellar: :any,                 arm64_monterey: "a19bbe1bcf354f6aaa52b2280cb76c6dd0a1798204910050a9919e6dabd1c719"
-    sha256 cellar: :any,                 sonoma:         "042e65bb6c9034b0713998480d0d98e981dca158558693f5b9de26b40d30490c"
-    sha256 cellar: :any,                 ventura:        "d45a491d8fb943bf1ca2b7761bac0ed9929802a62f266ffccb36385ee065c5e6"
-    sha256 cellar: :any,                 monterey:       "53b69f7cd4e471adff3df3dcbc1f64ebbb5613934f35f683b26490350ea69259"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "20a6fec4e02cc2f79ca541be59ad3797d5fd66494b5931390b66afbafab56d17"
+    sha256 cellar: :any,                 arm64_sequoia: "8c9bdc57f07f69ef3422726357c2ca8621718f5db71e4d64ad02de20cf61e8d3"
+    sha256 cellar: :any,                 arm64_sonoma:  "1952390764ef7379ea5e562ec4288a2f1b456844197e64fdcd2edb23cf3a5b45"
+    sha256 cellar: :any,                 arm64_ventura: "8fe4c3b39ee0832f60facf312e3b4a6b92f557a8970d29f39c4663c023d44174"
+    sha256 cellar: :any,                 sonoma:        "230345a4c7b7f85068fbb5bdd6ac1f2e2edd950cce6a86286d0877960dfad4f0"
+    sha256 cellar: :any,                 ventura:       "0aa18f58d631bc2e41be3eff5ca8090ff73996d55ffe2b3a184edc0283566b1d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f1b13fab7f82c1748e99148bd3628dcbfb694a957b0523d07cd41450cad8a7ad"
   end
 
   depends_on "libyaml"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "click" do
     url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
@@ -37,23 +36,18 @@ class Cekit < Formula
   end
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/b2/5e/3a21abf3cd467d7876045335e681d276ac32492febe6d98ad89562d1a7e1/Jinja2-3.1.3.tar.gz"
-    sha256 "ac8bd6544d4bb2c9792bf3a159e80bba8fda7f07e81bc3aed565432d5925ba90"
+    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
+    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
   end
 
   resource "markupsafe" do
-    url "https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz"
-    sha256 "d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b"
-  end
-
-  resource "odcs" do
-    url "https://files.pythonhosted.org/packages/2c/d8/f5cad90fc6db4a0a26bf072a504a6badf58e411eb568952d7faf864f0bc2/odcs-0.8.0.tar.gz"
-    sha256 "2910f002acc52f851c761798bb4448daaa0ced85b80a448891ac171a0b016c8a"
+    url "https://files.pythonhosted.org/packages/b4/d2/38ff920762f2247c3af5cbbbbc40756f575d9692d381d7c520f45deb9b8f/markupsafe-3.0.1.tar.gz"
+    sha256 "3e683ee4f5d0fa2dde4db77ed8dd8a876686e3fc417655c2ece9a90576905344"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "pykwalify" do
@@ -62,23 +56,18 @@ class Cekit < Formula
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "ruamel-yaml" do
     url "https://files.pythonhosted.org/packages/29/81/4dfc17eb6ebb1aac314a3eb863c1325b907863a1b8b1382cdffcb6ac0ed9/ruamel.yaml-0.18.6.tar.gz"
     sha256 "8b27e6a217e786c6fbe5634d8f3f11bc63e0f80f6a5890f28863d9c45aac311b"
-  end
-
-  resource "ruamel-yaml-clib" do
-    url "https://files.pythonhosted.org/packages/46/ab/bab9eb1566cd16f060b54055dd39cf6a34bfa0240c53a7218c43e974295b/ruamel.yaml.clib-0.2.8.tar.gz"
-    sha256 "beb2e0404003de9a4cab9753a8805a8fe9320ee6673136ed7f04255fe60bb512"
   end
 
   resource "six" do
@@ -103,7 +92,7 @@ class Cekit < Formula
     EOS
     assert_match "INFO  Finished!",
 shell_output("#{bin}/cekit --descriptor #{testpath}/test.yml build --dry-run docker 2>&1")
-    system "#{bin}/cekit", "--descriptor", "#{testpath}/test.yml", "build", "--dry-run", "docker"
+    system bin/"cekit", "--descriptor", "#{testpath}/test.yml", "build", "--dry-run", "docker"
     assert_predicate testpath/"target/image/Dockerfile", :exist?
     assert_match "FROM scratch", File.read(testpath/"target/image/Dockerfile")
   end

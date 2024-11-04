@@ -3,10 +3,10 @@ class Pytorch < Formula
 
   desc "Tensors and dynamic neural networks"
   homepage "https://pytorch.org/"
-  url "https://github.com/pytorch/pytorch/releases/download/v2.1.2/pytorch-v2.1.2.tar.gz"
-  sha256 "85effbcce037bffa290aea775c9a4bad5f769cb229583450c40055501ee1acd7"
+  url "https://github.com/pytorch/pytorch/releases/download/v2.4.1/pytorch-v2.4.1.tar.gz"
+  sha256 "39666a43c0c10f5fd46c1a7ca95dc74d3bc39de2678b70066481cbf02e58384f"
   license "BSD-3-Clause"
-  revision 2
+  revision 1
 
   livecheck do
     url :stable
@@ -14,45 +14,99 @@ class Pytorch < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "1b5b9447112be6f438605a68851d9b03430ce11e6390f504b17f3a00c55c9b47"
-    sha256 cellar: :any,                 arm64_ventura:  "622e27f68d5920c0a7c071e302330fe341bb99ffeb7e8e476cf89c6cdc73d2e1"
-    sha256 cellar: :any,                 arm64_monterey: "85c1194a293e5159ae40a9456365ac83163404bf5f6785b3f229143ed977c874"
-    sha256 cellar: :any,                 sonoma:         "d71fbea3427852934604fc19daa814e61e7c8e1c2faf8a6d1f24f842a57a5626"
-    sha256 cellar: :any,                 ventura:        "249e355a4a368696a268b9a27038ce2ad51183a7014b23c2fab50f4e0e2174e4"
-    sha256 cellar: :any,                 monterey:       "e41fbab4810db74be6231e37046624a7f2b5f0fa1d564083bae0e9edc15191dc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8c7fef283c99c26743bd27aad86f4fc1d7738e522ad9e31c107489bee23d38b4"
+    sha256 cellar: :any,                 arm64_sequoia: "af8159441b06d5e515ee322c5ad5cea34b77785b3b19189ec1423c907da8dbe2"
+    sha256 cellar: :any,                 arm64_sonoma:  "b81aa0d36dc3b4abf0011c1d3bbf037732c46b0b8f71bf1c9566eac9776e8456"
+    sha256 cellar: :any,                 arm64_ventura: "e3e24bec6c7ba3d8d013ecee3451fe6ef9c0fe928f2bce41741049da7a42d734"
+    sha256 cellar: :any,                 sonoma:        "46b835c31dc28d562d4776e33936fa2fe98f0e9f5a46e2b329fb6e358e558eb7"
+    sha256 cellar: :any,                 ventura:       "ddd63ae057e01976336f09969047eac05de9ab771aa380079aca39470cb44267"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8a74d817a047a1f3242fecdf4560a8c1a659722034889cc5e36c49cf56343968"
   end
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
-  depends_on "python@3.11" => [:build, :test]
+  depends_on "python@3.12" => [:build, :test]
   depends_on xcode: :build
+  depends_on "abseil"
   depends_on "eigen"
   depends_on "libuv"
+  depends_on "libyaml"
   depends_on macos: :monterey # MPS backend only supports 12.3 and above
   depends_on "numpy"
   depends_on "openblas"
   depends_on "protobuf"
   depends_on "pybind11"
-  depends_on "python-filelock"
-  depends_on "python-jinja"
-  depends_on "python-networkx"
-  depends_on "python-sympy"
-  depends_on "python-typing-extensions"
-  depends_on "pyyaml"
   depends_on "sleef"
 
   on_macos do
     depends_on "libomp"
   end
 
+  resource "filelock" do
+    url "https://files.pythonhosted.org/packages/9d/db/3ef5bb276dae18d6ec2124224403d1d67bccdbefc17af4cc8f553e341ab1/filelock-3.16.1.tar.gz"
+    sha256 "c249fbfcd5db47e5e2d6d62198e565475ee65e4831e2561c8e313fa7eb961435"
+  end
+
+  resource "fsspec" do
+    url "https://files.pythonhosted.org/packages/62/7c/12b0943011daaaa9c35c2a2e22e5eb929ac90002f08f1259d69aedad84de/fsspec-2024.9.0.tar.gz"
+    sha256 "4b0afb90c2f21832df142f292649035d80b421f60a9e1c027802e5a0da2b04e8"
+  end
+
+  resource "jinja2" do
+    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
+    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
+  end
+
+  resource "markupsafe" do
+    url "https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz"
+    sha256 "d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b"
+  end
+
+  resource "mpmath" do
+    url "https://files.pythonhosted.org/packages/e0/47/dd32fa426cc72114383ac549964eecb20ecfd886d1e5ccf5340b55b02f57/mpmath-1.3.0.tar.gz"
+    sha256 "7a28eb2a9774d00c7bc92411c19a89209d5da7c4c9a9e227be8330a23a25b91f"
+  end
+
+  resource "networkx" do
+    url "https://files.pythonhosted.org/packages/04/e6/b164f94c869d6b2c605b5128b7b0cfe912795a87fc90e78533920001f3ec/networkx-3.3.tar.gz"
+    sha256 "0c127d8b2f4865f59ae9cb8aafcd60b5c70f3241ebd66f7defad7c4ab90126c9"
+  end
+
   resource "opt-einsum" do
     url "https://files.pythonhosted.org/packages/7d/bf/9257e53a0e7715bc1127e15063e831f076723c6cd60985333a1c18878fb8/opt_einsum-3.3.0.tar.gz"
     sha256 "59f6475f77bbc37dcf7cd748519c0ec60722e91e63ca114e68821c0c54a46549"
+
+    # Backport ConfigParser fix for Python 3.12 support
+    patch do
+      url "https://github.com/dgasmith/opt_einsum/commit/7c8f193f90b6771a6b3065bb5cf6ec2747af8209.patch?full_index=1"
+      sha256 "7c90ac470278deca8aa9d7ecb4bb2b31a2f79928e1783ae1316fcc3aa81f348a"
+    end
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
+  end
+
+  resource "sympy" do
+    url "https://files.pythonhosted.org/packages/11/8a/5a7fd6284fa8caac23a26c9ddf9c30485a48169344b4bd3b0f02fef1890f/sympy-1.13.3.tar.gz"
+    sha256 "b27fd2c6530e0ab39e275fc9b683895367e51d5da91baa8d3d64db2565fec4d9"
+  end
+
+  resource "typing-extensions" do
+    url "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz"
+    sha256 "1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"
   end
 
   def install
-    python3 = "python3.11"
+    python3 = "python3.12"
+
+    # Avoid building AVX512 code
+    inreplace "cmake/Modules/FindAVX.cmake", /^CHECK_SSE\(CXX "AVX512"/, "#\\0"
 
     ENV["ATEN_NO_TEST"] = "ON"
     ENV["BLAS"] = "OpenBLAS"
@@ -60,9 +114,11 @@ class Pytorch < Formula
     ENV["BUILD_PYTHON"] = "ON"
     ENV["BUILD_TEST"] = "OFF"
     ENV["PYTHON_EXECUTABLE"] = which(python3)
+    ENV["PYTORCH_BUILD_VERSION"] = version.to_s
+    ENV["PYTORCH_BUILD_NUMBER"] = "1"
+    ENV["USE_CCACHE"] = "OFF"
     ENV["USE_CUDA"] = "OFF"
     ENV["USE_DISTRIBUTED"] = "ON"
-    ENV["USE_METAL"] = "OFF"
     ENV["USE_MKLDNN"] = "OFF"
     ENV["USE_NNPACK"] = "OFF"
     ENV["USE_OPENMP"] = "ON"
@@ -70,6 +126,11 @@ class Pytorch < Formula
     ENV["USE_SYSTEM_PYBIND11"] = "ON"
     ENV["USE_SYSTEM_SLEEF"] = "ON"
     ENV["USE_MPS"] = "ON" if OS.mac?
+
+    # Work around superenv removing `-Werror=` but leaving `-Wno-error=` breaking flag detection
+    if ENV.compiler.to_s.start_with?("gcc")
+      inreplace "CMakeLists.txt", /^\s*append_cxx_flag_if_supported\(\s*"-Wno-error=inconsistent-missing-[^)]*\)/, ""
+    end
 
     # Avoid references to Homebrew shims
     inreplace "caffe2/core/macros.h.in", "${CMAKE_CXX_COMPILER}", ENV.cxx
@@ -79,7 +140,7 @@ class Pytorch < Formula
     venv.pip_install_and_link(buildpath, build_isolation: false)
 
     # Expose C++ API
-    torch = libexec/Language::Python.site_packages(python3)/"torch"
+    torch = venv.site_packages/"torch"
     include.install_symlink (torch/"include").children
     lib.install_symlink (torch/"lib").children
     (share/"cmake").install_symlink (torch/"share/cmake").children
@@ -87,7 +148,7 @@ class Pytorch < Formula
 
   test do
     # test that C++ libraries are available
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <torch/torch.h>
       #include <iostream>
 
@@ -95,26 +156,25 @@ class Pytorch < Formula
         torch::Tensor tensor = torch::rand({2, 3});
         std::cout << tensor << std::endl;
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++17", "test.cpp", "-o", "test",
                     "-I#{include}/torch/csrc/api/include",
                     "-L#{lib}", "-ltorch", "-ltorch_cpu", "-lc10"
     system "./test"
 
     # test that the `torch` Python module is available
-    system libexec/"bin/python", "-c", <<~EOS
+    system libexec/"bin/python", "-c", <<~PYTHON
       import torch
       t = torch.rand(5, 3)
       assert isinstance(t, torch.Tensor), "not a tensor"
       assert torch.distributed.is_available(), "torch.distributed is unavailable"
-    EOS
+    PYTHON
+    return unless OS.mac?
 
-    if OS.mac?
-      # test that we have the MPS backend
-      system libexec/"bin/python", "-c", <<~EOS
-        import torch
-        assert torch.backends.mps.is_built(), "MPS backend is not built"
-      EOS
-    end
+    # test that we have the MPS backend
+    system libexec/"bin/python", "-c", <<~PYTHON
+      import torch
+      assert torch.backends.mps.is_built(), "MPS backend is not built"
+    PYTHON
   end
 end

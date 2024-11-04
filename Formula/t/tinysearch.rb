@@ -7,6 +7,7 @@ class Tinysearch < Formula
   head "https://github.com/tinysearch/tinysearch.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "604da29b5763cbd83ee3851adf412ebc0683a39f82c4f6fb5db430c21e5804b8"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "22ba810fa21cf5ed9b4b3da171f5c528812ee9a7347ed87f658dd9c6cb930b22"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "d3112dab46ff4f6ebfcd130e186cca018d7e72cf503a6a74b8e632dfe30ff147"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "e6419da17e1e7c0f7bc74eeefd60d9fec429f9a351bfa6732336207da27ba62e"
@@ -20,7 +21,7 @@ class Tinysearch < Formula
 
   depends_on "rust" => :build
 
-  depends_on "rustup-init"
+  depends_on "rustup"
   depends_on "wasm-pack"
 
   def install
@@ -29,8 +30,9 @@ class Tinysearch < Formula
   end
 
   test do
-    system "#{Formula["rustup-init"].bin}/rustup-init", "-y", "--no-modify-path"
-    ENV.prepend_path "PATH", HOMEBREW_CACHE/"cargo_cache/bin"
+    ENV.prepend_path "PATH", Formula["rustup"].bin
+    system "rustup", "default", "stable"
+    system "rustup", "set", "profile", "minimal"
 
     system bin/"tinysearch", pkgshare/"fixtures/index.json"
     assert_predicate testpath/"wasm_output/tinysearch_engine_bg.wasm", :exist?

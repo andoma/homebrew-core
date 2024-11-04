@@ -1,18 +1,25 @@
 class Doltgres < Formula
   desc "Dolt for Postgres"
   homepage "https://github.com/dolthub/doltgresql"
-  url "https://github.com/dolthub/doltgresql/archive/refs/tags/v0.4.0.tar.gz"
-  sha256 "2a476034582e04bcccbdfa20ebb3de7817e5798db686053e760c21a7dda992c8"
+  url "https://github.com/dolthub/doltgresql/archive/refs/tags/v0.12.0.tar.gz"
+  sha256 "d2a3b96a6b6a0f44d95f89371727b7da378fcd446f74c81daae7c52ea1bba2a3"
   license "Apache-2.0"
 
+  # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
+  # labeled as "pre-release" on GitHub before the version is released, so it's
+  # necessary to use the `GithubLatest` strategy.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c522e5451f3f55c7995c0fe11933d83043db7ee09747a06ecb25a6d3e8f4ba17"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d8cc2469865215653386f60a5ac00bb40cb05958534ff8b083fef9f5b18070b7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "88a4989fd696fb24fe28e2b8fbfc490792570febf48dc899de63c852f292051e"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a76afe781ff26772189010597235e9ceb8130777f05751a589818e445cc3b22e"
-    sha256 cellar: :any_skip_relocation, ventura:        "ba4893cd6cb0d1de127fff0991fa173d976b18aa40506fef00e3b97d6cd3cd07"
-    sha256 cellar: :any_skip_relocation, monterey:       "ae2c6cdfff288bfdbc3820130b1b42272c421265403c8e402ef85a42e7891128"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8382b0e974c7e5002029d616c5c0d159a36f75331c2d2578b6a1cc88855cadab"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "784fa9e3ac1ab2f09b3fa89c0da92cbfb6655f3b15e6ad8f879396a283a63348"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2c81fd3f2431912fb59fc3d4435d3ea5f8433eb1c80b7717dac8e446f1127f46"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5ffccfbf8bbcb288f3846dabbe140eb64499dc4ec117507a5191fc36aa2a2382"
+    sha256 cellar: :any_skip_relocation, sonoma:        "942f8a6bac5fa1a900042067954318c1a744a55e9cf790a6b30af302e14951ab"
+    sha256 cellar: :any_skip_relocation, ventura:       "4ac3b95b24a88d4ebb6b69872eb6e81a09427f82a4488cb1e5cda85c7ff65437"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "52f1afc798fa7e0ecfbd6cadfc4a32142ddfc9ce14089518c120ab7288a3f89c"
   end
 
   depends_on "go" => :build
@@ -20,15 +27,36 @@ class Doltgres < Formula
 
   def install
     system "./postgres/parser/build.sh"
-    system "go", "build", *std_go_args(ldflags: "-s -w")
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/doltgres"
   end
 
   test do
+    port = free_port
+
+    (testpath/"config.yaml").write <<~EOS
+      behavior:
+        read_only: false
+        disable_client_multi_statements: false
+        dolt_transaction_commit: false
+
+      user:
+        name: "doltgres"
+        password: "password"
+
+      listener:
+        host: localhost
+        port: #{port}
+        read_timeout_millis: 28800000
+        write_timeout_millis: 28800000
+    EOS
+
     fork do
-      exec bin/"doltgres"
+      exec bin/"doltgres", "--config", testpath/"config.yaml"
     end
     sleep 5
-    psql = "#{Formula["libpq"].opt_bin}/psql -h 127.0.0.1 -U doltgres -c 'SELECT DATABASE()'"
-    assert_match "doltgres", shell_output(psql)
+
+    psql = Formula["libpq"].opt_bin/"psql"
+    output = shell_output("#{psql} -h 127.0.0.1 -p #{port} -U doltgres -c 'SELECT DATABASE()' 2>&1")
+    assert_match "database \n----------\n doltgres\n(1 row)", output
   end
 end

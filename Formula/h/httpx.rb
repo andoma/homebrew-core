@@ -1,19 +1,18 @@
 class Httpx < Formula
   desc "Fast and multi-purpose HTTP toolkit"
   homepage "https://github.com/projectdiscovery/httpx"
-  url "https://github.com/projectdiscovery/httpx/archive/refs/tags/v1.4.0.tar.gz"
-  sha256 "87c4ac6df00371e6ba8bfc7293400f02ce30391dfa9995cec032c86935135e1d"
+  url "https://github.com/projectdiscovery/httpx/archive/refs/tags/v1.6.9.tar.gz"
+  sha256 "cd50750e8a1c625ecb1548bf3d1fa7597732cc5e1ec15f2fbe7b8309a366461c"
   license "MIT"
   head "https://github.com/projectdiscovery/httpx.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "202b2510d9f53f3456f157db05066b75ded63ce2886a0b0d5d1e28f85214e05a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d834b64dcb5fd05b400242e236f2efd3116f2ad36c68b71e0056378b66470e81"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0a614d0983327317f0c39400cc9142b72156ec5e2e6136f6883c8ba1b51d1cc9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c896c4aea56afab71f0aa425eb531efa11a3f092daaaf2e43350e5760a0a60c1"
-    sha256 cellar: :any_skip_relocation, ventura:        "ea1fbd889981d4f1e002b0f8425dc1bd231efb429135a2844d0e4484ab3510fb"
-    sha256 cellar: :any_skip_relocation, monterey:       "8cb808607462bab7480b89042098fb6fe79b62edb6999b1a07b4924cc67fc006"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d2294677f591c6bedcb82a325ada12f723aced5b7d6a552016d1112c20d6297f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5f593d71b0422ef10a5cd3313a0fa51255b14d4a71981757531481e6da9aea40"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e91b204a5f93adba022a3c691bd60bdf2500e7e0c748d446bb8b0014847c11a0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b97cf6f48475a0b9501fac18bafa5c1ebd7eddf09d6ded27389df16472f069c3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d59c63dbbf37041313f3bf29a6a8cced0b0bd70529e583691ef56dfaf36285df"
+    sha256 cellar: :any_skip_relocation, ventura:       "bfc9400cfdbf858b1c7028e19d46fad04d1105fd4a5cc6468abd489fcdae7a77"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4d19c3b97fc344ecc099e98181865f993a363429abe0597af80fbe2ed105c1d2"
   end
 
   depends_on "go" => :build

@@ -1,27 +1,34 @@
 class Libical < Formula
   desc "Implementation of iCalendar protocols and data formats"
   homepage "https://libical.github.io/libical/"
-  url "https://github.com/libical/libical/releases/download/v3.0.17/libical-3.0.17.tar.gz"
-  sha256 "bcda9a6db6870240328752854d1ea475af9bbc6356e6771018200e475e5f781b"
+  url "https://github.com/libical/libical/releases/download/v3.0.18/libical-3.0.18.tar.gz"
+  sha256 "72b7dc1a5937533aee5a2baefc990983b66b141dd80d43b51f80aced4aae219c"
   license any_of: ["LGPL-2.1-or-later", "MPL-2.0"]
-  revision 1
+  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "1af763d3dd856385b6f94ba209b38939ac1daa12799bd9d5d2e10a81640f520c"
-    sha256 cellar: :any,                 arm64_ventura:  "4867306e4adc3a8f794b3b8f1bbd93e251fba98c131639a900929c90730f7fd5"
-    sha256 cellar: :any,                 arm64_monterey: "f05e4ed4ae8cdea1022c8c027bcc1b7b1ce04d376bc7a3c5e2fa327f8a9931bc"
-    sha256 cellar: :any,                 sonoma:         "b80531fedba0ff6122e8f39a9a8ebf65820e1384ed71fd3542fb7dad4f528ad8"
-    sha256 cellar: :any,                 ventura:        "75078221ada785e1e3e934f757da58eca2a18be318a1037bf3c832551c081ff6"
-    sha256 cellar: :any,                 monterey:       "4964d30deefc51d857162ab1e940436246319b68c8dc683f08bc02aae3627935"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "618f5ea1d2fbcd833df7f88ce28bc191fc8d9f8c5a0500b7441d60f4ccf8d5ca"
+    sha256 cellar: :any,                 arm64_sequoia: "12ed9bd20e48d2a2e2179ac13ac2a0680e230f977327131c47bc2496b10f9e9a"
+    sha256 cellar: :any,                 arm64_sonoma:  "09ef21d33928ca0f752e03f9da8c553682539a4a54ecbf046c6355d31230e821"
+    sha256 cellar: :any,                 arm64_ventura: "c8e2ac34b1c0ba410afeb4a5edb16746836c1479f80341a2bdec8b179baab4ea"
+    sha256 cellar: :any,                 sonoma:        "15ef37cc1f62f61d674ab2641ca678d3ea355c95cfa97df05332bcb1f7140a4f"
+    sha256 cellar: :any,                 ventura:       "9bb23e2c4724bff5b3446a47510e84f6f2acf4ae7fac74ab9c4119a3c48748f2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "50bab3d317e999bbabf84081ba16a074703023ae3a28f2bf6510b6eb7a76cdfc"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
 
   uses_from_macos "libxml2"
+
+  on_macos do
+    depends_on "gettext"
+  end
+
+  on_linux do
+    depends_on "berkeley-db@5"
+  end
 
   def install
     system "cmake", ".", "-DBDB_LIBRARY=BDB_LIBRARY-NOTFOUND",
@@ -33,14 +40,14 @@ class Libical < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #define LIBICAL_GLIB_UNSTABLE_API 1
       #include <libical-glib/libical-glib.h>
       int main(int argc, char *argv[]) {
         ICalParser *parser = i_cal_parser_new();
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-o", "test", "-L#{lib}", "-lical-glib",
                    "-I#{Formula["glib"].opt_include}/glib-2.0",
                    "-I#{Formula["glib"].opt_lib}/glib-2.0/include"

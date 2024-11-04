@@ -1,26 +1,23 @@
-require "language/node"
-
 class WikibaseCli < Formula
   desc "Command-line interface to Wikibase"
-  homepage "https://github.com/maxlath/wikibase-cli#readme"
-  url "https://registry.npmjs.org/wikibase-cli/-/wikibase-cli-17.0.8.tgz"
-  sha256 "b11b6d750fa55d7e1792a1cc6342ccdc7a6dc9b6c3c74463613f7a47998228cb"
+  homepage "https://github.com/maxlath/wikibase-cli"
+  url "https://registry.npmjs.org/wikibase-cli/-/wikibase-cli-18.2.2.tgz"
+  sha256 "7745aa0e89506fe13502ee094dba848ccdf935df16e20a693a97162382e3fbeb"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9e405ac55f9588961116e78b25be987cdaa9728864911dab31333cbb1d9d0c97"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9e405ac55f9588961116e78b25be987cdaa9728864911dab31333cbb1d9d0c97"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9e405ac55f9588961116e78b25be987cdaa9728864911dab31333cbb1d9d0c97"
-    sha256 cellar: :any_skip_relocation, sonoma:         "bd22f3d07509458bda8b65883c96950616e367568a71e00c89c5f5670f7ffd77"
-    sha256 cellar: :any_skip_relocation, ventura:        "bd22f3d07509458bda8b65883c96950616e367568a71e00c89c5f5670f7ffd77"
-    sha256 cellar: :any_skip_relocation, monterey:       "bd22f3d07509458bda8b65883c96950616e367568a71e00c89c5f5670f7ffd77"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9e405ac55f9588961116e78b25be987cdaa9728864911dab31333cbb1d9d0c97"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "225b195421259af7c9c695cac4a7c4339b09acfae183f7d6a8e6339ec85b4ebf"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "225b195421259af7c9c695cac4a7c4339b09acfae183f7d6a8e6339ec85b4ebf"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "225b195421259af7c9c695cac4a7c4339b09acfae183f7d6a8e6339ec85b4ebf"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8712666f7e32801dd54cd048a6a131da04ff9f6420294a321011217ef7e3a43c"
+    sha256 cellar: :any_skip_relocation, ventura:       "8712666f7e32801dd54cd048a6a131da04ff9f6420294a321011217ef7e3a43c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "225b195421259af7c9c695cac4a7c4339b09acfae183f7d6a8e6339ec85b4ebf"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

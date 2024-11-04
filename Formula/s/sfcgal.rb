@@ -1,19 +1,17 @@
 class Sfcgal < Formula
   desc "C++ wrapper library around CGAL"
   homepage "https://sfcgal.gitlab.io/SFCGAL/"
-  url "https://gitlab.com/sfcgal/SFCGAL/-/archive/v1.5.1/SFCGAL-v1.5.1.tar.gz"
-  sha256 "ea5d1662fada7de715ad564dc810c3059024ed81ae393f5352489f706fdfa3b1"
+  url "https://gitlab.com/sfcgal/SFCGAL/-/archive/v2.0.0/SFCGAL-v2.0.0.tar.gz"
+  sha256 "11843953f49e7e4432c42fd27d54e1ff7ca55d0cc72507725c2a5d840c2c6535"
   license "LGPL-2.0-or-later"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "1e231f2da7b5607dcb1becb61d1a1ad325204a9237c1f3bb75e2957702bfcc1f"
-    sha256 cellar: :any,                 arm64_ventura:  "0ebb2eb96864826e1c0746e88ff4c9eb201a2a8ea722a1a1efc0f003176b92de"
-    sha256 cellar: :any,                 arm64_monterey: "78d3c2da9e4158cfa53b4d4afe9a502d5242915ebaa9159cc797b631185022d6"
-    sha256 cellar: :any,                 sonoma:         "582092143e0f1ad9a2367e4834fcd69fbf080aec1de7686ffec9b004f95babc3"
-    sha256 cellar: :any,                 ventura:        "aaba53cbe22214cafb54c712fbf57880148a4b78def27333a9197c4babf951f1"
-    sha256 cellar: :any,                 monterey:       "3c97cb18901905c043e1c1f815f2c49f99303ba8d91acf9546fe267ca71fe467"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "19055419c3024400502c06a0d02880a8a670847413062a9533b2493c04f70309"
+    sha256 cellar: :any,                 arm64_sequoia: "7f0234c24f1574be350718dad2f1612124f90631a34d2161f950eff8fad4d808"
+    sha256 cellar: :any,                 arm64_sonoma:  "387e36ad36d122b0aa717bdd99e93c255e61635713f58952d2e2df127f9a6047"
+    sha256 cellar: :any,                 arm64_ventura: "181bfdebb902c3ba670822d6daf26ea65f4f5650989a0e0fb84ca40bfe2e83d2"
+    sha256 cellar: :any,                 sonoma:        "b7d0fb782537f604f54a3c822bf92153287cde911b2358bd8662e314b375e873"
+    sha256 cellar: :any,                 ventura:       "f11493b60f86dbc38b954a8268558d7906799be6067256b36618366bf71ecd43"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "009288471a8e2969d49f20270ea842e90a1af155bc71b3106e338f27c3403d65"
   end
 
   depends_on "cmake" => :build

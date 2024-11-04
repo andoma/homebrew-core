@@ -1,8 +1,8 @@
 class Gsoap < Formula
   desc "SOAP stub and skeleton compiler for C and C++"
   homepage "https://www.genivia.com/products.html"
-  url "https://downloads.sourceforge.net/project/gsoap2/gsoap_2.8.132.zip"
-  sha256 "d6eb5d0d2c31532746f4dc9fa1ce95d4553414e918059eac23cf081d88c2aeee"
+  url "https://downloads.sourceforge.net/project/gsoap2/gsoap_2.8.135.zip"
+  sha256 "b11757e405d55d4674dfbf88c4fa6d7e24155cf64ed8ed578ccad2f2b555e98d"
   # Parts of the software are alternatively licensed under gSOAP-1.3b, but this
   # license is considered non-free by Debian and Fedora due to section 3.2:
   #
@@ -19,13 +19,14 @@ class Gsoap < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "8acc579430f4ded53206fc1414c04a59ad072081d8c2aa2a79c905206c38c224"
-    sha256 arm64_ventura:  "dea0d3df2a060f3f72df1217350d3ab4cea035efdc94aa64e6670c95f737915f"
-    sha256 arm64_monterey: "7768a71815d15ef467fc084b84aecbb671170beabcc6ed420869d1824547a02e"
-    sha256 sonoma:         "b51a5d29696e56ece31300dcc23c03170f0329d7a3b653f9bc703102c0d3f319"
-    sha256 ventura:        "0cac3c55e200fc04bf422f1379bf4664fc137a8142e7d10fcbdec516cafd9bd9"
-    sha256 monterey:       "205338069dabccf5ccdd8d3938fa7934cfd7ad3fcf7de3697f5367b53b52678b"
-    sha256 x86_64_linux:   "7e6a34ddac15c9cbeed7cf0147c81033b2cf9a96bb997255efc311ebbb4381c5"
+    sha256 arm64_sequoia:  "63cfd0fe9a94907975213a9272919131e33ce2faaf1c4872c2557221fde118c2"
+    sha256 arm64_sonoma:   "b60301b1d6f420406092b734929f40efddb4668d1c51d3fb9d3fa5f3703e3737"
+    sha256 arm64_ventura:  "bb05a9f9c36288ad8e2c5d09316c8a0e3ca6d5575655f74f814f128c15fa4b3a"
+    sha256 arm64_monterey: "68302fa08d48563abfefe24dcc8b54f7986a4ad01376e8a4b6b1cff88d49b9ab"
+    sha256 sonoma:         "b5bfdfe1ec6cd41ed8ac76bcea9574466849a394fc2c90a597142fa88de2e082"
+    sha256 ventura:        "d9abc23ff99e1436efe95ecd454cbce0a917591b08dada57438c4acc0ec41928"
+    sha256 monterey:       "c125b81fb7c4b80c6e57eec8e1cf4ce2654d0cd9bfa9a96b8df4a38994531aed"
+    sha256 x86_64_linux:   "fd6dc62a1491f7156bc0cf929886c696e4d5f918c30f72e203afb1e9b1ccf985"
   end
 
   depends_on "autoconf" => :build
@@ -42,8 +43,8 @@ class Gsoap < Formula
   end
 
   test do
-    system "#{bin}/wsdl2h", "-o", "calc.h", "https://www.genivia.com/calc.wsdl"
-    system "#{bin}/soapcpp2", "calc.h"
+    system bin/"wsdl2h", "-o", "calc.h", "https://www.genivia.com/calc.wsdl"
+    system bin/"soapcpp2", "calc.h"
     assert_predicate testpath/"calc.add.req.xml", :exist?
   end
 end

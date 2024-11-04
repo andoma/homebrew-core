@@ -6,20 +6,23 @@ class LeelaZero < Formula
       tag:      "v0.17",
       revision: "3f297889563bcbec671982c655996ccff63fa253"
   license "GPL-3.0-or-later"
-  revision 6
+  revision 8
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "4f4956ccec1b85d940dc51c3cff6ca243f5684490b7f44f5d65263d6ea965a30"
-    sha256 cellar: :any,                 arm64_ventura:  "1ec17a7b79425e00c7213878e04ed3af8eb826bf441be5a862459a02a5dbf110"
-    sha256 cellar: :any,                 arm64_monterey: "9a2f5da8ea704a711ae8192758a61af7958b7342d4e9e46d74558e1d8593f63d"
-    sha256 cellar: :any,                 sonoma:         "e465db7030e99d3c357544aeaf9fa45615e12ee939532c925d1badc444f2e6b7"
-    sha256 cellar: :any,                 ventura:        "b83f1b99f4c1361ae1104b59205cc927b3b0be09b070a08400ca86852c9cb03f"
-    sha256 cellar: :any,                 monterey:       "42584c147e4925d5e46d115c723146feb09cc16f4b8177ddfc0cde58e3cf9ebd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ff4fabe6cafc541960ff787819a42bfa73d2dcbcfea590938fc0164487668978"
+    sha256 cellar: :any,                 arm64_sequoia:  "5c808d7abd764508dbbeda62b0f4f86cb2d117995422f872a2d6515515b46811"
+    sha256 cellar: :any,                 arm64_sonoma:   "523b2b5c9a450e6a3c50f6090d8f3e82250225db54c4b75bf4c414fedc9b4397"
+    sha256 cellar: :any,                 arm64_ventura:  "6d9a72e5a28e17732d5d2f5841633ee88d02a769a04056ba435e2d7b0f13e871"
+    sha256 cellar: :any,                 arm64_monterey: "dca485dc625d0e8df88066c0b7d2a40342b268635123d24a385dac2c8cd738d5"
+    sha256 cellar: :any,                 sonoma:         "b8bad84bb425a13306edbad05b88f13b0efbfe170f644eca3419f8052912e775"
+    sha256 cellar: :any,                 ventura:        "b92d3a4331520dbb6be08f98d20a2c44d7860c02b9d87307cb971eb8ba3ea5cf"
+    sha256 cellar: :any,                 monterey:       "613ece14bc664dddddd5f099a8cd2714e91b71348b47c40e920d43ea1590c77a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7f264275f3f12d811a7d8be26b6b8e77a7bc9bcdd0fa237e5fa8982e005f8a17"
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
+
+  uses_from_macos "zlib"
 
   on_linux do
     depends_on "opencl-headers" => :build

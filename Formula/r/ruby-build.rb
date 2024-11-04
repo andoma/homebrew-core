@@ -1,22 +1,20 @@
 class RubyBuild < Formula
   desc "Install various Ruby versions and implementations"
   homepage "https://github.com/rbenv/ruby-build"
-  url "https://github.com/rbenv/ruby-build/archive/refs/tags/v20240221.tar.gz"
-  sha256 "7cc07a1fdfe0ec8ed941616ef8b76d8c33fbf84f9cbf8e80d7011f3361357bc7"
+  url "https://github.com/rbenv/ruby-build/archive/refs/tags/v20241030.tar.gz"
+  sha256 "21b95d0cd726914f6cd8c8271cbe293f5f7705256fa4ac89793f9f66cbc9a1d2"
   license "MIT"
   head "https://github.com/rbenv/ruby-build.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "688c401d7956253cbe003c4c842353b7a341fda6d0fb51d18046398219b5bb23"
+    sha256 cellar: :any_skip_relocation, all: "8e2343d8e618f97001d54fb76f67142477f00b7b43b4f70f6ac24330425377c7"
   end
 
   depends_on "autoconf"
   depends_on "libyaml"
+  depends_on "openssl@3"
   depends_on "pkg-config"
   depends_on "readline"
-  on_macos do
-    depends_on "openssl@3"
-  end
 
   def install
     # these references are (as-of v20210420) only relevant on FreeBSD but they

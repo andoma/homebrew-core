@@ -4,9 +4,10 @@ class DejaGnu < Formula
   url "https://ftp.gnu.org/gnu/dejagnu/dejagnu-1.6.3.tar.gz"
   mirror "https://ftpmirror.gnu.org/dejagnu/dejagnu-1.6.3.tar.gz"
   sha256 "87daefacd7958b4a69f88c6856dbd1634261963c414079d0c371f589cd66a2e3"
-  license "GPL-3.0"
+  license "GPL-3.0-or-later"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "267d87a1d746750a3797ad46513431e790f9a454c3d6d6d46e0e6b8cdb644702"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ada72df0280151e894c2d132b423a69cce43ffd27de25cf94439f78aa4df4da3"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "aae2cc17f126ef380eadd7d9a4909320f38d3b62c5722a2f9a777090cfe61720"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "aae2cc17f126ef380eadd7d9a4909320f38d3b62c5722a2f9a777090cfe61720"
@@ -21,7 +22,7 @@ class DejaGnu < Formula
   end
 
   head do
-    url "https://git.savannah.gnu.org/git/dejagnu.git"
+    url "https://git.savannah.gnu.org/git/dejagnu.git", branch: "master"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
@@ -41,6 +42,6 @@ class DejaGnu < Formula
   end
 
   test do
-    system "#{bin}/runtest"
+    system bin/"runtest"
   end
 end

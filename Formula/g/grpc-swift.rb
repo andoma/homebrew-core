@@ -1,9 +1,10 @@
 class GrpcSwift < Formula
   desc "Swift language implementation of gRPC"
   homepage "https://github.com/grpc/grpc-swift"
-  url "https://github.com/grpc/grpc-swift/archive/refs/tags/1.21.1.tar.gz"
-  sha256 "e012013495d2b06bf141a3cf3fade2f5a71118e0afc180c6c471fa96060e6aa5"
+  url "https://github.com/grpc/grpc-swift/archive/refs/tags/1.24.1.tar.gz"
+  sha256 "812151aeb48e23ded71bdb9b4dc5a46428d97e85743881a79d6b4a9ae4578fd3"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/grpc/grpc-swift.git", branch: "main"
 
   livecheck do
@@ -12,23 +13,27 @@ class GrpcSwift < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "39047658c916e9639ece5c2a0a9b83cdd09852edb5c2d48516029e403a1b181d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c5f15f02971ad07545116056b11914e145f2ede9c77cb92d63dc846d39fb56f8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c4b3d1775e1a3afc148e42c50385d667eab8dd63c76a6a555fee1bee3dba9425"
-    sha256 cellar: :any_skip_relocation, sonoma:         "759366715997de7d2790203596a4b868da37ae374c56418edaa4fe6e8772f56c"
-    sha256 cellar: :any_skip_relocation, ventura:        "5a3a5e89d5274a5e669490f0966bdaddb45fc552ce5db69fdd849c0f4a3c5e8e"
-    sha256 cellar: :any_skip_relocation, monterey:       "96d9981ae6bc5abfbb351c236c2130a32dd131e4d60effe4c051eab73adf71e1"
-    sha256                               x86_64_linux:   "0d1eae3a29443a027cc0c77b03552aa5aaa40809149468f5cfcecf628621770f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "198302e51eb7bf1810ba698e605aa88f4e292c8f6e0f84053f090bc5f8b27aee"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c69e69fb4d3b8899c3d52c08cf6647f2a4b54afd60913dbb5a4c5a63befcdcf4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2e1cfb81a7d1d20afbab3cff409963f3a12b9225eab154d610b2c02b552cd3eb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "dba37bbc05dd396c913a5fd609060fadca262d876230a198b974d25b4a7da95b"
+    sha256 cellar: :any_skip_relocation, ventura:       "771111724465d309337e1afccdb2b6a9568998a8ea01565004201db5deb35bde"
+    sha256                               x86_64_linux:  "7ef3413cc24b0524058efd0081c5f0942253d3e56e2225f80cbd1604444d639a"
   end
 
-  depends_on xcode: ["13.3", :build]
+  depends_on xcode: ["15.0", :build]
   depends_on "protobuf"
   depends_on "swift-protobuf"
 
-  uses_from_macos "swift"
+  uses_from_macos "swift" => :build
 
   def install
-    system "swift", "build", "--disable-sandbox", "-c", "release", "--product", "protoc-gen-grpc-swift"
+    args = if OS.mac?
+      ["--disable-sandbox"]
+    else
+      ["--static-swift-stdlib"]
+    end
+    system "swift", "build", *args, "-c", "release", "--product", "protoc-gen-grpc-swift"
     bin.install ".build/release/protoc-gen-grpc-swift"
   end
 

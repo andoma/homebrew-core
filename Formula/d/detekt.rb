@@ -1,8 +1,8 @@
 class Detekt < Formula
   desc "Static code analysis for Kotlin"
   homepage "https://github.com/detekt/detekt"
-  url "https://github.com/detekt/detekt/releases/download/v1.23.5/detekt-cli-1.23.5-all.jar"
-  sha256 "3f3f8c6998a624c0a3b463f2edca22e92484ec8740421b69daef18578b3b28b6"
+  url "https://github.com/detekt/detekt/releases/download/v1.23.7/detekt-cli-1.23.7-all.jar"
+  sha256 "84beded283012cb2b38bcaef4996452fcd6069d2e9ca74b50eaa79e0ad21897e"
   license "Apache-2.0"
 
   livecheck do
@@ -11,15 +11,15 @@ class Detekt < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "c1d19dc339ada202ba72482e0af2d40c6050e402f8397267ace8e8ada3ab7c1d"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "37552b190ee171edce762ee5c96c93e7c8e52bcd702f9aa98d19e378db799167"
   end
 
-  depends_on "openjdk@17"
+  depends_on "openjdk@21"
 
   def install
     libexec.install "detekt-cli-#{version}-all.jar"
-    # remove `--add-opens` after https://github.com/detekt/detekt/issues/5576
-    bin.write_jar_script libexec/"detekt-cli-#{version}-all.jar", "detekt", "--add-opens java.base/java.lang=ALL-UNNAMED", java_version: "17"
+    bin.write_jar_script libexec/"detekt-cli-#{version}-all.jar", "detekt", java_version: "21"
   end
 
   test do

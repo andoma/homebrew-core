@@ -1,19 +1,25 @@
 class Multitail < Formula
   desc "Tail multiple files in one terminal simultaneously"
   homepage "https://vanheusden.com/multitail/"
-  url "https://github.com/folkertvanheusden/multitail/archive/refs/tags/7.1.2.tar.gz"
-  sha256 "c8552e10093f0690b8baef84945753c878e234d7b3d0e3ff27e509ed5515998c"
-  license "Apache-2.0"
-  head "https://github.com/folkertvanheusden/multitail.git"
+  url "https://github.com/folkertvanheusden/multitail/archive/refs/tags/7.1.5.tar.gz"
+  sha256 "b0c92bf5f504b39591bf3e2e30a1902925c11556e14b89a07cfa7533f9bd171b"
+  license "MIT"
+  head "https://github.com/folkertvanheusden/multitail.git", head: "master"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f3fc083b287b8f49b9c79ca1951be8f5032ad00f839110eb8a778dc2487925fd"
-    sha256 cellar: :any,                 arm64_ventura:  "98444fd682fdb68e33acef1864f3364d2048a50c4d707453bafbf04246314e86"
-    sha256 cellar: :any,                 arm64_monterey: "65cfe67e4d5634b323c1bf70a5d8264f52b26320083188af4a1f68a0db7cf67f"
-    sha256 cellar: :any,                 sonoma:         "074de6e786a2ba9a0f45415eab5977fb9adf4edf88996931ceba3d6f4bb45827"
-    sha256 cellar: :any,                 ventura:        "a453421f0d555ad4b6be1d09b91f3bd8d90801e0990df31ca1e3316f8e017a77"
-    sha256 cellar: :any,                 monterey:       "79ba0b2ef4b92fba512392fef29417216feb83a6e598f3dbfec0c3afb8254bf3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa9ed05dd7832ab4b6f705d3196f13f8c0526ee74db4ac9dbdfb4c6d96be0f41"
+    sha256 cellar: :any,                 arm64_sequoia:  "a4fcadf206a7ac84b0d56153bd1d0a9f24c01f39d466dc16edc2ef51a69e0d11"
+    sha256 cellar: :any,                 arm64_sonoma:   "be06268413fcf23e7b7c95362f24d8e0b0bf01b4b956068172e48ba622caac1f"
+    sha256 cellar: :any,                 arm64_ventura:  "d764f52508358c4d881e6aa8e0a374c96c9cbd27d292f20cce17e7ac55f5b846"
+    sha256 cellar: :any,                 arm64_monterey: "480845b936a309ef633dadd0b1a1eadf90d5704be8799bfb9d05d57aa2fd5d75"
+    sha256 cellar: :any,                 sonoma:         "ca9fb55f8bf98257308ea67179d882788d74bb7c1e3cbb1b584eb679f81ee44d"
+    sha256 cellar: :any,                 ventura:        "88b234118c438295f556f25b1c651714a7e0fd597f9f124c7025d4066a43c5b4"
+    sha256 cellar: :any,                 monterey:       "9c26932eba926fbeda0f8cf27e11b47fcc09a992f31aa581560dd00ca47d6c30"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1e5209ad76b3f876606ca6a7a7fa6720ec2f976affd51aaab992c0dde63540b4"
   end
 
   depends_on "pkg-config" => :build
@@ -28,10 +34,6 @@ class Multitail < Formula
   end
 
   test do
-    if build.head?
-      assert_match "multitail", shell_output("#{bin}/multitail -h 2>&1", 1)
-    else
-      assert_match version.to_s, shell_output("#{bin}/multitail -h 2>&1", 1)
-    end
+    assert_match version.to_s, shell_output("#{bin}/multitail -h 2>&1", 1)
   end
 end

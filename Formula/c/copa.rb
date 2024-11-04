@@ -1,19 +1,18 @@
 class Copa < Formula
   desc "Tool to directly patch container images given the vulnerability scanning results"
   homepage "https://github.com/project-copacetic/copacetic"
-  url "https://github.com/project-copacetic/copacetic/archive/refs/tags/v0.6.1.tar.gz"
-  sha256 "6d4d23b02ccf8d75e95109c37ad1e8901d351ea8294acdd6f5b2d9dc4d02f75c"
+  url "https://github.com/project-copacetic/copacetic/archive/refs/tags/v0.9.0.tar.gz"
+  sha256 "aea5f31e67cdc8acceca3378992ca31afa16cba346f3eedeeacdf58e32457006"
   license "Apache-2.0"
   head "https://github.com/project-copacetic/copacetic.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7d155a50fd86ddef2a7d9bea03a021379efab9d03144669120e37a18e8128e61"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c34d938975c4dccd925e009eb86f8b35cf73338339942fbd0263dbf3d3cae914"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e775f8714b46c768bb65de94a912b31a9259451354cb75ba8f82bcd1cadac41"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9b947b14b1abad15f23de3dfcb7830c5b0e1a5fb2e51cc55a53f888d0fb81e62"
-    sha256 cellar: :any_skip_relocation, ventura:        "717bb9a37be8f3728a78ea39ad9c739d16e14469f04083e231514bf80cd91733"
-    sha256 cellar: :any_skip_relocation, monterey:       "7cd23b54eac3dd955c93527e5b55bc5bdc49a8f415121e929bf0b61a370cd454"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b04d4086543eaebb425470cb3c5a14ba2119049858b6ea7b9ba3198029bff3bf"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a95c2895d2e550c7001976021b4c21d0edbb9f980920bf866937cc8dee77b2ed"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4ce1375c8207984464132251a3958b6afa6478d1c972e641c350324aa3ed61fe"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1de37313fc5cec8dbb3a61a8efb7db1138eb8c68a198107d80de75c51f59b68f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "60d381978bc4625af4789920d22f657b53683e28f15fe3fb2839cad6b21467cf"
+    sha256 cellar: :any_skip_relocation, ventura:       "931fbbe17ceb8d977d89edd91e467db9f6d98c39d8ff0b88b78129168c024083"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "16fffdbf34046746a49f6ed54cec4354565da846edc961e7937c13d7d2004618"
   end
 
   depends_on "go" => :build
@@ -26,7 +25,7 @@ class Copa < Formula
       -X github.com/project-copacetic/copacetic/pkg/version.BuildDate=#{time.iso8601}
       -X main.version=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

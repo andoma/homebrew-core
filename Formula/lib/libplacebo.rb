@@ -7,44 +7,48 @@ class Libplacebo < Formula
   head "https://code.videolan.org/videolan/libplacebo.git", branch: "master"
 
   stable do
-    url "https://code.videolan.org/videolan/libplacebo/-/archive/v6.338.2/libplacebo-v6.338.2.tar.bz2"
-    sha256 "1c02d21720f972cae02111a1286337e9d0e70d623b311a1e4245bac5ce987f28"
+    url "https://code.videolan.org/videolan/libplacebo/-/archive/v7.349.0/libplacebo-v7.349.0.tar.bz2"
+    sha256 "38c9c75d9c1bb412baf34845d1ca58c41a9804d1d0798091d7a8602a0d7c9aa6"
 
     resource "fast_float" do
-      url "https://github.com/fastfloat/fast_float/archive/refs/tags/v6.0.0.tar.gz"
-      sha256 "7e98671ef4cc7ed7f44b3b13f80156c8d2d9244fac55deace28bd05b0a2c7c8e"
+      url "https://github.com/fastfloat/fast_float/archive/refs/tags/v6.1.1.tar.gz"
+      sha256 "10159a4a58ba95fe9389c3c97fe7de9a543622aa0dcc12dd9356d755e9a94cb4"
     end
 
     resource "glad2" do
-      url "https://files.pythonhosted.org/packages/8b/b3/191508033476b6a409c070c6166b1c41ebb547cc6136260e9157343e6a2b/glad2-2.0.4.tar.gz"
-      sha256 "ede1639f69f2ba08f1f498a40a707f34a609d24eb2ea0d6c9364689a798cf7d0"
+      url "https://files.pythonhosted.org/packages/15/fc/9235e54b879487f7479f333feddf16ac8c1f198a45ab2e96179b16f17679/glad2-2.0.6.tar.gz"
+      sha256 "08615aed3219ea1c77584bd5961d823bab226f8ac3831d09adf65c6fa877f8ec"
     end
 
     resource "jinja2" do
-      url "https://files.pythonhosted.org/packages/b2/5e/3a21abf3cd467d7876045335e681d276ac32492febe6d98ad89562d1a7e1/Jinja2-3.1.3.tar.gz"
-      sha256 "ac8bd6544d4bb2c9792bf3a159e80bba8fda7f07e81bc3aed565432d5925ba90"
+      url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
+      sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
+    end
+
+    resource "markupsafe" do
+      url "https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz"
+      sha256 "d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b"
     end
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "7839601c57d0ceae5967ae877e8910cc6f2ceca9442878180f62c549e76fdd07"
-    sha256 cellar: :any, arm64_ventura:  "990a5225915a2069b94c2a34b98de62ea85e2ba424ad7d89301db9b294b37cab"
-    sha256 cellar: :any, arm64_monterey: "80a00f7310cc09d2baeba680dcef81f348704c876430324467c1339088b8417b"
-    sha256 cellar: :any, sonoma:         "3035517d9bc264dd0757523fbe76d6a85fb5a2294ac5d7522335c4c5622ed9ff"
-    sha256 cellar: :any, ventura:        "7482dab3cc6a3d6303e8db7fde241e73b489d6b41c940c0b312409764be2b436"
-    sha256 cellar: :any, monterey:       "feb5e92bf7fbae0950b4b216bd744c47ed544cc04e1cb0db5587f9179eb83c96"
-    sha256               x86_64_linux:   "507aa688bf4a70eb4b5c33f35e10efe8a3f79acd22ba705ea7cb77381e0de7f2"
+    sha256 cellar: :any, arm64_sequoia:  "3d549716eb833fbc554605706f4e4740f0c1c4e6cf23732326444627ea14a8d5"
+    sha256 cellar: :any, arm64_sonoma:   "72afc163cc9dfc5525ed856094449685f034dfbbd8528f04e448b0447dd44f06"
+    sha256 cellar: :any, arm64_ventura:  "8860b6fd41fdd672a503b4951cb539d8ae11eaf953b64aef8188090f862138ab"
+    sha256 cellar: :any, arm64_monterey: "bfba0779b291723de7012b77cfc04e2d2909764012580e002808658697768ef2"
+    sha256 cellar: :any, sonoma:         "a5f15e9286de87a34619dbd377fd26a83fddb667ff45036fa7aa09ad3ca2a3d3"
+    sha256 cellar: :any, ventura:        "7ee7837caa82be9fa7294eb11f9a34545aad429a2202aaef5b19ba50dc02ea08"
+    sha256 cellar: :any, monterey:       "be243d1baa8e092186e1f6a7d8be0964e243bcb77fe2372dbc3736c3a3f8d910"
+    sha256               x86_64_linux:   "db810576ae7bfb3bc20cf244271d00ab7e24701fe77d2540cf10407b22d6392d"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python-setuptools" => :build
   depends_on "python@3.12" => :build
   depends_on "vulkan-headers" => :build
 
   depends_on "little-cms2"
-  depends_on "python-markupsafe"
   depends_on "shaderc"
   depends_on "vulkan-loader"
 
@@ -70,13 +74,13 @@ class Libplacebo < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <libplacebo/config.h>
       #include <stdlib.h>
       int main() {
         return (pl_version() != NULL) ? 0 : 1;
       }
-    EOS
+    C
     system ENV.cc, "-o", "test", "test.c", "-I#{include}",
                    "-L#{lib}", "-lplacebo"
     system "./test"

@@ -3,9 +3,11 @@ class Goocanvas < Formula
   homepage "https://wiki.gnome.org/Projects/GooCanvas"
   url "https://download.gnome.org/sources/goocanvas/3.0/goocanvas-3.0.0.tar.xz"
   sha256 "670a7557fe185c2703a14a07506156eceb7cea3b4bf75076a573f34ac52b401a"
+  license "LGPL-2.0-only"
   revision 1
 
   bottle do
+    sha256                               arm64_sequoia:  "8bd21a150d98f2abed5d68ac690487f1d2311e509bc54087d8b577a294bd6711"
     sha256                               arm64_sonoma:   "e700e5fb6f0f6454c9cc42975dae876c53f62ec1e6f5db3acadfea35232b72c5"
     sha256                               arm64_ventura:  "337609cd9eec8d0ca6502b73524cb5f86bc07ce6527438266a61ed253de5dcea"
     sha256                               arm64_monterey: "c5e356f708724c16f6594833df9ecca148f0e24862edbd3e8cb7632780cef5ea"
@@ -17,9 +19,18 @@ class Goocanvas < Formula
 
   depends_on "gobject-introspection" => :build
   depends_on "pkg-config" => :build
+
+  depends_on "at-spi2-core"
   depends_on "cairo"
+  depends_on "gdk-pixbuf"
   depends_on "glib"
   depends_on "gtk+3"
+  depends_on "pango"
+
+  on_macos do
+    depends_on "gettext"
+    depends_on "harfbuzz"
+  end
 
   # Fix -flat_namespace being used on Big Sur and later.
   patch do
@@ -28,10 +39,10 @@ class Goocanvas < Formula
   end
 
   def install
-    system "./configure", *std_configure_args,
-                          "--disable-gtk-doc-html",
+    system "./configure", "--disable-gtk-doc-html",
                           "--disable-silent-rules",
-                          "--enable-introspection=yes"
+                          "--enable-introspection=yes",
+                          *std_configure_args
     system "make", "install"
   end
 end

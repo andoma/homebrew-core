@@ -4,25 +4,31 @@ class VapoursynthImwri < Formula
   url "https://github.com/vapoursynth/vs-imwri/archive/refs/tags/R2.tar.gz"
   sha256 "f4d2965d32877005d0709bd8339828f951885a0cb51e0c006d123ede0b74307b"
   license "LGPL-2.1-or-later"
-  revision 1
+  revision 3
   version_scheme 1
   head "https://github.com/vapoursynth/vs-imwri.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "c4084f311c842c5f446e6ae6607b8dc376846059214170ce2b71eea14ec594aa"
-    sha256 cellar: :any, arm64_ventura:  "6455b43165b08648bf8fe0ed4b3ad768e40064229b453ea6ee20ba2a6c2c4062"
-    sha256 cellar: :any, arm64_monterey: "980ce869ee1e94b7070352ed72f5156afac59eea2a35426f7316a584f58a7a93"
-    sha256 cellar: :any, sonoma:         "d342a83a4f966b388e17429302530c94269e6d51f597a22c85405047078bda2d"
-    sha256 cellar: :any, ventura:        "30191e100adb12d68249787bbbc4cb5471a5f6a45879641599c72aaf75d923a3"
-    sha256 cellar: :any, monterey:       "2bcafef5efb598bf38a30ebb84b6343fbb10aa56e659fdc16f09a5a102a5ee67"
-    sha256               x86_64_linux:   "ba39999734846bede76c7e49e48dff0dc1b4f8555d178fa747cfbbe412fc4ef8"
+    sha256 cellar: :any, arm64_sequoia: "05e577ee12e4337fb9af5870c39c485e5e7a5ac4b56365361e9c2e7e35eca388"
+    sha256 cellar: :any, arm64_sonoma:  "2bbe0c55617799e49cfd693a838565894dc7ecb5fbcaef0b72e9103da674999d"
+    sha256 cellar: :any, arm64_ventura: "8795d8f3142e89ca1785f5d83312ab82ae4c24dc0e92b54aae294dbca1d14d0c"
+    sha256 cellar: :any, sonoma:        "6ffe0859ceae64e20741fb000a0319b456dd51d437e35e79f354eabcdface889"
+    sha256 cellar: :any, ventura:       "92866496e81b76604e8f4fbd5cab2d6d94d2f83cb4521e731802445ebcbd86e6"
+    sha256               x86_64_linux:  "099e77da73bbc6d8333e6067705d531ba193d3a496d8c99fc5287f7bec4f5ac2"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+
   depends_on "imagemagick"
   depends_on "vapoursynth"
+
+  on_macos do
+    depends_on "jpeg-xl"
+    depends_on "libheif"
+    depends_on "libtiff"
+  end
 
   fails_with gcc: "5"
 
@@ -33,8 +39,8 @@ class VapoursynthImwri < Formula
               "install_dir = vapoursynth_dep.get_variable(pkgconfig: 'libdir') / 'vapoursynth'",
               "install_dir = '#{lib}/vapoursynth'"
 
-    system "meson", *std_meson_args, "build"
-    system "meson", "compile", "-C", "build", "-v"
+    system "meson", "setup", "build", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end
 

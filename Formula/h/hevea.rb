@@ -1,7 +1,7 @@
 class Hevea < Formula
   desc "LaTeX-to-HTML translator"
-  homepage "http://hevea.inria.fr/"
-  url "http://hevea.inria.fr/old/hevea-2.36.tar.gz"
+  homepage "https://hevea.inria.fr/"
+  url "https://hevea.inria.fr/old/hevea-2.36.tar.gz"
   sha256 "5d6759d7702a295c76a12c1b2a1a16754ab0ec1ffed73fc9d0b138b41e720648"
   license all_of: [
     "QPL-1.0", # source files
@@ -9,11 +9,12 @@ class Hevea < Formula
   ]
 
   livecheck do
-    url "http://hevea.inria.fr/old/"
+    url "https://hevea.inria.fr/old/"
     regex(/href=.*?hevea[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
+    sha256 arm64_sequoia:  "bdfe564bb63675879e20d1f8d2958a658b10a062010af2cb2634ba08987ae135"
     sha256 arm64_sonoma:   "37c9173e633f015bdac3ded26af7827373fbfc24816bb4224e788c288f6b502c"
     sha256 arm64_ventura:  "a1f2662024a74ebcb1a5fe6d6066030899abcd9586942136b19db4ecb36da59b"
     sha256 arm64_monterey: "c390ecca1b09d574110a2394049497f058b9fe2dec4a1cc89647b624dc91b404"
@@ -41,6 +42,6 @@ class Hevea < Formula
       \\begin{document}
       \\end{document}
     EOS
-    system "#{bin}/hevea", "test.tex"
+    system bin/"hevea", "test.tex"
   end
 end

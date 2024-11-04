@@ -1,13 +1,14 @@
 class Weggli < Formula
   desc "Fast and robust semantic search tool for C and C++ codebases"
-  homepage "https://github.com/googleprojectzero/weggli"
-  url "https://github.com/googleprojectzero/weggli/archive/refs/tags/v0.2.4.tar.gz"
+  homepage "https://github.com/weggli-rs/weggli"
+  url "https://github.com/weggli-rs/weggli/archive/refs/tags/v0.2.4.tar.gz"
   sha256 "12fde9a0dca2852d5f819eeb9de85c4d11c5c384822f93ac66b2b7b166c3af78"
   license "Apache-2.0"
-  head "https://github.com/googleprojectzero/weggli.git", branch: "main"
+  head "https://github.com/weggli-rs/weggli.git", branch: "main"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ab791d77777007ec1ce49438d30a79c424b97fd64434b8f42f439cffaf439bc7"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "64c0f26ea39b8458017d80fffa9e632650b9fdb97ce8ae1cc69128ba68898308"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "b85863bb8393ee053190a070ec0fcc44d7d7c78709df4f50e4811301edcf7652"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "1d71e7a726a9745ad22a4a7db9beec29730d0147b49088614a4dda3ad16da59f"
@@ -28,6 +29,6 @@ class Weggli < Formula
 
   test do
     (testpath/"test.c").write("void foo() {int bar=10+foo+bar;}")
-    system "#{bin}/weggli", "{int $a = _+foo+$a;}", testpath/"test.c"
+    system bin/"weggli", "{int $a = _+foo+$a;}", testpath/"test.c"
   end
 end

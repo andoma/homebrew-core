@@ -1,20 +1,21 @@
 class Vala < Formula
   desc "Compiler for the GObject type system"
   homepage "https://wiki.gnome.org/Projects/Vala"
-  url "https://download.gnome.org/sources/vala/0.56/vala-0.56.14.tar.xz"
-  sha256 "9382c268ca9bdc02aaedc8152a9818bf3935273041f629c56de410e360a3f557"
+  url "https://download.gnome.org/sources/vala/0.56/vala-0.56.17.tar.xz"
+  sha256 "26100c4e4ef0049c619275f140d97cf565883d00c7543c82bcce5a426934ed6a"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 arm64_sonoma:   "e9f8d18e71e9fc2f0583e9d5ff612de2782dbfbc7e14d36297c7fb1367ff75fd"
-    sha256 arm64_ventura:  "a3c7a4db6bf33795b1e18234c67848194097e993dcba8f58ff3cac758ff50c80"
-    sha256 arm64_monterey: "062f3feb6430f783dff4cd748cdbc9883f1682cb1b3c84ecf6514cc2a90d4981"
-    sha256 sonoma:         "3ed12a8d08b6b5c5f3594584ec8a166d9f49f740866241002ba2b663c99b2ba8"
-    sha256 ventura:        "aa3ac4565028cf928db3f3bcc4181764c0943ac9acd0dc3fc25a109c03a056b4"
-    sha256 monterey:       "c20b5a583d6ef989a9abf754d8ecc6cd9f0a01279a9b100c6e81f6b262c8bf00"
-    sha256 x86_64_linux:   "67f2ba93201fc7b94bc3281ad8613a1573c83000719937736f54bb33ec6e82fb"
+    rebuild 1
+    sha256 arm64_sequoia: "d7b95eef607afc1c5d6e142d258a3ffcc532e5b50e982083a9e971bbea2cd615"
+    sha256 arm64_sonoma:  "97567ffe29dacc84af84a2abc1d67a83a04ec3c7b37dee093ab0a34b454fc55c"
+    sha256 arm64_ventura: "643a79f04dce15f6a65deeebc7137965d842befcdb716fbefa2f528a0046e6be"
+    sha256 sonoma:        "b4aed882d3810fa13006a72460796c14b970b6802c8783c9e49af34bbf43ba92"
+    sha256 ventura:       "9c3bfb8a007ebcdd431eaee96807b3730b3a621ea5842c522621c24547272f20"
+    sha256 x86_64_linux:  "39bd5991d99ae03c4f00e6b1c1f5e7216d5ac7543c34f620c39151a00d931c49"
   end
 
+  depends_on "gobject-introspection" => :build
   depends_on "glib"
   depends_on "graphviz"
   depends_on "pkg-config"
@@ -42,6 +43,7 @@ class Vala < Formula
         print ("#{test_string}");
       }
     EOS
+
     valac_args = [
       # Build with debugging symbols.
       "-g",
@@ -52,7 +54,8 @@ class Vala < Formula
       # Vala source code path.
       path.to_s,
     ]
-    system "#{bin}/valac", *valac_args
+
+    system bin/"valac", *valac_args
     assert_predicate testpath/"hello.c", :exist?
 
     assert_equal test_string, shell_output("#{testpath}/hello")

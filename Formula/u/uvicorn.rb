@@ -3,29 +3,27 @@ class Uvicorn < Formula
 
   desc "ASGI web server"
   homepage "https://www.uvicorn.org/"
-  url "https://files.pythonhosted.org/packages/09/d8/8aa69c76585035ca81851d99c3b00fd6be050aefd478a5376ff9fc5feb69/uvicorn-0.27.1.tar.gz"
-  sha256 "3d9a267296243532db80c83a959a3400502165ade2c1338dea4e67915fd4745a"
+  url "https://files.pythonhosted.org/packages/e0/fc/1d785078eefd6945f3e5bab5c076e4230698046231eb0f3747bc5c8fa992/uvicorn-0.32.0.tar.gz"
+  sha256 "f78b36b143c16f54ccdb8190d0a26b5f1901fe5a3c777e1ab29f26391af8551e"
   license "BSD-3-Clause"
   head "https://github.com/encode/uvicorn.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "ce673fc35a478e523e696c738c7e13d00ee025a2c6a11b03de313349e952e8ee"
-    sha256 cellar: :any,                 arm64_ventura:  "877e61484296f360b49e4090683beb0164eb93db9418cb995d18fa7f5407ac60"
-    sha256 cellar: :any,                 arm64_monterey: "d56abe2ddfa3d910cdae5c7f7eb3e0bd8e5e9f9c08c70303a1e08cec293a7184"
-    sha256 cellar: :any,                 sonoma:         "fc553a5127646dcbf0b50684d6e20fe652a88f75cd630eaac3c9b00560de64f6"
-    sha256 cellar: :any,                 ventura:        "28e2f11896fea5129b3f47c0c161e91eb74a40faf7053b9dc7e6de35ac4a42a6"
-    sha256 cellar: :any,                 monterey:       "b5838cc073dddbf5701dc00655cfac9a62a3c7c86cb2693e09d4a7f20bed7f3c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a80d52ba41387dc2774791bbe3358975186472dc4795f29eab169fdcd13b8934"
+    sha256 cellar: :any,                 arm64_sequoia: "c0abc93959749ee3c7297d6f5279f77ba4efea5ce503e20bab286621359f7480"
+    sha256 cellar: :any,                 arm64_sonoma:  "3055509f099f2d5969de81f93e3650a1f3c1dcdbc42d58708efe0c06baf4a3d5"
+    sha256 cellar: :any,                 arm64_ventura: "b3af7069c0eff85a1ee6f0289d2ec410bf7df672fc810114379fc753833f32bf"
+    sha256 cellar: :any,                 sonoma:        "cc0bd02c69cc4e1546c86af6871081d6682f23ffdbd9a4e96afd849ff985975e"
+    sha256 cellar: :any,                 ventura:       "83599d4fe89daab09c021ab35f2f8431e58375b494e0c90fced7bf03460c97aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b8ecccb2b0d7c3a66dc19970e7ce6428803c6e860d1ce9769224d0c4348c73fb"
   end
 
   depends_on "rust" => :build
   depends_on "libyaml"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "anyio" do
-    url "https://files.pythonhosted.org/packages/db/4d/3970183622f0330d3c23d9b8a5f52e365e50381fd484d08e3285104333d3/anyio-4.3.0.tar.gz"
-    sha256 "f75253795a87df48568485fd18cdd2a3fa5c4f7c5be8e5e36637733fce06fed6"
+    url "https://files.pythonhosted.org/packages/9f/09/45b9b7a6d4e45c6bcb5bf61d19e3ab87df68e0601fa8c5293de3542546cc/anyio-4.6.2.post1.tar.gz"
+    sha256 "4c8bc31ccdb51c7f7bd251f51c609e038d63e34219b44aa86e47576389880b4c"
   end
 
   resource "click" do
@@ -39,13 +37,13 @@ class Uvicorn < Formula
   end
 
   resource "httptools" do
-    url "https://files.pythonhosted.org/packages/67/1d/d77686502fced061b3ead1c35a2d70f6b281b5f723c4eff7a2277c04e4a2/httptools-0.6.1.tar.gz"
-    sha256 "c6e26c30455600b95d94b1b836085138e82f177351454ee841c148f93a9bad5a"
+    url "https://files.pythonhosted.org/packages/9c/4f/8c7e42e8897f905e84505897f8f9cb4178235888aab571417897362a6764/httptools-0.6.2.tar.gz"
+    sha256 "ae694efefcb61317c79b2fa1caebc122060992408e389bb00889567e463a47f1"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
-    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "python-dotenv" do
@@ -54,28 +52,28 @@ class Uvicorn < Formula
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "sniffio" do
-    url "https://files.pythonhosted.org/packages/cd/50/d49c388cae4ec10e8109b1b833fd265511840706808576df3ada99ecb0ac/sniffio-1.3.0.tar.gz"
-    sha256 "e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101"
+    url "https://files.pythonhosted.org/packages/a2/87/a6771e1546d97e7e041b6ae58d80074f81b7d5121207425c964ddf5cfdbd/sniffio-1.3.1.tar.gz"
+    sha256 "f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc"
   end
 
   resource "uvloop" do
-    url "https://files.pythonhosted.org/packages/9c/16/728cc5dde368e6eddb299c5aec4d10eaf25335a5af04e8c0abd68e2e9d32/uvloop-0.19.0.tar.gz"
-    sha256 "0246f4fd1bf2bf702e06b0d45ee91677ee5c31242f39aab4ea6fe0c51aedd0fd"
+    url "https://files.pythonhosted.org/packages/cf/3d/a150e044b5bc69961168b024c531d21b63acd9948b7d681b03e551be01e1/uvloop-0.21.0b1.tar.gz"
+    sha256 "5e12901bd67c5ba374741fc497adc44de14854895c416cd0672b2e5b676ca23c"
   end
 
   resource "watchfiles" do
-    url "https://files.pythonhosted.org/packages/66/79/0ee412e1228aaf6f9568aa180b43cb482472de52560fbd7c283c786534af/watchfiles-0.21.0.tar.gz"
-    sha256 "c76c635fabf542bb78524905718c39f736a98e5ab25b23ec6d4abede1a85a6a3"
+    url "https://files.pythonhosted.org/packages/c8/27/2ba23c8cc85796e2d41976439b08d52f691655fdb9401362099502d1f0cf/watchfiles-0.24.0.tar.gz"
+    sha256 "afb72325b74fa7a428c009c1b8be4b4d7c2afedafb2982827ef2156646df2fe1"
   end
 
   resource "websockets" do
-    url "https://files.pythonhosted.org/packages/2e/62/7a7874b7285413c954a4cca3c11fd851f11b2fe5b4ae2d9bee4f6d9bdb10/websockets-12.0.tar.gz"
-    sha256 "81df9cbcbb6c260de1e007e58c011bfebe2dafc8435107b0537f393dd38c8b1b"
+    url "https://files.pythonhosted.org/packages/e2/73/9223dbc7be3dcaf2a7bbf756c351ec8da04b1fa573edaf545b95f6b0c7fd/websockets-13.1.tar.gz"
+    sha256 "a3b3366087c1bc0a2795111edcadddb8b3b59509d5db5d7ea3fdd69f954a8878"
   end
 
   def install

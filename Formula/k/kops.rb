@@ -1,8 +1,8 @@
 class Kops < Formula
   desc "Production Grade K8s Installation, Upgrades, and Management"
   homepage "https://kops.sigs.k8s.io/"
-  url "https://github.com/kubernetes/kops/archive/refs/tags/v1.28.4.tar.gz"
-  sha256 "755ffbb74f7f0157c18ef16a81f44b170db780ac7ef371e497ebaa6be235440c"
+  url "https://github.com/kubernetes/kops/archive/refs/tags/v1.30.1.tar.gz"
+  sha256 "b454979d042e5f55704ce544ff79e52c236534a031851818f73a8744d0851b1f"
   license "Apache-2.0"
   head "https://github.com/kubernetes/kops.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Kops < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9d1f8c44b8485e1b6621cc70371f82cf7a99f6dc4262175bd06c425488e8b7ff"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "80ee82b769536795024f89058b76ab757faa5d3b61c90b31e3c4d10aac4ca199"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1d6bcd2afb420b1f20a99757e1a1be96e8b4df9322a68818386098edb4bd4a68"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ad9b11fb3e49fda3de48495ac2d212ec02b40f25b8ace3e75453bce43aebc200"
-    sha256 cellar: :any_skip_relocation, ventura:        "fdd4394e55f5bae93b1194775d728989e8d78156384495256fde1948f4fd1f79"
-    sha256 cellar: :any_skip_relocation, monterey:       "e2c0bd685b202df58f625ec96ec39c27ba64a8dca544d3e2400ad76dd278656a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "77e96f7cfca2aa14f76b52cb8b17b0bb1608f22a7b25a9dd51280b83349f2ee4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "96085c1b1a144244b4b887f7968c829de3a3e3b48a79f76f205d8f99ed125cd1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3aa2bbaebd619fe57c82b185e20e518a186837f60c82b73b5c9e2fc829e020de"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "54eee998d292d5db46cf998c96a3fe549ac1bcb61f4e8a3718aec649f3fe6228"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d17f738f8b9968511143576d060a7a02f52cf6f01a6c6ba6d5c81ab710a1f40b"
+    sha256 cellar: :any_skip_relocation, ventura:       "7dfb31e36759f06e499204d8128815cca0073d96a8dc0de7c1e55cada74bfacb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c610c525faa1cc85125201e40fbc924b998448194c150af68b078fb9215a37e3"
   end
 
   depends_on "go" => :build
@@ -26,7 +25,7 @@ class Kops < Formula
 
   def install
     ldflags = "-s -w -X k8s.io/kops.Version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "k8s.io/kops/cmd/kops"
+    system "go", "build", *std_go_args(ldflags:), "k8s.io/kops/cmd/kops"
 
     generate_completions_from_executable(bin/"kops", "completion")
   end

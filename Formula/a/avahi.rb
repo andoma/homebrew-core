@@ -7,18 +7,22 @@ class Avahi < Formula
   revision 2
 
   bottle do
-    sha256 x86_64_linux: "81bf418f84a33bff333ec46728bfd2780e6935560b173527a25946bc11db1617"
+    rebuild 1
+    sha256 x86_64_linux: "c2a968c40c0683c2a1cb9e45bbe693434581f0b209e0215f9c610b17069001e8"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "gettext" => :build
   depends_on "intltool" => :build
   depends_on "libtool" => :build
   depends_on "m4" => :build
   depends_on "perl" => :build
   depends_on "pkg-config" => [:build, :test]
   depends_on "xmltoman" => :build
+
   depends_on "dbus"
+  depends_on "expat"
   depends_on "gdbm"
   depends_on "glib"
   depends_on "libdaemon"
@@ -47,7 +51,7 @@ class Avahi < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <glib.h>
 
       #include <avahi-client/client.h>
@@ -93,7 +97,7 @@ class Avahi < Formula
 
           return 0;
       }
-    EOS
+    C
 
     pkg_config_flags = shell_output("pkg-config --cflags --libs avahi-client avahi-core avahi-glib").chomp.split
     system ENV.cc, "test.c", *pkg_config_flags, "-o", "test"

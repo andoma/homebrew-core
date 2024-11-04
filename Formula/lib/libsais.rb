@@ -1,19 +1,20 @@
 class Libsais < Formula
   desc "Fast linear time suffix array, lcp array and bwt construction"
   homepage "https://github.com/IlyaGrebnov/libsais"
-  url "https://github.com/IlyaGrebnov/libsais/archive/refs/tags/v2.7.4.tar.gz"
-  sha256 "6fdca431bb69a17f6d238723380f3572db81c37afa219dc1dea4d3838ef1c4f0"
+  url "https://github.com/IlyaGrebnov/libsais/archive/refs/tags/v2.8.5.tar.gz"
+  sha256 "c268e4ac17a2b024dba9e9ec204e694646c092fa89de767176eb7084d27780c4"
   license "Apache-2.0"
   head "https://github.com/IlyaGrebnov/libsais.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "fb25e2aa9c4796fd44901bf69f11697255d10357889690c5094a299e17f8e080"
-    sha256 cellar: :any,                 arm64_ventura:  "24f5a0d41dd70a160bb3ccd74329d7767a1f0442b860926eef62e114dd06cf33"
-    sha256 cellar: :any,                 arm64_monterey: "be69235359d1bb384cea8b640cf7df6604376756c5caaeaeac3fe147f6ccd529"
-    sha256 cellar: :any,                 sonoma:         "f6db8f69f7148a0a45cdc779890d8bd7eeb5af6a16f466c3fad5a8fc6c80fe14"
-    sha256 cellar: :any,                 ventura:        "8ef5ba9ad7bf93b935c1034b16e891f3ae301aa48e0ccbb6c8e81a16912a3cbe"
-    sha256 cellar: :any,                 monterey:       "26a6f6cf78735c7490a90d77b91a2064c877afa75b5cf245bcc1054f18f3fe1c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e5d57226dff427bc5f480bbc3cfbde5668cad12f0f90f806e4eecf088e3a084e"
+    sha256 cellar: :any,                 arm64_sequoia:  "2cb9082afc79dbe01c1a7399d53adcc8e4d96c3d977d9a5d8dc1ed991afcabb2"
+    sha256 cellar: :any,                 arm64_sonoma:   "14bd3bc45e7a6d6768d36fdc06891586036f24a330f35dea65d1c275963f7f98"
+    sha256 cellar: :any,                 arm64_ventura:  "3c321c5840130f77ff9afcdd68d39e5e090e5e8a0e744cf7fd1e549274b05f8f"
+    sha256 cellar: :any,                 arm64_monterey: "2bcdff06dbcf58a541c77c9a1723b290bf609928746cf3dd526f04b98a5df2e6"
+    sha256 cellar: :any,                 sonoma:         "05ccd2d524b6dfa5e9dfc1269a319614e781858af95051f39d3ee664bdce1eaa"
+    sha256 cellar: :any,                 ventura:        "34fc7e2cf130ad0c62a45b80fde76e28de028ab6927a53660466c068f36b7ebe"
+    sha256 cellar: :any,                 monterey:       "460b53902f9ee8fa5595dd24f32fe83e92c1dfdf80271b1492b63a53678e9a33"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d0f71ebe8be08c0b537fd304171f69dd94aa19e897ad8434ac9ef05fc8d44e8b"
   end
 
   depends_on "cmake" => :build
@@ -29,7 +30,7 @@ class Libsais < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <libsais.h>
       #include <stdlib.h>
       int main() {
@@ -49,7 +50,7 @@ class Libsais < Formula
         }
         return 1;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lsais", "-o", "test"
     system "./test"
   end

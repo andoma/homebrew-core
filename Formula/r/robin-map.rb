@@ -1,12 +1,12 @@
 class RobinMap < Formula
   desc "C++ implementation of a fast hash map and hash set"
   homepage "https://github.com/Tessil/robin-map"
-  url "https://github.com/Tessil/robin-map/archive/refs/tags/v1.2.1.tar.gz"
-  sha256 "2b54d2c1de2f73bea5c51d5dcbd64813a08caf1bfddcfdeee40ab74e9599e8e3"
+  url "https://github.com/Tessil/robin-map/archive/refs/tags/v1.3.0.tar.gz"
+  sha256 "a8424ad3b0affd4c57ed26f0f3d8a29604f0e1f2ef2089f497f614b1c94c7236"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "9ec3d8a7a6711689502a43c55592977ec6ce631be317ff8e7af3554fdb3b7498"
+    sha256 cellar: :any_skip_relocation, all: "ff6d61f27dfec61e4d040f50458c381a9f31552cbaaea77c11ff88f1442ae40b"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -18,7 +18,7 @@ class RobinMap < Formula
   end
 
   test do
-    (testpath/"CMakeLists.txt").write <<~EOS
+    (testpath/"CMakeLists.txt").write <<~CMAKE
       cmake_minimum_required(VERSION 3.12)
       project(robinmap_test)
 
@@ -30,8 +30,8 @@ class RobinMap < Formula
       add_executable(robinmap_test main.cpp)
 
       target_link_libraries(robinmap_test PRIVATE tsl::robin_map)
-    EOS
-    (testpath/"main.cpp").write <<~EOS
+    CMAKE
+    (testpath/"main.cpp").write <<~CPP
       #include <iostream>
       #include <tsl/robin_map.h>
 
@@ -46,7 +46,7 @@ class RobinMap < Formula
 
           return 0;
       }
-    EOS
+    CPP
 
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build", "--target", "robinmap_test"

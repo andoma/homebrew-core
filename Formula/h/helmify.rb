@@ -1,20 +1,20 @@
 class Helmify < Formula
   desc "Create Helm chart from Kubernetes yaml"
   homepage "https://github.com/arttor/helmify"
-  url "https://github.com/arttor/helmify.git",
-      tag:      "v0.4.11",
-      revision: "2e9539cb5dfaf33b8c9741c1fd5deddc83e9db41"
+  url "https://github.com/arttor/helmify/archive/refs/tags/v0.4.14.tar.gz"
+  sha256 "34a84f8c49f7a7385ad6a0b7f1044675a72951696989d9e35de9e16ea7899b08"
   license "MIT"
   head "https://github.com/arttor/helmify.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2ad91f2d29816ea94fa7c208b74ece6b51f1bdcde1d29b45b3566a441193997e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b64fe9432264028960715c07462e92fda198cab5d433ac73a1c3204ef65d620c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "026c6700f67330e2eff963e1371e64006300152609ec908475e77fe057d77746"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e318c85300fc0b5a2fa721b3bf381e600dfc3d45871993e49a1a4c07eaf47850"
-    sha256 cellar: :any_skip_relocation, ventura:        "4046112d2064ad07a7088f8d68a9da7289dc1f6a44563da5c7fe5ebe1dab7c81"
-    sha256 cellar: :any_skip_relocation, monterey:       "b81ceec438032376a62f15fdae49e9b00b90e0d16928dc9d43c923e43c8233e0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "33af44a8959c2a06dc874f819a91600cb1a0034d6107fdd3a0f08649d11efc83"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "80e631b902fff10b11e0bb3fe6223cd2dbfb694a3428a3b019daf1db95e210c1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "80e631b902fff10b11e0bb3fe6223cd2dbfb694a3428a3b019daf1db95e210c1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "80e631b902fff10b11e0bb3fe6223cd2dbfb694a3428a3b019daf1db95e210c1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "80e631b902fff10b11e0bb3fe6223cd2dbfb694a3428a3b019daf1db95e210c1"
+    sha256 cellar: :any_skip_relocation, sonoma:         "70af2de82629c9d4501db4c9d493d27e29e89ccefc11de57e122420ca7a88e48"
+    sha256 cellar: :any_skip_relocation, ventura:        "70af2de82629c9d4501db4c9d493d27e29e89ccefc11de57e122420ca7a88e48"
+    sha256 cellar: :any_skip_relocation, monterey:       "70af2de82629c9d4501db4c9d493d27e29e89ccefc11de57e122420ca7a88e48"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "98caa383ba0179fb631ebe07e86f02b65278d0a1605f50ebcfc3f5323a36dcad"
   end
 
   depends_on "go" => :build
@@ -23,9 +23,9 @@ class Helmify < Formula
     ldflags = %W[
       -X main.version=#{version}
       -X main.date=#{time.iso8601}
-      -X main.commit=#{Utils.git_head}
+      -X main.commit=#{tap.user}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/helmify"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/helmify"
   end
 
   test do

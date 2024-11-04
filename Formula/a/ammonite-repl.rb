@@ -1,28 +1,31 @@
 class AmmoniteRepl < Formula
   desc "Ammonite is a cleanroom re-implementation of the Scala REPL"
   homepage "https://ammonite.io/"
-  # TODO: Check if we can use unversioned `openjdk` (or `openjdk@21`) at version bump.
-  url "https://github.com/com-lihaoyi/Ammonite/releases/download/2.5.11/3.2-2.5.11"
-  version "2.5.11"
-  sha256 "384cf08e2591be4d199c75cf1913d44c043466b8cddeaa21dd5669d10f94a18f"
+  url "https://github.com/com-lihaoyi/Ammonite/releases/download/3.0.0-M2/3.3-3.0.0-M2"
+  version "3.0.0-M2"
+  sha256 "57b4e3812123861e2acf339c9999f6c23fe2fc4dbfd2c87dc5c52c31bdc37d73"
   license "MIT"
 
+  # There can be a gap between when a GitHub release is created and when the
+  # release assets are uploaded, so the `GithubLatest` strategy isn't
+  # sufficient here. This checks GitHub asset URLs on the homepage, as it
+  # doesn't appear to be updated until the release assets are available.
   livecheck do
-    url :stable
-    strategy :github_latest
+    url :homepage
+    regex(%r{href=.*?/releases/download/v?(\d+(?:\.\d+)+(?:[._-]M\d+)?)/}i)
   end
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "bb99c7f9610f72dd03b1410868843d71b47d9dec8c5540f7d06f1eed530ad758"
+    sha256 cellar: :any_skip_relocation, all: "6b8e2cf8e1bf5d08e9161c5b67bc205d8b8d93d955e1fc32ba60171df8395863"
   end
 
-  depends_on "openjdk@17"
+  depends_on "openjdk"
 
   def install
     (libexec/"bin").install Dir["*"].first => "amm"
     chmod 0755, libexec/"bin/amm"
-    env = Language::Java.overridable_java_home_env("17")
+    env = Language::Java.overridable_java_home_env
     env["PATH"] = "$JAVA_HOME/bin:$PATH"
     (bin/"amm").write_env_script libexec/"bin/amm", env
   end

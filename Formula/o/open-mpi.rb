@@ -1,8 +1,8 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  url "https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-5.0.2.tar.bz2"
-  sha256 "ee46ad8eeee2c3ff70772160bff877cbf38c330a0bc3b3ddc811648b3396698f"
+  url "https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-5.0.5.tar.bz2"
+  sha256 "6588d57c0a4bd299a24103f4e196051b29e8b55fbda49e11d5b3d32030a32776"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,17 +11,17 @@ class OpenMpi < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "aa070db000e56ead1e7c87b9323f1553b6a3c0607fc306d5c25f335cfac90768"
-    sha256 arm64_ventura:  "b8c996233ace18080e50277e677d5af1469038f32e0f63e2a13870bd91510a51"
-    sha256 arm64_monterey: "a8e600805bb241a390f5b3cbe832948bcff9d513a49d68ad2d913997f40cc2dd"
-    sha256 sonoma:         "754107cf878f10d09131cd30ec489f633030a77184eeb3366dc55fcd79485c4a"
-    sha256 ventura:        "65f4f9e307a4ff55dcd28e4d451c800ede8c85f3b2000187f997f5bef967b51a"
-    sha256 monterey:       "893ba074781a2174529372e37ac77e3d3c8c6a840ac8a72cf8aa2f4c2e2c86e0"
-    sha256 x86_64_linux:   "cf7a56d4cbd5a3f55f0cad89f25c4b23d7efb234edef9a8e0e878b6ecfe37dd3"
+    sha256 arm64_sequoia: "e0235a4d1d504248e8d736e9ad92b785789b06c26d5f6634168ba0bf31fd9bce"
+    sha256 arm64_sonoma:  "522592a0f5a23e7b719808ec3f61abcbb0c6f046356ab23c24de4ff948c616f2"
+    sha256 arm64_ventura: "42ef2bda5d4586176bdd9046d2cfb235b4cd8bf3fdab09c2f65d84af52977cfd"
+    sha256 sonoma:        "d38cae4c45c360f7d5e0b536ae0f792d3b7363c895acc2c60519b64685fed2f2"
+    sha256 ventura:       "624f0f7c7be4be5ad2d89b583d2b0294c70fedd89ed33552f5a7fe1061262638"
+    sha256 x86_64_linux:  "08d155c685dfe497ceecf98d4d703e19af6643bca8ce1981ddc38ae6dbb6a752"
   end
 
   head do
     url "https://github.com/open-mpi/ompi.git", branch: "main"
+
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -35,30 +35,28 @@ class OpenMpi < Formula
   conflicts_with "mpich", because: "both install MPI compiler wrappers"
 
   def install
-    if OS.mac?
-      # Otherwise libmpi_usempi_ignore_tkr gets built as a static library
-      ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
-    end
+    # Backport https://github.com/open-mpi/ompi/commit/2d3ad2b2a777ffe70511426808a5c5ca5693c443
+    # TODO: Remove on the next release (inreplace will fail)
+    inreplace "configure", "$LDFLAGS_xcode_save", "$LDFLAGS_save_xcode" if build.stable?
+
+    ENV.runtime_cpu_detection
+    # Otherwise libmpi_usempi_ignore_tkr gets built as a static library
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version if OS.mac?
+
+    # Remove bundled copies of libraries that shouldn't be used
+    unbundled_packages = %w[hwloc libevent openpmix].join(",")
+    rm_r Dir["3rd-party/{#{unbundled_packages}}*"]
 
     # Avoid references to the Homebrew shims directory
     inreplace_files = %w[
       ompi/tools/ompi_info/param.c
       oshmem/tools/oshmem_info/param.c
     ]
-    inreplace_files_cc = %w[
-      3rd-party/openpmix/src/tools/pmix_info/support.c
-      3rd-party/prrte/src/tools/prte_info/param.c
-    ]
-
     cxx = OS.linux? ? "g++" : ENV.cxx
-    inreplace inreplace_files, "OMPI_CXX_ABSOLUTE", "\"#{cxx}\""
-
     cc = OS.linux? ? "gcc" : ENV.cc
-    inreplace inreplace_files, /(OPAL|PMIX)_CC_ABSOLUTE/, "\"#{cc}\""
-    inreplace inreplace_files_cc, /(PMIX|PRTE)_CC_ABSOLUTE/, "\"#{cc}\""
-
-    ENV.cxx11
-    ENV.runtime_cpu_detection
+    inreplace inreplace_files, "OMPI_CXX_ABSOLUTE", "\"#{cxx}\""
+    inreplace inreplace_files, "OPAL_CC_ABSOLUTE", "\"#{cc}\""
+    inreplace "3rd-party/prrte/src/tools/prte_info/param.c", "PRTE_CC_ABSOLUTE", "\"#{cc}\""
 
     args = %W[
       --disable-silent-rules
@@ -70,10 +68,13 @@ class OpenMpi < Formula
       --with-pmix=#{Formula["pmix"].opt_prefix}
       --with-sge
     ]
-    args << "--with-platform-optimized" if build.head?
 
-    system "./autogen.pl", "--force" if build.head?
-    system "./configure", *std_configure_args, *args
+    if build.head?
+      args << "--with-platform-optimized"
+      system "./autogen.pl", "--force", "--no-3rdparty=#{unbundled_packages}"
+    end
+
+    system "./configure", *args, *std_configure_args
     system "make", "all"
     system "make", "check"
     system "make", "install"
@@ -83,11 +84,11 @@ class OpenMpi < Formula
     include.install lib.glob("*.mod")
 
     # Avoid references to cellar paths.
-    inreplace (lib/"pkgconfig").glob("*.pc"), prefix, opt_prefix, false
+    inreplace (lib/"pkgconfig").glob("*.pc"), prefix, opt_prefix, audit_result: false
   end
 
   test do
-    (testpath/"hello.c").write <<~EOS
+    (testpath/"hello.c").write <<~C
       #include <mpi.h>
       #include <stdio.h>
 
@@ -103,11 +104,11 @@ class OpenMpi < Formula
         MPI_Finalize();
         return 0;
       }
-    EOS
+    C
     system bin/"mpicc", "hello.c", "-o", "hello"
     system "./hello"
     system bin/"mpirun", "./hello"
-    (testpath/"hellof.f90").write <<~EOS
+    (testpath/"hellof.f90").write <<~FORTRAN
       program hello
       include 'mpif.h'
       integer rank, size, ierror, tag, status(MPI_STATUS_SIZE)
@@ -117,12 +118,12 @@ class OpenMpi < Formula
       print*, 'node', rank, ': Hello Fortran world'
       call MPI_FINALIZE(ierror)
       end
-    EOS
+    FORTRAN
     system bin/"mpifort", "hellof.f90", "-o", "hellof"
     system "./hellof"
     system bin/"mpirun", "./hellof"
 
-    (testpath/"hellousempi.f90").write <<~EOS
+    (testpath/"hellousempi.f90").write <<~FORTRAN
       program hello
       use mpi
       integer rank, size, ierror, tag, status(MPI_STATUS_SIZE)
@@ -132,12 +133,12 @@ class OpenMpi < Formula
       print*, 'node', rank, ': Hello Fortran world'
       call MPI_FINALIZE(ierror)
       end
-    EOS
+    FORTRAN
     system bin/"mpifort", "hellousempi.f90", "-o", "hellousempi"
     system "./hellousempi"
     system bin/"mpirun", "./hellousempi"
 
-    (testpath/"hellousempif08.f90").write <<~EOS
+    (testpath/"hellousempif08.f90").write <<~FORTRAN
       program hello
       use mpi_f08
       integer rank, size, tag, status(MPI_STATUS_SIZE)
@@ -147,7 +148,7 @@ class OpenMpi < Formula
       print*, 'node', rank, ': Hello Fortran world'
       call MPI_FINALIZE()
       end
-    EOS
+    FORTRAN
     system bin/"mpifort", "hellousempif08.f90", "-o", "hellousempif08"
     system "./hellousempif08"
     system bin/"mpirun", "./hellousempif08"

@@ -5,7 +5,7 @@ class Moc < Formula
   revision 8
 
   stable do
-    url "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.2.tar.bz2"
+    url "https://ftp.daper.net/pub/soft/moc/stable/moc-2.5.2.tar.bz2"
     sha256 "f3a68115602a4788b7cfa9bbe9397a9d5e24c68cb61a57695d1c2c3ecf49db08"
 
     # Remove for > 2.5.2; FFmpeg 4.0 compatibility
@@ -43,6 +43,7 @@ class Moc < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "00f4a5601d8f7d75cf8ac0dfccd99960c64b125c02b815177261440134b80302"
     sha256 arm64_sonoma:   "3d2be9bbd88ca175407d8852d2711796d4b391202a418a8e7eecafd3cd92ec03"
     sha256 arm64_ventura:  "161367cc683c8292aaaebd85805f1b4f57f56b4345d94932e96fb6357597718b"
     sha256 arm64_monterey: "93c436057264891cfab1658f79b6b33192755107c5619e0d1f34a9556812d614"
@@ -64,16 +65,26 @@ class Moc < Formula
   depends_on "gettext" => :build
   depends_on "pkg-config" => :build
   depends_on "berkeley-db@5"
-  depends_on "ffmpeg@4" # FFmpeg 5 issue: http://moc.daper.net/node/3644
+  depends_on "ffmpeg@4" # FFmpeg 5 issue: https://moc.daper.net/node/3644
+  depends_on "flac"
   depends_on "jack"
+  depends_on "libogg"
+  depends_on "libsamplerate"
+  depends_on "libsndfile"
   depends_on "libtool"
+  depends_on "libvorbis"
   depends_on "ncurses"
+  depends_on "speex"
+
+  on_linux do
+    depends_on "alsa-lib"
+  end
 
   fails_with gcc: "5" # ffmpeg is compiled with GCC
 
   def install
     # Not needed for > 2.5.2
-    system "autoreconf", "-fvi"
+    system "autoreconf", "--force", "--install", "--verbose"
     system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make", "install"
   end

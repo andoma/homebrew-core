@@ -1,8 +1,8 @@
 class Lilypond < Formula
   desc "Music engraving system"
   homepage "https://lilypond.org"
-  url "https://lilypond.org/download/sources/v2.24/lilypond-2.24.3.tar.gz"
-  sha256 "df005f76ef7af5a4cd74a10f8e7115278b7fa79f14018937b65c109498ec44be"
+  url "https://lilypond.org/download/sources/v2.24/lilypond-2.24.4.tar.gz"
+  sha256 "e96fa03571c79f20e1979653afabdbe4ee42765a3d9fd14953f0cd9eea51781c"
   license all_of: [
     "GPL-3.0-or-later",
     "GPL-3.0-only",
@@ -20,13 +20,13 @@ class Lilypond < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "44d553b7f3a2a15a96609a572058e8e78048405d9e29d0b2f07f169d96091baa"
-    sha256 arm64_ventura:  "d4a18876c4f0782f255c04f06f46296080ed03303fb07241fe262ff017b9188d"
-    sha256 arm64_monterey: "d36e0de0d3dac922f10f91b8125f7515fc5653c9c3ca9eb07ee478e2d7e479c5"
-    sha256 sonoma:         "9c691bcbd6d627e811bcbb4c7fcd753bd9d7801564397f7a90365e4aecb0888f"
-    sha256 ventura:        "ebbfa335244e4346cc2fdc3bd86fa069f5f5954f9b8849f70dcf25740e306504"
-    sha256 monterey:       "76867f3e089a5bae9a63277dd43fa274a41b223ab45d646bf49756c1b53ed0f2"
-    sha256 x86_64_linux:   "2bac60e04b3588dbf714041de62c16fa122935c181c9a956fe629e9d52e2c45a"
+    rebuild 1
+    sha256 arm64_sequoia: "186ccba4e185bdb0160e66bc68c4e70594d77b9d18a863718886667817b0f8b0"
+    sha256 arm64_sonoma:  "80da0e56c2e27506e4a82b7cfcdfe9ca5e819ce2a52bc9c1cbdcc597557862db"
+    sha256 arm64_ventura: "38a76fb76615646d4b43b6578d368fac8daee24834dc049ea0f50ffaeca73b33"
+    sha256 sonoma:        "b31020b0176335c832d55556e5709b45b54ac04b2c0d04129d16a6a25ef8e6e7"
+    sha256 ventura:       "a4112ff2f62a0b79a6de8ba3c34db2167d0076949ac617eeb81f9335dd461607"
+    sha256 x86_64_linux:  "d3bd2174c750e48ee24e19959f3587eaeaca0e155ba8d8dc973e3d43511d89d5"
   end
 
   head do
@@ -39,20 +39,30 @@ class Lilypond < Formula
 
   depends_on "bison" => :build # bison >= 2.4.1 is required
   depends_on "fontforge" => :build
-  depends_on "gettext" => :build
   depends_on "pkg-config" => :build
   depends_on "t1utils" => :build
   depends_on "texinfo" => :build # makeinfo >= 6.1 is required
   depends_on "texlive" => :build
+  depends_on "bdw-gc"
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "ghostscript"
+  depends_on "glib"
   depends_on "guile"
   depends_on "pango"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   uses_from_macos "flex" => :build
   uses_from_macos "perl" => :build
+
+  on_macos do
+    depends_on "gettext"
+    depends_on "harfbuzz"
+  end
+
+  on_linux do
+    depends_on "gettext" => :build
+  end
 
   resource "font-urw-base35" do
     url "https://github.com/ArtifexSoftware/urw-base35-fonts/archive/refs/tags/20200910.tar.gz"
@@ -97,7 +107,7 @@ class Lilypond < Formula
     assert_predicate testpath/"test.pdf", :exist?
 
     output = shell_output("#{bin}/lilypond --define-default=show-available-fonts 2>&1")
-    output = output.encode("UTF-8", invalid: :replace, replace: "\ufffd")
+             .encode("UTF-8", invalid: :replace, replace: "\ufffd")
     common_styles = ["Regular", "Bold", "Italic", "Bold Italic"]
     {
       "C059"            => ["Roman", *common_styles[1..]],

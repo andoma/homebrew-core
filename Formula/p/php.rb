@@ -2,9 +2,9 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.3.3.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.3.3.tar.xz"
-  sha256 "b0a996276fe21fe9ca8f993314c8bc02750f464c7b0343f056fb0894a8dfa9d1"
+  url "https://www.php.net/distributions/php-8.3.13.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.3.13.tar.xz"
+  sha256 "89adb978cca209124fe53fd6327bc4966ca21213a7fa2e9504f854e340873018"
   license "PHP-3.01"
   revision 1
 
@@ -14,13 +14,12 @@ class Php < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "d26cae2ad9ac9b600d7c4a9a12e2a3e8faa9e47391764df9c0150ab412c61e30"
-    sha256 arm64_ventura:  "60c11d95421b0302400d336bdff4f6b6b30923256c48fc66137e4f4fc997dfc5"
-    sha256 arm64_monterey: "8372b3c0c9dcb4ab2358a0999ddab1e5b68360f012c591ed898db555a152d6af"
-    sha256 sonoma:         "bd1ddbb4d7e3ae847c8a865d7c9457160747928f4fc473d86ac49e9625b6c20e"
-    sha256 ventura:        "eca1e213116e0f68b508b6ebd01ab1ea1c126d2e217c53c185f7818db4d430bf"
-    sha256 monterey:       "e2fd441f27b2011390839a85636f99cdeaf866311555a3240d3272215c9bf132"
-    sha256 x86_64_linux:   "95cb80f027fee042f5cc0f03198eff64b05949042f8b394cc6b6f157efb9b98a"
+    sha256 arm64_sequoia: "15c560986b678304b096290de5943d82819c070fd10f2dd5d17de80dac9e21f3"
+    sha256 arm64_sonoma:  "4302da5c442fc94e48ebe38b5ddaa3f10cbed2ee7814c943cf7b5c551363e5bc"
+    sha256 arm64_ventura: "6aaa841763fb70aa5bc6ecd1d7438fb572aa84c962845b1cfd45913456835a11"
+    sha256 sonoma:        "89a4a8786d7f0e896918383e22b5f35c8ad6d9e09fe85323d782f031eb6ab191"
+    sha256 ventura:       "39f80dbed8b83782b872be7f035921a70d33de3040e8786b20209bfa6d2c8841"
+    sha256 x86_64_linux:  "c85a942302bbddf5d33dff3037084118599407bad7b6ccff5e9b2cc150e9e082"
   end
 
   head do
@@ -42,7 +41,7 @@ class Php < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
@@ -64,8 +63,6 @@ class Php < Formula
   uses_from_macos "zlib"
 
   on_macos do
-    depends_on "imap-uw"
-
     # PHP build system incorrectly links system libraries
     # see https://github.com/php/php-src/issues/10680
     patch :DATA
@@ -191,8 +188,6 @@ class Php < Formula
 
     if OS.mac?
       args << "--enable-dtrace"
-      args << "--with-imap=#{Formula["imap-uw"].opt_prefix}"
-      args << "--with-imap-ssl=#{Formula["openssl@3"].opt_prefix}"
       args << "--with-ldap-sasl"
       args << "--with-os-sdkpath=#{MacOS.sdk_path_if_needed}"
     else
@@ -207,7 +202,7 @@ class Php < Formula
     system "make", "install"
 
     # Allow pecl to install outside of Cellar
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
+    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
     orig_ext_dir = File.basename(extension_dir)
     inreplace bin/"php-config", lib/"php", prefix/"pecl"
     %w[development production].each do |mode|
@@ -265,7 +260,7 @@ class Php < Formula
     pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
     pecl_path.mkpath
     ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
+    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
     php_basename = File.basename(extension_dir)
     php_ext_dir = opt_prefix/"lib/php"/php_basename
 
@@ -342,8 +337,8 @@ class Php < Formula
                     (Formula["libpq"].opt_lib/shared_library("libpq", 5)).to_s
 
     system "#{sbin}/php-fpm", "-t"
-    system "#{bin}/phpdbg", "-V"
-    system "#{bin}/php-cgi", "-m"
+    system bin/"phpdbg", "-V"
+    system bin/"php-cgi", "-m"
     # Prevent SNMP extension to be added
     refute_match(/^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra")
@@ -404,7 +399,7 @@ class Php < Formula
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
       end
-      sleep 3
+      sleep 10
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
 
@@ -417,7 +412,7 @@ class Php < Formula
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"
       end
-      sleep 3
+      sleep 10
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
     ensure

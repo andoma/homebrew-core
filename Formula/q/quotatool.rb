@@ -2,18 +2,19 @@ class Quotatool < Formula
   desc "Edit disk quotas from the command-line"
   homepage "https://quotatool.ekenberg.se/"
   url "https://github.com/ekenberg/quotatool.git",
-    tag:      "v1.6.3",
-    revision: "a32e83b5cc414a0a28d4e703f6012349a92c2d4d"
+    tag:      "v1.6.5",
+    revision: "62180fb1cc7d5d4e90cbbb578cba6bcc967c7ca8"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3719605c12e295bafe7d4128b91483615bb7d77255d03174f20eaa53a8143872"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a370d1d4a0a8427ce965fb1f2a025744d2fb62ca9cee41a7def60659560dc978"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ff62f0d5ca83dd416cf61bef0b9f95dfd56a9004dc0a53bd3b494764e3f33808"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ba0e322a5e78b925f96f4e02e245dc734e5d3e748789d4dc1fb64df3e93f5af7"
-    sha256 cellar: :any_skip_relocation, ventura:        "05023c93011d4d1ee44908f6897dc58119cb365fbf5fd8f35b1c66ff3086f08d"
-    sha256 cellar: :any_skip_relocation, monterey:       "5f5e400588578a723c006145513aaf8bdb6f5db2d3e8ac7dd972369247e35d71"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "77effdde3aef3a46ff756aa1840b11e0e71d9597d7bf8fc41b047a79ebcce768"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2c0f6b1df823e091ee76ad2ed173177e9c4375f8f8cd0523b5989d4767a8d48e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "73fe8aa2a02124cafcf9abdac863eba005e9eb1ab81d8e135cd33f6eb2d40685"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d5a43288144374c56357b8086915aaca5eba18e53f0940837d4cf298e70d07e9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9eecb97ad263acbc09900928486b0fe14a1b87e4e8bdff42c86bcc1ca3d8c8bd"
+    sha256 cellar: :any_skip_relocation, sonoma:         "b978f4cf5786ea8301c04df5c0ca7454c18532af3dda7b6ebc873ef05a57113a"
+    sha256 cellar: :any_skip_relocation, ventura:        "aa6e214389d5b093d52adacca8254ed4938d2b22f00e49df43b7cae204eebeef"
+    sha256 cellar: :any_skip_relocation, monterey:       "2ef1c105633c850e2f2ecff526621787052f683e6aa463c8b8be85c50ea3d6dc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6c0feda58df20431481105e54c7cdc01e78168423035c50cbcf813c096dc5121"
   end
 
   on_macos do

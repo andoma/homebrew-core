@@ -1,8 +1,8 @@
 class VespaCli < Formula
   desc "Command-line tool for Vespa.ai"
   homepage "https://vespa.ai"
-  url "https://github.com/vespa-engine/vespa/archive/refs/tags/v8.302.40.tar.gz"
-  sha256 "880a83d03b4f9ef2450d370d8af443614f9a556ab67d20985edf81fe786a6da5"
+  url "https://github.com/vespa-engine/vespa/archive/refs/tags/v8.423.30.tar.gz"
+  sha256 "65edb626c202df9ecc12cc0c5a906b45da0f3ba966f7cdcdca6fe898ffc7805a"
   license "Apache-2.0"
 
   livecheck do
@@ -12,13 +12,12 @@ class VespaCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7a70989ec75bc27f0848ee6d5db527fee82de21a824f38b791e0a835c817d4e1"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f70951b3ad7521b96a36b2eda8bc51012dc6bac7d0c85d65d891a24218f7cdf9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ac663133c6155b9eb626d281361fb60e6b9ea2ab6f6d6d57e81abcf4717418dd"
-    sha256 cellar: :any_skip_relocation, sonoma:         "4dde3e9701ff94374d0d455dc84b6d3ed20c0c0d28a81d864954464fc9aa5d90"
-    sha256 cellar: :any_skip_relocation, ventura:        "14015e68c97fe7d8738c4a57c1014db3f41e208dcc2bbc1f0d98a8ac1f9c0990"
-    sha256 cellar: :any_skip_relocation, monterey:       "c760b1f3d9647b13197649bccad3570891363313af30151b028cadcf13456054"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "48ae250c0f9d4884a26380ee0adab9aec88aad15260f03950d7eabe22d40d391"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fe94d28ed1fb41960daa85bde76f38f51d79958215353c5ef139aca2d1f15b9a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "66cdeeb45995ed686f06b707cad8829610987b10722a30c4a51f018a01bfdec1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "400b1ece313a8af8e309cde7bacac263839d6378f15e7ecb6e9de224f34616e0"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a825730a5a99d3689ea690575063699e0e267264289d755be92a2bbcd09315ed"
+    sha256 cellar: :any_skip_relocation, ventura:       "84b8e82709f081aeec9db6dc9408ffb82c05c3cd7479bc67c5c0d38d74ac5932"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ddb8672f275bb5599dd1b86c6d649911b4bd41c29a6a0f364c9da93899578899"
   end
 
   depends_on "go" => :build
@@ -38,7 +37,7 @@ class VespaCli < Formula
     doc_id = "id:mynamespace:music::a-head-full-of-dreams"
     output = shell_output("#{bin}/vespa document get #{doc_id} 2>&1", 1)
     assert_match "Error: deployment not converged", output
-    system "#{bin}/vespa", "config", "set", "target", "cloud"
+    system bin/"vespa", "config", "set", "target", "cloud"
     assert_match "target = cloud", shell_output("#{bin}/vespa config get target")
   end
 end

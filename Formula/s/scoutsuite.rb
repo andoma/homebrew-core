@@ -3,31 +3,27 @@ class Scoutsuite < Formula
 
   desc "Open source multi-cloud security-auditing tool"
   homepage "https://github.com/nccgroup/ScoutSuite"
-  url "https://files.pythonhosted.org/packages/1f/9c/3d8b7323ef163f1fe3f4d1176676ba474e4bd2568cfd6004d6f9ebcd05a3/ScoutSuite-5.13.0.tar.gz"
-  sha256 "0ad1290c274324b18d44095d4d8a5c5d5fa71c9474ed65a3990e942f3bcbf281"
+  url "https://files.pythonhosted.org/packages/a9/41/4f375fac81c66e1475c3ae18753a86191f253cdf24c29f28c8861d6bb984/scoutsuite-5.14.0.tar.gz"
+  sha256 "b021ad340196865093fb5d6e247f2596ec856e24cb39eb6e3e886923befd1208"
   license "GPL-2.0-only"
+  revision 1
   head "https://github.com/nccgroup/ScoutSuite.git", branch: "master"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "20b64fde2a160f659e0705fe090fec9cf326c3e8f32a666d47a0f20103969f61"
-    sha256 cellar: :any,                 arm64_ventura:  "a7aa6bdc9510701f964bafea6e82fe3b6d9c86d1b96fe3ecea3aa6222fd6f946"
-    sha256 cellar: :any,                 arm64_monterey: "d7285719ca35388412911cb35b12f0ce9d4f561c81243475706470fee4aad9be"
-    sha256 cellar: :any,                 sonoma:         "8918787e0675437f5882e4ca020272b2f13cef97340f81079fd0c68a0a49c195"
-    sha256 cellar: :any,                 ventura:        "30c8b59afd96176376973232b7799548ddfd9366bc7547ae09287c00cdce2625"
-    sha256 cellar: :any,                 monterey:       "d6482e7e7e9d6789de6bfb82500685b4e1e83f829ae8ff2a966e5f66ea797a4a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "196a22fe255cb51c5c995c1fb99b3c367f35b7c0d070cce1e41b143a0f38dcf4"
+    sha256 cellar: :any,                 arm64_sequoia: "03546218dcb8138d7ab4a7558c7044c7ba27b0f0cfdf5137338199e9068ed21a"
+    sha256 cellar: :any,                 arm64_sonoma:  "86a488ff58318d45988433461b8121726f01f716805a13ff6ae31319ca4161ff"
+    sha256 cellar: :any,                 arm64_ventura: "209cd4d19be4b8c0dcbc1c992aa2535e817927a422169b52c0b0e6f3de64760a"
+    sha256 cellar: :any,                 sonoma:        "f8467d66d4c3797366d0a7e301ad9003e83dbc130096ad07dd4d4381085877d9"
+    sha256 cellar: :any,                 ventura:       "e5318927183e470cd64c455221aeecbccf8907d3db4651ee63171304c5e61345"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e27dd6a5f92be0c162aca7b40e5e24103d85ddb17f85f8c30cc348e96e85b46a"
   end
 
   depends_on "rust" => :build # for pydantic-core
-  depends_on "python-certifi"
-  depends_on "python-cryptography"
-  depends_on "python-pyparsing"
-  depends_on "python-pytz"
-  depends_on "python-typing-extensions"
-  depends_on "python@3.12"
-  depends_on "pyyaml"
-  depends_on "six"
+  depends_on "certifi"
+  depends_on "cryptography"
+  depends_on "libyaml"
+  depends_on "python@3.13"
 
   resource "aliyun-python-sdk-actiontrail" do
     url "https://files.pythonhosted.org/packages/69/ec/76d2733699ffb003dffa0da0f0b1cbc34ea48e535f7639deb079b73bd5ed/aliyun-python-sdk-actiontrail-2.2.0.tar.gz"
@@ -35,18 +31,18 @@ class Scoutsuite < Formula
   end
 
   resource "aliyun-python-sdk-core" do
-    url "https://files.pythonhosted.org/packages/1e/e3/8623c0305022610466ded2b0010a7221e9585046116263dd27cb2e56df36/aliyun-python-sdk-core-2.14.0.tar.gz"
-    sha256 "c806815a48ffdb894cc5bce15b8259b9a3012cc0cda01be2f3dfbb844f3f4f21"
+    url "https://files.pythonhosted.org/packages/3e/09/da9f58eb38b4fdb97ba6523274fbf445ef6a06be64b433693da8307b4bec/aliyun-python-sdk-core-2.16.0.tar.gz"
+    sha256 "651caad597eb39d4fad6cf85133dffe92837d53bdf62db9d8f37dab6508bb8f9"
   end
 
   resource "aliyun-python-sdk-ecs" do
-    url "https://files.pythonhosted.org/packages/03/5d/0b64c86a5fad0e774c21b66a3292abfe4b972f1d88d7209eb3d95a5c580e/aliyun-python-sdk-ecs-4.24.68.tar.gz"
-    sha256 "dbe604938ac42b5aa2451378863a821d157d23037c631717d5e6a4284a0448e2"
+    url "https://files.pythonhosted.org/packages/22/f6/ecc9bbf05a8cb2d763795892184f6578adc6d580461a6859313fc1a6c2ad/aliyun-python-sdk-ecs-4.24.75.tar.gz"
+    sha256 "0596e4ffdba62b25e6cf67b1052947a3bb9705283d981793a7f75b3412a07a4d"
   end
 
   resource "aliyun-python-sdk-kms" do
-    url "https://files.pythonhosted.org/packages/cb/87/f0004243da50bb102715fdc92e2fbff92b039bfbd16400c57a7dba572308/aliyun-python-sdk-kms-2.16.2.tar.gz"
-    sha256 "f87234a8b64d457ca2338f87650db18a3ce7f7dbc9bfef71efe8f2894aded3d6"
+    url "https://files.pythonhosted.org/packages/a8/2c/9877d0e6b18ecf246df671ac65a5d1d9fecbf85bdcb5d43efbde0d4662eb/aliyun-python-sdk-kms-2.16.5.tar.gz"
+    sha256 "f328a8a19d83ecbb965ffce0ec1e9930755216d104638cd95ecd362753b813b3"
   end
 
   resource "aliyun-python-sdk-ocs" do
@@ -60,8 +56,8 @@ class Scoutsuite < Formula
   end
 
   resource "aliyun-python-sdk-rds" do
-    url "https://files.pythonhosted.org/packages/22/04/c9a8eeddff364792a62ff7f1ae40deadc2f58a9488ad603c6d371e8a422c/aliyun-python-sdk-rds-2.7.43.tar.gz"
-    sha256 "86c67ac25241487fb7d123a6848436e771a12c3ef9bbc5a8d5720eb9ecbcc60b"
+    url "https://files.pythonhosted.org/packages/b5/f5/e16d80fe1ae7cc3e96a2cc8d5b8560a57febdf1299b46f27a43d3571ffdd/aliyun-python-sdk-rds-2.7.49.tar.gz"
+    sha256 "13e049e377d2c0ae3b6ce6bdd233b8c41476d5cc4556a8d8571773cb6a01fed5"
   end
 
   resource "aliyun-python-sdk-sts" do
@@ -74,14 +70,9 @@ class Scoutsuite < Formula
     sha256 "e26b9905be31755727e0b61d3f70090a12ecb0f6a0bfeaa7be369a78d04ebeb1"
   end
 
-  resource "annotated-types" do
-    url "https://files.pythonhosted.org/packages/67/fe/8c7b275824c6d2cd17c93ee85d0ee81c090285b6d52f4876ccc47cf9c3c4/annotated_types-0.6.0.tar.gz"
-    sha256 "563339e807e53ffd9c267e99fc6d9ea23eb8443c08f112651963e24e22f84a5d"
-  end
-
   resource "asyncio-throttle" do
-    url "https://files.pythonhosted.org/packages/13/6f/0e2d42c0e95d50edf63147b8a742703061945e02760f25d6a0e8f028ccb0/asyncio-throttle-1.0.2.tar.gz"
-    sha256 "2675282e99d9129ecc446f917e174bc205c65e36c602aa18603b4948567fcbd4"
+    url "https://files.pythonhosted.org/packages/c2/b4/0b6bd59151d979c3d9902d9b35c992aa1e55ab0f60d8b0b7fbbf61dd3138/asyncio_throttle-0.1.1-py3-none-any.whl"
+    sha256 "a01a56f3671e961253cf262918f3e0741e222fc50d57d981ba5c801f284eccfe"
   end
 
   resource "autocommand" do
@@ -101,8 +92,8 @@ class Scoutsuite < Formula
   end
 
   resource "azure-core" do
-    url "https://files.pythonhosted.org/packages/e3/39/328faea9f656075dbb8ecf70f1a4697bc80510fcc70e3e8f0090c34fc00c/azure-core-1.29.5.tar.gz"
-    sha256 "52983c89d394c6f881a121e5101c5fa67278ca3b1f339c8fb2ef39230c70e9ac"
+    url "https://files.pythonhosted.org/packages/03/7a/f79ad135a276a37e61168495697c14ba1721a52c3eab4dae2941929c79f8/azure_core-1.31.0.tar.gz"
+    sha256 "656a0dd61e1869b1506b7c6a3b31d62f15984b1a573d6326f6aa2f3e4123284b"
   end
 
   resource "azure-identity" do
@@ -166,8 +157,8 @@ class Scoutsuite < Formula
   end
 
   resource "azure-mgmt-storage" do
-    url "https://files.pythonhosted.org/packages/d9/9a/31529fb92dc5a8c0a0eae73a0e8af8696b1330f53799b93f0aa59566d674/azure-mgmt-storage-16.0.0.zip"
-    sha256 "2f9d714d9722b1ef4bac6563676612e6e795c4e90f6f3cd323616fdadb0a99e5"
+    url "https://files.pythonhosted.org/packages/f5/a3/c1877ded12ea772db0e8ddb374c9252ae958e38ae85301731e927cb8253b/azure-mgmt-storage-17.0.0.zip"
+    sha256 "c0e3fd99028d98c80dddabe1c22dfeb3d694e5c1393c6de80766eb240739e4bc"
   end
 
   resource "azure-mgmt-web" do
@@ -176,33 +167,33 @@ class Scoutsuite < Formula
   end
 
   resource "boto3" do
-    url "https://files.pythonhosted.org/packages/07/2d/6b217bb14849a79d6c419b96518e55252995b9857b1df52b952cbabe066b/boto3-1.29.0.tar.gz"
-    sha256 "3e90ea2faa3e9892b9140f857911f9ef0013192a106f50d0ec7b71e8d1afc90a"
+    url "https://files.pythonhosted.org/packages/b8/29/10988ceaa300ddc628cb899875d85d9998e3da4803226398e002d95b2741/boto3-1.35.39.tar.gz"
+    sha256 "670f811c65e3c5fe4ed8c8d69be0b44b1d649e992c0fc16de43816d1188f88f1"
   end
 
   resource "botocore" do
-    url "https://files.pythonhosted.org/packages/9b/e9/84ae72bafa96fe7b6d7e5dd3cb2a97cf1ff75eea5ceb0b870b6c1d37e442/botocore-1.32.0.tar.gz"
-    sha256 "95fe3357b9ddc4559941dbea0f0a6b8fc043305f013b7ae2a85dff0c3b36ee92"
+    url "https://files.pythonhosted.org/packages/f7/28/d83dbd69d7015892b53ada4fded79a5bc1b7d77259361eb8302f88c2da81/botocore-1.35.39.tar.gz"
+    sha256 "cb7f851933b5ccc2fba4f0a8b846252410aa0efac5bfbe93b82d10801f5f8e90"
   end
 
   resource "cachetools" do
-    url "https://files.pythonhosted.org/packages/10/21/1b6880557742c49d5b0c4dcf0cf544b441509246cdd71182e0847ac859d5/cachetools-5.3.2.tar.gz"
-    sha256 "086ee420196f7b2ab9ca2db2520aca326318b68fe5ba8bc4d49cca91add450f2"
+    url "https://files.pythonhosted.org/packages/c3/38/a0f315319737ecf45b4319a8cd1f3a908e29d9277b46942263292115eee7/cachetools-5.5.0.tar.gz"
+    sha256 "2cc24fb4cbe39633fb7badd9db9ca6295d766d9c2995f245725a46715d050f2a"
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
-    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "cheroot" do
-    url "https://files.pythonhosted.org/packages/08/7c/95c154177b16077de0fec1b821b0d8b3df2b59c5c7b3575a9c1bf52a437e/cheroot-10.0.0.tar.gz"
-    sha256 "59c4a1877fef9969b3c3c080caaaf377e2780919437853fc0d32a9df40b311f0"
+    url "https://files.pythonhosted.org/packages/63/e2/f85981a51281bd30525bf664309332faa7c81782bb49e331af603421dbd1/cheroot-10.0.1.tar.gz"
+    sha256 "e0b82f797658d26b8613ec8eb563c3b08e6bd6a7921e9d5089bd1175ad1b1740"
   end
 
   resource "cherrypy" do
-    url "https://files.pythonhosted.org/packages/60/ea/6c4d16b0cd1f4f64a478bac8a37d75a585e854afb5693ce80a9711efdc4a/CherryPy-18.8.0.tar.gz"
-    sha256 "9b48cfba8a2f16d5b6419cc657e6d51db005ba35c5e3824e4728bb03bbc7ef9b"
+    url "https://files.pythonhosted.org/packages/93/e8/2f7ef142d1962d08a8885c4c9942212abecad6a80ccdd1620fd1f5c993fd/cherrypy-18.10.0.tar.gz"
+    sha256 "6c70e78ee11300e8b21c0767c542ae6b102a49cac5cfd4e3e313d7bb907c5891"
   end
 
   resource "cherrypy-cors" do
@@ -211,8 +202,8 @@ class Scoutsuite < Formula
   end
 
   resource "circuitbreaker" do
-    url "https://files.pythonhosted.org/packages/92/ec/7f1dd19e3878f5391afb508e6a2fd8d9e5b176ca2992b90b55926c7341d8/circuitbreaker-1.4.0.tar.gz"
-    sha256 "80b7bda803d9a20e568453eb26f3530cd9bf602d6414f6ff6a74c611603396d2"
+    url "https://files.pythonhosted.org/packages/23/57/3bc8f0885c6914336d0b2fe36bf740476f0c827b3fb991993d67c1a9d3f3/circuitbreaker-2.0.0.tar.gz"
+    sha256 "28110761ca81a2accbd6b33186bc8c433e69b0933d85e89f280028dbb8c1dd14"
   end
 
   resource "coloredlogs" do
@@ -225,49 +216,59 @@ class Scoutsuite < Formula
     sha256 "dc7051a0db5f2bd48665a990d3ec1cc305a466a77358ca4492826f41f283601e"
   end
 
+  resource "deprecated" do
+    url "https://files.pythonhosted.org/packages/92/14/1e41f504a246fc224d2ac264c227975427a85caf37c3979979edb9b1b232/Deprecated-1.2.14.tar.gz"
+    sha256 "e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3"
+  end
+
+  resource "durationpy" do
+    url "https://files.pythonhosted.org/packages/31/e9/f49c4e7fccb77fa5c43c2480e09a857a78b41e7331a75e128ed5df45c56b/durationpy-0.9.tar.gz"
+    sha256 "fd3feb0a69a0057d582ef643c355c40d2fa1c942191f914d12203b1a01ac722a"
+  end
+
   resource "google-api-core" do
-    url "https://files.pythonhosted.org/packages/47/4f/0a79e4ae0da191bc77807a8cca13933d10e2b3a0b50e85f05faa26a0d57e/google-api-core-1.34.0.tar.gz"
-    sha256 "6fb380f49d19ee1d09a9722d0379042b7edb06c0112e4796c7a395078a043e71"
+    url "https://files.pythonhosted.org/packages/c8/b0/7c8d4a03960da803a4c471545fd7b3404d2819f1585ba3f3d97e887aa91d/google-api-core-1.34.1.tar.gz"
+    sha256 "3399c92887a97d33038baa4bfd3bf07acc05d474b0171f333e1f641c1364e552"
   end
 
   resource "google-api-python-client" do
-    url "https://files.pythonhosted.org/packages/f9/26/6e4218cda2e15e7b2120acf68c470f49ec7c811bc82c09b4befa5c66386e/google-api-python-client-2.108.0.tar.gz"
-    sha256 "6396efca83185fb205c0abdbc1c2ee57b40475578c6af37f6d0e30a639aade99"
+    url "https://files.pythonhosted.org/packages/ff/36/a587319840f32c8a28b6700805ad18a70690f985538ea49e87e210118884/google_api_python_client-2.149.0.tar.gz"
+    sha256 "b9d68c6b14ec72580d66001bd33c5816b78e2134b93ccc5cf8f624516b561750"
   end
 
   resource "google-auth" do
-    url "https://files.pythonhosted.org/packages/f9/ff/06d757a319b551bccd70772dc656dd0bdedec54e72e407bdd6162116cb3a/google-auth-2.23.4.tar.gz"
-    sha256 "79905d6b1652187def79d491d6e23d0cbb3a21d3c7ba0dbaa9c8a01906b13ff3"
+    url "https://files.pythonhosted.org/packages/a1/37/c854a8b1b1020cf042db3d67577c6f84cd1e8ff6515e4f5498ae9e444ea5/google_auth-2.35.0.tar.gz"
+    sha256 "f4c64ed4e01e8e8b646ef34c018f8bf3338df0c8e37d8b3bba40e7f574a3278a"
   end
 
   resource "google-auth-httplib2" do
-    url "https://files.pythonhosted.org/packages/0f/7a/83c3a1f8419d66f91672ad7f2cea57d044f7f0b3c1740389a468ff3937ed/google-auth-httplib2-0.1.1.tar.gz"
-    sha256 "c64bc555fdc6dd788ea62ecf7bccffcf497bf77244887a3f3d7a5a02f8e3fc29"
+    url "https://files.pythonhosted.org/packages/56/be/217a598a818567b28e859ff087f347475c807a5649296fb5a817c58dacef/google-auth-httplib2-0.2.0.tar.gz"
+    sha256 "38aa7badf48f974f1eb9861794e9c0cb2a0511a4ec0679b1f886d108f5640e05"
   end
 
   resource "google-cloud-appengine-logging" do
-    url "https://files.pythonhosted.org/packages/26/f3/fc3e9bd221c76fbe1e94839d001deb1640370a8563f8a5d2b24ed762aa55/google-cloud-appengine-logging-1.3.2.tar.gz"
-    sha256 "a2989fca0e88463b56432aa821e64b81c3d171ee37b84771189b48e8b97cd496"
+    url "https://files.pythonhosted.org/packages/c9/e7/8439212aae2af478c40ea535affe5f1a6132e52b49cec0700e35a8b39813/google_cloud_appengine_logging-1.4.5.tar.gz"
+    sha256 "de7d766e5d67b19fc5833974b505b32d2a5bbdfb283fd941e320e7cfdae4cb83"
   end
 
   resource "google-cloud-audit-log" do
-    url "https://files.pythonhosted.org/packages/b1/3d/48e8b2c0cc7113d1674526b609944ef77d7182f233b23c50fec7106b2e2c/google-cloud-audit-log-0.2.5.tar.gz"
-    sha256 "86e2faba3383adc8fd04a5bd7fd4f960b3e4aedaa7ed950f2f891ce16902eb6b"
+    url "https://files.pythonhosted.org/packages/eb/81/c345efe9261a4b0bd0c5957f1685d2b4cc4522ec4fc7b0861f691d4476e7/google_cloud_audit_log-0.3.0.tar.gz"
+    sha256 "901428b257020d8c1d1133e0fa004164a555e5a395c7ca3cdbb8486513df3a65"
   end
 
   resource "google-cloud-container" do
-    url "https://files.pythonhosted.org/packages/8e/48/02852dcc5ca5fb7ebde0ac9a5a4b92635691270bfd1cdcac729c02e40f9e/google-cloud-container-2.33.0.tar.gz"
-    sha256 "76926649eecd8e6983a9dd06acbc66d5efd516fa3ae3e102351570b91a63ae62"
+    url "https://files.pythonhosted.org/packages/11/ee/49c8148f9ae8a0b63e394ef76409154dcd848cdec24fb1570dff7b58833e/google_cloud_container-2.52.0.tar.gz"
+    sha256 "7a2fac7680a6a5bb2776b494a1fd1e2e64e4935643b2a01fb93bb8d1bb73b0ef"
   end
 
   resource "google-cloud-core" do
-    url "https://files.pythonhosted.org/packages/6b/60/dcc26e42d3754ac57c51a524f53c988f2aa755faec4cc00a232bb0077637/google-cloud-core-2.3.3.tar.gz"
-    sha256 "37b80273c8d7eee1ae816b3a20ae43585ea50506cb0e60f3cf5be5f87f1373cb"
+    url "https://files.pythonhosted.org/packages/b8/1f/9d1e0ba6919668608570418a9a51e47070ac15aeff64261fb092d8be94c0/google-cloud-core-2.4.1.tar.gz"
+    sha256 "9b7749272a812bde58fff28868d0c5e2f585b82f37e09a1f6ed2d4d10f134073"
   end
 
   resource "google-cloud-iam" do
-    url "https://files.pythonhosted.org/packages/cf/a1/d24afae917ed8c89f744a804def7c634e9a8a888b64043e8da958e6ec0cd/google-cloud-iam-2.12.2.tar.gz"
-    sha256 "6031d0c1911fc79ce0b8bb8f6fe1645283b9c1a9188b483dae623b53b4d8181c"
+    url "https://files.pythonhosted.org/packages/36/3a/312612a3d81080783f374298ee2774fff73e894f248f6822749fd80a71ef/google_cloud_iam-2.15.2.tar.gz"
+    sha256 "09b135d96ba2cf6f80a7ed8011436e89d2588e8bb23cd6145c476302f4871a82"
   end
 
   resource "google-cloud-kms" do
@@ -276,8 +277,8 @@ class Scoutsuite < Formula
   end
 
   resource "google-cloud-logging" do
-    url "https://files.pythonhosted.org/packages/02/76/3d7ca9f2bff3bb0e880d40d718c1dbe9ff445dcb1cc0dbaa6204c3f8efaa/google-cloud-logging-3.8.0.tar.gz"
-    sha256 "fdd916e59a84aa8c02e8148d7fdd3b3b623c57b0c1ff71f43297ce8e50fc1eab"
+    url "https://files.pythonhosted.org/packages/de/7c/2f52b84ad069637d8ef21850f0e3081181f91b4c52503fe2569bbc0749fb/google_cloud_logging-3.11.2.tar.gz"
+    sha256 "4897441c2b74f6eda9181c23a8817223b6145943314a821d64b729d30766cb2b"
   end
 
   resource "google-cloud-monitoring" do
@@ -286,28 +287,28 @@ class Scoutsuite < Formula
   end
 
   resource "google-cloud-resource-manager" do
-    url "https://files.pythonhosted.org/packages/09/f3/1a6aa2122a84204949a3f685b4a4375497891172831375551c1a9681a89d/google-cloud-resource-manager-1.10.4.tar.gz"
-    sha256 "456b25ddda3d4cd27488a72736bbc3af04d713ae2fe3655c01b66a339d28d679"
+    url "https://files.pythonhosted.org/packages/62/32/14d345dee1f290a26bd639da8edbca30958865b7cc7207961e10d2f32282/google_cloud_resource_manager-1.12.5.tar.gz"
+    sha256 "b7af4254401ed4efa3aba3a929cb3ddb803fa6baf91a78485e45583597de5891"
   end
 
   resource "google-cloud-storage" do
-    url "https://files.pythonhosted.org/packages/f1/94/665b3b7394477704cc3e894e37e04aa7c68575d30f46c62dff9ef8f2e8a6/google-cloud-storage-2.13.0.tar.gz"
-    sha256 "f62dc4c7b6cd4360d072e3deb28035fbdad491ac3d9b0b1815a12daea10f37c7"
+    url "https://files.pythonhosted.org/packages/16/88/fc34f8c177ad56408d42f4b54c10402366d309737fae206d59fa16a4a27a/google-cloud-storage-2.14.0.tar.gz"
+    sha256 "2d23fcf59b55e7b45336729c148bb1c464468c69d5efbaee30f7201dd90eb97e"
   end
 
   resource "google-crc32c" do
-    url "https://files.pythonhosted.org/packages/d3/a5/4bb58448fffd36ede39684044df93a396c13d1ea3516f585767f9f960352/google-crc32c-1.5.0.tar.gz"
-    sha256 "89284716bc6a5a415d4eaa11b1726d2d60a0cd12aadf5439828353662ede9dd7"
+    url "https://files.pythonhosted.org/packages/67/72/c3298da1a3773102359c5a78f20dae8925f5ea876e37354415f68594a6fb/google_crc32c-1.6.0.tar.gz"
+    sha256 "6eceb6ad197656a1ff49ebfbbfa870678c75be4344feb35ac1edf694309413dc"
   end
 
   resource "google-resumable-media" do
-    url "https://files.pythonhosted.org/packages/66/3a/66ff4e1e862b39b1ac6680bd29cc98bd0b65c150daabfae356694d3390de/google-resumable-media-2.6.0.tar.gz"
-    sha256 "972852f6c65f933e15a4a210c2b96930763b47197cdf4aa5f5bea435efb626e7"
+    url "https://files.pythonhosted.org/packages/58/5a/0efdc02665dca14e0837b62c8a1a93132c264bd02054a15abb2218afe0ae/google_resumable_media-2.7.2.tar.gz"
+    sha256 "5280aed4629f2b60b847b0d42f9857fd4935c11af266744df33d8074cae92fe0"
   end
 
   resource "googleapis-common-protos" do
-    url "https://files.pythonhosted.org/packages/95/41/f9d4425eac5cec8c0356575b8f183e8f1f7206875b1e748bd3af4b4a8a1e/googleapis-common-protos-1.61.0.tar.gz"
-    sha256 "8a64866a97f6304a7179873a465d6eee97b7a24ec6cfd78e0f575e96b821240b"
+    url "https://files.pythonhosted.org/packages/53/3b/1599ceafa875ffb951480c8c74f4b77646a6b80e80970698f2aa93c216ce/googleapis_common_protos-1.65.0.tar.gz"
+    sha256 "334a29d07cddc3aa01dee4988f9afd9b2916ee2ff49d6b757155dc0d197852c0"
   end
 
   resource "grpc-google-iam-v1" do
@@ -316,8 +317,8 @@ class Scoutsuite < Formula
   end
 
   resource "grpcio" do
-    url "https://files.pythonhosted.org/packages/93/95/7c72028fe9fc46748fb769b13a1e0923acbb79095cd5124b8bac0cebd38c/grpcio-1.59.2.tar.gz"
-    sha256 "d8f9cd4ad1be90b0cf350a2f04a38a36e44a026cac1e036ac593dc48efe91d52"
+    url "https://files.pythonhosted.org/packages/71/d1/49a96df4eb1d805cf546247df40636515416d2d5c66665e5129c8b4162a8/grpcio-1.66.2.tar.gz"
+    sha256 "563588c587b75c34b928bc428548e5b00ea38c46972181a4d8b75ba7e3f24231"
   end
 
   resource "grpcio-status" do
@@ -346,38 +347,38 @@ class Scoutsuite < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
-  resource "inflect" do
-    url "https://files.pythonhosted.org/packages/9f/90/1d0a889847fdce963ebe9684de24a749e4fad627bf595e9f0d32730f85a8/inflect-7.0.0.tar.gz"
-    sha256 "63da9325ad29da81ec23e055b41225795ab793b4ecb483be5dc1fa363fd4717e"
+  resource "importlib-metadata" do
+    url "https://files.pythonhosted.org/packages/c0/bd/fa8ce65b0a7d4b6d143ec23b0f5fd3f7ab80121078c465bc02baeaab22dc/importlib_metadata-8.4.0.tar.gz"
+    sha256 "9a547d3bc3608b025f93d403fdd1aae741c24fbb8314df4b155675742ce303c5"
   end
 
   resource "isodate" do
-    url "https://files.pythonhosted.org/packages/db/7a/c0a56c7d56c7fa723988f122fa1f1ccf8c5c4ccc48efad0d214b49e5b1af/isodate-0.6.1.tar.gz"
-    sha256 "48c5881de7e8b0a0d648cb024c8062dc84e7b840ed81e864c7614fd3c127bde9"
+    url "https://files.pythonhosted.org/packages/54/4d/e940025e2ce31a8ce1202635910747e5a87cc3a6a6bb2d00973375014749/isodate-0.7.2.tar.gz"
+    sha256 "4cd1aa0f43ca76f4a6c6c0292a85f40b35ec2e43e315b59f06e6d32171a953e6"
   end
 
   resource "jaraco-collections" do
-    url "https://files.pythonhosted.org/packages/de/b5/8ea883dc5161d844c97f6472ed66cd8f7644ef70659977819f76425106f4/jaraco.collections-4.3.0.tar.gz"
-    sha256 "74ffc23fccfee4de0a2ebf556a33675b6a3c003d6335947d3122a0bc8822c8e4"
+    url "https://files.pythonhosted.org/packages/8c/ed/3f0ef2bcf765b5a3d58ecad8d825874a3af1e792fa89f89ad79f090a4ccc/jaraco_collections-5.1.0.tar.gz"
+    sha256 "0e4829409d39ad18a40aa6754fee2767f4d9730c4ba66dc9df89f1d2756994c2"
   end
 
   resource "jaraco-context" do
-    url "https://files.pythonhosted.org/packages/7c/b4/fa71f82b83ebeed95fe45ce587d6cba85b7c09ef3d9f61602f92f45e90db/jaraco.context-4.3.0.tar.gz"
-    sha256 "4dad2404540b936a20acedec53355bdaea223acb88fd329fa6de9261c941566e"
+    url "https://files.pythonhosted.org/packages/df/ad/f3777b81bf0b6e7bc7514a1656d3e637b2e8e15fab2ce3235730b3e7a4e6/jaraco_context-6.0.1.tar.gz"
+    sha256 "9bae4ea555cf0b14938dc0aee7c9f32ed303aa20a3b73e7dc80111628792d1b3"
   end
 
   resource "jaraco-functools" do
-    url "https://files.pythonhosted.org/packages/57/7c/fe770e264913f9a49ddb9387cca2757b8d7d26f06735c1bfbb018912afce/jaraco.functools-4.0.0.tar.gz"
-    sha256 "c279cb24c93d694ef7270f970d499cab4d3813f4e08273f95398651a634f0925"
+    url "https://files.pythonhosted.org/packages/ab/23/9894b3df5d0a6eb44611c36aec777823fc2e07740dabbd0b810e19594013/jaraco_functools-4.1.0.tar.gz"
+    sha256 "70f7e0e2ae076498e212562325e805204fc092d7b4c17e0e86c959e249701a9d"
   end
 
   resource "jaraco-text" do
-    url "https://files.pythonhosted.org/packages/cd/32/2d0656905672c06c830dd1c85d11c5edbd5203f7ef6522f7c080a95c3470/jaraco.text-3.11.1.tar.gz"
-    sha256 "333a5df2148f7139718607cdf352fe1d95162971a7299c380dcc24dab0168980"
+    url "https://files.pythonhosted.org/packages/4f/00/1b4dbbc5c6dcb87a4278cc229b2b560484bf231bba7922686c5139e5f934/jaraco_text-4.0.0.tar.gz"
+    sha256 "5b71fecea69ab6f939d4c906c04fee1eda76500d1641117df6ec45b865f10db0"
   end
 
   resource "jmespath" do
@@ -386,18 +387,18 @@ class Scoutsuite < Formula
   end
 
   resource "kubernetes" do
-    url "https://files.pythonhosted.org/packages/3c/5e/d27f39f447137a9a3d1f31142c77ce74bcedfda7dafe922d725c7ef2da33/kubernetes-28.1.0.tar.gz"
-    sha256 "1468069a573430fb1cb5ad22876868f57977930f80a6749405da31cd6086a7e9"
+    url "https://files.pythonhosted.org/packages/7e/bd/ffcd3104155b467347cd9b3a64eb24182e459579845196b3a200569c8912/kubernetes-31.0.0.tar.gz"
+    sha256 "28945de906c8c259c1ebe62703b56a03b714049372196f854105afe4e6d014c0"
   end
 
   resource "more-itertools" do
-    url "https://files.pythonhosted.org/packages/2d/73/3557e45746fcaded71125c0a1c0f87616e8258c78391f0c365bf97bbfc99/more-itertools-10.1.0.tar.gz"
-    sha256 "626c369fa0eb37bac0291bce8259b332fd59ac792fa5497b59837309cd5b114a"
+    url "https://files.pythonhosted.org/packages/51/78/65922308c4248e0eb08ebcbe67c95d48615cc6f27854b6f2e57143e9178f/more-itertools-10.5.0.tar.gz"
+    sha256 "5482bfef7849c25dc3c6dd53a6173ae4795da2a41a80faea6700d9f5846c5da6"
   end
 
   resource "msal" do
-    url "https://files.pythonhosted.org/packages/df/55/2e3047c723a2e3ed880b8a37ab020419c2bae1c0ba3b994fefe0508cb351/msal-1.25.0.tar.gz"
-    sha256 "f44329fdb59f4f044c779164a34474b8a44ad9e4940afbc4c3a3a2bbe90324d9"
+    url "https://files.pythonhosted.org/packages/59/04/8d7aa5c671a26ca5612257fd419f97380ba89cdd231b2eb67df58483796d/msal-1.31.0.tar.gz"
+    sha256 "2c4f189cf9cc8f00c80045f66d39b7c0f3ed45873fd3d1f2af9f22db2e12ff4b"
   end
 
   resource "msal-extensions" do
@@ -416,8 +417,8 @@ class Scoutsuite < Formula
   end
 
   resource "netaddr" do
-    url "https://files.pythonhosted.org/packages/48/4c/2491bfdb868c3f40d985037fa64a3903c125f45d7d3025640e05715db7a3/netaddr-0.9.0.tar.gz"
-    sha256 "7b46fa9b1a2d71fd5de9e4a3784ef339700a53a08c8040f08baf5f1194da0128"
+    url "https://files.pythonhosted.org/packages/54/90/188b2a69654f27b221fba92fda7217778208532c962509e959a9cee5229d/netaddr-1.3.0.tar.gz"
+    sha256 "5c3c3d9895b551b763779ba7db7a03487dc1f8e3b385af819af341ae9ef6e48a"
   end
 
   resource "oauth2client" do
@@ -431,23 +432,28 @@ class Scoutsuite < Formula
   end
 
   resource "oci" do
-    url "https://files.pythonhosted.org/packages/f1/5d/29b88819f23cde31f7043dac964210379485a03a3b0ee5a30d8cde4a14c9/oci-2.116.0.tar.gz"
-    sha256 "3098f04de6279206f41f5ec321fe1b01abf0884b5e547bdffe887518cf9da460"
+    url "https://files.pythonhosted.org/packages/68/56/b828096e323c140edce4656b2ad073d5b662c9602c89658d4a33a9573d09/oci-2.135.2.tar.gz"
+    sha256 "520f78983c5246eae80dd5ecfd05e3a565c8b98d02ef0c1b11ba1f61bcccb61d"
+  end
+
+  resource "opentelemetry-api" do
+    url "https://files.pythonhosted.org/packages/c9/83/93114b6de85a98963aec218a51509a52ed3f8de918fe91eb0f7299805c3f/opentelemetry_api-1.27.0.tar.gz"
+    sha256 "ed673583eaa5f81b5ce5e86ef7cdaf622f88ef65f0b9aab40b843dcae5bef342"
   end
 
   resource "oss2" do
-    url "https://files.pythonhosted.org/packages/b2/9c/a16e0d92ccef9ee31f5c1ae2a96d5502bbed94eae554c31c77e07c018920/oss2-2.18.3.tar.gz"
-    sha256 "4e61f546a17cc5c4a2efc0baee83e4b12a64fba87f13ff51166d269ab4629bea"
+    url "https://files.pythonhosted.org/packages/e2/ec/31baa9e9fa4a71aab9603e184db495b7cb4d1034af6bec0f11ba7cca034f/oss2-2.19.0.tar.gz"
+    sha256 "9ca54a7921f32f32651a36f2a527bf45e03bb02f3a744877e30f1e842b0f2a0b"
   end
 
   resource "policyuniverse" do
-    url "https://files.pythonhosted.org/packages/18/47/e58a8e38dd0d69500b473b8d9bc549bb468af037220279c59d9affe84041/policyuniverse-1.5.1.20230817.tar.gz"
-    sha256 "7920896195af163230635f1a5cee0958f56003ef8c421f805ec81f134f80a57c"
+    url "https://files.pythonhosted.org/packages/03/a2/6cf14186b746fbcab73e507968e0b1927ad2e91dcb67af967f65d6cbe6c1/policyuniverse-1.5.1.20231109.tar.gz"
+    sha256 "74e56d410560915c2c5132e361b0130e4bffe312a2f45230eac50d7c094bc40a"
   end
 
   resource "portalocker" do
-    url "https://files.pythonhosted.org/packages/35/00/0f230921ba852226275762ea3974b87eeca36e941a13cd691ed296d279e5/portalocker-2.8.2.tar.gz"
-    sha256 "2b035aa7828e46c58e9b31390ee1f169b98e1066ab10b9a6a861fe7e25ee4f33"
+    url "https://files.pythonhosted.org/packages/ed/d3/c6c64067759e87af98cc668c1cc75171347d0f1577fab7ca3749134e3cd4/portalocker-2.10.1.tar.gz"
+    sha256 "ef1bf844e878ab08aee7e40184156e1151f228f103aa5c6bd0724cc330960f8f"
   end
 
   resource "portend" do
@@ -456,8 +462,8 @@ class Scoutsuite < Formula
   end
 
   resource "proto-plus" do
-    url "https://files.pythonhosted.org/packages/41/bd/4022c9a6de35821f215fdefc8b4e68bf9a054d04f43246f0c89ba8a7538e/proto-plus-1.22.3.tar.gz"
-    sha256 "fdcd09713cbd42480740d2fe29c990f7fbd885a67efc328aa8be6ee3e9f76a6b"
+    url "https://files.pythonhosted.org/packages/3e/fc/e9a65cd52c1330d8d23af6013651a0bc50b6d76bcbdf91fae7cd19c68f29/proto-plus-1.24.0.tar.gz"
+    sha256 "30b72a5ecafe4406b0d339db35b56c4059064e69227b8c3bda7462397f966445"
   end
 
   resource "protobuf" do
@@ -466,38 +472,38 @@ class Scoutsuite < Formula
   end
 
   resource "pyasn1" do
-    url "https://files.pythonhosted.org/packages/61/ef/945a8bcda7895717c8ba4688c08a11ef6454f32b8e5cb6e352a9004ee89d/pyasn1-0.5.0.tar.gz"
-    sha256 "97b7290ca68e62a832558ec3976f15cbf911bf5d7c7039d8b861c2a0ece69fde"
+    url "https://files.pythonhosted.org/packages/ba/e9/01f1a64245b89f039897cb0130016d79f77d52669aae6ee7b159a6c4c018/pyasn1-0.6.1.tar.gz"
+    sha256 "6f580d2bdd84365380830acf45550f2511469f673cb4a5ae3857a3170128b034"
   end
 
   resource "pyasn1-modules" do
-    url "https://files.pythonhosted.org/packages/3b/e4/7dec823b1b5603c5b3c51e942d5d9e65efd6ff946e713a325ed4146d070f/pyasn1_modules-0.3.0.tar.gz"
-    sha256 "5bd01446b736eb9d31512a30d46c1ac3395d676c6f3cafa4c03eb54b9925631c"
+    url "https://files.pythonhosted.org/packages/1d/67/6afbf0d507f73c32d21084a79946bfcfca5fbc62a72057e9c23797a737c9/pyasn1_modules-0.4.1.tar.gz"
+    sha256 "c28e2dbf9c06ad61c71a075c7e0f9fd0f1b0bb2d2ad4377f240d33ac2ab60a7c"
   end
 
   resource "pycryptodome" do
-    url "https://files.pythonhosted.org/packages/1a/72/acc37a491b95849b51a2cced64df62aaff6a5c82d26aca10bc99dbda025b/pycryptodome-3.19.0.tar.gz"
-    sha256 "bc35d463222cdb4dbebd35e0784155c81e161b9284e567e7e933d722e533331e"
+    url "https://files.pythonhosted.org/packages/13/52/13b9db4a913eee948152a079fe58d035bd3d1a519584155da8e786f767e6/pycryptodome-3.21.0.tar.gz"
+    sha256 "f7787e0d469bdae763b876174cf2e6c0f7be79808af26b1da96f1a64bcf47297"
   end
 
-  resource "pydantic" do
-    url "https://files.pythonhosted.org/packages/44/07/39d2b5c652a2cfdda6dd4d33a2eae345782f3d5c6e2f7a92c92d5da52b33/pydantic-2.5.0.tar.gz"
-    sha256 "69bd6fb62d2d04b7055f59a396993486a2ee586c43a0b89231ce0000de07627c"
-  end
-
-  resource "pydantic-core" do
-    url "https://files.pythonhosted.org/packages/a8/f2/0be79498e0f645fff8cd58c0013f4d03e17a54047e703efb30a200a4a9b2/pydantic_core-2.14.1.tar.gz"
-    sha256 "0d82a6ee815388a362885186e431fac84c7a06623bc136f508e9f88261d8cadb"
+  resource "pydo" do
+    url "https://files.pythonhosted.org/packages/f8/8c/1969c3c944ac9a2dbf8cc38430f20e7c09cb91546c1ec531717c54dbe5c8/pydo-0.5.0.tar.gz"
+    sha256 "81db8c99bfe0a3cad13d2e406bc27d243bbc759a891105821b822318b4617914"
   end
 
   resource "pyjwt" do
-    url "https://files.pythonhosted.org/packages/30/72/8259b2bccfe4673330cea843ab23f86858a419d8f1493f66d413a76c7e3b/PyJWT-2.8.0.tar.gz"
-    sha256 "57e28d156e3d5c10088e0c68abb90bfac3df82b40a71bd0daa20c65ccd5c23de"
+    url "https://files.pythonhosted.org/packages/fb/68/ce067f09fca4abeca8771fe667d89cc347d1e99da3e093112ac329c6020e/pyjwt-2.9.0.tar.gz"
+    sha256 "7e1e5b56cc735432a7369cbfa0efe50fa113ebecdc04ae6922deba8b84582d0c"
   end
 
   resource "pyopenssl" do
-    url "https://files.pythonhosted.org/packages/bf/a0/e667c3c43b65a188cc3041fa00c50655315b93be45182b2c94d185a2610e/pyOpenSSL-23.3.0.tar.gz"
-    sha256 "6b2cba5cc46e822750ec3e5a81ee12819850b11303630d575e98108a079c2b12"
+    url "https://files.pythonhosted.org/packages/5d/70/ff56a63248562e77c0c8ee4aefc3224258f1856977e0c1472672b62dadb8/pyopenssl-24.2.1.tar.gz"
+    sha256 "4247f0dbe3748d560dcbb2ff3ea01af0f9a1a001ef5f7c4c647956ed8cbf0e95"
+  end
+
+  resource "pyparsing" do
+    url "https://files.pythonhosted.org/packages/8c/d5/e5aeee5387091148a19e1145f63606619cb5f20b83fccb63efae6474e7b2/pyparsing-3.2.0.tar.gz"
+    sha256 "cbf74e27246d595d9a74b186b810f6fbb86726dbf3b9532efb343f6d7294fe9c"
   end
 
   resource "python-dateutil" do
@@ -505,14 +511,24 @@ class Scoutsuite < Formula
     sha256 "c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"
   end
 
+  resource "pytz" do
+    url "https://files.pythonhosted.org/packages/3a/31/3c70bf7603cc2dca0f19bdc53b4537a797747a58875b552c8c413d963a3f/pytz-2024.2.tar.gz"
+    sha256 "2aa355083c50a0f93fa581709deac0c9ad65cca8a9e9beac660adcbd493c798a"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+  end
+
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "requests-oauthlib" do
-    url "https://files.pythonhosted.org/packages/95/52/531ef197b426646f26b53815a7d2a67cb7a331ef098bb276db26a68ac49f/requests-oauthlib-1.3.1.tar.gz"
-    sha256 "75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a"
+    url "https://files.pythonhosted.org/packages/42/f2/05f29bc3913aea15eb670be136045bf5c5bbf4b99ecb839da9b422bb2c85/requests-oauthlib-2.0.0.tar.gz"
+    sha256 "b3dffaebd884d8cd778494369603a9e7b58d29111bf6b41bdc2dcd87203af4e9"
   end
 
   resource "rsa" do
@@ -521,8 +537,18 @@ class Scoutsuite < Formula
   end
 
   resource "s3transfer" do
-    url "https://files.pythonhosted.org/packages/3f/ff/5fd9375f3fe467263cff9cad9746fd4c4e1399440ea9563091c958ff90b5/s3transfer-0.7.0.tar.gz"
-    sha256 "fd3889a66f5fe17299fe75b82eae6cf722554edca744ca5d5fe308b104883d2e"
+    url "https://files.pythonhosted.org/packages/a0/a8/e0a98fd7bd874914f0608ef7c90ffde17e116aefad765021de0f012690a2/s3transfer-0.10.3.tar.gz"
+    sha256 "4f50ed74ab84d474ce614475e0b8d5047ff080810aac5d01ea25231cfc944b0c"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   resource "sqlitedict" do
@@ -531,8 +557,13 @@ class Scoutsuite < Formula
   end
 
   resource "tempora" do
-    url "https://files.pythonhosted.org/packages/c9/dc/97d90b9f64dbe4f599023e19602b33a2cced68462db67a3d4805a77cf784/tempora-5.5.0.tar.gz"
-    sha256 "13e4fcc997d0509c3306d6841f03e9381b7e5e46b2bebfae9151af90085f0c26"
+    url "https://files.pythonhosted.org/packages/5d/52/b4ff0ca21695a4f8ac0f158d884587b5eba08b0e95356b0ea210e00446ac/tempora-5.7.0.tar.gz"
+    sha256 "888190a2dbe3255ff26dfa9fcecb25f4d38434c0f1943cd61de98bb41c410c50"
+  end
+
+  resource "typing-extensions" do
+    url "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz"
+    sha256 "1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"
   end
 
   resource "uritemplate" do
@@ -541,18 +572,28 @@ class Scoutsuite < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/0c/39/64487bf07df2ed854cc06078c27c0d0abc59bd27b32232876e403c333a08/urllib3-1.26.18.tar.gz"
-    sha256 "f8ecc1bba5667413457c529ab955bf8c67b45db799d159066261719e328580a0"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   resource "websocket-client" do
-    url "https://files.pythonhosted.org/packages/cb/eb/19eadbb717ef032749853ef5eb1c28e9ca974711e28bccd4815913ba5546/websocket-client-1.6.4.tar.gz"
-    sha256 "b3324019b3c28572086c4a319f91d1dcd44e6e11cd340232978c684a7650d0df"
+    url "https://files.pythonhosted.org/packages/e6/30/fba0d96b4b5fbf5948ed3f4681f7da2f9f64512e1d303f94b4cc174c24a5/websocket_client-1.8.0.tar.gz"
+    sha256 "3239df9f44da632f96012472805d40a23281a991027ce11d2f45a6f24ac4c3da"
+  end
+
+  resource "wrapt" do
+    url "https://files.pythonhosted.org/packages/95/4c/063a912e20bcef7124e0df97282a8af3ff3e4b603ce84c481d6d7346be0a/wrapt-1.16.0.tar.gz"
+    sha256 "5f370f952971e7d17c7d1ead40e49f32345a7f7a5373571ef44d800d06b1899d"
   end
 
   resource "zc-lockfile" do
     url "https://files.pythonhosted.org/packages/5b/83/a5432aa08312fc834ea594473385c005525e6a80d768a2ad246e78877afd/zc.lockfile-3.0.post1.tar.gz"
     sha256 "adb2ee6d9e6a2333c91178dcb2c9b96a5744c78edb7712dc784a7d75648e81ec"
+  end
+
+  resource "zipp" do
+    url "https://files.pythonhosted.org/packages/54/bf/5c0000c44ebc80123ecbdddba1f5dcd94a5ada602a9c225d84b5aaa55e86/zipp-3.20.2.tar.gz"
+    sha256 "bc9eb26f4506fda01b81bcde0ca78103b6e62f991b381fec825435c836edbc29"
   end
 
   def install

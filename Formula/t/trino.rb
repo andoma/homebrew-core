@@ -3,8 +3,8 @@ class Trino < Formula
 
   desc "Distributed SQL query engine for big data"
   homepage "https://trino.io"
-  url "https://search.maven.org/remotecontent?filepath=io/trino/trino-server/439/trino-server-439.tar.gz", using: :nounzip
-  sha256 "dfcc108e3a13044bd0365108de9e16438dceec1e3fdeab2146874686516f40a4"
+  url "https://search.maven.org/remotecontent?filepath=io/trino/trino-server/464/trino-server-464.tar.gz", using: :nounzip
+  sha256 "2c57d2d59674aeee267195c4dc8d5dba5faa2ff462a34477c7094747ca79c7ae"
   license "Apache-2.0"
 
   livecheck do
@@ -13,24 +13,28 @@ class Trino < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "cae24722e81bf44e20477a5fd9a291a67f2b724a8ec597768dafc63cf792b010"
+    sha256 cellar: :any_skip_relocation, all: "9d62c998207a38491d69cd1b65437cae6b3b3e9a17ea2d3519447f042949ab2f"
   end
 
   depends_on "gnu-tar" => :build
   depends_on "openjdk"
-  depends_on "python@3.12"
+
+  uses_from_macos "python"
 
   resource "trino-src" do
-    url "https://github.com/trinodb/trino/archive/refs/tags/439.tar.gz", using: :nounzip
-    sha256 "4a46e8d7dfe8c8972122d61e3b9f1498201793571ca5473535780f3901487e71"
+    url "https://github.com/trinodb/trino/archive/refs/tags/464.tar.gz", using: :nounzip
+    sha256 "0eaa56c13a79119652458d7d94ce72f0e14ccfe20e6ce88fb937662cf6e1acfc"
   end
 
   resource "trino-cli" do
-    url "https://search.maven.org/remotecontent?filepath=io/trino/trino-cli/439/trino-cli-439-executable.jar"
-    sha256 "00daefdfe869467d34cc502ee851e5b64eac790e253f67ac0c886c26b72d7d8d"
+    url "https://search.maven.org/remotecontent?filepath=io/trino/trino-cli/464/trino-cli-464-executable.jar"
+    sha256 "f6721ed63be46510dc6c18436da30cebd7e70656eb5db1598d5bcc9a509ac99f"
   end
 
   def install
+    odie "trino-src resource needs to be updated" if version != resource("trino-src").version
+    odie "trino-cli resource needs to be updated" if version != resource("trino-cli").version
+
     # Manually extract tarball to avoid losing hardlinks which increases bottle
     # size from MBs to GBs. Remove once Homebrew is able to preserve hardlinks.
     # Ref: https://github.com/Homebrew/brew/pull/13154
@@ -49,7 +53,7 @@ class Trino < Formula
       inreplace libexec/"etc/jvm.config", %r{^-agentpath:/usr/lib/trino/bin/libjvmkill.so$\n}, ""
     end
 
-    rewrite_shebang detected_python_shebang, libexec/"bin/launcher.py"
+    rewrite_shebang detected_python_shebang(use_python_from_path: true), libexec/"bin/launcher.py"
     (bin/"trino-server").write_env_script libexec/"bin/launcher", Language::Java.overridable_java_home_env
 
     resource("trino-cli").stage do
@@ -62,7 +66,7 @@ class Trino < Formula
     # Keep the Linux-x86_64 directory to make bottles identical
     libprocname_dirs.reject! { |dir| dir.basename.to_s == "Linux-x86_64" } if build.bottle?
     libprocname_dirs.reject! { |dir| dir.basename.to_s == "#{OS.kernel_name}-#{Hardware::CPU.arch}" }
-    libprocname_dirs.map(&:rmtree)
+    rm_r libprocname_dirs
   end
 
   def post_install
@@ -80,6 +84,6 @@ class Trino < Formula
     # https://github.com/Homebrew/homebrew-core/pull/153348
     # You can add it back when the following issue is fixed:
     # https://github.com/trinodb/trino/issues/18983#issuecomment-1794206475
-    # https://bugs.openjdk.org/browse/CODETOOLS-7903447
+    # https://bugs.openjdk.org/browse/CODETOOLS-7903448
   end
 end

@@ -3,24 +3,22 @@ class West < Formula
 
   desc "Zephyr meta-tool"
   homepage "https://github.com/zephyrproject-rtos/west"
-  url "https://files.pythonhosted.org/packages/ee/7a/4c69c6a1054b319421d5acf028564bb1303ea9da42032a2000021d6495ee/west-1.2.0.tar.gz"
-  sha256 "b41e51ac90393944f9c01f7be27000d4b329615b7ed074fb0ef693b464681297"
+  url "https://files.pythonhosted.org/packages/d1/aa/288fc09dee13631538ad040d1b8e09f78594cdf3b53ff869c283d245bf20/west-1.3.0.tar.gz"
+  sha256 "89320034be87099d16e75f4760ac0d1ed67e8978928e468ab993e3fba0cfe92f"
   license "Apache-2.0"
-  revision 2
   head "https://github.com/zephyrproject-rtos/west.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "26576af9f46307f4848f693b8735d4db5034db58937e82422e9ea716e49b0833"
-    sha256 cellar: :any,                 arm64_ventura:  "eaaf79d5b5ea31abcc74489f1624ee88a8deb35d819899a67457166a15ec0dd2"
-    sha256 cellar: :any,                 arm64_monterey: "8411289dc521b14e6444ab4e60ca9b44eaa62982e7c9652aa4d379b96cfa0ba9"
-    sha256 cellar: :any,                 sonoma:         "8e725d4997ab94daf01a382e332f14ebdb86ea3cabad292183b9ec24a35cc4db"
-    sha256 cellar: :any,                 ventura:        "a74d001bc69b95a6c877480d11ff48bb318819fad6b1f7ddc0197ccee8153052"
-    sha256 cellar: :any,                 monterey:       "d3b81aa7b72db48dc467ab2b2081b7c0a21058200dbc43ab07e3059bba1eb371"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0efc8af2f61986d8008c990bdc936fd8a03c3386f1b9b32df70ba371fafc3e4a"
+    sha256 cellar: :any,                 arm64_sequoia: "a7e90cf09480586a0c371b073e2b38891366736eecaeebe9f3e91759a7fb3fb8"
+    sha256 cellar: :any,                 arm64_sonoma:  "7aadc8d72a06988cd62a46a31451342a85d6742f25a6cc67dc4a6206b39c85f9"
+    sha256 cellar: :any,                 arm64_ventura: "1b1959d3f049e5066f2d4684e2809737f6ab6fb3024721dfc119677ab77b5c13"
+    sha256 cellar: :any,                 sonoma:        "34fb4e2475d78f26ff2e85963ed28f684ef08506c25ff9e9e77862b274f8aa22"
+    sha256 cellar: :any,                 ventura:       "67d947b4729195aa8c691a0f95e98ac5c460a8e0f3e5784d45942431c56bcb3f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "927b092bb4e31b4acf172eec7e236d4b99179575683d604eca51229fc92ed9af"
   end
 
   depends_on "libyaml"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "colorama" do
     url "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz"
@@ -33,8 +31,8 @@ class West < Formula
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "pykwalify" do
@@ -43,13 +41,13 @@ class West < Formula
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "ruamel-yaml" do
@@ -57,14 +55,9 @@ class West < Formula
     sha256 "8b27e6a217e786c6fbe5634d8f3f11bc63e0f80f6a5890f28863d9c45aac311b"
   end
 
-  resource "ruamel-yaml-clib" do
-    url "https://files.pythonhosted.org/packages/46/ab/bab9eb1566cd16f060b54055dd39cf6a34bfa0240c53a7218c43e974295b/ruamel.yaml.clib-0.2.8.tar.gz"
-    sha256 "beb2e0404003de9a4cab9753a8805a8fe9320ee6673136ed7f04255fe60bb512"
-  end
-
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/c9/3d/74c56f1c9efd7353807f8f5fa22adccdba99dc72f34311c30a69627a0fad/setuptools-69.1.0.tar.gz"
-    sha256 "850894c4195f09c4ed30dba56213bf7c3f21d86ed6bdaafb5df5972593bfc401"
+    url "https://files.pythonhosted.org/packages/ed/22/a438e0caa4576f8c383fa4d35f1cc01655a46c75be358960d815bfbb12bd/setuptools-75.3.0.tar.gz"
+    sha256 "fba5dd4d766e97be1b1681d98712680ae8f2f26d7881245f2ce9e40714f1a686"
   end
 
   resource "six" do

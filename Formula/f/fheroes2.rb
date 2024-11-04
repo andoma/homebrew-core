@@ -1,8 +1,8 @@
 class Fheroes2 < Formula
   desc "Recreation of the Heroes of Might and Magic II game engine"
   homepage "https://ihhub.github.io/fheroes2/"
-  url "https://github.com/ihhub/fheroes2/archive/refs/tags/1.0.12.tar.gz"
-  sha256 "a5b088ff4c1c6c2e05e72d755bbabde8c0cbea19debea3b5a82b5d08b16cc2be"
+  url "https://github.com/ihhub/fheroes2/archive/refs/tags/1.1.3.tar.gz"
+  sha256 "f91760f7e8a512fa4b2b5eb02d852d358106fca50faa13db942d8314926ca6d8"
   license "GPL-2.0-or-later"
   head "https://github.com/ihhub/fheroes2.git", branch: "master"
 
@@ -12,14 +12,12 @@ class Fheroes2 < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "eb97f820980c15fa22c555ae890d04855a7d8701056bff965990d74530870aaf"
-    sha256 arm64_ventura:  "c34f334bc9a553a1e0f30b0baffd210db6f2924dc8011a522bda492c26faf4eb"
-    sha256 arm64_monterey: "57115fc429778525669b819d133702dbac203729101f63d6c9090dee7832d725"
-    sha256 sonoma:         "579c42f69c3506d52a1e60cd1ccce65409d0d0c85902f86e66797a9e9cd7d3c7"
-    sha256 ventura:        "5d7cef1d2081a07deed4e2f08af84f6285bfc43311d1007c86ac57f570490791"
-    sha256 monterey:       "0c53a32123714e22998bc9c15758dd35c1aba56716c773df5d8893f5ade208eb"
-    sha256 x86_64_linux:   "aadd4306040e0ef69e6c840d0966f8b397a553fa83ce2e044d046ca7da33eb82"
+    sha256 arm64_sequoia: "abd77f3c7b0748848798a86ced7e6db626a2d5e30a2a8d209d70ae7614b3699a"
+    sha256 arm64_sonoma:  "73c1a13e93e0ebc14e5f8c50cdba23ccc54b4865e4d5ede1a1155e89946fd817"
+    sha256 arm64_ventura: "929d227e53e7e290a1e65ea7571c97e0a0866e2338dc3d634474d92cced55603"
+    sha256 sonoma:        "d73ad420578eee3093ac978ce6c3718f4b5baefb723c3b7a25517f0a3edaca7c"
+    sha256 ventura:       "90909dd4ea8a865b40bcc9d5c388bae3e4cf5011c91bb9c018c0656dd03dc2fa"
+    sha256 x86_64_linux:  "0831cfb9c4feb8703f716628d937685457164e33d88bb90ae2269ca28a9379f5"
   end
 
   depends_on "cmake" => :build
@@ -32,13 +30,6 @@ class Fheroes2 < Formula
   uses_from_macos "zlib"
 
   fails_with gcc: "5"
-
-  # Fixes Sonoma iconv issue `end-of-line within string`
-  # Remove in next release
-  patch do
-    url "https://github.com/ihhub/fheroes2/commit/18ab688b64bc3a978292602b27cf4542bcb07f7d.patch?full_index=1"
-    sha256 "f1f1f716c4b2ef8ec99aa336fd9526e45f95b3ecfa002d398b1ec9cd955e8000"
-  end
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args

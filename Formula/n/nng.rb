@@ -1,8 +1,8 @@
 class Nng < Formula
   desc "Nanomsg-next-generation -- light-weight brokerless messaging"
   homepage "https://nanomsg.github.io/nng/"
-  url "https://github.com/nanomsg/nng/archive/refs/tags/v1.7.2.tar.gz"
-  sha256 "40e6af7bdd5d02ee98ba8fe5fd5c149ce3e5a555f202cdc837e3ead2d7cc7534"
+  url "https://github.com/nanomsg/nng/archive/refs/tags/v1.9.0.tar.gz"
+  sha256 "ff882bda0a854abd184a7c1eb33329e526928ef98e80ef0457dd9a708bb5b0b1"
   license "MIT"
 
   livecheck do
@@ -11,13 +11,12 @@ class Nng < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "a31a779dedff013fe869f6e7491d2b714c1981ebbd6381352b1ebe38511018ca"
-    sha256 cellar: :any,                 arm64_ventura:  "7d0f7ac83565debe3fda18431030cd9e4b0a91d092a4144b4ec39fbcf3bd3e2a"
-    sha256 cellar: :any,                 arm64_monterey: "3a5cdb1d3adbf70d16d5d026dd1c49c0f1bee88d42f1bc3e66bf656b3552197e"
-    sha256 cellar: :any,                 sonoma:         "cfbecb3979411128d1450e74426f6ee9ce193e3a8a32a3e8b64386d161e1968f"
-    sha256 cellar: :any,                 ventura:        "46bede025529f67124a406ce5a3e88af6604b1f044b3bfe4e705cd3a0112cbfc"
-    sha256 cellar: :any,                 monterey:       "b97efc60452a6c0d6c3e57431667691ce8a4339dd13c70b96e2dc17087e8ec40"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a72cdf0d7a481b683fccf55efc66e8d76c9398f47c6482b0c05c08c1cde36d6d"
+    sha256 cellar: :any,                 arm64_sequoia: "39282ce6d5eb11d4887f659138576130e7bbbf2fbe0f5037e6f0e125f77d2231"
+    sha256 cellar: :any,                 arm64_sonoma:  "cee738170b8eac76fe3db0790850242c30b34fc7f72fed41f94cf67fe51ba021"
+    sha256 cellar: :any,                 arm64_ventura: "1e75bbcd3115c7c7cad62926044001fcb6db534661e6d2754e01f49548981355"
+    sha256 cellar: :any,                 sonoma:        "674febf52f58ae7f2afb6418ec4ee6f431015acb10bb733e223bf197067e3805"
+    sha256 cellar: :any,                 ventura:       "8a5496f1d6e3abd7087da2c19f367cc3506d0d5d99856ff759b35eee6d2501b8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dd2aa82a113b465a5d6188f7a47781ccbf10a33971d2990de57e1d16289c0e0a"
   end
 
   depends_on "asciidoctor" => :build

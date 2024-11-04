@@ -1,10 +1,8 @@
 class Clarinet < Formula
   desc "Command-line tool and runtime for the Clarity smart contract language"
-  homepage "https://github.com/hirosystems/clarinet"
-  # pull from git tag to get submodules
-  url "https://github.com/hirosystems/clarinet.git",
-      tag:      "v2.2.1",
-      revision: "4bfe97652081691dd3a23a87def00ac241aebccc"
+  homepage "https://www.hiro.so/clarinet"
+  url "https://github.com/hirosystems/clarinet/archive/refs/tags/v2.11.2.tar.gz"
+  sha256 "e1bd51d80dec29b67c144761d1afbd99f1289a822a60bd86c1e8489147dcc404"
   license "GPL-3.0-only"
   head "https://github.com/hirosystems/clarinet.git", branch: "main"
 
@@ -14,19 +12,18 @@ class Clarinet < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "45701a169c217fe4e51973d6e37f71d8adce54021069c19e335ef131d0c4c420"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f797d30a4c1664e4121bb6517560c8785d7b42cb0f99da823fd8a63f0fff0363"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "64dc4cd12b6a8d1500d4f6374983c758aa584c4f5b51c937f6323fae9ee1afc3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "329762031e6e183592a307657d49e80cf495fec8d5b4ab3e950f69aa96952fda"
-    sha256 cellar: :any_skip_relocation, ventura:        "036b4600c4134480c7c565c8c28252e5a4e48e355a3a7d2b336d1414c114d1a6"
-    sha256 cellar: :any_skip_relocation, monterey:       "70624ed0e4a4b4b640ab060a8492f0407bdf415f7052ce21304251693d8910f8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9d76f9ab7024b9204e47ac07de26e43805d5fe2d17f1f0ead0f53810fa1861b4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2a3c79e89409ff0022f5839aeb8353699a99d30d147670c021e8065ebe63f2d8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "575448cc006e65fe36e6344ac6c7b73c68127b595cb5b5c22fbc372c0cf0d624"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2f74491e32e150828e35841184bce68c3389c8dce18daa18e91dd4a59e82170a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c15fe3d0138789be0bd529d21d2b32d1c6407f40a35a9f9bd1b2024deb416014"
+    sha256 cellar: :any_skip_relocation, ventura:       "06a889b767424c97b100e57890fcd0229f6be7450bf7ac8e760d12a960cb0116"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bf62976b0fd58db62e452f689bbc377a1d9a7ce42eb5369d02f053677f1db986"
   end
 
   depends_on "rust" => :build
 
   def install
-    system "cargo", "clarinet-install", "--root", prefix.to_s
+    system "cargo", "install", *std_cargo_args(path: "components/clarinet-cli")
   end
 
   test do

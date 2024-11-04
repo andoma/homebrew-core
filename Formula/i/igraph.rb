@@ -1,18 +1,19 @@
 class Igraph < Formula
   desc "Network analysis package"
   homepage "https://igraph.org/"
-  url "https://github.com/igraph/igraph/releases/download/0.10.10/igraph-0.10.10.tar.gz"
-  sha256 "6148f2e72a183ef5cd08324cccc73fa9eb8e54bb5a96c7f8f3c0465432ec2404"
+  url "https://github.com/igraph/igraph/releases/download/0.10.13/igraph-0.10.13.tar.gz"
+  sha256 "c6dc44324f61f52c098bedb81f6a602365d39d692d5068ca4fc3734b2a15e64c"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "87783cdfe464e19d22a2df1fa03cfcadd270e69b243e2b02ac120bf5a1e29bc8"
-    sha256 cellar: :any,                 arm64_ventura:  "229f046b0c95a6c93b1e1e4bcfb36accfb88bd1f7601a327d8736b54c2dabbe0"
-    sha256 cellar: :any,                 arm64_monterey: "f7d277f51ca65c6d5ef40c41c8340db176ee01e63190516ede5aae3b34e953ea"
-    sha256 cellar: :any,                 sonoma:         "d567436b831b15bf468da55551adb861eeb8be3d948e9ba31e72f70d92ebd61f"
-    sha256 cellar: :any,                 ventura:        "0751f60dfa16b52137d37358379dd9322aacc36d376d0d5440a320caab665d7b"
-    sha256 cellar: :any,                 monterey:       "cfb479057b1363823bbf5fbe97602c96ba5c237fe50c2344fb744779bce95f8e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cde5ed247dc45961d45f505c8760d5472c9615c38925c2be4551e0c1210367a5"
+    sha256 cellar: :any,                 arm64_sequoia:  "60c0005b4b82770c73bebdf8ae4d469662999d82e55830e9dc5dbf08a1a13949"
+    sha256 cellar: :any,                 arm64_sonoma:   "33dabbdc4d649b0f606686a53021907dab2b308549e6141b30de1f26d4bfcb26"
+    sha256 cellar: :any,                 arm64_ventura:  "836088cf17820f44cb4e690d298252823a520ff34f12922635abd67dd76d3368"
+    sha256 cellar: :any,                 arm64_monterey: "c526e360e039e6f70c37cc86c2aaab65c2e46e84a27990188b518bfe90a49e40"
+    sha256 cellar: :any,                 sonoma:         "079d2ee5b0d12c552789c6817783707c3ce0f93b625b1420ece34327f11258ac"
+    sha256 cellar: :any,                 ventura:        "8b08da86dcc4de90a999d02f7aab893a0b67b9e4c784f18cbbb16871009e0edb"
+    sha256 cellar: :any,                 monterey:       "9c6833b7a539dd2fcbb4b63b0d9f9ee2f997a2d99bdd435d3e38fdcd9d88204c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d1b9dd2184649e619c82bef92b0e42dcca1b8578f1e0ac0c765ef865d3aefc92"
   end
 
   depends_on "cmake" => :build
@@ -54,7 +55,7 @@ class Igraph < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <igraph.h>
       int main(void) {
         igraph_real_t diameter;
@@ -65,7 +66,7 @@ class Igraph < Formula
         printf("Diameter = %f\\n", (double) diameter);
         igraph_destroy(&graph);
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}/igraph", "-L#{lib}",
                    "-ligraph", "-lm", "-o", "test"
     assert_match "Diameter = 8", shell_output("./test")

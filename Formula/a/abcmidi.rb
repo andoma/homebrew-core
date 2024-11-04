@@ -1,8 +1,8 @@
 class Abcmidi < Formula
   desc "Converts abc music notation files to MIDI files"
   homepage "https://ifdo.ca/~seymour/runabc/top.html"
-  url "https://ifdo.ca/~seymour/runabc/abcMIDI-2024.02.25.zip"
-  sha256 "d2a79243d27754808da89ab36abfc9d173b9dc1fb6c4825647fed3cadc09f92c"
+  url "https://ifdo.ca/~seymour/runabc/abcMIDI-2024.10.10.zip"
+  sha256 "23335a04071d03ce908da4d6fd8a60ffd8cfb30437165e0107c2d810799cc70b"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,19 +11,16 @@ class Abcmidi < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "82d9a031e178581f07257200dc57bd761bc6c5bc3220108c624c15fc2737ec50"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "85257337a2554c2ee4d19b8602a439968c0a7fc087e989b57e696f547eef8075"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1f3fe03cebcd6fbd67821604bffc28b4c7faf0ca2781f32af22f812369fe9eaf"
-    sha256 cellar: :any_skip_relocation, sonoma:         "012847d85723a04f1b44559b5a6bb8e5b2d6571880282020d4af82fbcbc5952a"
-    sha256 cellar: :any_skip_relocation, ventura:        "24e4e1dea87afea77857d73cad7d918a83fd520196cbbb4458f1ab6b2e45d4f8"
-    sha256 cellar: :any_skip_relocation, monterey:       "d52b0d901918ab89ce2082e2618494d46a15ae7f2d4c51489deaaf5139f04010"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1fb7342277ca965e1950ed31fd01d029786c5054744b8d65c331a94d810fc50f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "480ec32329fcc96c8546f87ecf55c416757c3b08807d2e57f46b7d2356535744"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "21e0ff3ef8f2ac32ce4e6dc88b340ba9c8cd3cb820417ddbe23523a303e50178"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "cb5f81436e025607b4798c1fd881a420fb3b1bab327a2150216ba1984aa69ae4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b6bb7bfe11c2e61d3aff011f449424d9784c96a60c6019c29e6623bea730e911"
+    sha256 cellar: :any_skip_relocation, ventura:       "626bba57526d0887aba39c773e6f3f17867b583cc3a32d46829e103a61a303ad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2c5e49a9c81ce155960e7fded67664adf769f2434e3fa4ffd459b065943ac308"
   end
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 
@@ -47,6 +44,6 @@ class Abcmidi < Formula
       |:C2=B,2 |A,2G,2| C2=B,2|A,2G,2 :|
     EOS
 
-    system "#{bin}/abc2midi", (testpath/"balk.abc")
+    system bin/"abc2midi", testpath/"balk.abc"
   end
 end

@@ -1,9 +1,9 @@
 class ArmNoneEabiGdb < Formula
   desc "GNU debugger for arm-none-eabi cross development"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-14.1.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-14.1.tar.xz"
-  sha256 "d66df51276143451fcbff464cc8723d68f1e9df45a6a2d5635a54e71643edb80"
+  url "https://ftp.gnu.org/gnu/gdb/gdb-15.2.tar.xz"
+  mirror "https://ftpmirror.gnu.org/gdb/gdb-15.2.tar.xz"
+  sha256 "83350ccd35b5b5a0cba6b334c41294ea968158c573940904f00b92f76345314d"
   license "GPL-3.0-or-later"
   head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
@@ -12,21 +12,23 @@ class ArmNoneEabiGdb < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "d9b9f391e1896d8be63e0fc81ea181fe8b8c82d26d2db85e939f1e1d07fd680c"
-    sha256 arm64_ventura:  "02405e7592d791319cd1a0998bce7b68a391963a214bc9a02f3b6e5c2ccd9715"
-    sha256 arm64_monterey: "e89d55677190cd92f0172a382f6e7ba2e7857d5c73f439980f17fcc034b18ed1"
-    sha256 sonoma:         "3db8f6701cf9697c2f13745954b241272db0bd04cf16ba41ef71f925be6e3b61"
-    sha256 ventura:        "9970824688e0a51fef8c5009fe95fc144e2661679f7dfd6dc2eb6be29e084928"
-    sha256 monterey:       "0b125bbbcf7e66e18853f28fc2bad1850064756e2f6e29f1a7836c0ca2f460e9"
-    sha256 x86_64_linux:   "f73df14fa10e21fdcec6c03ac19f96a9cf03dcfdc1618f250f015b7f8694a32e"
+    rebuild 1
+    sha256 arm64_sequoia: "4212f97b11f45baa44772a48ac04c55a27637ec92c94da6c828d8c71c1d75ee2"
+    sha256 arm64_sonoma:  "a80ab3c12a9ac961f5d8ac57a6645a83104534319372d007bcae5f2def70b666"
+    sha256 arm64_ventura: "98a52491d822c7400b726aafec2ed6ede84a53ccd3634d316ef38cdc3c13fa02"
+    sha256 sonoma:        "ae9ae170293d76f2d1c680dc7fc952cc3c8879ce6bcb87547dd6be1956ae0d8b"
+    sha256 ventura:       "dd0627ce4bc99fd95ce688ea794161e2eb2437308cedf0fbacc63fcd3d9370f2"
+    sha256 x86_64_linux:  "4be06338b7071a1f2b1dd245f53a154b8946594e21cd26f4c1df7fa1e9464fb7"
   end
 
   depends_on "arm-none-eabi-gcc" => :test
   depends_on "gmp"
   depends_on "mpfr"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "xz" # required for lzma support
 
+  uses_from_macos "expat"
+  uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
   on_system :linux, macos: :ventura_or_newer do
@@ -37,21 +39,18 @@ class ArmNoneEabiGdb < Formula
     target = "arm-none-eabi"
     args = %W[
       --target=#{target}
-      --prefix=#{prefix}
       --datarootdir=#{share}/#{target}
       --includedir=#{include}/#{target}
       --infodir=#{info}/#{target}
       --mandir=#{man}
-      --disable-debug
-      --disable-dependency-tracking
       --with-lzma
-      --with-python=#{Formula["python@3.12"].opt_bin}/python3.12
+      --with-python=#{Formula["python@3.13"].opt_bin}/python3.13
       --with-system-zlib
       --disable-binutils
     ]
 
     mkdir "build" do
-      system "../configure", *args
+      system "../configure", *args, *std_configure_args
       ENV.deparallelize # Error: common/version.c-stamp.tmp: No such file or directory
       system "make"
 

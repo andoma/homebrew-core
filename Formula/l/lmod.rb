@@ -1,18 +1,17 @@
 class Lmod < Formula
   desc "Lua-based environment modules system to modify PATH variable"
   homepage "https://lmod.readthedocs.io"
-  url "https://github.com/TACC/Lmod/archive/refs/tags/8.7.34.tar.gz"
-  sha256 "98e430dc5d2b477ad17f2826d6cb77a242bf47db4d11231fe375c31073da1a03"
+  url "https://github.com/TACC/Lmod/archive/refs/tags/8.7.53.tar.gz"
+  sha256 "5e7ed1a5acfee76abfd96f2ffa3af69d49052b9e88a04ab18d87d18a538c4834"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "109edd45c09a706d8839bb43b05ba78b32042b7a7abf941ec5960ca008dbe04f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4ecf03dd830ba194cb31623802b588e9b41d81c7cc3c94d5f7790f8483339350"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5e003cadd4045f9af20992673b7c647c1b4a2454257d16f2ffd52f8c5d64bf2b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "cf75fa191b5f2298df9944276a2fb6b1fc05fa2462e02fcf524f1868ee718fa7"
-    sha256 cellar: :any_skip_relocation, ventura:        "d3cd8f6e2164de0795364ecf00635549d453b8587575bbd27757c6195ff2270c"
-    sha256 cellar: :any_skip_relocation, monterey:       "67481cc7dacce566bb450f6f200087308bf6b276b5f9cd317023632904ec7433"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5adfba1e227f19afed20f519feec0bd7f716d638e8aa043a6a632c89dbe88ce9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a7f89cc87742f2d1196bc0fad3dacc43be40d21136723189cbf23ece89f3a24d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a56018bcbee0602a805a6dc109b157ed8768dfd15d846d3102a29095c8e84e03"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "20d6dd789dd3ba4c8f0f24d170340c4348a524881caf0f5802dd128497db5b18"
+    sha256 cellar: :any_skip_relocation, sonoma:        "80620eaa145726e23265a8b7a6d77180f6b4235f5fbd0661aeeccaa32233e668"
+    sha256 cellar: :any_skip_relocation, ventura:       "6042f267182adca68fe69f98ee9e6bb56968912d815b480b95bae74b09a54abd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "343f599971e406ede650a5196da07f20c1b1f09ee597ab7a2ca9a89a64f31e56"
   end
 
   depends_on "luarocks" => :build
@@ -22,6 +21,10 @@ class Lmod < Formula
   uses_from_macos "bc" => :build
   uses_from_macos "libxcrypt"
   uses_from_macos "tcl-tk"
+
+  on_macos do
+    depends_on "gnu-sed" => :build
+  end
 
   resource "luafilesystem" do
     url "https://github.com/keplerproject/luafilesystem/archive/refs/tags/v1_8_0.tar.gz"

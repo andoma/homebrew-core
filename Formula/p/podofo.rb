@@ -1,8 +1,8 @@
 class Podofo < Formula
   desc "Library to work with the PDF file format"
   homepage "https://github.com/podofo/podofo"
-  url "https://github.com/podofo/podofo/archive/refs/tags/0.10.3.tar.gz"
-  sha256 "4be2232643f9e9dd7fbb02894d5a0394c3ca2826aab179654c2cc751074825ec"
+  url "https://github.com/podofo/podofo/archive/refs/tags/0.10.4.tar.gz"
+  sha256 "6b1b13cdfb2ba5e8bbc549df507023dd4873bc946211bc6942183b8496986904"
   license all_of: ["LGPL-2.0-only", "GPL-2.0-only"]
   head "https://github.com/podofo/podofo.git", branch: "master"
 
@@ -12,16 +12,17 @@ class Podofo < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "18c42f4e349c7831ad1c88da9bcb6a3186bae96592a58bcc9564dfddeaa47a66"
-    sha256 cellar: :any,                 arm64_ventura:  "8aa327cf0a9521152589c4f35e8c24d17ca81e6e9a0409a124c81ceae1adf36d"
-    sha256 cellar: :any,                 arm64_monterey: "32eb565b522ee3d479f1f63e9c8734f0055723f15c0d40d1e5742a0e8c37deb3"
-    sha256 cellar: :any,                 sonoma:         "6bc07e073418fdea964f84b51620d13c29a2b15891f8a2b66f7edad55270c9db"
-    sha256 cellar: :any,                 ventura:        "eb9faea265097f17b3304901c77eb6c062dcf29a9e8de96423bca460ddb085f1"
-    sha256 cellar: :any,                 monterey:       "121f760c5d73c7b343d4f6a828f8c9dc436991c167fb6ed2f7d40821f35913ce"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "33fbbf5d0eba0905261b5cc12483dbd14f1c87a7b6b6fee90b3d3352bba3723f"
+    sha256 cellar: :any,                 arm64_sequoia: "7c435c43229584af3a6dacf57822271969610de7507f61397b457afb83145d13"
+    sha256 cellar: :any,                 arm64_sonoma:  "021956f2a96a9661ce424e048a17c70f4e01a117eccdcf161e8d770122ec5fdf"
+    sha256 cellar: :any,                 arm64_ventura: "6efa2ab68a3d25d65c43adf0ff70d5ecfd3c2d2c132f7ab491225842992335a7"
+    sha256 cellar: :any,                 sonoma:        "5de8cfae5cf79354203b9a6a4138d0aeee038feb186430f9d2bc1a3b94329d75"
+    sha256 cellar: :any,                 ventura:       "8d58c3e164bce391cf4fe8ad987b2d81a79bf2f4f40dde4f0c9b1137ebaa9a4a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b850c51ef8df89ab04d0c37364bf7e20a91d7f30c7be86c474141be7add8be52"
   end
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
+
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "jpeg-turbo"
@@ -31,6 +32,7 @@ class Podofo < Formula
   depends_on "openssl@3"
 
   uses_from_macos "libxml2"
+  uses_from_macos "zlib"
 
   def install
     args = %W[

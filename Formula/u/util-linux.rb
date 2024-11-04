@@ -1,8 +1,8 @@
 class UtilLinux < Formula
   desc "Collection of Linux utilities"
   homepage "https://github.com/util-linux/util-linux"
-  url "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.39/util-linux-2.39.3.tar.xz"
-  sha256 "7b6605e48d1a49f43cc4b4cfc59f313d0dd5402fa40b96810bd572e167dfed0f"
+  url "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.40/util-linux-2.40.2.tar.xz"
+  sha256 "d78b37a66f5922d70edf3bdfb01a6b33d34ed3c3cafd6628203b2a2b67c8e8b3"
   license all_of: [
     "BSD-3-Clause",
     "BSD-4-Clause-UC",
@@ -25,23 +25,26 @@ class UtilLinux < Formula
 
   bottle do
     rebuild 1
-    sha256 arm64_sonoma:   "c0fe29bd7ce098ba80b119b4a6b37c16255e9a028724f91ca64efb5259fc9a34"
-    sha256 arm64_ventura:  "3932d45a861da3e7925b1241972f074578b032c83862aa3f1a34801b97f2addb"
-    sha256 arm64_monterey: "b4771e674ce06c984ed83357d6886dc80485c0e46d927fd3b2cba328ed69e9b3"
-    sha256 sonoma:         "aa8a929192d2869fd27e07a3daf14c09f458d83bd2f668dfe0ec82f064724aa1"
-    sha256 ventura:        "72b0ed58340a0cef0a91e2ff8257bf07cec0d2f2ed368ce35e54634c418f82fb"
-    sha256 monterey:       "8fda2654e1ccd298956d2852b3ad905e0991073d45ce995a905914c39190ae17"
-    sha256 x86_64_linux:   "76d8863bb61e6a28021f62bff5677fa0dc4d78a4cf1b230645436ca444a91bd7"
+    sha256 arm64_sequoia:  "8b634a2c63b8d971fcba7ecf937cfc45a2fe9263b5ce6f01ef1704f58c28547e"
+    sha256 arm64_sonoma:   "ae2f7c6c2a844f8cbd3522f85e51cb929d03a8c9eed9a66d14a81b2632f9dcb4"
+    sha256 arm64_ventura:  "b933894463178a94495ced95268b2d66ccdc0c9e2e408b7fdc4b5a36016f228a"
+    sha256 arm64_monterey: "4b0c25db0dcd8f13e1d881b7ecf5eb80ebd53453b56fd0c096a2745b97c90d42"
+    sha256 sonoma:         "ad20c2beac16f7d241569f93d0edd5b19f0bb2fafd62c227747ea20d9f615892"
+    sha256 ventura:        "0b62fc43806131f0b9f96916b0887ad85ae47db2418386721fc3da6d3f49dec7"
+    sha256 monterey:       "1fed3dce8f5487a95fab00de380f3ff3320a43b94ad9949a102466bb6fbc3bbd"
+    sha256 x86_64_linux:   "773c91eea7c86a3a5a18ae1b43a43c9346b190ccf7640bb811e4cadb77a42874"
   end
 
   keg_only :shadowed_by_macos, "macOS provides the uuid.h header"
 
+  depends_on "pkg-config" => :build
+
   uses_from_macos "libxcrypt"
   uses_from_macos "ncurses"
+  uses_from_macos "sqlite"
   uses_from_macos "zlib"
 
   on_macos do
-    depends_on "pkg-config" => :build # fixes ncursesw detection
     depends_on "gettext" # for libintl
   end
 
@@ -52,6 +55,13 @@ class UtilLinux < Formula
     conflicts_with "flock", because: "both install `flock` binaries"
     conflicts_with "ossp-uuid", because: "both install `uuid.3` file"
     conflicts_with "rename", because: "both install `rename` binaries"
+  end
+
+  # uuid_time function compatibility fix on macos
+  # upstream patch PR, https://github.com/util-linux/util-linux/pull/3013
+  patch do
+    url "https://github.com/util-linux/util-linux/commit/9445f477cfcfb3615ffde8f93b1b98c809ee4eca.patch?full_index=1"
+    sha256 "7a7fe4d32806e59f90ca0eb33a9b4eb306e59c9c148493cd6a57f0dea3eafc64"
   end
 
   def install
@@ -65,6 +75,7 @@ class UtilLinux < Formula
       args << "--disable-ipcs" # does not build on macOS
       args << "--disable-ipcrm" # does not build on macOS
       args << "--disable-wall" # already comes with macOS
+      args << "--disable-liblastlog2" # does not build on macOS
       args << "--disable-libmount" # does not build on macOS
       args << "--enable-libuuid" # conflicts with ossp-uuid
     else
@@ -81,7 +92,7 @@ class UtilLinux < Formula
       args << "--without-python"
     end
 
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"
 
     # install completions only for installed programs
@@ -127,7 +138,7 @@ class UtilLinux < Formula
 
     flags = ["x", "w", "r"] * 3
     perms = flags.each_with_index.reduce("") do |sum, (flag, index)|
-      sum.insert 0, ((stat.mode & (2 ** index)).zero? ? "-" : flag)
+      sum.insert 0, (stat.mode.nobits?(2 ** index) ? "-" : flag)
     end
 
     out = shell_output("#{bin}/namei -lx /usr").split("\n").last.split

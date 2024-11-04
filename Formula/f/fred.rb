@@ -3,27 +3,32 @@ class Fred < Formula
 
   desc "Fully featured FRED Command-line Interface & Python API wrapper"
   homepage "https://fred.stlouisfed.org/docs/api/fred/"
-  url "https://files.pythonhosted.org/packages/b9/4d/5997ff747d69b8451a63b92182eb3df42a87a171e0a1c8acc2792bc8afc1/fred-py-api-1.1.2.tar.gz"
-  sha256 "361886a97b8016e3010557e2c2e60f5656f2192f37eae05fa53867c6c3b0653c"
+  url "https://files.pythonhosted.org/packages/ff/22/44051587a95461a3fb0cd57e5ba215f3c4d3086544294e5ac79ab0028c20/fred_py_api-1.2.0.tar.gz"
+  sha256 "4e588b6f5349461436aad2fc20ff4ca97b3b69fb0daa24c0e12ab837dedad90f"
   license "MIT"
+  revision 1
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8b6b5f850e90e317ca29a30a683eb2df196be90d72066b2322e3a7e924be8db5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9ac34d3d7308efd0edba2719bda19ea568ef1d4f3031cbe75d9853f1e9acfaf6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dff7fced582033848c54d21d0335f658c78f5d945242b28e56f20db076c71319"
-    sha256 cellar: :any_skip_relocation, sonoma:         "358fe4c02392dadd4a6ea662574f279c6d53d30ccb5b26fa16b12657d6c422ca"
-    sha256 cellar: :any_skip_relocation, ventura:        "0d7d885f1df23fd931083036d4dc9467d48b3eb876a2d4cf4f7029398f4cd47c"
-    sha256 cellar: :any_skip_relocation, monterey:       "dd1db482695592c7a757c938b95385d997dd8265f4551846ac5290d1bdf4394e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8022ae63417b65e9cc9e1a76498ea4ac5ba347e2d3e3ea7951ec194257f227f8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "607fa7cf50271364c47e8f09142ebcbd42c4057439ee93fe4ec6dd6e288a3048"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "607fa7cf50271364c47e8f09142ebcbd42c4057439ee93fe4ec6dd6e288a3048"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "607fa7cf50271364c47e8f09142ebcbd42c4057439ee93fe4ec6dd6e288a3048"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a6c34c41fc0e74288beade477077831f9408505dc0d570dbf6fb39047d472fe5"
+    sha256 cellar: :any_skip_relocation, ventura:       "a6c34c41fc0e74288beade477077831f9408505dc0d570dbf6fb39047d472fe5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "607fa7cf50271364c47e8f09142ebcbd42c4057439ee93fe4ec6dd6e288a3048"
   end
 
-  depends_on "python-certifi"
-  depends_on "python@3.12"
+  depends_on "certifi"
+  depends_on "python@3.13"
+
+  resource "certifi" do
+    url "https://files.pythonhosted.org/packages/b0/ee/9b19140fe824b367c04c5e1b369942dd754c4c5462d5674002f75c4dedc1/certifi-2024.8.30.tar.gz"
+    sha256 "bec941d2aa8195e248a60b31ff9f0558284cf01a52591ceda73ea9afffd69fd9"
+  end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
-    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "click" do
@@ -32,18 +37,18 @@ class Fred < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
-    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install

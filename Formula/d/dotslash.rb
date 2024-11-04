@@ -1,18 +1,17 @@
 class Dotslash < Formula
   desc "Simplified executable deployment"
   homepage "https://dotslash-cli.com"
-  url "https://github.com/facebook/dotslash/archive/refs/tags/v0.2.0.tar.gz"
-  sha256 "bb7212a13248474232c0b23c94bc1736b5653094b87c817d9b32c0dcbd8fba26"
+  url "https://github.com/facebook/dotslash/archive/refs/tags/v0.4.3.tar.gz"
+  sha256 "88c599392a6135208935889ecbefaafe8d5fc12e08baadb4d83658247501eb5b"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5678c69aaa638e05bae37dbee984b4ff51393ea41c913a554b7b5dc1e2f870a4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e35bf3f24552c0056243247c88f15c2825d188a17f34f4d3b974f764b3a7e044"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "30437ee711d5b0a2cd68da494df2bb84d95c86dfe9d5afca50ff80953405c5a0"
-    sha256 cellar: :any_skip_relocation, sonoma:         "95c84aa6a85fa9224798953dbf7086d43e1e9ba46e56872ad79a2e268ccd1b39"
-    sha256 cellar: :any_skip_relocation, ventura:        "8ed866b61a47651121e17e6c8932a24c9137b6f251744737cc3c807b4a18fb94"
-    sha256 cellar: :any_skip_relocation, monterey:       "52ad3566e70c364723c78795e885d0a300ccf582b4c92879f0233ada9e9ae703"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc538e70942dbb1c3ea89059bc71b6e4ac0917fc5c15bac0f1326dc6d98d9a91"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "015492727f9c99f567dc69252b0bb86ccebec14c6cd036626c82a292a04545d4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "03ececb48fa448a9a5fb839df4134d57679502db5ae82ec37d4a0ecd60194b66"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c43d5403b8b3597e224031465cc3873c95a8ee26b14c209fcb7bf509ccf141cb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fae55211639f161f387252c223a25c853ad4bdee836d676b823a4670205331cf"
+    sha256 cellar: :any_skip_relocation, ventura:       "af6b2e1b6615bd14e05c8be41abf947c9ba02d6417e3a7f9750f848fb0b5630e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "59d69ed4f0ba3c8363193ec7042184ce85b86445ec68fd10aa18acf76928e295"
   end
 
   depends_on "rust" => :build

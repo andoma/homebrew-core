@@ -1,8 +1,8 @@
 class Macpine < Formula
   desc "Lightweight Linux VMs on MacOS"
   homepage "https://beringresearch.github.io/macpine/"
-  url "https://github.com/beringresearch/macpine/archive/refs/tags/v1.0.4.tar.gz"
-  sha256 "040beffd58ab22ef8d10b4241c2b86347dfc960e27934f6fc6cad002b9747c3a"
+  url "https://github.com/beringresearch/macpine/archive/refs/tags/v1.0.8.tar.gz"
+  sha256 "3486597fc3759779394ab94ba97196b855b039b792008c9b9d9a11a69ad635ad"
   license "Apache-2.0"
   head "https://github.com/beringresearch/macpine.git", branch: "main"
 
@@ -21,13 +21,12 @@ class Macpine < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "97402f3464c5d9792989c9ec4e49b1bbc1cc81f1b5ed94051c02f1e1826a413e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d1de48268a4d5cf5526c6b83466729b1eb612e96e1cda9c3ae0777848f42a3e1"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0bd4ce3ca1d4bee46e8dfa3ca16b0d3145d2bba20525d9de32114aad42ea15fc"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6a787c7070ad6c25994ce2a94c122e2efe9daae720f4ea36d418896ed31e8237"
-    sha256 cellar: :any_skip_relocation, ventura:        "049ea3b0294331f6c9139986e242e73fe063924d24af73c649328e08bc993d72"
-    sha256 cellar: :any_skip_relocation, monterey:       "925afc8e32fa3c59b8048bb1a11639611030672dad97d7b0f9e961127ab5538d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e93ea286c5168161917dce8575213380f827a1bf03a9a8f2482af00f43652eaf"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b5ad7c31003f246b5ebf9082a40cb2c25cbf6d53a9adaff84481757e4f7b7d8a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e21c4e1389cbf987277c65d26a25d6f8f87c8bad5662aca28211baebb95948ba"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c305d81302289cc3930e71bab2008e55516fa63ffc30b2ee03adeffc9a35d354"
+    sha256 cellar: :any_skip_relocation, sonoma:        "cf5bafcc9ecd19603d381d643ebcef930fd34a09d0bd2693d5fcee00b5cae539"
+    sha256 cellar: :any_skip_relocation, ventura:       "ea4ebefa3db56d95ead4579b89708298254d422576c02e4ecb09e95c090be520"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ae114b606c2bb038374dfe452f0b929e08941bacd4de337446e44b6c219ccc6a"
   end
 
   depends_on "go" => :build

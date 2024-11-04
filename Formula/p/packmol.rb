@@ -1,19 +1,23 @@
 class Packmol < Formula
   desc "Packing optimization for molecular dynamics simulations"
   homepage "https://www.ime.unicamp.br/~martinez/packmol/"
-  url "https://github.com/m3g/packmol/archive/refs/tags/v20.14.3.tar.gz"
-  sha256 "c70d8dff6f983adb854cf816df3d4a389b5cc724e70a2430b54793051eaaa4e9"
+  url "https://github.com/m3g/packmol/archive/refs/tags/v20.15.2.tar.gz"
+  sha256 "7afb96f4d6ab7704055a03b0c8c73eb713ae7b064881b8c5aa9866c191b0cc18"
   license "MIT"
   head "https://github.com/m3g/packmol.git", branch: "master"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "139b70312b6d049cdcd10f4fb2e3061c670e61b79ac742f8e604f16e2ffe238c"
-    sha256 cellar: :any,                 arm64_ventura:  "bf2434dd3dfeae8f3fc886779f2e89adb5b9a0d19b4b91ad20619a3ed4446ec8"
-    sha256 cellar: :any,                 arm64_monterey: "79688abb1c5de90e70843360881bf6fd37c493e56794e13ac95480d58e9887f2"
-    sha256                               sonoma:         "f952369d3969d66f3866c03fe02d0097bb02d1f812895c932ebe8407b0f439ba"
-    sha256                               ventura:        "cc2b60a0241838aaa459e8686c9d7d619f9c37b8d286f8cd55251ac5417d3d21"
-    sha256                               monterey:       "8688d27d805a9219a1b55f1900517b38540c22b906782466664956a9091f5403"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f4c43605cd92c451af726f9fcb0bc58ea32f42de8acc87bbc55baf38b72fa1b4"
+    sha256 cellar: :any,                 arm64_sequoia: "9751a1f16964288f0e87eb9ae30497239f1b391a1cf8a0abea5a2bdc6048d7bd"
+    sha256 cellar: :any,                 arm64_sonoma:  "465b254145fc857e25c6460a0ee26a51496ea3baaee24951dac5b8eb32371888"
+    sha256 cellar: :any,                 arm64_ventura: "391ed8cf9e5791b674bd329bb6147d1dae81a2f084a111fcbc2ce79be1d34bc8"
+    sha256                               sonoma:        "01809ef9b7a29945d4f83b4622cf982760fc06d5b65f152db3469f3adb0c53b1"
+    sha256                               ventura:       "be9b4078941dbd8c76dd11945cf6b575c88f414767ad5973e7d257013ec07766"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f0657b8b6a8fe58c5105bd78b56029a3454f32d5e5861e68bd3cbafe09f3cd05"
   end
 
   depends_on "gcc" # for gfortran

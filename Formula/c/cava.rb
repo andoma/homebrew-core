@@ -1,25 +1,27 @@
 class Cava < Formula
   desc "Console-based Audio Visualizer for ALSA"
   homepage "https://github.com/karlstav/cava"
-  url "https://github.com/karlstav/cava/archive/refs/tags/0.10.1.tar.gz"
-  sha256 "a3a60814326fa34b54e93ce0b1e66460d55f1007e576c5152fd47024d9ceaff9"
+  url "https://github.com/karlstav/cava/archive/refs/tags/0.10.2.tar.gz"
+  sha256 "853ee78729ed3501d0cdf9c1947967ad3bfe6526d66a029b4ddf9adaa6334d4f"
   license "MIT"
   head "https://github.com/karlstav/cava.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "f74b0fcad6a503613d9e8fa7e39864fcbd5b29edc7573e490bd804a193df558a"
-    sha256 cellar: :any, arm64_ventura:  "b9572317b554c1a29c4fbe8b9631f4202d54ef246489f3b97dada007c1db07dc"
-    sha256 cellar: :any, arm64_monterey: "033d4e6bd3af308e2eb2f676781098cd68a73b8bd3cfe16ac18cac02f99942c8"
-    sha256 cellar: :any, sonoma:         "3eddff336e77820a53ef1d4073b0a286a4cce40afa6aa19fa1a3e120d2767cb8"
-    sha256 cellar: :any, ventura:        "470ac5040c44a1148926ce37717f054a478882d6b80dafdc16cee0432c65402d"
-    sha256 cellar: :any, monterey:       "8e05dc874b5893de5995ab17654011e5d29b464d1610f64e64fa236a9571ce5c"
-    sha256               x86_64_linux:   "983610bdfc5e0df084528e43480c3dc5f23bb77e4fb8b8ab0f7b5984a1a99a95"
+    sha256 cellar: :any, arm64_sequoia:  "6b7abdbd2b00942957380ca8770ebeb2eda39dda4ff6238afea4a46e47c45920"
+    sha256 cellar: :any, arm64_sonoma:   "aa62a4d58c42b5b95be8d6f996728308730bb70eaabc4d0bf26f2599fe23e2c7"
+    sha256 cellar: :any, arm64_ventura:  "480f4fb722f970d56afd1d626df91d276f0b6d8c762c53436f835dfbf8bb4df5"
+    sha256 cellar: :any, arm64_monterey: "498ee144ce314d844962eef7df12b139aa5fab106dc20b6437e2ca1346bfc4a3"
+    sha256 cellar: :any, sonoma:         "70e9e1476a708fe482f568f9b2f621b17eb76437e390c2ac2eaf7dc233f62edc"
+    sha256 cellar: :any, ventura:        "9fad2eb551ddb104fca1a0de695586bafdd598a0189dd00156955f704d1b6921"
+    sha256 cellar: :any, monterey:       "80f5dde55a22dc3e162f11f0131ed4829158f5f748c466dbed34adcf304ce8fc"
+    sha256               x86_64_linux:   "9d951035501e2b9a741d8b470119a9a3223e2a361161996a4f82322664002f8b"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool"  => :build
   depends_on "pkg-config"  => :build
+
   depends_on "fftw"
   depends_on "iniparser"
   depends_on "portaudio"
@@ -27,15 +29,22 @@ class Cava < Formula
   uses_from_macos "vim" => :build # needed for xxd
   uses_from_macos "ncurses"
 
+  on_linux do
+    depends_on "alsa-lib"
+    depends_on "jack"
+  end
+
   def install
     # change ncursesw to ncurses
     inreplace "configure.ac", "ncursesw", "ncurses"
     # force autogen.sh to look for and use our glibtoolize
     inreplace "autogen.sh", "libtoolize", "glibtoolize"
 
+    ENV.append "CPPFLAGS", "-I#{Formula["iniparser"].opt_include}/iniparser"
+    ENV.append "LDFLAGS", "-L#{Formula["iniparser"].opt_lib}"
+
     system "./autogen.sh"
-    system "./configure", *std_configure_args, "--disable-silent-rules"
-    system "make"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 
@@ -58,8 +67,12 @@ class Cava < Formula
     EOS
 
     pid = spawn(bin/"cava", "-p", cava_config, [:out, :err] => cava_stdout.to_s)
+
     sleep 2
-    Process.kill "KILL", pid
+
     assert_match "0;0;\n", cava_stdout.read
+  ensure
+    Process.kill("TERM", pid)
+    Process.wait(pid)
   end
 end

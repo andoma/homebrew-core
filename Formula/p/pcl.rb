@@ -1,20 +1,29 @@
 class Pcl < Formula
   desc "Library for 2D/3D image and point cloud processing"
   homepage "https://pointclouds.org/"
-  url "https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.14.0.tar.gz"
-  sha256 "de297b929eafcb93747f12f98a196efddf3d55e4edf1b6729018b436d5be594d"
   license "BSD-3-Clause"
   revision 1
   head "https://github.com/PointCloudLibrary/pcl.git", branch: "master"
 
+  stable do
+    url "https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.14.1.tar.gz"
+    sha256 "5dc5e09509644f703de9a3fb76d99ab2cc67ef53eaf5637db2c6c8b933b28af6"
+
+    # Backport fix for Boost 1.86.0
+    patch do
+      url "https://github.com/PointCloudLibrary/pcl/commit/c6bbf02a084a39a02d9e2fc318a59fe2f1ff55c1.patch?full_index=1"
+      sha256 "e3af29b8b70ef9697d430a1af969c8501fe597d2cc02025e5f9254a0d6d715cd"
+    end
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "78799a6e06969f8edbe70e3331f7711627f801578809dfaa6f999bfe3f5e986e"
-    sha256 cellar: :any,                 arm64_ventura:  "420239cbdd0a451a60f0dd1083ed2f03537a84a13db57ca88cc8f32d075cf9bb"
-    sha256 cellar: :any,                 arm64_monterey: "496bdd1f48d19cf2dc7f333cabef303437d59d0453bcc0ad74ccdcef396a7f92"
-    sha256 cellar: :any,                 sonoma:         "6e3a1ebe2c8111ad101979031676132fd340de263f695e3790e3785476bb7dab"
-    sha256 cellar: :any,                 ventura:        "845ddc0cc3838c4e792405253b5e3e4460c5def4a0cb5766b6c821770df0df8b"
-    sha256 cellar: :any,                 monterey:       "4cd16b29e5aafef0ec8deec936044a03b66b79a5200783dfbe8027760fc6f534"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "23a00fb69eceaaf5840453066d19d8f5d4f22aedbeaeb2fc0a2e016c523c924f"
+    sha256 cellar: :any,                 arm64_sonoma:   "7a056d0967f7edd1dcdbb11e32c0c8371ea8c0b8f240023f44b389c2b95e76d1"
+    sha256 cellar: :any,                 arm64_ventura:  "25f45fec0e436ebcc1e331877b251782844afc78e28c237bedd7f3ba06cfa75c"
+    sha256 cellar: :any,                 arm64_monterey: "b86c9e27adab7ac013780786c585126d6f0a2d97497600b8731f209177fb9faf"
+    sha256 cellar: :any,                 sonoma:         "c336ac4d50edbfc9196b6736b8796f8ec65a854724f6a974cbec56e4bc2a6533"
+    sha256 cellar: :any,                 ventura:        "2c84f410098d125c7d4ab95b334dba18d8eeb8f6c040f07b3fd79299f3c92355"
+    sha256 cellar: :any,                 monterey:       "f393fce3941f2f7934edcfcd066148ee7e2ba3856d50dd303582a9347eada63a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6c54f3593d2d799ca37f2b7f9ef34a1d8f2a4e79930ae49d209343717bf0e2d6"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -25,7 +34,9 @@ class Pcl < Formula
   depends_on "flann"
   depends_on "glew"
   depends_on "libpcap"
+  depends_on "libpng"
   depends_on "libusb"
+  depends_on "lz4"
   depends_on "qhull"
   depends_on "qt"
   depends_on "vtk"
@@ -34,8 +45,15 @@ class Pcl < Formula
     depends_on "libomp"
   end
 
+  on_linux do
+    depends_on "freeglut"
+    depends_on "libx11"
+    depends_on "mesa"
+    depends_on "mesa-glu"
+  end
+
   def install
-    args = std_cmake_args + %w[
+    args = %w[
       -DBUILD_SHARED_LIBS:BOOL=ON
       -DBUILD_apps=AUTO_OFF
       -DBUILD_apps_3d_rec_framework=AUTO_OFF
@@ -62,17 +80,16 @@ class Pcl < Formula
     # The AppleClang versions shipped on current MacOS versions do not support the -march=native flag on arm
     args << "-DPCL_ENABLE_MARCHNATIVE:BOOL=OFF" if build.bottle?
 
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make", "install"
-      prefix.install Dir["#{bin}/*.app"]
-    end
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+    prefix.install bin.glob("*.app")
   end
 
   test do
     assert_match "tiff files", shell_output("#{bin}/pcl_tiff2pcd -h", 255)
     # inspired by https://pointclouds.org/documentation/tutorials/writing_pcd.html
-    (testpath/"CMakeLists.txt").write <<~EOS
+    (testpath/"CMakeLists.txt").write <<~CMAKE
       cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
       project(pcd_write)
       find_package(PCL 1.2 REQUIRED)
@@ -81,8 +98,8 @@ class Pcl < Formula
       add_definitions(${PCL_DEFINITIONS})
       add_executable (pcd_write pcd_write.cpp)
       target_link_libraries (pcd_write ${PCL_LIBRARIES})
-    EOS
-    (testpath/"pcd_write.cpp").write <<~EOS
+    CMAKE
+    (testpath/"pcd_write.cpp").write <<~CPP
       #include <iostream>
       #include <pcl/io/pcd_io.h>
       #include <pcl/point_types.h>
@@ -107,23 +124,23 @@ class Pcl < Formula
         pcl::io::savePCDFileASCII ("test_pcd.pcd", cloud);
         return (0);
       }
-    EOS
-    mkdir "build" do
-      # the following line is needed to workaround a bug in test-bot
-      # (Homebrew/homebrew-test-bot#544) when bumping the boost
-      # revision without bumping this formula's revision as well
-      ENV.prepend_path "PKG_CONFIG_PATH", Formula["eigen"].opt_share/"pkgconfig"
-      ENV.delete "CPATH" # `error: no member named 'signbit' in the global namespace`
-      args = std_cmake_args + ["-DQt5_DIR=#{Formula["qt@5"].opt_lib}/cmake/Qt5"]
-      args << "-DCMAKE_BUILD_RPATH=#{lib}" if OS.linux?
-      system "cmake", "..", *args
-      system "make"
-      system "./pcd_write"
-      assert_predicate (testpath/"build/test_pcd.pcd"), :exist?
-      output = File.read("test_pcd.pcd")
-      assert_match "POINTS 2", output
-      assert_match "1 2 3", output
-      assert_match "4 5 6", output
-    end
+    CPP
+    # the following line is needed to workaround a bug in test-bot
+    # (Homebrew/homebrew-test-bot#544) when bumping the boost
+    # revision without bumping this formula's revision as well
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["eigen"].opt_share/"pkgconfig"
+
+    ENV.delete "CPATH" # `error: no member named 'signbit' in the global namespace`
+
+    args = OS.mac? ? [] : ["-DCMAKE_BUILD_RPATH=#{lib}"]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "./build/pcd_write"
+    assert_predicate (testpath/"test_pcd.pcd"), :exist?
+    output = File.read("test_pcd.pcd")
+    assert_match "POINTS 2", output
+    assert_match "1 2 3", output
+    assert_match "4 5 6", output
   end
 end

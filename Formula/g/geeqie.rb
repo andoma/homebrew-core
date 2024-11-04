@@ -1,8 +1,8 @@
 class Geeqie < Formula
   desc "Lightweight Gtk+ based image viewer"
   homepage "https://www.geeqie.org/"
-  url "https://github.com/BestImageViewer/geeqie/releases/download/v2.2/geeqie-2.2.tar.xz"
-  sha256 "899ac33b801e0e83380f79e9094bc2615234730ccf6a02d93fd6da3e6f8cfe94"
+  url "https://github.com/BestImageViewer/geeqie/releases/download/v2.5/geeqie-2.5.tar.xz"
+  sha256 "cc991c9d4c78c58668105a15f7ece953bfc21b6b78cedc26ccbaaee6a12b8952"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,13 +11,12 @@ class Geeqie < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "8e7c6bfe2f4c8cce1cdaa10c47106f17eb84c93028fde80c4102f700044e2088"
-    sha256 cellar: :any, arm64_ventura:  "1a01f36f93c9fab3462304e732f7b3e9e0ff0d82639e2deb76fe2f253dd907b3"
-    sha256 cellar: :any, arm64_monterey: "d6ea504bc3c656364415bb4eec33da1e8cbc941e3cf44b6221cebd384d09712b"
-    sha256 cellar: :any, sonoma:         "52b8948c7aa8c8c3fcf63d41d2a19d919df5ebbfdd163ffb0cc45aa66c3f9268"
-    sha256 cellar: :any, ventura:        "0b64010355e24609b46c665a8b7a05a0d46b574b366a7d9cc02e58f2cd104028"
-    sha256 cellar: :any, monterey:       "a5171f80a9c9111a8a019d4528a802507c060659486338d5e4d88c6b695c03d9"
-    sha256               x86_64_linux:   "5141389d7b1e37e34957b7eb1c2a4d0bbcab29e7a2d25a80d110cf02b5ed8311"
+    sha256 cellar: :any, arm64_sequoia: "2ba6af24f586147bdcae30c0cbb338faba1a80c904f78314afa76c2d944ceb04"
+    sha256 cellar: :any, arm64_sonoma:  "9215bb9a5e1e2c6acba36a122821ca28edb43521a901407fb81947f3857de00e"
+    sha256 cellar: :any, arm64_ventura: "96f1a9e5afdceb7cd6528fa0219aef930e31414ba6b887aa04a06b93dd0d5dea"
+    sha256 cellar: :any, sonoma:        "fdbf605a9b19a52011a500a07978cc468648939622de22f0c4416b9b38e21542"
+    sha256 cellar: :any, ventura:       "580834b9d461fba3a84bb36c4fa854139de828c4ff46d544b14661dd8b32fd12"
+    sha256               x86_64_linux:  "a8a49ff2e1f2662ade21392ba02e296cffb0b5cee6b7f8906446701323031824"
   end
 
   depends_on "meson" => :build
@@ -29,6 +28,7 @@ class Geeqie < Formula
   depends_on "adwaita-icon-theme"
   depends_on "at-spi2-core"
   depends_on "cairo"
+  depends_on "djvulibre"
   depends_on "evince" # for print preview support
   depends_on "exiv2"
   depends_on "ffmpegthumbnailer"
@@ -39,16 +39,26 @@ class Geeqie < Formula
   depends_on "gtk+3"
   depends_on "imagemagick"
   depends_on "jpeg-turbo"
+  depends_on "jpeg-xl"
   depends_on "libarchive"
+  depends_on "libheif"
+  depends_on "libraw"
   depends_on "libtiff"
   depends_on "libx11"
   depends_on "little-cms2"
+  depends_on "openjpeg"
   depends_on "pango"
   depends_on "poppler" # for pdf support # for video thumbnails support
+  depends_on "webp"
   depends_on "webp-pixbuf-loader" # for webp support
 
   uses_from_macos "python" => :build
   uses_from_macos "vim" => :build # for xxd
+
+  on_macos do
+    depends_on "enchant"
+    depends_on "harfbuzz"
+  end
 
   def install
     system "meson", "setup", "build", "-Dlua=disabled", *std_meson_args

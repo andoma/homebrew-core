@@ -1,8 +1,8 @@
 class Libraw < Formula
   desc "Library for reading RAW files from digital photo cameras"
   homepage "https://www.libraw.org/"
-  url "https://www.libraw.org/data/LibRaw-0.21.2.tar.gz"
-  sha256 "fe7288013206854baf6e4417d0fb63ba4ed7227bf36fff021992671c2dd34b03"
+  url "https://www.libraw.org/data/LibRaw-0.21.3.tar.gz"
+  sha256 "dba34b7fc1143503942fa32ad9db43e94f714e62a4a856e91617f8f3e1e0aa5c"
   license any_of: ["LGPL-2.1-only", "CDDL-1.0"]
 
   livecheck do
@@ -11,13 +11,12 @@ class Libraw < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "75031ae51bb608630a629b5c8a3664d8198eb1a86de6e9deace9ea1ec63f889e"
-    sha256 cellar: :any,                 arm64_ventura:  "54931d02c30c96db73386108eca219ce314f57423700ca3107aaac08b3daebfc"
-    sha256 cellar: :any,                 arm64_monterey: "0047f8b736b634e6d6b08358ba6fb8acfd9453c2cc35263bb37c901b8e5a5d2b"
-    sha256 cellar: :any,                 sonoma:         "b560a97e92ec19e74813e167d2390e60a2fe583206119fed6ce042d2013327fd"
-    sha256 cellar: :any,                 ventura:        "81b40bc80c4a7fc6992a24655fb32bc46dc0e1f75f885b66322d4e1785fe18c6"
-    sha256 cellar: :any,                 monterey:       "4667607ca30791820c698ed37ce6cd59bc66e0139b747bf9b6839ecd38475376"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2774a6d9383caf3229ed4ac3465c40d35147075c1ae223a03d4e4aa303c1f8a"
+    sha256 cellar: :any,                 arm64_sequoia: "ba55dd6e2ef79dd0209e014e8daeb551bc570d9e7ac2487d21e3c46560833197"
+    sha256 cellar: :any,                 arm64_sonoma:  "31667768485f1282524aabb8d87d67a5a5486474f46ebf39032332d100951270"
+    sha256 cellar: :any,                 arm64_ventura: "a838c01a9bbcec7c03e07aef69d05ce9a03c7e9baae6a6548fed400bf50f448d"
+    sha256 cellar: :any,                 sonoma:        "90c5c097b1a8434966ebd16fe499dbd8450497eb6f6a387f19dd1481f7d071b9"
+    sha256 cellar: :any,                 ventura:       "64318f3bc3cec56cb5ff4e2669fcba4e5fd5a5e49f2c4bb392f3000f8d625cb6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3d1ddb246412946860765bb57fa3ebb3cfd6d4d1a13be9a1524decb3404e7ff5"
   end
 
   depends_on "autoconf" => :build
@@ -32,11 +31,6 @@ class Libraw < Formula
 
   on_macos do
     depends_on "libomp"
-  end
-
-  resource "homebrew-librawtestfile" do
-    url "https://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF"
-    sha256 "7886d8b0e1257897faa7404b98fe1086ee2d95606531b6285aed83a0939b768f"
   end
 
   def install
@@ -58,10 +52,16 @@ class Libraw < Formula
   end
 
   test do
+    resource "homebrew-librawtestfile" do
+      url "https://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF"
+      mirror "https://web.archive.org/web/20200703103724/https://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF"
+      sha256 "7886d8b0e1257897faa7404b98fe1086ee2d95606531b6285aed83a0939b768f"
+    end
+
     resource("homebrew-librawtestfile").stage do
       filename = "RAW_NIKON_D1.NEF"
-      system "#{bin}/raw-identify", "-u", filename
-      system "#{bin}/simple_dcraw", "-v", "-T", filename
+      system bin/"raw-identify", "-u", filename
+      system bin/"simple_dcraw", "-v", "-T", filename
     end
   end
 end

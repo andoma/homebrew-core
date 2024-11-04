@@ -1,8 +1,8 @@
 class Youtubeuploader < Formula
   desc "Scripted uploads to Youtube"
   homepage "https://github.com/porjo/youtubeuploader"
-  url "https://github.com/porjo/youtubeuploader/archive/refs/tags/23.06.tar.gz"
-  sha256 "54161eac7efc92dba00ad98a92bfd9e067bdf7cd7208d370e0e0e4bf58faa105"
+  url "https://github.com/porjo/youtubeuploader/archive/refs/tags/24.02.tar.gz"
+  sha256 "cd62bb1043bae7eae7fa462beb7d7f1ad8e1038b54bd9159d70ec24ff8a055ec"
   license "Apache-2.0"
   head "https://github.com/porjo/youtubeuploader.git", branch: "master"
 
@@ -16,20 +16,19 @@ class Youtubeuploader < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "00e2f57d95d1d1e1ed9121fcdb0b102439eff1b1380e774aa9b8a6c8a75fe5e3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a365567c1261346db06e357fec2601b195366fe4f24e2cfbef0eb9574bb345b2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "72f018aac8b9426d338e742a738966ff5dbbb13e3d4574410a20e5dce3e56afa"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ad0fc6dd9921f37d9bc6f7688f07967e1caf71632c294c7e5c03943f698c0f66"
-    sha256 cellar: :any_skip_relocation, ventura:        "5e981f04e18660e5412de166bb2d3651ad1f6c35ccbe2cce5e7ad5fbe9ab6d51"
-    sha256 cellar: :any_skip_relocation, monterey:       "232d655d50aab5fd052b9ed160bf85be919d466597ff3b3bd16c4e05e424f451"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "10b0774ac2da5a45cfc772cc2fefef188dfae5640ee325080d025fb5a137a23a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "030c2ca4236eeee1475861c5f777fa083ead3871e90f5a72c2ef56ddf70acb61"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "030c2ca4236eeee1475861c5f777fa083ead3871e90f5a72c2ef56ddf70acb61"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "030c2ca4236eeee1475861c5f777fa083ead3871e90f5a72c2ef56ddf70acb61"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8100f9c2526af5bc4e4a424364a0188c67fab700c27399913b0bb5098fcd4f65"
+    sha256 cellar: :any_skip_relocation, ventura:       "8100f9c2526af5bc4e4a424364a0188c67fab700c27399913b0bb5098fcd4f65"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4b24acc0c03b98aa0faeb6aa7b4bfa29596cf10d10b7651a771d707fad75df45"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -X main.appVersion=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/youtubeuploader"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/youtubeuploader"
   end
 
   test do

@@ -3,25 +3,30 @@ class Urlscan < Formula
 
   desc "View/select the URLs in an email message or file"
   homepage "https://github.com/firecat53/urlscan"
-  url "https://files.pythonhosted.org/packages/b7/7d/984994a32b261cc3a72d3bfb0b8c0de4f786682128dc659a5c5e02dfc48c/urlscan-1.0.1.tar.gz"
-  sha256 "e0ec986e5aa2da57dd2face8692116d80af173d4eb56a78e4fd881731113307f"
+  url "https://files.pythonhosted.org/packages/d2/1b/83a6cfd26a4037d7271713f8aa51750fdfc5c850c5ebc93161073fd03b6c/urlscan-1.0.3.tar.gz"
+  sha256 "9df791861f0baea1d9c7254f9f98ed23fc193219bbd4edd1c4fcfce7d14ef7d7"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "58abd0961d6cd3c5dfb45e0bb665573fc3d819e75ce824225f575e5584069b4c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2f3ac327ced320306b628a196e5feec94ab2202742bb785e620517cc06cdac61"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "44fb892524f6ec60ca56da2887e428211a562ed0a021f728d730949571cd25e8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "696105412b5246d755f08720c2c733dc320878ec0a92101f2c1906cf36ba28b8"
-    sha256 cellar: :any_skip_relocation, ventura:        "e5354052fd940bbe2705ec05e00311d265ae406986cbbfedd4c41c0980e6c995"
-    sha256 cellar: :any_skip_relocation, monterey:       "23e9cb821b7601fb8c211b5e17d85ae10e62ba445b8bbc9cde76641375f6338b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b1303d4b8e115058fe993501876848d9e7fa28c09e0208f387f674dd11a6ecd5"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "0c5352e45c49a4d0d2b9a6248751e958b98806970fbc5ca8934a2aca8ae9bf60"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
+
+  resource "typing-extensions" do
+    url "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz"
+    sha256 "1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"
+  end
 
   resource "urwid" do
-    url "https://files.pythonhosted.org/packages/58/7e/4191aa9a1c4a7b2f73a7548002754863189217464fbf76045526c7c97be5/urwid-2.4.1.tar.gz"
-    sha256 "6207cfa8ac911f251bbebf4d454a00e622f68bd5cd2c9e55b53c6eac85bb4a6f"
+    url "https://files.pythonhosted.org/packages/85/b7/516b0bbb7dd9fc313c6443b35d86b6f91b3baa83d2c4016e4d8e0df5a5e3/urwid-2.6.15.tar.gz"
+    sha256 "9ecc57330d88c8d9663ffd7092a681674c03ff794b6330ccfef479af7aa9671b"
+  end
+
+  resource "wcwidth" do
+    url "https://files.pythonhosted.org/packages/6c/63/53559446a878410fc5a5974feb13d31d78d752eb18aeba59c7fef1af7598/wcwidth-0.2.13.tar.gz"
+    sha256 "72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5"
   end
 
   def install

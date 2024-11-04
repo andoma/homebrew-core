@@ -1,69 +1,49 @@
 class Surelog < Formula
-  include Language::Python::Virtualenv
-
   desc "SystemVerilog Pre-processor, parser, elaborator, UHDM compiler"
   homepage "https://github.com/chipsalliance/Surelog"
-  url "https://github.com/chipsalliance/Surelog/archive/refs/tags/v1.82.tar.gz"
-  sha256 "e2c4074f9d35b7a1450b722681d1557bdd4af3de09363dbdb9d0da9cf26b976b"
+  url "https://github.com/chipsalliance/Surelog/archive/refs/tags/v1.84.tar.gz"
+  sha256 "ddcbc0d943ee52f2487b7a064c57a8239d525efd9a45b1f3e3e4a96a56cb3377"
   license "Apache-2.0"
-  revision 1
   head "https://github.com/chipsalliance/Surelog.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "5e059568d44235efdbeaf513460ca46ee1be23b8c00669f5b7c0d93641a7741f"
-    sha256 cellar: :any,                 arm64_ventura:  "bf1c1030465c42460c24db3295073ce2dba67018e4ee4c8800b1927724d37018"
-    sha256 cellar: :any,                 arm64_monterey: "27148e5995701680dcb9482581a4caa491abe75c8149d4487795b2bbee90a9c9"
-    sha256 cellar: :any,                 sonoma:         "6be4e77c6b7c545133b887d6d9e0a434837832bfb392d46967a4a6d7c5a1328b"
-    sha256 cellar: :any,                 ventura:        "a014dcb16342815f0dadb977d5a8c66fc19c6631dbf9106f92fcf8d9da6707fa"
-    sha256 cellar: :any,                 monterey:       "b68a26f046359b0dd25d2de863e36ce3a9a681ac5d892fdb5cbd1726f821f977"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bdc75b1ec247a81d68177ab2f36ea4ba60ef96515d447fbba5dc84b8df32bd59"
+    sha256 cellar: :any,                 arm64_sequoia:  "5a7918b04d91dab87e2aa0ee10bc54e5a560288af6714db5abf6d30f3feab0fc"
+    sha256 cellar: :any,                 arm64_sonoma:   "85204e65ac92cea0739274b1836c7bae77eaf3005eb013ec20241dfe5500ba8d"
+    sha256 cellar: :any,                 arm64_ventura:  "2ff2bedf7480466f17c675bb0a34882222158d8b4d460b72bb4aa2082cffb8e4"
+    sha256 cellar: :any,                 arm64_monterey: "9325935c4d32f32009230864c7418d73ac42a373978f068751437914f898e72b"
+    sha256 cellar: :any,                 sonoma:         "2400e046712df69761721f69f70017ad1d4e9880ba91377589e792428e2de399"
+    sha256 cellar: :any,                 ventura:        "5310dfc346c2bff4520151aecf9c942b1908bbaff85a4e7c57221bdf71a0aaf1"
+    sha256 cellar: :any,                 monterey:       "f71d7d68cc8be8de38a47dfdde9a93163f78bd8b67babc5c6206cbf2b576f986"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d5b576e3198b44eaefa5b52736ddbf80d8e314c40261f3d3cb60c096b069675c"
   end
 
   depends_on "antlr" => :build
   depends_on "cmake" => :build
   depends_on "nlohmann-json" => :build
   depends_on "openjdk" => :build
-  depends_on "python@3.12" => :build
-  depends_on "six" => :build
-  depends_on "googletest" => :test
+  depends_on "python@3.13" => :build
   depends_on "pkg-config" => :test
   depends_on "antlr4-cpp-runtime"
   depends_on "capnp"
   depends_on "uhdm"
 
-  resource "orderedmultidict" do
-    url "https://files.pythonhosted.org/packages/53/4e/3823a27d764bb8388711f4cb6f24e58453e92d6928f4163fdb01e3a3789f/orderedmultidict-1.0.1.tar.gz"
-    sha256 "04070bbb5e87291cc9bfa51df413677faf2141c73c61d2a5f7b26bea3cd882ad"
-  end
+  uses_from_macos "zlib"
 
-  def python3
-    which("python3.12")
-  end
+  conflicts_with "open-babel", because: "both install `roundtrip` binaries"
 
   def install
-    venv = virtualenv_create(buildpath/"venv", python3)
-    resources.each do |r|
-      venv.pip_install r
-    end
-
-    # Build shared library
-    system "cmake", "-S", ".", "-B", "build_shared",
-      "-DBUILD_SHARED_LIBS=ON",
-      "-DSURELOG_BUILD_TESTS=OFF",
-      "-DSURELOG_USE_HOST_GTEST=ON",
-      "-DSURELOG_USE_HOST_ANTLR=ON",
-      "-DSURELOG_USE_HOST_CAPNP=ON",
-      "-DSURELOG_USE_HOST_JSON=ON",
-      "-DSURELOG_USE_HOST_UHDM=ON",
-      "-DGTEST_LIBRARY=unused",
-      "-DGTEST_INCLUDE_DIR=unused",
-      "-DGTEST_MAIN_LIBRARY=unused",
-      "-DANTLR_JAR_LOCATION=#{Formula["antlr"].opt_prefix}/antlr-#{Formula["antlr"].version}-complete.jar",
-      "-DSURELOG_WITH_ZLIB=ON",
-      "-DCMAKE_INSTALL_RPATH=#{rpath}",
-      "-DPython3_EXECUTABLE=#{buildpath}/venv/bin/python", *std_cmake_args
-    system "cmake", "--build", "build_shared"
-    system "cmake", "--install", "build_shared"
+    antlr = Formula["antlr"]
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DANTLR_JAR_LOCATION=#{antlr.opt_prefix}/antlr-#{antlr.version}-complete.jar",
+                    "-DBUILD_SHARED_LIBS=ON",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    "-DPython3_EXECUTABLE=#{which("python3.13")}",
+                    "-DSURELOG_BUILD_TESTS=OFF",
+                    "-DSURELOG_USE_HOST_ALL=ON",
+                    "-DSURELOG_WITH_ZLIB=ON",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -127,8 +107,8 @@ class Surelog < Formula
 
     flags = shell_output("pkg-config --cflags --libs Surelog").chomp.split
     system ENV.cxx, testpath/"test.cpp", "-o", "test",
-      "-L#{Formula["antlr4-cpp-runtime"].opt_prefix}/lib",
-      "-fPIC", "-std=c++17", *flags
+                    "-L#{Formula["antlr4-cpp-runtime"].opt_prefix}/lib",
+                    "-fPIC", "-std=c++17", *flags
     system testpath/"test"
   end
 end

@@ -1,18 +1,17 @@
 class Ko < Formula
   desc "Build and deploy Go applications on Kubernetes"
   homepage "https://ko.build"
-  url "https://github.com/ko-build/ko/archive/refs/tags/v0.15.2.tar.gz"
-  sha256 "4ecd13e513924f16af61f7c3713b989aad8eb10d993ec22c23ea50fe96e32289"
+  url "https://github.com/ko-build/ko/archive/refs/tags/v0.17.1.tar.gz"
+  sha256 "cc45d71db67186022e0587d81fa50d82f0da05fac2723be1f188e5caf3655107"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "015166e3fc6af91fa3f0b526fdceab814e5dfe53fabfdca2e0263b442d311ad4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "11f581be3a08abea832e7f4600a61a91726a2d0ee28c68068a2f81e8f260f22a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "457627cd2ba7e65bd9668406e1f5b1c32f35764dbb402bb005309a82e687ee58"
-    sha256 cellar: :any_skip_relocation, sonoma:         "fec8f3c96c3acbdba2461ba832ca26a9e03e31ec5210d0c1223f98ea8eacea18"
-    sha256 cellar: :any_skip_relocation, ventura:        "166f6ad5f1c98d8c07b426240591ec86e09cd375fde49be86b277ba9c84dba18"
-    sha256 cellar: :any_skip_relocation, monterey:       "f17af88550f3ea8e463392563d4f654d512e721dba93d9242c61367a7acf8347"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "42f06bbf81ee9b83f3a1c7c66db1ac4349a9301494f7cba0ef9486b7e7eed313"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "88d255b3923b6b3fc6253d94367a2a398d396759a1aaea943f6834a1645519c0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "88d255b3923b6b3fc6253d94367a2a398d396759a1aaea943f6834a1645519c0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "88d255b3923b6b3fc6253d94367a2a398d396759a1aaea943f6834a1645519c0"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d5c9999d32150f8c616329946d9182589c2c975e35a75dd09d84c3b2b3f48a2e"
+    sha256 cellar: :any_skip_relocation, ventura:       "d5c9999d32150f8c616329946d9182589c2c975e35a75dd09d84c3b2b3f48a2e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "514e891956612851d6b04b7ab624049fa95772391e02b8bebb62774c5f9ed0e0"
   end
 
   depends_on "go" => :build

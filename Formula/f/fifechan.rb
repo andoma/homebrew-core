@@ -3,7 +3,7 @@ class Fifechan < Formula
   homepage "https://fifengine.github.io/fifechan/"
   url "https://github.com/fifengine/fifechan/archive/refs/tags/0.1.5.tar.gz"
   sha256 "29be5ff4b379e2fc4f88ef7d8bc172342130dd3e77a3061f64c8a75efe4eba73"
-  license "LGPL-2.1"
+  license "LGPL-2.1-or-later"
 
   livecheck do
     url :stable
@@ -12,6 +12,7 @@ class Fifechan < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "71f641735c72610a5de0482f15c41098d817fed78afcebc8c4c41a686505cb7b"
     sha256 cellar: :any,                 arm64_sonoma:   "277fbd536c176f738c60124aea4321ec581e32491ee82fc13dceec867574705b"
     sha256 cellar: :any,                 arm64_ventura:  "a8deaa164106ac1b37cc156fc4707b8517b07194cf87adc348094600dfbd40b6"
     sha256 cellar: :any,                 arm64_monterey: "462d21b6d9e655b260847f1aace8c011f07145d335aaaf1984c09fbfc2712699"
@@ -27,20 +28,24 @@ class Fifechan < Formula
   end
 
   depends_on "cmake" => :build
+
   depends_on "allegro"
   depends_on "sdl2"
   depends_on "sdl2_image"
   depends_on "sdl2_ttf"
 
+  on_linux do
+    depends_on "mesa"
+  end
+
   def install
-    mkdir "build" do
-      system "cmake", "..", "-DENABLE_SDL_CONTRIB=ON", *std_cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", "-DENABLE_SDL_CONTRIB=ON", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"fifechan_test.cpp").write <<~EOS
+    (testpath/"fifechan_test.cpp").write <<~CPP
       #include <fifechan.hpp>
       int main(int n, char** c) {
         fcn::Container* mContainer = new fcn::Container();
@@ -49,7 +54,7 @@ class Fifechan < Formula
         }
         return 0;
       }
-    EOS
+    CPP
 
     system ENV.cxx, "fifechan_test.cpp", "-std=c++11", "-I#{include}", "-L#{lib}", "-lfifechan", "-o", "fifechan_test"
     system "./fifechan_test"

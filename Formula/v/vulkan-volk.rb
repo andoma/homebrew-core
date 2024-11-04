@@ -1,10 +1,9 @@
 class VulkanVolk < Formula
   desc "Meta loader for Vulkan API"
   homepage "https://github.com/zeux/volk"
-  url "https://github.com/zeux/volk/archive/refs/tags/vulkan-sdk-1.3.275.0.tar.gz"
-  sha256 "b68d24e139190e49e5eafd72894f6e85c80472b8745bddc6ef91d6bf339df813"
+  url "https://github.com/zeux/volk/archive/refs/tags/vulkan-sdk-1.3.296.0.tar.gz"
+  sha256 "8ffd0e81e29688f4abaa39e598937160b098228f37503903b10d481d4862ab85"
   license "MIT"
-  revision 3
   head "https://github.com/zeux/volk.git", branch: "master"
 
   livecheck do
@@ -13,13 +12,12 @@ class VulkanVolk < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d158ce691e3c6eda33ae308c84c407537610958e843606155844f32c32cf49e3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6f61abcf0ea4963cc2751835af74e9e752152ba63a47a8e294203658b5fa212b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "74b3cee486ef3319f361ec1428ecbccc2df21711a4e6a09d9586d14b4a537fe2"
-    sha256 cellar: :any_skip_relocation, sonoma:         "8dea45065400e6798cd1ba1bb67585f278443d9072a4bdf58f09aa970144a0e6"
-    sha256 cellar: :any_skip_relocation, ventura:        "cf0d6eac3bcc263384263acd310b1d91ec3fabbee13b087fae30eefe9aeca7d2"
-    sha256 cellar: :any_skip_relocation, monterey:       "52b033fb9942392de2ffde5f491c7b1facc73c50ca9998b4afae864df4d45953"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9be0e6e3899d22fa7d15859d0ed85fa93a69c4477f046a2f965d55cb5988c2d7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4b99b0b888a2d3de270867cce28f076bfd0744c8d9aa36a697cc4293fa716569"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e7d90480c5b9e185b5d8da54c0cdb0d84f3e72e504b807f8aef5e01eb78a61f7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a1068b9cfa7e55dccf92966543db170ceaa45f960cbb5215c6f68a43b63cf3b7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9b23d18952a47184732019fe4f40c6c5102f4bc61e21a234929984c2629696ef"
+    sha256 cellar: :any_skip_relocation, ventura:       "465f40c01b82dc763d522a7001d8abb33fe7f7c054dda339ceadef7ca491fec0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e13b32555f1e138bc348763f1058cb007bc57db26bc3cd5c078f417faf9504bf"
   end
 
   depends_on "cmake" => :build
@@ -51,7 +49,7 @@ class VulkanVolk < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include "volk.h"
 
@@ -65,7 +63,7 @@ class VulkanVolk < Formula
           return 1;
         }
       }
-    EOS
+    C
     system ENV.cc, testpath/"test.c",
            "-I#{include}", "-L#{lib}",
            "-I#{Formula["vulkan-headers"].include}",

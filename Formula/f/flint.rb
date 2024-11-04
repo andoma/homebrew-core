@@ -1,39 +1,61 @@
 class Flint < Formula
   desc "C library for number theory"
   homepage "https://flintlib.org/"
-  url "https://flintlib.org/flint-3.0.1.tar.gz"
-  sha256 "7b311a00503a863881eb8177dbeb84322f29399f3d7d72f3b1a4c9ba1d5794b4"
-  license "LGPL-2.1-or-later"
-  head "https://github.com/wbhart/flint2.git", branch: "trunk"
+  url "https://github.com/flintlib/flint/releases/download/v3.1.3-p1/flint-3.1.3-p1.tar.gz"
+  sha256 "96637ba9de43397d06657deefe8e6dee9d226992b5526bb1c9a9d563b983e027"
+  license "LGPL-3.0-or-later"
+  head "https://github.com/flintlib/flint.git", branch: "main"
 
   livecheck do
-    url "https://flintlib.org/downloads.html"
-    regex(/href=.*?flint[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+(?:[._-]?p\d+)?)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "e75f2c0f162efd57be88f49d2d82e185fe1cb32a47bfcd396aa0aa13606bbaa1"
-    sha256 cellar: :any,                 arm64_ventura:  "de5db34546d9d7d45a28fad4d7e8b7209ad29910b779feadfeb8412e5ef628d9"
-    sha256 cellar: :any,                 arm64_monterey: "f6a985f0559d1fb8b641f5aefcb5d403b4a00f6687d74f6f34ae4a4fd6271b14"
-    sha256 cellar: :any,                 sonoma:         "acddb19a44d203bc6b2bba73e359995b8f83ccf015c89984668315f336029afd"
-    sha256 cellar: :any,                 ventura:        "f1355bdf3d0960e3318096e16fe4ae68b411d766a1bb689df9905d97e741f207"
-    sha256 cellar: :any,                 monterey:       "c03703bd499c38aca8db90594a56db1933654fda770564f96dd2450081c76fb2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fd8b74d4c9e922d246704eb30c6ba45462036e26933625a69880d2b9a5245f3e"
+    sha256 cellar: :any,                 arm64_sequoia:  "a113c53749915d1b0e588a44db20e403f06d0fd62e6fb8f26bbc68de3c35d8fd"
+    sha256 cellar: :any,                 arm64_sonoma:   "74da020f9e6587c8899bda2034e1d94cf4d8b28dde5344c186dcbc45d4d10dab"
+    sha256 cellar: :any,                 arm64_ventura:  "ee89cff4b2e4a55c4c1b23b4435a5cb6d3e38bfb7cceaad86cb2d306d92ee86d"
+    sha256 cellar: :any,                 arm64_monterey: "f5efdb8826a3bd80de599455dc0aca0dd478276d4edbcde06e80f985cf9688ff"
+    sha256 cellar: :any,                 sonoma:         "8c60de59b79be3ab9aa996c3b1b65566751956e24bd47122bb14c7f575f87458"
+    sha256 cellar: :any,                 ventura:        "ac40ea9c126354efbd805a2a1d817e38e26c23410abfd9e189790e9c0fc60f11"
+    sha256 cellar: :any,                 monterey:       "daf2a177ea8b8b83cc10bf7d9f8719b60c128b335b74fb48b54ca73dca109f1d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "999413efcfa5455b771d5fe28356fb36515c41b243bda6f4206240e2dbb3295d"
   end
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "gmp"
   depends_on "mpfr"
-  depends_on "ntl"
+  uses_from_macos "m4" => :build
 
   def install
+    # to build against NTL
     ENV.cxx11
+
+    system "./bootstrap.sh" if build.head?
+
     args = %W[
       --with-gmp=#{Formula["gmp"].prefix}
       --with-mpfr=#{Formula["mpfr"].prefix}
-      --with-ntl=#{Formula["ntl"].prefix}
-      --prefix=#{prefix}
     ]
-    system "./configure", *args
+
+    if Hardware::CPU.intel?
+      # enable/disable avx{2,512}
+      # Because flint doesn't use CPUID at runtime
+      # we cannot rely on -march options
+      if build.bottle?
+        # prevent avx{2,512} in case we are building on a machine that supports it
+        args << "--enable-arch=#{Hardware.oldest_cpu}"
+      elsif Hardware::CPU.avx2?
+        # TODO: enable avx512 support
+        args << "--enable-avx2"
+      end
+    end
+
+    system "./configure", *args, *std_configure_args
+
     system "make"
     system "make", "install"
   end

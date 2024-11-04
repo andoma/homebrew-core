@@ -3,26 +3,25 @@ class Borgbackup < Formula
 
   desc "Deduplicating archiver with compression and authenticated encryption"
   homepage "https://borgbackup.org/"
-  url "https://files.pythonhosted.org/packages/a6/19/f94be9fda92ea73cbf22b643a03a0b64559027ef5467765142d8242e712a/borgbackup-1.2.7.tar.gz"
-  sha256 "f63f28a3383c041971cec87b061ca39a815b5fd445db24aa8172cac417d9411a"
+  url "https://files.pythonhosted.org/packages/dd/0d/28e60180ce4ae171adba65ce9f8878fce3580c6d2cfdfa998929175105dd/borgbackup-1.4.0.tar.gz"
+  sha256 "c54c45155643fa66fed7f9ff2d134ea0a58d0ac197c18781ddc2fb236bf6ed29"
   license "BSD-3-Clause"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "7100fa9d7fc8f028649ae0d87ac0f43261fd29bec22559c766f75fd8397bfc98"
-    sha256 cellar: :any,                 arm64_ventura:  "7eea2d82869e8aef5b24d5c916962fa5fdbef89f4792351bbbb01e8ac1e727b7"
-    sha256 cellar: :any,                 arm64_monterey: "f0ca05757191f1c0ec833c54cb03d27bb83151ccefb1befd37dcc1452b8a3987"
-    sha256 cellar: :any,                 sonoma:         "26b49cb0d0da9ebc32530289853f7d7a8cab0221f20b37334ad9c4b293122d98"
-    sha256 cellar: :any,                 ventura:        "e6656f7e859696ff3a0ce5c8e8cd7a4ab36ee7d1f3fac66ec36927facca27441"
-    sha256 cellar: :any,                 monterey:       "671e11f2a190941b2743f328f99763f2f22a39db1cf0b403f687c5c6941eb64f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "52132ddbb9b99149a2c7868bb3a2ddb5485ddc35b82a1ed0cf12e0eba26732c4"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "ea0b6a39efabe6534d4c0d61ac53544ec56e7160c21a6c7554b9a5f1435d2f0c"
+    sha256 cellar: :any,                 arm64_sonoma:  "913762693084b7db20b9dd17f8bf6ad44e9f1b558279126455d316b0d60bfcb4"
+    sha256 cellar: :any,                 arm64_ventura: "8d180c48615881e8375ffec0da4b7f2489b88b13fa639934c24a48b07a395bfc"
+    sha256 cellar: :any,                 sonoma:        "74a7a54445937d1553688936cdc131b58a64b8ebbee692a8bd1f284d8583f03f"
+    sha256 cellar: :any,                 ventura:       "70cbbc7f8cace22332f240aeb6e8ad8036fe2f712b203f75534dd0253d80387b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b362ecca7e4b2d507ed33b16553b61db7d63124584b7d665533ef26971bd278f"
   end
 
   depends_on "pkg-config" => :build
   depends_on "libb2"
   depends_on "lz4"
   depends_on "openssl@3"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "xxhash"
   depends_on "zstd"
 
@@ -31,13 +30,13 @@ class Borgbackup < Formula
   end
 
   resource "msgpack" do
-    url "https://files.pythonhosted.org/packages/c2/d5/5662032db1571110b5b51647aed4b56dfbd01bfae789fa566a2be1f385d1/msgpack-1.0.7.tar.gz"
-    sha256 "572efc93db7a4d27e404501975ca6d2d9775705c2d922390d878fcf768d92c87"
+    url "https://files.pythonhosted.org/packages/cb/d0/7555686ae7ff5731205df1012ede15dd9d927f6227ea151e901c7406af4f/msgpack-1.1.0.tar.gz"
+    sha256 "dd432ccc2c72b914e4cb77afce64aab761c1137cc698be3984eee260bcb2896e"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   def install
@@ -58,13 +57,15 @@ class Borgbackup < Formula
   test do
     # Create a repo and archive, then test extraction.
     cp test_fixtures("test.pdf"), testpath
+
     Dir.chdir(testpath) do
-      system "#{bin}/borg", "init", "-e", "none", "test-repo"
-      system "#{bin}/borg", "create", "--compression", "zstd", "test-repo::test-archive", "test.pdf"
+      system bin/"borg", "init", "-e", "none", "test-repo"
+      system bin/"borg", "create", "--compression", "zstd", "test-repo::test-archive", "test.pdf"
     end
     mkdir testpath/"restore" do
-      system "#{bin}/borg", "extract", testpath/"test-repo::test-archive"
+      system bin/"borg", "extract", testpath/"test-repo::test-archive"
     end
+
     assert_predicate testpath/"restore/test.pdf", :exist?
     assert_equal File.size(testpath/"restore/test.pdf"), File.size(testpath/"test.pdf")
   end

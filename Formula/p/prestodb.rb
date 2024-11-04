@@ -3,8 +3,8 @@ class Prestodb < Formula
 
   desc "Distributed SQL query engine for big data"
   homepage "https://prestodb.io"
-  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.285.1/presto-server-0.285.1.tar.gz"
-  sha256 "91acbf1c5589865be2bd9cab2dca6bce29abd35af301cedd67ecc19c6ebc894a"
+  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.288.1/presto-server-0.288.1.tar.gz", using: :nounzip
+  sha256 "e04e54add9d776587daebda0cac8806173018f170e8fd018f60e0d12ec5184ed"
   license "Apache-2.0"
 
   # Upstream has said that we should check Maven for Presto version information
@@ -16,21 +16,24 @@ class Prestodb < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "ccc86ca8cb7f162ee30a70311de8ceda80bd7901fc75d3ce2fa0ba1c98d61652"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "63a2677bc1afd26a880174243486510a09f55bbd5802b6934a79599474f32e3d"
   end
 
-  # https://github.com/prestodb/presto/issues/17146
-  depends_on arch: :x86_64
   depends_on "openjdk@11"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "presto-cli" do
-    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.285.1/presto-cli-0.285.1-executable.jar"
-    sha256 "3f94310e7e5b4aea657004d2c549a591f3ce6e26224ab806f2ea02c1e29c3f3d"
+    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.288.1/presto-cli-0.288.1-executable.jar"
+    sha256 "97e6338390a51301386abbe9c3f27f22ec3412bae47192ad4bf526bb4f1ecfdc"
   end
 
   def install
-    libexec.install Dir["*"]
+    odie "presto-cli resource needs to be updated" if version != resource("presto-cli").version
+
+    # Manually extract tarball to avoid multiple copies/moves of over 2GB of files
+    libexec.mkpath
+    system "tar", "-C", libexec.to_s, "--strip-components", "1", "-xzf", "presto-server-#{version}.tar.gz"
 
     (libexec/"etc/node.properties").write <<~EOS
       node.environment=production
@@ -75,11 +78,11 @@ class Prestodb < Formula
     end
 
     # Remove incompatible pre-built binaries
-    libprocname_dirs = libexec.glob("bin/procname/*")
+    libprocname_dirs = (libexec/"bin/procname").children
     # Keep the Linux-x86_64 directory to make bottles identical
     libprocname_dirs.reject! { |dir| dir.basename.to_s == "Linux-x86_64" }
     libprocname_dirs.reject! { |dir| dir.basename.to_s == "#{OS.kernel_name}-#{Hardware::CPU.arch}" }
-    libprocname_dirs.map(&:rmtree)
+    rm_r libprocname_dirs
   end
 
   def post_install
@@ -107,7 +110,7 @@ class Prestodb < Formula
                                        "--data-dir", testpath,
                                        "--config", testpath/"config.properties"
     end
-    sleep 30
+    sleep 60
 
     query = "SELECT state FROM system.runtime.nodes"
     output = shell_output(bin/"presto --debug --server localhost:#{port} --execute '#{query}'")

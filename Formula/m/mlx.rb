@@ -3,60 +3,89 @@ class Mlx < Formula
 
   desc "Array framework for Apple silicon"
   homepage "https://github.com/ml-explore/mlx"
-  url "https://github.com/ml-explore/mlx/archive/refs/tags/v0.4.0.tar.gz"
-  sha256 "36ef8aaec328ae93869f9e2906aba3bf1cfee6e4bc134215e0294b9a24a889f1"
-  license "MIT"
+  url "https://github.com/ml-explore/mlx/archive/refs/tags/v0.19.3.tar.gz"
+  sha256 "1d53ad70eaae89aed42f763c1c5e44668a9b14f6ed194da85e5705a37e50dca6"
+  # Main license is MIT while `metal-cpp` resource is Apache-2.0
+  license all_of: ["MIT", "Apache-2.0"]
   head "https://github.com/ml-explore/mlx.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:  "eaa9bd9c7017b4a1f6c23bc3a74927d5ba1423b3e38a294cec3eca9232134ed3"
-    sha256 cellar: :any, arm64_ventura: "e512248d8fa6baa6f14a500b2fd08caa64c11d71c379c5cbe553e56ffeacb029"
+    sha256 cellar: :any, arm64_sequoia: "53d4d36ee979de8a24bd10f82beb516ec8df071322decf1414eae63c21a28332"
+    sha256 cellar: :any, arm64_sonoma:  "cd8db1b575eb52bae1f4fb84a582c15e73ef3983323a5d1aa616908ec2c5eca8"
+    sha256 cellar: :any, arm64_ventura: "29edffa90d370a54c59be479318ca26383e9dc6a4b5d8ad619970d68363c4d84"
+    sha256 cellar: :any, sonoma:        "f2ae59e427bd699d49fddd886688d7400ff617bda96017c1a0048c69f7783fc2"
+    sha256 cellar: :any, ventura:       "6d063bf9bd4a658c8cb1edbdfab4a2ed7dd83b5daba272989fad8be9b7d73c0d"
   end
 
   depends_on "cmake" => :build
-  depends_on "pybind11" => :build
-  depends_on xcode: ["14.3", :build]
-  depends_on arch: :arm64
+  depends_on "fmt" => :build
+  depends_on "nanobind" => :build
+  depends_on "nlohmann-json" => :build
+  depends_on "python-setuptools" => :build
+  depends_on "robin-map" => :build
   depends_on :macos
-  depends_on "python@3.12"
+  depends_on macos: :ventura
+  depends_on "python@3.13"
 
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/c9/3d/74c56f1c9efd7353807f8f5fa22adccdba99dc72f34311c30a69627a0fad/setuptools-69.1.0.tar.gz"
-    sha256 "850894c4195f09c4ed30dba56213bf7c3f21d86ed6bdaafb5df5972593bfc401"
+  on_arm do
+    depends_on xcode: ["15.0", :build] # for metal
   end
 
-  def python3
-    "python3.12"
+  on_intel do
+    depends_on "openblas"
   end
 
-  def install
-    args = %w[
-      -DBUILD_SHARED_LIBS=ON
-      -DMLX_BUILD_BENCHMARKS=OFF
-      -DMLX_BUILD_EXAMPLES=OFF
-      -DMLX_BUILD_METAL=OFF
-      -DMLX_BUILD_PYTHON_BINDINGS=OFF
-      -DMLX_BUILD_TESTS=OFF
-    ]
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
-    system "cmake", "--build", "build"
-    system "cmake", "--install", "build"
-
-    venv_root = buildpath/"venv"
-    site_packages = Language::Python.site_packages(python3)
-    ENV.prepend_create_path "PYTHONPATH", venv_root/site_packages
-    venv = virtualenv_create(venv_root, python3)
-    venv.pip_install resource("setuptools")
-
-    env = { PYPI_RELEASE: version.to_s }
-    env["DEV_RELEASE"] = "1" if build.head?
-    with_env(env) do
-      system python3, *Language::Python.setup_install_args(prefix, python3)
+  # https://github.com/ml-explore/mlx/blob/v#{version}/CMakeLists.txt#L91C21-L91C97
+  # Included in not_a_binary_url_prefix_allowlist.json
+  resource "metal-cpp" do
+    on_arm do
+      url "https://developer.apple.com/metal/cpp/files/metal-cpp_macOS15_iOS18-beta.zip"
+      sha256 "d0a7990f43c7ce666036b5649283c9965df2f19a4a41570af0617bbe93b4a6e5"
     end
   end
 
+  # Update to GIT_TAG at https://github.com/ml-explore/mlx/blob/v#{version}/mlx/io/CMakeLists.txt#L21
+  resource "gguflib" do
+    url "https://github.com/antirez/gguf-tools/archive/af7d88d808a7608a33723fba067036202910acb3.tar.gz"
+    sha256 "1ee2dde74a3f9506af9ad61d7638a5e87b5e891b5e36a5dd3d5f412a8ce8dd03"
+  end
+
+  def python3
+    "python3.13"
+  end
+
+  def install
+    ENV.append_to_cflags "-I#{Formula["nlohmann-json"].opt_include}/nlohmann"
+    (buildpath/"gguflib").install resource("gguflib")
+
+    mlx_python_dir = prefix/Language::Python.site_packages(python3)/"mlx"
+
+    # We bypass brew's dependency provider to set `FETCHCONTENT_TRY_FIND_PACKAGE_MODE`
+    # which redirects FetchContent_Declare() to find_package() and helps find our `fmt`.
+    # To re-block fetches, we use the not-recommended `FETCHCONTENT_FULLY_DISCONNECTED`.
+    args = %W[
+      -DCMAKE_MODULE_LINKER_FLAGS=-Wl,-rpath,#{rpath(source: mlx_python_dir)}
+      -DHOMEBREW_ALLOW_FETCHCONTENT=ON
+      -DFETCHCONTENT_FULLY_DISCONNECTED=ON
+      -DFETCHCONTENT_TRY_FIND_PACKAGE_MODE=ALWAYS
+      -DFETCHCONTENT_SOURCE_DIR_GGUFLIB=#{buildpath}/gguflib
+    ]
+    args << if Hardware::CPU.arm?
+      (buildpath/"metal_cpp").install resource("metal-cpp")
+      "-DFETCHCONTENT_SOURCE_DIR_METAL_CPP=#{buildpath}/metal_cpp"
+    else
+      "-DMLX_ENABLE_X64_MAC=ON"
+    end
+
+    ENV["CMAKE_ARGS"] = (args + std_cmake_args).join(" ")
+    ENV[build.head? ? "DEV_RELEASE" : "PYPI_RELEASE"] = "1"
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = "#{MacOS.version.major}.#{MacOS.version.minor.to_i}"
+
+    system python3, "-m", "pip", "install", *std_pip_args, "."
+  end
+
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <cassert>
 
       #include <mlx/mlx.h>
@@ -74,7 +103,7 @@ class Mlx < Formula
         assert(z.data<float>()[2] == 4.0f);
         assert(z.data<float>()[3] == 5.0f);
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-std=c++17",
                     "-I#{include}", "-L#{lib}", "-lmlx",
                     "-o", "test"

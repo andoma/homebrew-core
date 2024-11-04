@@ -1,20 +1,17 @@
-require "language/node"
-
 class WebExt < Formula
   desc "Command-line tool to help build, run, and test web extensions"
   homepage "https://github.com/mozilla/web-ext"
-  url "https://registry.npmjs.org/web-ext/-/web-ext-7.11.0.tgz"
-  sha256 "e3561fae3a56d2e645176122ebdb5bb3cd3bb60fee9ae9c921e92a0e521caa6f"
+  url "https://registry.npmjs.org/web-ext/-/web-ext-8.3.0.tgz"
+  sha256 "c653efdb1e8082f80512a1b635dea6b475748bff4f363f7e59e36fe0b4eb3503"
   license "MPL-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6ed58abfbfe9ec673a25cc89d2eb605fb1ce1f7368311955e140b4a5fe1dc7f4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c806063f12a3bc0ff6d339e1e3e485d6f70db37d7745015c9cdccb1db09337c4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f4cc344463fdf9f6df3e3e19642ed3a893c403cc85932bb13896c9919030eefe"
-    sha256 cellar: :any_skip_relocation, sonoma:         "22508d98eec560de68db0b125892134903c6a159cac86d8171e3bf1a600096c8"
-    sha256 cellar: :any_skip_relocation, ventura:        "1a3b4a35bbd3d259e82945265c2e6072f1090ec4fbdbcb7d763f4fbbb13990b8"
-    sha256 cellar: :any_skip_relocation, monterey:       "6e6f613f7453e96f47c1c1557f4e15c65681478a3628743a296acbfa55368f04"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b61797ceb75bc11976d6487200fdb86277a4cdb72afad7601601ac1d3b31b9d7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "847da99b4c45299aa173a610674bc9eea5881887d31f366b1888fbd9ba1e2cb7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "847da99b4c45299aa173a610674bc9eea5881887d31f366b1888fbd9ba1e2cb7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "847da99b4c45299aa173a610674bc9eea5881887d31f366b1888fbd9ba1e2cb7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "73a0f4a766251f92aef4a57637d12b6df26c52a55fd9d43de0bfa0f11b32b1eb"
+    sha256 cellar: :any_skip_relocation, ventura:       "73a0f4a766251f92aef4a57637d12b6df26c52a55fd9d43de0bfa0f11b32b1eb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8e311108a697d9f161f1b31b9068724ef0aca3729ca2b529bb7ccd9f298d801c"
   end
 
   depends_on "node"
@@ -24,12 +21,12 @@ class WebExt < Formula
   end
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
 
     # Remove vendored pre-built binary `terminal-notifier`
     node_notifier_vendor_dir = libexec/"lib/node_modules/web-ext/node_modules/node-notifier/vendor"
-    node_notifier_vendor_dir.rmtree # remove vendored pre-built binaries
+    rm_r(node_notifier_vendor_dir) # remove vendored pre-built binaries
 
     if OS.mac?
       terminal_notifier_dir = node_notifier_vendor_dir/"mac.noindex"

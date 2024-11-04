@@ -1,8 +1,8 @@
 class Rsyslog < Formula
   desc "Enhanced, multi-threaded syslogd"
   homepage "https://www.rsyslog.com/"
-  url "https://www.rsyslog.com/files/download/rsyslog/rsyslog-8.2312.0.tar.gz"
-  sha256 "774032006128a896437f5913e132aa27dbfb937cd8847e449522d5a12d63d03e"
+  url "https://www.rsyslog.com/files/download/rsyslog/rsyslog-8.2410.0.tar.gz"
+  sha256 "b6be03c766df4cde314972c1c01cb74f3eacf8aec57066c0c12be0e079726eba"
   license all_of: ["Apache-2.0", "GPL-3.0-or-later", "LGPL-3.0-or-later"]
 
   livecheck do
@@ -11,13 +11,12 @@ class Rsyslog < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "f4870a6faba469a138a4c99aebff2abfbffd6d7586983c37202cee040d9df2f5"
-    sha256 arm64_ventura:  "35e05d70db97b8fd3be6bb5dbbd5a3ef934aa379ca45b32a81b1442799c08da9"
-    sha256 arm64_monterey: "f887391f6e8b0b60ad8fa83da33ff11f92bf3cae23d0b78c27172e3f2b877459"
-    sha256 sonoma:         "a20430184242a7d49cb2f02d1203d0ba121be8f58c1fd06beda38fc68ab25c67"
-    sha256 ventura:        "c48512f527aa601214707434e148431294261e73b75c5747eefe5d7a164b44ad"
-    sha256 monterey:       "d6f1a51adf6e9fee39fcac1e5a88d67e2478c7027a122d3a0120b19ffbf30650"
-    sha256 x86_64_linux:   "80843b03b0578be7f6c84aec1d427d009757770fef995ec8bf95eea270a07935"
+    sha256 arm64_sequoia: "bf23848060b3933422568eff4b627bec310b40ccd85072624ba51382b8155286"
+    sha256 arm64_sonoma:  "b054056b82837a58c6b0d5f1f0c7db8a64354e1da587fce0aeb7b7fdaf13691c"
+    sha256 arm64_ventura: "233a329a67dc14f13b448df6fa7181474714ed8b156d7165792aa5af894efc1e"
+    sha256 sonoma:        "16c866c23e8c7b411553a3324f1b07771f9d764db809222758c4dec6585b8e9c"
+    sha256 ventura:       "7186969ea0ac5950fb3aec7aa3bba1043621eb6df6bb402dc1a4a598553d5beb"
+    sha256 x86_64_linux:  "178bd0caa4693283111914bba31ea5625f3c3d52ef4f9fbe004e36208160fc70"
   end
 
   depends_on "pkg-config" => :build
@@ -39,12 +38,13 @@ class Rsyslog < Formula
     system "make"
     system "make", "install"
 
-    (etc/"rsyslog.conf").write <<~EOS
+    (buildpath/"rsyslog.conf").write <<~EOS
       # minimal config file for receiving logs over UDP port 10514
       $ModLoad imudp
       $UDPServerRun 10514
       *.* /usr/local/var/log/rsyslog-remote.log
     EOS
+    etc.install buildpath/"rsyslog.conf"
   end
 
   def post_install

@@ -1,8 +1,8 @@
 class Emqx < Formula
   desc "MQTT broker for IoT"
   homepage "https://www.emqx.io/"
-  url "https://github.com/emqx/emqx/archive/refs/tags/v5.5.0.tar.gz"
-  sha256 "a1c2620427ae4bf476d9baa21dd57c4e34c9277fdc35900813c6d6d77ced4fe9"
+  url "https://github.com/emqx/emqx/archive/refs/tags/v5.8.1.tar.gz"
+  sha256 "ff58eef9dceb65047f172032c552e72bf311b0c667bcde044f972bf2a49f712b"
   license "Apache-2.0"
   head "https://github.com/emqx/emqx.git", branch: "master"
 
@@ -15,33 +15,36 @@ class Emqx < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "1f6e18141a5c2347532fe3ecfeae628bc5945a93747e86cd4667422b3687a0a9"
-    sha256 cellar: :any,                 arm64_ventura:  "d0a2dfa991bafd1ac5e8474b600f575af9d03327cd4122078ecf08ebd80aaa33"
-    sha256 cellar: :any,                 arm64_monterey: "713b5d5cb70f7bab23d2c41b9275d7b7ed61cbb024d3803dbe08e7d77e7ab0b7"
-    sha256 cellar: :any,                 sonoma:         "0b33135c9a244b8379fafd828fda70a555179c2cd83440579d4e72535e304ab8"
-    sha256 cellar: :any,                 ventura:        "1727224774e1b8a3bbd07e6fbd2d422b65bd87feb3f965fa143627b735218720"
-    sha256 cellar: :any,                 monterey:       "833ea8db48a38707a7308fa0036b45baae15dd36ff42bfb5f3fe7244cf81da14"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "864360c8b6e19afeb952e7a4590ada9a7392f45a953001abda9e639580521ef3"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "068c30053dcc4a9ad268627b50fa84408ea0164100d9aa2a2a925818485ccc99"
+    sha256 cellar: :any,                 arm64_sonoma:  "0d492410e1c49a92a59779ccedcc7cd9c920dd5860769890af0f096060914088"
+    sha256 cellar: :any,                 arm64_ventura: "fe27edc1be88ed5b42d8e61e5eae51e694ba34ae45aade8dee4374f248f492ad"
+    sha256 cellar: :any,                 sonoma:        "ac76d2b8b3f8ce4a701e33f2e066d0e265a51b8811082a20ba1754b7f886736e"
+    sha256 cellar: :any,                 ventura:       "2651c9426643443198ec883d510fd2e1ed8bb9662fffe0e2e20a527393c86ac3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "260ff9c31a5a75171fcad6c923d2a0634ac4713af8ea19db08ec4774439edc54"
   end
 
   depends_on "autoconf"  => :build
   depends_on "automake"  => :build
-  depends_on "ccache"    => :build
   depends_on "cmake"     => :build
   depends_on "coreutils" => :build
-  depends_on "erlang" => :build
+  depends_on "erlang@26" => :build
   depends_on "freetds"   => :build
   depends_on "libtool"   => :build
   depends_on "openssl@3"
 
-  uses_from_macos "curl"  => :build
-  uses_from_macos "unzip" => :build
-  uses_from_macos "zip"   => :build
+  uses_from_macos "curl"       => :build
+  uses_from_macos "unzip"      => :build
+  uses_from_macos "zip"        => :build
+  uses_from_macos "cyrus-sasl"
+  uses_from_macos "krb5"
 
   on_linux do
     depends_on "ncurses"
     depends_on "zlib"
   end
+
+  conflicts_with "cassandra", because: "both install `nodetool` binaries"
 
   def install
     ENV["PKG_VSN"] = version.to_s
@@ -71,6 +74,10 @@ class Emqx < Formula
         MachO.codesign!(dynlib) if Hardware::CPU.arm?
       end
     end
+  end
+
+  service do
+    run [opt_bin/"emqx", "foreground"]
   end
 
   test do

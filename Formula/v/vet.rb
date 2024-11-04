@@ -1,18 +1,17 @@
 class Vet < Formula
   desc "Policy driven vetting of open source dependencies"
   homepage "https://github.com/safedep/vet"
-  url "https://github.com/safedep/vet/archive/refs/tags/v1.5.5.tar.gz"
-  sha256 "b8b406ae9431be781060e77c8183ee4e759fda4e5982e67ea745e781230642a7"
+  url "https://github.com/safedep/vet/archive/refs/tags/v1.8.2.tar.gz"
+  sha256 "c5d2ddadabe3e102e565513806c79200df691409f9cbae9150e564b9406b92de"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8bd5a03c915bfaf0631bcb090acc77f557bd2997481f03c8bb002acb96b888f6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0ebaa55c909f3e7df9d840a9e0fb7afda5c46ba07e8287c0a8a5904f2701ef5e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5211dd22533970c0a8bca9ee7e1bfd6ca72dcdfa5c82cc1219e8ee5ee66ac6e1"
-    sha256 cellar: :any_skip_relocation, sonoma:         "4dc1a4f51bbe75f4fc9e5ee4dea8e7c4c3c7cf712787b27b2cacfb983526429f"
-    sha256 cellar: :any_skip_relocation, ventura:        "f0c87ad965ae1cf99e9b2882248c7aa2fd5ae2ef9725dfbbde6a6c8cd0629f73"
-    sha256 cellar: :any_skip_relocation, monterey:       "996d45bb577867d82dd381aadd83f4b4b5d03608713bd0c83b7ef31ca438f63a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8090fda72f86ee286abcd8ef69f535ad7c58f4eb7c02e96bed8b8dd5a5561500"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "870781b9139b1dd5bb76768a6d3a127448c531ff4053e00fa714f65a1a5a591f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4122f4b558da63c73ef6cd7a765baf0ca1969301feb105774914c99cc5ed9b89"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e640bfe42f655ad69c2e25778a17ba0ae303284119c7bf89b5d39f592cebe829"
+    sha256 cellar: :any_skip_relocation, sonoma:        "54be7da1e5ba19f171e531730d6ee1e06c191bec9f3bb2c03d119c5a3465b243"
+    sha256 cellar: :any_skip_relocation, ventura:       "d2ea1f9137d25ebde85c30a189f03258d83ede4a0d07458917076f294862c64d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "13c7e5205630fd47b3d1867b049b33605f1f45ef2918d0b6def196110b637bbc"
   end
 
   depends_on "go" => :build
@@ -23,7 +22,7 @@ class Vet < Formula
       -X main.commit=#{tap.user}
       -X main.version=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"vet", "completion")
   end

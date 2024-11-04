@@ -1,18 +1,17 @@
 class Libmatio < Formula
   desc "C library for reading and writing MATLAB MAT files"
   homepage "https://matio.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/matio/matio/1.5.26/matio-1.5.26.tar.gz"
-  sha256 "8b47c29f58e468dba7a5555371c6a72ad4c6aa8b15f459b2b0b65a303c063933"
+  url "https://downloads.sourceforge.net/project/matio/matio/1.5.28/matio-1.5.28.tar.gz"
+  sha256 "9da698934a21569af058e6348564666f45029e6c2b0878ca0d8f9609bf77b8d8"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "13567c415371bc87b4cacd46de35b3ea36e618b685cdd42b3e1a1a0f90f4d22c"
-    sha256 cellar: :any,                 arm64_ventura:  "f72d1bb3e55e5236c5979b510043d38d7ab9313d0f4c110a3368adacda73f84f"
-    sha256 cellar: :any,                 arm64_monterey: "c59978c8734ff5373f244225e075e1efcc4b6e2c84cde84aa4bab99eebcae088"
-    sha256 cellar: :any,                 sonoma:         "f4c170f116b9ceb3ab4427188fb90e28576b9afbdef20916ebd3d3f7071dd196"
-    sha256 cellar: :any,                 ventura:        "85eb3ad8aaba3cb495dd884c05f214b04f5262c72029fa11ad17d766b369c42b"
-    sha256 cellar: :any,                 monterey:       "c854ec0a1d8ede9ab13b15dbf08126032af050e5d295b5e32c77493f7f62ae09"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0fa36654b9df0d1949829c67c19ca11f7a6f7873c2218617c9f936f2abbc32f5"
+    sha256 cellar: :any,                 arm64_sequoia: "8548b3cb9b21fa982216451647db1a47b4c739312584234cd1985427b8d6b257"
+    sha256 cellar: :any,                 arm64_sonoma:  "80694bb2600a33e2628fd55db525539d5105d2fea1928cf161881b752d498d88"
+    sha256 cellar: :any,                 arm64_ventura: "54cce8262a21cca0d84f505bcc89393d9aa70df7cde6efc1e7732f563c8beee4"
+    sha256 cellar: :any,                 sonoma:        "8165133fb675edcc6db39d59e8c67bf3ea3b63bf22948d7acc638b3b9759a86b"
+    sha256 cellar: :any,                 ventura:       "00b4f5bdbec014ea1675de1c8f53b0d206f01bcfd31dbd61390e38ed6577648f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f29e5ed508bb8cf1acbe9e69829f7beb0971efb72fcc4cb3a5a9c1b9ad66c2c7"
   end
 
   depends_on "pkg-config" => :test
@@ -41,7 +40,7 @@ class Libmatio < Formula
     end
 
     testpath.install resource("homebrew-test_mat_file")
-    (testpath/"mat.c").write <<~EOS
+    (testpath/"mat.c").write <<~C
       #include <stdlib.h>
       #include <matio.h>
 
@@ -68,7 +67,7 @@ class Libmatio < Formula
         mat = Mat_CreateVer("foo", NULL, MAT_FT_MAT73);
         return EXIT_SUCCESS;
       }
-    EOS
+    C
     system ENV.cc, "mat.c", "-o", "mat", "-I#{include}", "-L#{lib}", "-lmatio"
     system "./mat", "poc_data.mat.sfx"
 

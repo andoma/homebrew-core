@@ -1,18 +1,19 @@
 class GitGrab < Formula
   desc "Clone a git repository into a standard location organised by domain and path"
   homepage "https://github.com/wezm/git-grab"
-  url "https://github.com/wezm/git-grab/archive/refs/tags/2.0.0.tar.gz"
-  sha256 "4c73a931bb3c1e61fa1c3c037c5f911fbead459ce7ac375b942dbae32d80f538"
+  url "https://github.com/wezm/git-grab/archive/refs/tags/3.0.0.tar.gz"
+  sha256 "542a1e1c1d2a3f1f073e23817bfbab1b98f352f590991e50c6a484177a724b95"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b5bfd715de505accb3fd4fa4391f12bd447b1120d8bcde3d5714feb8700eb1c9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b8f42f40deb276a5ad41149c3d0d4f3b9626f09608df9010302747c35eb03095"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d5288fb74432bc8b13a6bceb7a6b2dfbbd318e957ba6b8f3151b0a9f83931c54"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c3c3a57b9037884e784106e9287e54f60a14e35bd454df4cd91806b7bd4b639e"
-    sha256 cellar: :any_skip_relocation, ventura:        "aaf10ce195e13b362d999277e6421a1bd38ac5fb11568885fd2ac8af42c1670e"
-    sha256 cellar: :any_skip_relocation, monterey:       "1637bc9e45e61d4639e054767cd46e0f1b50b364f569e872ea90fd702a8fcab6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1af8ecf6886e9307969f507eaadc0a26fce7760d28141b399b05a8ad0c889122"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0c36c3682e20265f64e618b402fcdddd2294c5c4b539dbf4e2e4b4290df60b7b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "346664a21b98d75605e66a33e2153205aa74ea192a8ed245b159091a4badba16"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "96ac1b16e32435e070d1cc16440117a5ca97fcc72e1d7532f9905142bcce4081"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "407ed850f5b4f7ee7b0d575e1013517ecc19333048e59ff5d582b9d828f68134"
+    sha256 cellar: :any_skip_relocation, sonoma:         "8d1c34da7030fb7a552beb88a465dcf38064a98c26f217532da0eebf2d8712e5"
+    sha256 cellar: :any_skip_relocation, ventura:        "37cbe2aa5d795e7c1befb8ab9fc6a08c7e5e380eb7c304d5d863d4a7e266f1a6"
+    sha256 cellar: :any_skip_relocation, monterey:       "eef55e0bd816e04bdd784f4084cf9805e970d4d2d96885e7407a439c750a9a8e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "344cd4633b6aaaf7fb4757f6fdd6e51ac88ef2229cc34404a7833a8c3f4568a3"
   end
 
   depends_on "rust" => :build

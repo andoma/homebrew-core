@@ -1,20 +1,17 @@
 class Libdeflate < Formula
   desc "Heavily optimized DEFLATE/zlib/gzip compression and decompression"
   homepage "https://github.com/ebiggers/libdeflate"
-  url "https://github.com/ebiggers/libdeflate/archive/refs/tags/v1.19.tar.gz"
-  sha256 "27bf62d71cd64728ff43a9feb92f2ac2f2bf748986d856133cc1e51992428c25"
+  url "https://github.com/ebiggers/libdeflate/archive/refs/tags/v1.22.tar.gz"
+  sha256 "7f343c7bf2ba46e774d8a632bf073235e1fd27723ef0a12a90f8947b7fe851d6"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "25a9ae1e8167bd14f5f1bf88165f27c80caf8f5d24604579865eaf13b7a27bc1"
-    sha256 cellar: :any,                 arm64_ventura:  "a97e5d8d855fd8bcd1e35a0ca2bb55bb3e05da8928ab091003c8bfd001162247"
-    sha256 cellar: :any,                 arm64_monterey: "6d514e7fda8cb70c16d95147f50342fdbbf87b9706f3b9df78e3ac5eef8f324d"
-    sha256 cellar: :any,                 arm64_big_sur:  "f03cc89c76225623adcee307931ae1b8f6306ae0996c9a1403091209b6743226"
-    sha256 cellar: :any,                 sonoma:         "71836a9918b68414109129a7828a2e79d542d89cf05405836bcbf1dd65e77f2b"
-    sha256 cellar: :any,                 ventura:        "87e07a558b1533935a4a3582948976c232ade085acb0ed39aa58736280940e93"
-    sha256 cellar: :any,                 monterey:       "12d872b0cc1cfcf167a8273b555b8108c0a2ad01fbe3213fbadfa5c3a0cb3842"
-    sha256 cellar: :any,                 big_sur:        "32623fc04c5e7dc31a042fc7e7029143d4a8ee77a13a9fe023dbd5038869787b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c75f2d165b9c852d2c53a4a145b3a49896c1809d23f42c20d663d7c2987c96cd"
+    sha256 cellar: :any,                 arm64_sequoia: "cb6e2d1eb27e02b14541f965fb81f8bfd98852e8db7729540e135c2a356ab4fb"
+    sha256 cellar: :any,                 arm64_sonoma:  "d0855ef6b2947b130aae38dc3f7e758c450b03dfcd4e923669b573d4aeefede1"
+    sha256 cellar: :any,                 arm64_ventura: "ad4a626589cb82f253cf065aef92ea5dc77f51bb80cbbf66558a212cd88665ac"
+    sha256 cellar: :any,                 sonoma:        "34c07181913c15251daa7dcf9801d29f1bb7abfb6719ea6c98054e48e25dcebb"
+    sha256 cellar: :any,                 ventura:       "d0fb44f38bffe30a903f94c28a4097e5b6a034af7d676931b351cac801aa985b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4014531967553e8f002d52585698b5f2cdc689e1359563145ec3723c7ddc490b"
   end
 
   depends_on "cmake" => :build
@@ -27,8 +24,8 @@ class Libdeflate < Formula
 
   test do
     (testpath/"foo").write "test"
-    system "#{bin}/libdeflate-gzip", "foo"
-    system "#{bin}/libdeflate-gunzip", "-d", "foo.gz"
-    assert_equal "test", File.read(testpath/"foo")
+    system bin/"libdeflate-gzip", "foo"
+    system bin/"libdeflate-gunzip", "-d", "foo.gz"
+    assert_equal "test", (testpath/"foo").read
   end
 end

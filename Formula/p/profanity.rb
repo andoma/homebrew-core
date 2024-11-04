@@ -4,16 +4,16 @@ class Profanity < Formula
   url "https://profanity-im.github.io/tarballs/profanity-0.14.0.tar.gz"
   sha256 "fd23ffd38a31907974a680a3900c959e14d44e16f1fb7df2bdb7f6c67bd7cf7f"
   license "GPL-3.0-or-later"
+  revision 2
 
   bottle do
-    rebuild 2
-    sha256 arm64_sonoma:   "3c6edaa4c1aaf06a4db21ea71e9c8d3f82187e0ace35c9813136c0e1164e479d"
-    sha256 arm64_ventura:  "0abe70541f49da406e708d83fda1692aa020c7942b44934d93555da080bcae22"
-    sha256 arm64_monterey: "e062da3abfb99bcbba595ffd8a759b3aac43d539d76d57dc26340025c5a25367"
-    sha256 sonoma:         "bc25e571d1887a3464dcca4f8d9bdfc10fce9e3e2769ba28b7765c612d3e5f79"
-    sha256 ventura:        "6fc7f42a211ebcd9257ba509ea6a9327ce531ad42227c1d59857c468b8adfc52"
-    sha256 monterey:       "6f626bcec863159279cca047f5b2e8bf5bcc2dc74603ffd065a8d0ce7c786747"
-    sha256 x86_64_linux:   "da7113532893f9b7ff5fefa25c8f58e6aa757b6eec6476747f23ebb1125992c2"
+    rebuild 1
+    sha256 arm64_sequoia: "5472427158d470dc62004a3eff884d110f543dd5e3bb51e39942221fec17b2bd"
+    sha256 arm64_sonoma:  "d32e8c7bdc2ee007a81b549fe0e653abc78bc72af6169657ae818a4b03d769bc"
+    sha256 arm64_ventura: "da6d961c10c3235d680bd60128535dc26638355326e7d7a41b2e9205b534be5e"
+    sha256 sonoma:        "a10d71f7205684010cf72602145a126e69d16a7c32749ab9c6847045bd81db2e"
+    sha256 ventura:       "a58829da652b3b43c52af964bced191d6f27a92303744ccd07b6fb3e51b2143b"
+    sha256 x86_64_linux:  "1a87d774068b14ea9fa2ed30baf30107d2d06839b5a153b2ab285c49be54e874"
   end
 
   head do
@@ -25,37 +25,45 @@ class Profanity < Formula
     depends_on "libtool" => :build
   end
 
+  depends_on "libomemo-c" => :build
   depends_on "pkg-config" => :build
+
   depends_on "curl"
   depends_on "glib"
   depends_on "gnutls"
   depends_on "gpgme"
+  depends_on "libgcrypt"
   depends_on "libotr"
-  depends_on "libsignal-protocol-c"
   depends_on "libstrophe"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "readline"
+  depends_on "sqlite"
+
+  uses_from_macos "ncurses"
 
   on_macos do
+    depends_on "gettext"
+    depends_on "libassuan"
+    depends_on "libgpg-error"
     depends_on "terminal-notifier"
   end
 
   def install
-    ENV.prepend_path "PATH", Formula["python@3.12"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.13"].opt_libexec/"bin"
 
     system "./bootstrap.sh" if build.head?
 
     # We need to pass `BREW` to `configure` to make sure it can be found inside the sandbox in non-default
     # prefixes. `configure` knows to check `/opt/homebrew` and `/usr/local`, but the sanitised build
     # environment will prevent any other `brew` installations from being found.
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules",
+    system "./configure", "--disable-silent-rules",
                           "--enable-python-plugins",
-                          "BREW=#{HOMEBREW_BREW_FILE}"
+                          "BREW=#{HOMEBREW_BREW_FILE}",
+                          *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"
   end
 
   test do
-    system "#{bin}/profanity", "-v"
+    system bin/"profanity", "-v"
   end
 end

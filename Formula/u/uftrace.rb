@@ -1,13 +1,14 @@
 class Uftrace < Formula
   desc "Function graph tracer for C/C++/Rust"
   homepage "https://uftrace.github.io/slide/"
-  url "https://github.com/namhyung/uftrace/archive/refs/tags/v0.15.2.tar.gz"
-  sha256 "f274437c59e845c7636be55267ea3e8f08b7ca11de2413b7045b403247d5f64d"
+  url "https://github.com/namhyung/uftrace/archive/refs/tags/v0.16.tar.gz"
+  sha256 "dd0549f610d186b6f25fa2334a5e82b6ddc232ec6ca088dbb41b3fe66961d6bb"
   license "GPL-2.0-only"
   head "https://github.com/namhyung/uftrace.git", branch: "master"
 
   bottle do
-    sha256 x86_64_linux: "6af32afc86cdfeff4ffc8e750d024cb550c1956bd5c51601084c943eeddf88cb"
+    rebuild 1
+    sha256 x86_64_linux: "267f5fe8fd86a47b0d476cbaf2e108a9e50398ba387b6fef89843b7fbffcf7e5"
   end
 
   depends_on "pandoc" => :build
@@ -18,13 +19,13 @@ class Uftrace < Formula
   depends_on :linux
   depends_on "luajit"
   depends_on "ncurses"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   def install
     # TODO: Obsolete with git master, to be removed when updating to next release
     inreplace "misc/version.sh", "deps/have_libpython2.7", "deps/have_libpython*"
 
-    python3 = "python3.12"
+    python3 = "python3.13"
     pyver = Language::Python.major_minor_version python3
     # Help pkg-config find python as we only provide `python3-embed` for aliased python formula
     inreplace Dir["check-deps/Makefile{,.check}"], "pkg-config python3", "pkg-config python-#{pyver}"

@@ -1,8 +1,9 @@
 class OsspUuid < Formula
   desc "ISO-C API and CLI for generating UUIDs"
-  homepage "https://web.archive.org/web/www.ossp.org/pkg/lib/uuid/"
+  homepage "http://www.ossp.org/pkg/lib/uuid/"
   url "https://deb.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_1.6.2.orig.tar.gz"
   sha256 "11a615225baa5f8bb686824423f50e4427acd3f70d394765bdff32801f0fd5b0"
+  license "BSD-1-Clause"
   revision 2
 
   livecheck do
@@ -11,6 +12,7 @@ class OsspUuid < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "54fe9ac592343b06d7ce62e286cf0afd06f90be6c9aebd779102403c51cd55ea"
     sha256 cellar: :any,                 arm64_sonoma:   "54b71284924df66d47fb0544f6a20c058e4118b0b6c7e4e25938a9e5db0b19f9"
     sha256 cellar: :any,                 arm64_ventura:  "3285f1a05e275068e1c5aee7036066c23859b53f56fff5795e08cf18cd6d4d75"
     sha256 cellar: :any,                 arm64_monterey: "09aff0ba17ad31b748e80e71d1138b457798a9bff6cb101750343b47f9db06d9"
@@ -57,6 +59,6 @@ class OsspUuid < Formula
   end
 
   test do
-    system "#{bin}/uuid-config", "--version"
+    system bin/"uuid-config", "--version"
   end
 end

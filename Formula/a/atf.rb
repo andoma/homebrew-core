@@ -1,11 +1,12 @@
 class Atf < Formula
   desc "Automated testing framework"
-  homepage "https://github.com/jmmv/atf"
-  url "https://github.com/jmmv/atf/releases/download/atf-0.21/atf-0.21.tar.gz"
+  homepage "https://github.com/freebsd/atf"
+  url "https://github.com/freebsd/atf/releases/download/atf-0.21/atf-0.21.tar.gz"
   sha256 "92bc64180135eea8fe84c91c9f894e678767764f6dbc8482021d4dde09857505"
   license "BSD-2-Clause"
 
   bottle do
+    sha256 arm64_sequoia:  "027aca4d45bfe562aa551797885e8fa12d6b7ebe3db747deef462d6d4bfd2696"
     sha256 arm64_sonoma:   "e71d7a1bc4ac64cbd1e03fbdf7f309a6bef3ce9de57ceffa97df28ea91da3b9e"
     sha256 arm64_ventura:  "a450d3062f887473809527c9e45451941476c4b22d5f0803bc261dafc5986168"
     sha256 arm64_monterey: "650c374c9509cd3634ef36fd0d61bd7c852536778be5ffa2c0c9b4590fc92d66"

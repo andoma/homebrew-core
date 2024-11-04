@@ -1,11 +1,12 @@
 class Envv < Formula
   desc "Shell-independent handling of environment variables"
-  homepage "https://github.com/jakewendt/envv#readme"
+  homepage "https://github.com/jakewendt/envv"
   url "https://github.com/jakewendt/envv/archive/refs/tags/v1.7.tar.gz"
   sha256 "1db05b46904e0cc4d777edf3ea14665f6157ade0567359e28663b5b00f6fa59a"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2110b9d05836da02e31062ad025810c86e863d23c8a585dcb227da34c20e3376"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "58710a70856d6c30fbb8615800486e82d73abd17eb31e557ecd4b9aa41bfda7d"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "e2d47b445c7d02827f54b9cfd3341e2646d10f0156a9dcf27d7745988b1e4497"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "023e55714270ba7a388b290d867a4fd334a962b33f4bd9d0ed8de513ad7c034b"

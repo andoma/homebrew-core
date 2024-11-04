@@ -1,9 +1,10 @@
 class Qmmp < Formula
   desc "Qt-based Multimedia Player"
   homepage "https://qmmp.ylsoftware.com/"
-  url "https://qmmp.ylsoftware.com/files/qmmp/2.1/qmmp-2.1.5.tar.bz2"
-  sha256 "25be3f2b19d8d70b6b5136c3f97d385a5edbf40dac67dd84fcdd4af9d554f795"
+  url "https://qmmp.ylsoftware.com/files/qmmp/2.1/qmmp-2.1.9.tar.bz2"
+  sha256 "b59f7a378b521d4a6d2b5c9e37a35c3494528bf0db85b24caddf3e1a1c9c3a37"
   license "GPL-2.0-or-later"
+  revision 1
 
   livecheck do
     url "https://qmmp.ylsoftware.com/downloads.php"
@@ -11,16 +12,16 @@ class Qmmp < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "62b3c2e5e9a085f1f2a24d3efd0940d9f283c2ef5e875a822441d6b6ee439d2f"
-    sha256 arm64_monterey: "a88f9ca5f66ed3c4ad31ea47cb9de92e3efc4a82c5451340c234d06f885d0306"
-    sha256 arm64_big_sur:  "67d92990dadd4193cabd8bd1aaf8cf5f8b77bc52f92cba58e4de092a1ba8569b"
-    sha256 ventura:        "987813643761bb3d1af83e012d622039c94ad586f535b94000545494bf622fa8"
-    sha256 monterey:       "35d00de5ceaeb9e994437a8f76f6c36911e53110e5ee6e9f968b9486362a9ed8"
-    sha256 big_sur:        "887ba0171ed8d1a7341d3d5f37017e301efe01655afe35200e4130b4d6e0ee91"
-    sha256 x86_64_linux:   "618424e0fa34bbb1db85bd1e30a8c6e4a1f1825cc93741f08d6e6a7914154ff6"
+    sha256 arm64_sonoma:   "5fdf9499f3a80c471492e03df8a755be67e31799abced5e32542e6a67ef19a78"
+    sha256 arm64_ventura:  "6d75b373d7825e6a97716f97a274608920ff7aa81f50973446e8cc5b82bba137"
+    sha256 arm64_monterey: "df531f89e2a5b959a6637041378e9da53c0a8f38a6bd2e1bbdb04c073eef4d6c"
+    sha256 sonoma:         "c0c251c58bfb213e98db5ab335cc245ac2c253239461753b361da1e1100c597f"
+    sha256 ventura:        "28648897ea50fcc6ef3a119e2c351b6f44e8c503a9906512f6902e2d5c4e2949"
+    sha256 monterey:       "48fd7d7f632424e93665d9d894b4c1734aae1d109eb12e8180053d5fecd77c33"
+    sha256 x86_64_linux:   "abd12bd0ae508464ea099d7ea64f0813f15e388396cfdcca23e152a5168efbe3"
   end
 
-  depends_on "cmake"      => :build
+  depends_on "cmake" => :build
   depends_on "pkg-config" => :build
 
   # TODO: on linux: pipewire
@@ -44,6 +45,7 @@ class Qmmp < Formula
   depends_on "libxcb"
   depends_on "libxmp"
   depends_on "mad"
+  depends_on "mpg123"
   depends_on "mplayer"
   depends_on "opus"
   depends_on "opusfile"
@@ -57,16 +59,33 @@ class Qmmp < Formula
   uses_from_macos "curl"
 
   on_macos do
+    depends_on "gettext"
+    depends_on "glib"
     # musepack is not bottled on Linux
     # https://github.com/Homebrew/homebrew-core/pull/92041
     depends_on "musepack"
   end
 
+  on_sonoma :or_newer do
+    # Support Sonoma (BSD iconv) as qmmp has an incompatible typedef:
+    # /tmp/qmmp-20240828-19582-sf4k85/qmmp-2.1.9/src/qmmp/qmmptextcodec.h:28:15:
+    # error: typedef redefinition with different types ('void *' vs 'struct __tag_iconv_t *')
+    #
+    # Issue ref: https://sourceforge.net/p/qmmp-dev/tickets/1167/
+    patch :DATA
+  end
+
+  on_linux do
+    depends_on "alsa-lib"
+    depends_on "libx11"
+    depends_on "mesa"
+  end
+
   fails_with gcc: "5" # ffmpeg is compiled with GCC
 
   resource "qmmp-plugin-pack" do
-    url "https://qmmp.ylsoftware.com/files/qmmp-plugin-pack/2.1/qmmp-plugin-pack-2.1.1.tar.bz2"
-    sha256 "f68484426579f2a0bc68b6be06e7a019fd1c266fca35b764d5788661ddf9bcc4"
+    url "https://qmmp.ylsoftware.com/files/qmmp-plugin-pack/2.1/qmmp-plugin-pack-2.1.2.tar.bz2"
+    sha256 "fb5b7381a7f11a31e686fb7c76213d42dfa5df1ec61ac2c7afccd8697730c84b"
   end
 
   def install
@@ -101,3 +120,23 @@ class Qmmp < Formula
     system bin/"qmmp", "--version"
   end
 end
+
+__END__
+diff --git a/src/qmmp/qmmptextcodec.h b/src/qmmp/qmmptextcodec.h
+index 5242c33..7399c54 100644
+--- a/src/qmmp/qmmptextcodec.h
++++ b/src/qmmp/qmmptextcodec.h
+@@ -21,12 +21,11 @@
+ #ifndef QMMPTEXTCODEC_H
+ #define QMMPTEXTCODEC_H
+
++#include <iconv.h>
+ #include <QByteArray>
+ #include <QStringList>
+ #include "qmmp_export.h"
+
+-typedef void *iconv_t;
+-
+ class QMMP_EXPORT QmmpTextCodec
+ {
+ public:

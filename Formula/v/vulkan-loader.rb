@@ -1,8 +1,8 @@
 class VulkanLoader < Formula
   desc "Vulkan ICD Loader"
   homepage "https://github.com/KhronosGroup/Vulkan-Loader"
-  url "https://github.com/KhronosGroup/Vulkan-Loader/archive/refs/tags/v1.3.278.tar.gz"
-  sha256 "a22ea209ef1a0fe2ae77dbb355d700d20971f1bc8937efe52d885bd8bcbc447b"
+  url "https://github.com/KhronosGroup/Vulkan-Loader/archive/refs/tags/v1.3.300.tar.gz"
+  sha256 "56fd9d3d8dfe97261a375595c90731a0c26ada2b20e8b7376a3d9a155ae600d6"
   license "Apache-2.0"
   head "https://github.com/KhronosGroup/Vulkan-Loader.git", branch: "main"
 
@@ -12,18 +12,17 @@ class VulkanLoader < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "48c794715ac932efc7180d7ede5b0e9718d0aeb91f12055776a42b4a090b86a0"
-    sha256 arm64_ventura:  "45b13354cd95c21baa2ae5588fe10d659cae2fc581799a85de7fe89b0837c16c"
-    sha256 arm64_monterey: "877c61243f2c39718b0c8a30b0aebbbd18a606773da2d1534333ff2c9abf3db3"
-    sha256 sonoma:         "58ad57fc969cd5dc1c9881dc876053bcb40e5d86efc74405b9503b27f2444f7f"
-    sha256 ventura:        "a5ad7c90f2a7c952d3a8a616577e4e25f8f01b879b93f65c36adfe87c5e8e3f6"
-    sha256 monterey:       "8268b8816be7f75109754ec9c067684561bb782b4d286aa7b0d26261b8c75354"
-    sha256 x86_64_linux:   "6e1eae1a6b60311902c39bab3a3aca127b0db73f0b1d3bb001068994e2026c40"
+    sha256 arm64_sequoia: "754c7185fbe3aff2f40bf66c84430587d84d55f7e2793e0ee6dd3ba200ce6e12"
+    sha256 arm64_sonoma:  "44e34b466a17c436d8d39b58950b9465c4d049d11c06cad0568521839a6882de"
+    sha256 arm64_ventura: "f1990bff0f6ff806b4f6220c24a52fb712c81b766cf08e99059099a7f64e507c"
+    sha256 sonoma:        "e1e765b8b6b9177220534af91a75b9eda7f8e205f3df13152898781686b34b90"
+    sha256 ventura:       "c4477d58f80f13bd09a3c6ffcdf4e210ad727f447b12cda9c751418007290701"
+    sha256 x86_64_linux:  "55eb0df406bb347beb6c90ae2f654fd395f978edfae9f70fd6847b2333e2d084"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.12" => :build
+  depends_on "python@3.13" => :build
   depends_on "vulkan-headers"
 
   on_linux do
@@ -46,14 +45,14 @@ class VulkanLoader < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <vulkan/vulkan_core.h>
       int main() {
         uint32_t version;
         vkEnumerateInstanceVersion(&version);
         return (version >= VK_API_VERSION_1_1) ? 0 : 1;
       }
-    EOS
+    C
     system ENV.cc, "-o", "test", "test.c", "-I#{Formula["vulkan-headers"].opt_include}",
                    "-L#{lib}", "-lvulkan"
     system "./test"

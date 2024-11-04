@@ -1,18 +1,17 @@
 class Libmapper < Formula
   desc "Distributed system for media control mapping"
   homepage "http://www.libmapper.org"
-  url "https://github.com/libmapper/libmapper/releases/download/2.4.6/libmapper-2.4.6.tar.gz"
-  sha256 "ee08a02e0234599658fac2dd847a61c251ebcc1a49787f0e24afd8f09ba7ca61"
+  url "https://github.com/libmapper/libmapper/releases/download/2.4.13/libmapper-2.4.13.tar.gz"
+  sha256 "63ac6dd0ab5d17a9ec16f700665a6593a13667dd9fbc0f06df7f2f26d427defa"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "b2f2833c64dd7c92728443cedc89a20ae647c9018106bd3606838fc2c9f138ce"
-    sha256 cellar: :any,                 arm64_ventura:  "57fa51a0a9acef324cf7ced073e2eba22b59e7ed12f433b39210210275934f9c"
-    sha256 cellar: :any,                 arm64_monterey: "0e18fd483e5f755ed5eb0486d8fce8445f7c8079e7c9d3f00cb0ff866c3adf07"
-    sha256 cellar: :any,                 sonoma:         "62aea0f692eea5415dca148065c7ed01700cf21bc8ff21cacf378d855e6fba50"
-    sha256 cellar: :any,                 ventura:        "3cfab7e9a7f6383b24ec4f0b9166a586fd2d7d7a1bdebe65f4f2d95da8571df8"
-    sha256 cellar: :any,                 monterey:       "2422beb08a446b2da732a3a6d13085790693c5445816f5ce1d0ab492f83dc890"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d7f156dae5d18691ad2379aaf29507bd1ba98a1d9b672c58b1c3a81d28ee0240"
+    sha256 cellar: :any,                 arm64_sequoia: "c8d007e6c0d2e7efb0c8a4241a04c66294efeb33e43e1c9d5b92af69d5eb8075"
+    sha256 cellar: :any,                 arm64_sonoma:  "be189c480f4350519834a307f654bc3dfc0c9581205add371a3c56ba8be7792d"
+    sha256 cellar: :any,                 arm64_ventura: "64b6a17e57ccfb107db15abdd59a7bf1bbd1a4f656f9b8301677786c9564f6ff"
+    sha256 cellar: :any,                 sonoma:        "d840f004b8216a9241755f6661e77fbd883eb80d8821e0cec80b92edd26c354e"
+    sha256 cellar: :any,                 ventura:       "8da31eb36dda5ba63dbb01111cac4347fb966648cd6820073efea0c1fb3f029c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d7fc5bb105d25a71ab4d2010230a93e14c9f2d2b429846c1e3d49b9be969242d"
   end
 
   depends_on "autoconf" => :build
@@ -29,14 +28,14 @@ class Libmapper < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include "mapper/mapper.h"
       int main() {
         printf("%s", mpr_get_version());
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lmapper", "-o", "test"
     assert_match version.to_s, shell_output("./test")
   end

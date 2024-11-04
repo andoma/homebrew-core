@@ -2,11 +2,12 @@ class Subversion < Formula
   desc "Version control system designed to be a better CVS"
   homepage "https://subversion.apache.org/"
   license "Apache-2.0"
+  revision 1
 
   stable do
-    url "https://www.apache.org/dyn/closer.lua?path=subversion/subversion-1.14.3.tar.bz2"
-    mirror "https://archive.apache.org/dist/subversion/subversion-1.14.3.tar.bz2"
-    sha256 "949efd451a09435f7e8573574c71c7b71b194d844890fa49cd61d2262ea1a440"
+    url "https://www.apache.org/dyn/closer.lua?path=subversion/subversion-1.14.4.tar.bz2"
+    mirror "https://archive.apache.org/dist/subversion/subversion-1.14.4.tar.bz2"
+    sha256 "44ead116e72e480f10f123c914bb6f9f8c041711c041ed7abff1b8634a199e3c"
 
     # Fix -flat_namespace being used on Big Sur and later.
     patch do
@@ -16,13 +17,12 @@ class Subversion < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "b51808010d560f470bf6f4c14df7965d7f0840fa36ea5d84f38a83697b710ba3"
-    sha256 arm64_ventura:  "ad02a2f65ee3ac5e6023e64427ebfff10fde2f298ba7d6e4b298fb55c3898388"
-    sha256 arm64_monterey: "97b753bf79a9f4a041d12052ec229bceb34bc420af98f9990b510c4848ccc990"
-    sha256 sonoma:         "024a680f2f7b4fbd9916cb5d02f5923866ba9f67b5bcfa0f3b502076a9721ea3"
-    sha256 ventura:        "e3372419e8caa3545b4567d4146a6769a3a440d53eca0ea38617c4024bf70d95"
-    sha256 monterey:       "c811f533a2e0cf5805808cbfdca17043b3f2c5c7364bd460b35f324aa42078af"
-    sha256 x86_64_linux:   "e3aaf417aed39c962a61c2c1d11292992abd183c8d32ec57cd760188c054beea"
+    sha256 arm64_sequoia: "219dbd8e67c43d5cd3f4a4d42d8671a71887c16b77bbdf9464295ac4e806bc61"
+    sha256 arm64_sonoma:  "9712ef30bf9739ffafceb6885c31750f8027170cc69cbd05ae77d715289e64e8"
+    sha256 arm64_ventura: "951d415bbac5ccef7497f905a28d0f73f1c188e543de74d8f8b98473fd05c72e"
+    sha256 sonoma:        "7c992a6ae16dd52952c48d16cca55c31c7bb7f05be10342cb4cdebd1005a4db6"
+    sha256 ventura:       "eba166d764e2cafce718a4a179314e97eaf408c03d938055bffb306136338065"
+    sha256 x86_64_linux:  "d8266abb05fe974ed383b243abed2a2371441a9f420eb78ae9b607ce0304f2d6"
   end
 
   head do
@@ -222,7 +222,7 @@ class Subversion < Formula
     # purged by Homebrew's post-install cleaner because that doesn't check
     # "Library" directories. It is however pointless to keep around as it
     # only contains the perllocal.pod installation file.
-    rm_rf prefix/"Library/Perl"
+    rm_r(prefix/"Library/Perl") if (prefix/"Library/Perl").exist?
   end
 
   def caveats

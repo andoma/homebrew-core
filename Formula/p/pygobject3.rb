@@ -1,30 +1,32 @@
 class Pygobject3 < Formula
   desc "GNOME Python bindings (based on GObject Introspection)"
-  homepage "https://wiki.gnome.org/Projects/PyGObject"
-  url "https://download.gnome.org/sources/pygobject/3.46/pygobject-3.46.0.tar.xz"
-  sha256 "426008b2dad548c9af1c7b03b59df0440fde5c33f38fb5406b103a43d653cafc"
+  homepage "https://pygobject.gnome.org"
+  url "https://download.gnome.org/sources/pygobject/3.50/pygobject-3.50.0.tar.xz"
+  sha256 "8d836e75b5a881d457ee1622cae4a32bcdba28a0ba562193adb3bbb472472212"
   license "LGPL-2.1-or-later"
   revision 1
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any, arm64_sonoma:   "41a80edf2b4820d8a53fd04049ab6d0347848f5279fc55f1881a3c1865cb9096"
-    sha256 cellar: :any, arm64_ventura:  "1bfbb1c565ce50261d061a19922e8040d0d95302880b739c898d5b94f8084273"
-    sha256 cellar: :any, arm64_monterey: "c1872fab2ffe26c098f69aa0dae3ec4e34e7f31173c696a1a270c07b2a30ee34"
-    sha256 cellar: :any, sonoma:         "cc331748f1c83f064f60349b01a5b6bbc2c6d2b078d08e3ad0ac8c9883d7f219"
-    sha256 cellar: :any, ventura:        "057e32400d8669586a289e5386efff4a4eefcd118fb2af5b7f62a210b3c2fe88"
-    sha256 cellar: :any, monterey:       "472d2dbb1e702f90c192700034c139132238de95150670ba6a8b997b20af1766"
-    sha256               x86_64_linux:   "534231a0b12461b68c099f2445f380432f2bb5dfb56841340e18d0aff01fff69"
+    sha256 cellar: :any, arm64_sequoia: "2c86ffbaf32b22811f8fff5a6040677f4268af2578660fb007a5c5d4956c1133"
+    sha256 cellar: :any, arm64_sonoma:  "e8d0149368484d81a54f759a584db813c3184e630504b61534b734949bc286fc"
+    sha256 cellar: :any, arm64_ventura: "def28c144b1960f13894245dbb785fbef6862557e36b9b8ddc13953896807b9e"
+    sha256 cellar: :any, sonoma:        "3fd16304b9bea30514a67e69e74d9aeb6fc84aec60bbbe21f25ae5a4790323b0"
+    sha256 cellar: :any, ventura:       "fb878d036fe1ac67746de24cd89eadd9fb1921f005d34e283f9772426a923384"
+    sha256               x86_64_linux:  "35b1199c46cd42b0e3adbe11e4587ab1fc6abd2715eb1e6a562fb22d032c3746"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.11" => [:build, :test]
   depends_on "python@3.12" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
+
+  depends_on "cairo"
+  depends_on "glib"
   depends_on "gobject-introspection"
   depends_on "py3cairo"
+
+  uses_from_macos "libffi"
 
   def pythons
     deps.map(&:to_formula)
@@ -32,21 +34,18 @@ class Pygobject3 < Formula
         .map { |f| f.opt_libexec/"bin/python" }
   end
 
-  def site_packages(python)
-    prefix/Language::Python.site_packages(python)
-  end
-
   def install
     pythons.each do |python|
       xy = Language::Python.major_minor_version(python)
       builddir = "buildpy#{xy}".delete(".")
+      site_packages = prefix/Language::Python.site_packages(python)
 
       system "meson", "setup", builddir, "-Dpycairo=enabled",
                                          "-Dpython=#{python}",
-                                         "-Dpython.platlibdir=#{site_packages(python)}",
-                                         "-Dpython.purelibdir=#{site_packages(python)}",
+                                         "-Dpython.platlibdir=#{site_packages}",
+                                         "-Dpython.purelibdir=#{site_packages}",
+                                         "-Dtests=false",
                                          *std_meson_args
-
       system "meson", "compile", "-C", builddir, "--verbose"
       system "meson", "install", "-C", builddir
     end

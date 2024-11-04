@@ -1,24 +1,24 @@
 class I686ElfBinutils < Formula
   desc "GNU Binutils for i686-elf cross development"
   homepage "https://www.gnu.org/software/binutils/"
-  url "https://ftp.gnu.org/gnu/binutils/binutils-2.41.tar.bz2"
-  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.41.tar.bz2"
-  sha256 "a4c4bec052f7b8370024e60389e194377f3f48b56618418ea51067f67aaab30b"
+  url "https://ftp.gnu.org/gnu/binutils/binutils-2.43.1.tar.bz2"
+  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.43.1.tar.bz2"
+  sha256 "becaac5d295e037587b63a42fad57fe3d9d7b83f478eb24b67f9eec5d0f1872f"
   license "GPL-3.0-or-later"
-  revision 1
 
   livecheck do
     formula "binutils"
   end
 
   bottle do
-    sha256 arm64_sonoma:   "b68aa754ca6fdcc0a5561636da86b73de85bcc877275a7b009f11e442e266fd3"
-    sha256 arm64_ventura:  "209a3a9d152fdbc0b26ed7926cd000ab537e90c672f5958c9dbd6a2ac2bc9b3e"
-    sha256 arm64_monterey: "34fea4cc6c033f2cfeacd7ed850ef4b79bb4fa409bae6b3103b5b536aeaef59c"
-    sha256 sonoma:         "fbaec4c72cb15463b4be71256284621856a39bcd29a265e700e5a7d0e1929a97"
-    sha256 ventura:        "1c68e536f0226dc59da88e099786b17a47be98fcce18f5ea68b0fdf1342126aa"
-    sha256 monterey:       "9946c225f36f7d2d25a84226e6ac15ca3cdcd4b1eae534cb45b9bc38b827a81c"
-    sha256 x86_64_linux:   "e54c42aab45e4772fc3b20068021b5a9e3a35fe4114158765ad417e8ed5c43cc"
+    sha256 arm64_sequoia:  "a982ec150ffe8a236c134e11da09031fb988b635b3dcde8dab900be7e2307327"
+    sha256 arm64_sonoma:   "c666e0fa7eb192bd26a49bcb5e0f400b497e6a4afa6c972d90a53c1b7817407c"
+    sha256 arm64_ventura:  "dbbe5217dbadd954e0bc166586e2b02a5da58369e53b7e7d0fe8d151e72457e2"
+    sha256 arm64_monterey: "5c0a59163674c73d8ec51d7483d088b0d82b0226f7cdb50ae3f412c93430c25f"
+    sha256 sonoma:         "411bc87f8ccab10165f7e1001471f0241b07d67610267cb707be8974aa1af508"
+    sha256 ventura:        "3652d2d27a8efe6525e7b74b52c4c4c01bcf24e7f4a1d1d65f5bf77ae0bac8fc"
+    sha256 monterey:       "ebc991155f41f233df8eaab15da8ff2755f9cc0e8ff00a4fb39412613711a957"
+    sha256 x86_64_linux:   "261dda7591614a6c0ff80dff4f7b85b1b746c97dc5510a695fae6f894559e6f9"
   end
 
   depends_on "pkg-config" => :build
@@ -53,7 +53,8 @@ class I686ElfBinutils < Formula
           movl $4, %ebx
           int $0x80
     EOS
-    system "#{bin}/i686-elf-as", "--32", "-o", "test-s.o", "test-s.s"
+
+    system bin/"i686-elf-as", "--32", "-o", "test-s.o", "test-s.s"
     assert_match "file format elf32-i386",
       shell_output("#{bin}/i686-elf-objdump -a test-s.o")
   end

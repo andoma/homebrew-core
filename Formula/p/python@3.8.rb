@@ -1,10 +1,9 @@
 class PythonAT38 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.8.18/Python-3.8.18.tar.xz"
-  sha256 "3ffb71cd349a326ba7b2fadc7e7df86ba577dd9c4917e52a8401adbda7405e3f"
+  url "https://www.python.org/ftp/python/3.8.20/Python-3.8.20.tar.xz"
+  sha256 "6fb89a7124201c61125c0ab4cf7f6894df339a40c02833bfd28ab4d7691fafb4"
   license "Python-2.0"
-  revision 2
 
   livecheck do
     url "https://www.python.org/ftp/python/"
@@ -12,13 +11,14 @@ class PythonAT38 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "7ece56b07ccab539bb1d340dfc7f41573ab392bbde678dabd1425af1b0b472fc"
-    sha256 arm64_ventura:  "768ef87b6156371315a2ed803945df259ec8e1b4d55317f786e812dd27444610"
-    sha256 arm64_monterey: "f13f7bea7fb4021510a971f5d70f90c43798bf5d9a666e073762d17f2d28ac51"
-    sha256 sonoma:         "cb252c20abf616aabc0dbee2e4a49b71a784effe8350eb2356fdf1a7fc044e5e"
-    sha256 ventura:        "6206fa8ddbdfa261c44e56ca602f5c3b4318506ad6f1f5af5f2dc4afef941c7f"
-    sha256 monterey:       "66d3dd50cb782da9be63621c8daeeefabd9bc3830c1944ccce6a1ef754e27fb7"
-    sha256 x86_64_linux:   "07cd581511827e641c540d293a2c7362ce80a172e58692c11f09033af5b3a9f8"
+    sha256 arm64_sequoia:  "1fa19eccb400ea5724d9cd6077ef473ecb1d506b8f515034b3565222f0cd8cb6"
+    sha256 arm64_sonoma:   "49082bc289bc3547b509f24e962cc8cbefad015345c0675631e42b3b23d2ecc7"
+    sha256 arm64_ventura:  "d1b22ac3c7066fb48a1c5274f14bc5f0df724c25a309bd479b5880120c8e44a0"
+    sha256 arm64_monterey: "339f24fcd11f9c005d7f1818a88bcc79683938b2bc1ff95dc236eab157f112a2"
+    sha256 sonoma:         "125c3d7416bee3f05086683dd74455604064ecda2808af868720e54c6b9e7e6a"
+    sha256 ventura:        "6760f38435697b00dcb5dc9f5dfd6adfd57df3c63158e03ebf486e88afb2cdc8"
+    sha256 monterey:       "15cd39037b6f0aa7e9776c32f984862606c47252d668ecbb0be3d924aa5d245a"
+    sha256 x86_64_linux:   "35120e0281d3baffdb30ea545cc728b67f7bc3bd732e2e06dc26692f467b9d8c"
   end
 
   # setuptools remembers the build flags python is built with and uses them to
@@ -49,24 +49,21 @@ class PythonAT38 < Formula
     depends_on "libnsl"
   end
 
-  skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5", "bin/pip-3.6", "bin/pip-3.7", "bin/pip-3.8"
-  skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5", "bin/easy_install-3.6",
-             "bin/easy_install-3.7", "bin/easy_install-3.8"
-
   # Always update to latest release
+  # setup.py got removed in pip 24.1b1 and above
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/1f/7f/4da15e07ccd11c84c1ccc8f6e24288d5e76c99441bf80e315b33542db951/pip-23.3.1.tar.gz"
-    sha256 "1fcaa041308d01f14575f6d0d2ea4b75a3e2871fe4f9c694976f908768e14174"
+    url "https://files.pythonhosted.org/packages/94/59/6638090c25e9bc4ce0c42817b5a234e183872a1129735a9330c472cc2056/pip-24.0.tar.gz"
+    sha256 "ea9bd1a847e8c5774a5777bb398c19e80bcd4e2aa16a4b301b718fe6f593aba2"
   end
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/ef/cc/93f7213b2ab5ed383f98ce8020e632ef256b406b8569606c3f160ed8e1c9/setuptools-68.2.2.tar.gz"
-    sha256 "4ac1475276d2f1c48684874089fefcd83bd7162ddaafb81fac866ba0db282a87"
+    url "https://files.pythonhosted.org/packages/3e/2c/f0a538a2f91ce633a78daaeb34cbfb93a54bd2132a6de1f6cec028eee6ef/setuptools-74.1.2.tar.gz"
+    sha256 "95b40ed940a1c67eb70fc099094bd6e99c6ee7c23aa2306f4d2697ba7916f9c6"
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/fb/d0/0b4c18a0b85c20233b0c3bc33f792aefd7f12a5832b4da77419949ff6fd9/wheel-0.41.3.tar.gz"
-    sha256 "4d4987ce51a49370ea65c0bfd2234e8ce80a12780820d9dc462597a6e60d0841"
+    url "https://files.pythonhosted.org/packages/b7/a0/95e9e962c5fd9da11c1e28aa4c0d8210ab277b1ada951d2aee336b505813/wheel-0.44.0.tar.gz"
+    sha256 "a29c3f2817e95ab89aa4660681ad547c0e9547f20e75b0562fe7723c9a2a9d49"
   end
 
   # Link against libmpdec.so.3, update for mpdecimal.h symbol cleanup.
@@ -246,7 +243,7 @@ class PythonAT38 < Formula
     end
 
     # Remove the site-packages that Python created in its Cellar.
-    site_packages_cellar.rmtree
+    rm_r(site_packages_cellar)
 
     %w[setuptools pip wheel].each do |r|
       (libexec/r).install resource(r)
@@ -285,16 +282,16 @@ class PythonAT38 < Formula
     site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
-    rm_rf site_packages.glob("sitecustomize.py[co]")
+    rm_r(site_packages.glob("sitecustomize.py[co]"))
     (site_packages/"sitecustomize.py").atomic_write(sitecustomize)
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir["#{site_packages}/setuptools*"]
-    rm_rf Dir["#{site_packages}/distribute*"]
-    rm_rf Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"]
+    rm_r(Dir["#{site_packages}/setuptools*"])
+    rm_r(Dir["#{site_packages}/distribute*"])
+    rm_r(Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"])
 
     %w[setuptools pip wheel].each do |pkg|
       (libexec/pkg).cd do
@@ -306,7 +303,7 @@ class PythonAT38 < Formula
       end
     end
 
-    rm_rf bin.glob("{easy_install,pip{,3}}")
+    rm_r(bin.glob("{easy_install,pip{,3}}"))
     mv bin/"wheel", bin/"wheel#{version.major_minor}"
 
     # Install unversioned and major-versioned symlinks in libexec/bin.
@@ -380,11 +377,11 @@ class PythonAT38 < Formula
 
   def caveats
     <<~EOS
-      Python has been installed as
+      Python is installed as
         #{HOMEBREW_PREFIX}/bin/python#{version.major_minor}
 
       Unversioned and major-versioned symlinks `python`, `python3`, `python-config`, `python3-config`, `pip`, `pip3`, etc. pointing to
-      `python#{version.major_minor}`, `python#{version.major_minor}-config`, `pip#{version.major_minor}`, etc., respectively, have been installed into
+      `python#{version.major_minor}`, `python#{version.major_minor}-config`, `pip#{version.major_minor}`, etc., respectively, are installed into
         #{opt_libexec}/bin
 
       You can install Python packages with

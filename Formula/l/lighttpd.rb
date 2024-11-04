@@ -1,8 +1,8 @@
 class Lighttpd < Formula
   desc "Small memory footprint, flexible web-server"
   homepage "https://www.lighttpd.net/"
-  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.74.tar.xz"
-  sha256 "5c08736e83088f7e019797159f306e88ec729abe976dc98fb3bed71b9d3e53b5"
+  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.76.tar.xz"
+  sha256 "8cbf4296e373cfd0cedfe9d978760b5b05c58fdc4048b4e2bcaf0a61ac8f5011"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,13 +11,14 @@ class Lighttpd < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "871acb24ad59dc848a7fd74b59b66e555e8cc2a8afdff08a69a464dcbe41e206"
-    sha256 arm64_ventura:  "47dd2e25d1804a7c56eb3769dc5d1a3ef40b1c9c3fbec52849732203309c477d"
-    sha256 arm64_monterey: "bc44cdc336280a800f2cefb0d6111a7254e187d76879f4c2f6bfc36f93b8072b"
-    sha256 sonoma:         "fa2aeeea14d35b9dc32e6e193acfc8c298616fd4a37512890d1658b1b5344042"
-    sha256 ventura:        "9626bba2313dcaf3ed1ded42638ff3af7c9605dc3a08ee365ac1e4bfaedd2e9e"
-    sha256 monterey:       "a2271f7671e1b9c1f56b651a42654fd7a39e4d59bd33bd355fd19d8245a4eafe"
-    sha256 x86_64_linux:   "ce7060b8ae058c57dec84583879b4677132419a3e85c637268f079af9ebf5436"
+    sha256 arm64_sequoia:  "19af568eb1e5ab74d431fdc07f2148d520c815742e1f0ecf9828d391e297ddd6"
+    sha256 arm64_sonoma:   "091059b0ac1e2356912caf2fe85f5bb0d88ebde56c43579d28c9a68b5eac1075"
+    sha256 arm64_ventura:  "00fb719b4328a1b7593452f8f6bae234a595ca089492f192bc309bdab055502f"
+    sha256 arm64_monterey: "aa6d7a5fe4662bdbbae1389091aec850c99d47f851dca621a55f9fcf7e5e7844"
+    sha256 sonoma:         "f5604bd4748f47f72e87a7e1192efc40748e1f1d7d271eb555e1bd6444776c75"
+    sha256 ventura:        "685d709d0d522aace4a102e2b28c3c04f2e6a6079de349d6148f999796571a8e"
+    sha256 monterey:       "596921b5fcabab2c21e6b75b54589016755e990cd86728810839b233cb4a830e"
+    sha256 x86_64_linux:   "8aa1c17b796dfc07c3e4d7543abc43af33469b5236aada5531baf3f98f8a66e2"
   end
 
   depends_on "autoconf" => :build
@@ -33,16 +34,7 @@ class Lighttpd < Formula
   # default max. file descriptors; this option will be ignored if the server is not started as root
   MAX_FDS = 512
 
-  # notified upstream in the related commit, lighttpd/lighttpd1.4@4e0af6d
-  resource "queue.h" do
-    url "https://raw.githubusercontent.com/lighttpd/lighttpd1.4/4e0af6d8eba32fd1526a38e2b3db5fe76dab9912/src/compat/sys/queue.h"
-    sha256 "8b284031772b1ba2035d9b05b24f2cb9b23e7bd324bcccb5e3fcc57d34aafa48"
-  end
-
   def install
-    # patch to add the missing queue.h file
-    resource("queue.h").stage buildpath/"src/compat/sys"
-
     args = %W[
       --disable-dependency-tracking
       --disable-silent-rules
@@ -107,6 +99,6 @@ class Lighttpd < Formula
   end
 
   test do
-    system "#{bin}/lighttpd", "-t", "-f", etc/"lighttpd/lighttpd.conf"
+    system bin/"lighttpd", "-t", "-f", etc/"lighttpd/lighttpd.conf"
   end
 end

@@ -4,12 +4,12 @@ class ServiceWeaver < Formula
   license "Apache-2.0"
 
   stable do
-    url "https://github.com/ServiceWeaver/weaver/archive/refs/tags/v0.22.0.tar.gz"
-    sha256 "d3a5354377ac4b72f577659ae21ba4e984f11fb594e999a5a6c1c398414dd0cf"
+    url "https://github.com/ServiceWeaver/weaver/archive/refs/tags/v0.24.6.tar.gz"
+    sha256 "15b34f1539b6a84f8783009a2e8ce98bb12c9a0c0ba70b4ff055e4a8a3406e10"
 
     resource "weaver-gke" do
-      url "https://github.com/ServiceWeaver/weaver-gke/archive/refs/tags/v0.21.0.tar.gz"
-      sha256 "3741f827ddd8e4f1c84410a5b11647781510078cb6271064892468fc32f751f1"
+      url "https://github.com/ServiceWeaver/weaver-gke/archive/refs/tags/v0.24.4.tar.gz"
+      sha256 "97e2bd35b997bc65f824fb1b2eb6500f8ba97d444cc7565be80e61005c462848"
     end
   end
 
@@ -24,13 +24,12 @@ class ServiceWeaver < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b9428d4052c247f9251e57a354803b2c5d224be8110b8b620d9b5e4d6025b836"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "35192abfd1938ead2e4ee5a647ec18955cf3c78d437f06eb2306702edd7e5a5a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cb2769873ba7a600b6bd6eb5d7236dfad725c3c30ffc6bef57b9e16f08bba4bd"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2d46234029379b0cc02bb3f1b3239b626457ebb3ee3fa2d264c568348c6598bd"
-    sha256 cellar: :any_skip_relocation, ventura:        "d289e1f0a45cb34222240469fcaa7524cd679ec66993c170fbf38d6ee9450115"
-    sha256 cellar: :any_skip_relocation, monterey:       "8910c99b095b4b8d686af1a11ae63a4a068c70a315836c47e62570732e9e9249"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1e82ff16ddf003255f60b9f1d221192b76ce3338fa67864e8cb96d70c634366a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "76c861065b7ebf0afb19189eda629198c7f2626911edc540aae08660f06a1345"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e4bf175089ed43e869e3553de0ae5a3b498e9cc796745ce14fa9e2b919273413"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d58a390f9b42bc7dcd1444399ed11b9a23a2b78c29e62caaf0a0a5963a45d858"
+    sha256 cellar: :any_skip_relocation, sonoma:        "29cb9c8dca107487aaa3edd171d34dce80b9f0e71ac04dd060c2d7b82677e292"
+    sha256 cellar: :any_skip_relocation, ventura:       "258db33d6cf2b2cf520150d3ece5dfffb0a77c325e5248bf0a1886f6627e0719"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "385c13a006f40c24d42c8b2f33d1035143f9625b0b08349284a92e71df6972d0"
   end
 
   head do

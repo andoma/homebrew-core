@@ -1,7 +1,6 @@
 class Sendemail < Formula
   desc "Email program for sending SMTP mail"
-  # Alternate: https://freshmeat.sourceforge.io/projects/sendemail/
-  homepage "https://web.archive.org/web/20191013154932/caspian.dotconf.net/menu/Software/SendEmail/"
+  homepage "http://caspian.dotconf.net/menu/Software/SendEmail/"
   url "http://caspian.dotconf.net/menu/Software/SendEmail/sendEmail-v1.56.tar.gz"
   sha256 "6dd7ef60338e3a26a5e5246f45aa001054e8fc984e48202e4b0698e571451ac0"
   license "GPL-2.0-or-later"
@@ -11,6 +10,7 @@ class Sendemail < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c68919a8a0a31b5e549189cd4575846c4931789f39c00e91e6f5908906533fc7"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "909f515899a6820088cc8cf8643571d54b1f520b3fc0691e7a1b7b74d5007671"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "60b99fa4f05c5ee4f2b85c4529e8e4a2368d4a16d68246c4d9bb91ba256f828f"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "de9826d68c6ca9666b3ec31462cee9d6ad435dfae72273ffd36856aa5dc95339"

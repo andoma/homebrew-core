@@ -1,18 +1,17 @@
 class Catch2 < Formula
   desc "Modern, C++-native, header-only, test framework"
   homepage "https://github.com/catchorg/Catch2"
-  url "https://github.com/catchorg/Catch2/archive/refs/tags/v3.5.2.tar.gz"
-  sha256 "269543a49eb76f40b3f93ff231d4c24c27a7e16c90e47d2e45bcc564de470c6e"
+  url "https://github.com/catchorg/Catch2/archive/refs/tags/v3.7.1.tar.gz"
+  sha256 "c991b247a1a0d7bb9c39aa35faf0fe9e19764213f28ffba3109388e62ee0269c"
   license "BSL-1.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fb2c4eededf9771db5683e0015cdd17a15eeb201a6c4240897f61a08254dfdb3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "66cafcb42af8b4f47b5610567203b76f81d7e3a8afb8bcdfaa8f6275922ab13b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "153377c5960c83cb19b5f91f41ea4917510f7a63e1af6503d7dbaf35bc5644d8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5c66fd7745c3aa1742d3dbe8fc8cf57afed433449c77b004ffbed06884073692"
-    sha256 cellar: :any_skip_relocation, ventura:        "8b0c206405a6148f83b5733d03b8aa536e2aa9ed386ec638759abcfdc73f4321"
-    sha256 cellar: :any_skip_relocation, monterey:       "5a1bab55c1da1c4c80910a8ecadb34a93c4f8acfec0530aa4c8dcd601f2a600c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8baa3698ff1ee8fbd285866cd725a60289af8b211b98dcc3b47a2769557003d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b63c2bff461b22383d01e8edc201f50e7ecbd0590d8d0d8b3d1c481ca3c297f5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4c4ee228d315ab1a4aa7525d4188b9b04d3ff46bd336482c6c41b3c93b3b1c01"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "bc7f77824fc4be0a1e4597a527f869a4d6383e543569ae79bbc726b9064f1fdb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bfca1a1c225a52d2201b07b63376da26d7e50d2132c5a3ca327211ead70610cd"
+    sha256 cellar: :any_skip_relocation, ventura:       "351b8571546a1fd599ae3f66d974197cb38971bfb3ef62d5a516a2540dc93506"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "992f7bf0a61606f7533bf930c9bfd1a03089ff63eb0982e445c8e70f7d095b59"
   end
 
   depends_on "cmake" => :build
@@ -24,7 +23,7 @@ class Catch2 < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <catch2/catch_all.hpp>
       TEST_CASE("Basic", "[catch2]") {
         int x = 1;
@@ -36,7 +35,7 @@ class Catch2 < Formula
           REQUIRE(x == 1);
         }
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-std=c++14", "-L#{lib}", "-lCatch2Main", "-lCatch2", "-o", "test"
     system "./test"
   end

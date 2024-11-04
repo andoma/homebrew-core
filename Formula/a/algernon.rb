@@ -1,8 +1,8 @@
 class Algernon < Formula
   desc "Pure Go web server with Lua, Markdown, HTTP/2 and template support"
   homepage "https://github.com/xyproto/algernon"
-  url "https://github.com/xyproto/algernon/archive/refs/tags/v1.16.0.tar.gz"
-  sha256 "68a14413df39f78d8e3baeffdac4e3829f0a49f4f32af5efa4a233d7dd25eaa7"
+  url "https://github.com/xyproto/algernon/archive/refs/tags/v1.17.1.tar.gz"
+  sha256 "6f1459b80d98c2d4ebc3f1bf025b30671fb93b1b0e457d609dc5b718c7ced3e6"
   license "BSD-3-Clause"
   version_scheme 1
   head "https://github.com/xyproto/algernon.git", branch: "main"
@@ -13,13 +13,14 @@ class Algernon < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b1a5fa26b446be8d4cb89ed6fbed5ffa60c37a61ffedd54b56465bf5a9c10692"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0f129d6630fa63062f3dfa488b0a1e8bafbfdd05f30f2915b548b8497a6f728a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1bc1ca16e2b888738dd0915b55eedc9a2409a3bb2575faacb68b14e5b55f3733"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6e306a7852dee5a207297a5b6ded62c1021194239f552530b303258e485d73d8"
-    sha256 cellar: :any_skip_relocation, ventura:        "207b2191e79be4ec070a6ebdd412ca9cee89e2c560912f42410539f4d6b55949"
-    sha256 cellar: :any_skip_relocation, monterey:       "6668eae28c2d1e58502fe483bbd0982c04284ca61fb93bc0ec10cbeceb357691"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "57d988f00c4d6b7679eb3ab9bceaafe52da6851bc2583efb7e55c5cca7b02904"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c45f36e5ea025e82731d853ab05ead81ed7f214e87fefa46c4402a57463efb12"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7cb38b790c0fbc31648625a19b166089845ddaf8879fe746c3fa70c88d0de8a3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8a85309975e505544f0bfd3a80fea817463c3c859bb55610300781267005ca31"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e0f7fc7e6ab6af42a32ea004e8bd5f735da517364a034b9721a6bc6bc22d7cb4"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ab5fad785965863223212d9c413737bab66c84446a7baa8d7d0a5eb76dcabb72"
+    sha256 cellar: :any_skip_relocation, ventura:        "02fa8dcdf73bcfbfdab1eb7df5cbf488829aab1ead948c359e783026ae1665e2"
+    sha256 cellar: :any_skip_relocation, monterey:       "54cdbb948add4b80d20c94eaa0fcb04a52e2c874583f187feba95fdf668e3ea7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e199ab0fdf72ca39fdbae1f83b51dd59d73e77fa011c46746108fcb3cfcf0511"
   end
 
   depends_on "go" => :build
@@ -33,7 +34,7 @@ class Algernon < Formula
   test do
     port = free_port
     pid = fork do
-      exec "#{bin}/algernon", "-s", "-q", "--httponly", "--boltdb", "tmp.db",
+      exec bin/"algernon", "-s", "-q", "--httponly", "--boltdb", "tmp.db",
                               "--addr", ":#{port}"
     end
     sleep 20

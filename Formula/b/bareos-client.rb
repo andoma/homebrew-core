@@ -1,8 +1,8 @@
 class BareosClient < Formula
   desc "Client for Bareos (Backup Archiving REcovery Open Sourced)"
   homepage "https://www.bareos.org/"
-  url "https://github.com/bareos/bareos/archive/refs/tags/Release/23.0.1.tar.gz"
-  sha256 "ab35e0be81c11913c42e62829daa3228c1ae94ad96d76b829cab0d3eb6f2ef6c"
+  url "https://github.com/bareos/bareos/archive/refs/tags/Release/23.0.4.tar.gz"
+  sha256 "55fc4d2de3f4a5ca9d728da98acf348a9f6a0c29c719d526029bff50f65d2c55"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -11,13 +11,14 @@ class BareosClient < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "a7a814cf9eac8df80afe10f4eb21fdf72c0362448b732657a43bf6f46b0cf382"
-    sha256 arm64_ventura:  "d18015280063235aed7ced1733fba06156083c05403a9f5747bc90b1d34cf089"
-    sha256 arm64_monterey: "1d56374c995c5cefea8d1432f239a556735c1bda2e0be86c6896a5b98b5948e9"
-    sha256 sonoma:         "dd5ebc261bc7413dfede0f7b009f5b4e13e5f870f90a5fe3f7a7cb31656c4b9a"
-    sha256 ventura:        "2e58648a883b85420f4a33a27a7ab1c74a6b6727dd3a0c96e5815ac6066b338a"
-    sha256 monterey:       "349f60e621070721b5b124a0996f1f5e8f7c28fcd6b1ab91c76256a5e921629a"
-    sha256 x86_64_linux:   "aaf1dc789cedd97278166c29b789c463e10b10298627ae0750a75af52abdcec9"
+    sha256 arm64_sequoia:  "14f1f91ca6e2ddc36d1e967850b06a6af6acbd6d706fb0fb6852eb18c48382b1"
+    sha256 arm64_sonoma:   "e7260d9b636ea8b344f824533cd1cc38e4ec5b69b36de9aa1a41283233fafe5a"
+    sha256 arm64_ventura:  "bf51da611653906758bd92f978ba8ca5dd8e74a9c730e7b1888fb71ef2392a19"
+    sha256 arm64_monterey: "9cc06db6fb7ca760ba16bf89d1ee71f94f86487132bf8cab3a9723b76db1d368"
+    sha256 sonoma:         "c0241c91796e79d616c1fbd486078beb77575515aaf1c9de34ffebdf2921540d"
+    sha256 ventura:        "a6db2e0b30c312785c1d173fc53bf8d597e6c244b5b496fc9df0faa82d38ba83"
+    sha256 monterey:       "a86fc0dc354205902e11a967ca70ad124a6d14455662cee9a5b4f33ac4cee686"
+    sha256 x86_64_linux:   "0972bd1a75de56ee7605f0ad5a7af94e57c4de2d83ec371f9ddf345a71414e91"
   end
 
   depends_on "cmake" => :build

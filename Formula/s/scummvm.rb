@@ -1,10 +1,20 @@
 class Scummvm < Formula
   desc "Graphic adventure game interpreter"
   homepage "https://www.scummvm.org/"
-  url "https://downloads.scummvm.org/frs/scummvm/2.8.0/scummvm-2.8.0.tar.xz"
-  sha256 "d6e9fbee06a924706635dea225dfd560ff6770f35aa99d59570a3eb883795a72"
   license "GPL-3.0-or-later"
+  revision 1
   head "https://github.com/scummvm/scummvm.git", branch: "master"
+
+  stable do
+    url "https://downloads.scummvm.org/frs/scummvm/2.8.1/scummvm-2.8.1.tar.xz"
+    sha256 "7e97f4a13d22d570b70c9b357c941999be71deb9186039c87d82bbd9c20727b7"
+
+    # Backport fix for freetype 2.13.3
+    patch do
+      url "https://github.com/scummvm/scummvm/commit/65977961b20ba97b1213b5267da0cb1efb49063b.patch?full_index=1"
+      sha256 "2eefadef10af4729f6912ce281daafe12eabce52d7f8b62fc23de30ee768eb9b"
+    end
+  end
 
   livecheck do
     url "https://www.scummvm.org/downloads/"
@@ -12,13 +22,12 @@ class Scummvm < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "ce7088b67e74a857ef8d7752569f60a1411d1bea5077339a821ff6f8f87a4ae6"
-    sha256 arm64_ventura:  "c3aa391c44e9b0c4c1443c3dbdb9bf2049537dcb127ca3f2fa546bbafb77f2c9"
-    sha256 arm64_monterey: "d56db8b5ea54d9d9e2f292152de94df96164d6ca8fe98f991a27ad19098b2f44"
-    sha256 sonoma:         "c5a826a1eda1db58f6088e18810128342e157d9385d80d26c39002d8287154e2"
-    sha256 ventura:        "84fb49c0e4acba4878704b148fe3b7263fe7191a7b25bd93b2987e45274589da"
-    sha256 monterey:       "cbf5137b5f6b45198db19a26dfbf0cd6957a30b92afd410ebc51f2bcfc4e7ea4"
-    sha256 x86_64_linux:   "65be731207ab3c1d76d260572e0cb4a4e077781c607cdd58835a1553ef9c8ba7"
+    sha256 arm64_sequoia: "fde8fe1a4ea82c6c45ebe935a424d061020f3fa83018dc07662ce4ca4d4e7d3b"
+    sha256 arm64_sonoma:  "18d3ebadf6a8503e0b4f406d2d26c0a93edfe0c8241eb9fd42d973ed70942c52"
+    sha256 arm64_ventura: "cd418f2f0a06eebf0c918d18a3b9b6998e516e44bc010cffd56a7300bdc572fc"
+    sha256 sonoma:        "4fa0b3cbb71aed9ce25e9855931341bf5b6d7b4bbe88340979e822792c088208"
+    sha256 ventura:       "7cdd7593bb231778802fa55ab255251149ea8184ab58aed7c8cd8eb829451a6c"
+    sha256 x86_64_linux:  "5ece7329bb96f7a983815379454e8209d338e3ce12b05c729f69ba258d84152a"
   end
 
   depends_on "a52dec"
@@ -26,13 +35,24 @@ class Scummvm < Formula
   depends_on "flac"
   depends_on "fluid-synth"
   depends_on "freetype"
+  depends_on "fribidi"
+  depends_on "giflib"
   depends_on "jpeg-turbo"
+  depends_on "libmikmod"
   depends_on "libmpeg2"
+  depends_on "libogg"
   depends_on "libpng"
   depends_on "libvorbis"
+  depends_on "libvpx"
   depends_on "mad"
   depends_on "sdl2"
   depends_on "theora"
+
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "alsa-lib"
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}",
@@ -40,8 +60,8 @@ class Scummvm < Formula
                           "--with-sdl-prefix=#{Formula["sdl2"].opt_prefix}"
     system "make"
     system "make", "install"
-    (share/"pixmaps").rmtree
-    (share/"icons").rmtree
+    rm_r(share/"pixmaps")
+    rm_r(share/"icons")
   end
 
   test do

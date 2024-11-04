@@ -1,9 +1,10 @@
 class NotmuchMutt < Formula
   desc "Notmuch integration for Mutt"
   homepage "https://notmuchmail.org/"
-  url "https://notmuchmail.org/releases/notmuch-0.38.2.tar.xz"
-  sha256 "5282ebe4742b03ee00fc3ab835969f94d229279db7232112bdc5009d861e947e"
+  url "https://notmuchmail.org/releases/notmuch-0.38.3.tar.xz"
+  sha256 "9af46cc80da58b4301ca2baefcc25a40d112d0315507e632c0f3f0f08328d054"
   license "GPL-3.0-or-later"
+  revision 1
   head "https://git.notmuchmail.org/git/notmuch", using: :git, branch: "master"
 
   livecheck do
@@ -11,18 +12,19 @@ class NotmuchMutt < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f0d42a21fff63f1b7a836a6d105a321eb65f6bb79cce3d3d668593fc3482da63"
-    sha256 cellar: :any,                 arm64_ventura:  "e5ffbd34b43eb467a26f9f72fd1261bbd3747ce15a8bb74225eaebc18ac2ed1c"
-    sha256 cellar: :any,                 arm64_monterey: "ae76e445e79296f896dccbb90c2fb08d226df2ae525801afeb40fb721906d1ee"
-    sha256 cellar: :any,                 sonoma:         "c9372ba227dff9795bb45060be3ace60ad3ac564bbe244030254bcf972c679e0"
-    sha256 cellar: :any,                 ventura:        "7bce5134e212ac7be9770e8f97e3a2f4d0ee12d39af5fa88c44b006978356d53"
-    sha256 cellar: :any,                 monterey:       "f485d11af66d1dfd0cffc75aba9dabf256f1e4ba262de34e3bc28aba2e29ba2f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b88e8d52ba06641fe4f00c18fb1a57a44a251ab1bc093560816c0d68b1d43b9"
+    sha256 cellar: :any,                 arm64_sequoia: "f8e6267e15ba67f6952b2af6f7b7a544ad07d4464c710b659f93dafcbe91a171"
+    sha256 cellar: :any,                 arm64_sonoma:  "23020e1c1bff402445cdd9099bc0ea7395b6d64c1c5c8dcd25955ac00b9b5a97"
+    sha256 cellar: :any,                 arm64_ventura: "88995f4ddbd5790dd5f4dfdb3fb922bb4c31d1fc0b8ba69c4e80a0c052848d41"
+    sha256 cellar: :any,                 sonoma:        "f63f141a9a62d1245784c09573d7ccd2d19f385c4f1675a657ba75b227e22a2b"
+    sha256 cellar: :any,                 ventura:       "a95b08d75d12c468eeb8c6e256db0e654b1b348ceadfb4475dd53a127c40891f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a2bf3fd1b806f84210edbfd26c718506ed9c6c3af7e93bf32c1c15b61856899c"
   end
 
   depends_on "notmuch"
   depends_on "perl"
   depends_on "readline"
+
+  uses_from_macos "ncurses"
 
   resource "Date::Parse" do
     url "https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/TimeDate-2.33.tar.gz"
@@ -70,13 +72,13 @@ class NotmuchMutt < Formula
   end
 
   resource "Mail::Reporter" do
-    url "https://cpan.metacpan.org/authors/id/M/MA/MARKOV/Mail-Message-3.014.tar.gz"
-    sha256 "22859e09a0bd2dae3ca7b3148bff3fb6602b479a00419fe048a21807f26aeb33"
+    url "https://cpan.metacpan.org/authors/id/M/MA/MARKOV/Mail-Message-3.015.tar.gz"
+    sha256 "b2858d7f877d3ed489f83404a40aaa95dd96ef61e00f141aef149a332399b25a"
   end
 
   resource "MIME::Types" do
-    url "https://cpan.metacpan.org/authors/id/M/MA/MARKOV/MIME-Types-2.24.tar.gz"
-    sha256 "629e361f22b220be50c2da7354e23c0451757709a03c25a22f3160edb94cb65f"
+    url "https://cpan.metacpan.org/authors/id/M/MA/MARKOV/MIME-Types-2.26.tar.gz"
+    sha256 "bc738483cb4cdb47d61e85fe9304fa929aa9ab927e3171ec2ba2ab1cd7cefdff"
   end
 
   resource "Object::Realize::Later" do
@@ -112,6 +114,6 @@ class NotmuchMutt < Formula
   end
 
   test do
-    system "#{bin}/notmuch-mutt", "search", "Homebrew"
+    system bin/"notmuch-mutt", "search", "Homebrew"
   end
 end

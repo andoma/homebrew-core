@@ -7,6 +7,7 @@ class CargoDocset < Formula
   head "https://github.com/Robzz/cargo-docset.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5c4351f68e1d7fb4997246d0a1ff54e85b3aae4524bcb0cdc0bac379a88ecf54"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5d3967143668a150164b116c2f82996ed07bf150f8c2418d913fce73c0414cb4"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "6a026716e38bb7746b1118556a35fd319beb8e46d9a07d02c886808cbf77bf31"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "4cf48a777532c29c0a4885d1460892d9c68ce0f19115381b95ba10d1aebb174e"
@@ -19,7 +20,7 @@ class CargoDocset < Formula
   end
 
   depends_on "rust" => :build
-  depends_on "rustup-init" => :test
+  depends_on "rustup" => :test
   uses_from_macos "sqlite"
 
   def install
@@ -29,24 +30,23 @@ class CargoDocset < Formula
   test do
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
-    ENV["RUSTUP_INIT_SKIP_PATH_CHECK"] = "yes"
-    rustup_init = Formula["rustup-init"].bin/"rustup-init"
-    system rustup_init, "-y", "--profile", "minimal", "--default-toolchain", "beta", "--no-modify-path"
-    ENV.prepend_path "PATH", HOMEBREW_CACHE/"cargo_cache/bin"
+    ENV.prepend_path "PATH", Formula["rustup"].bin
+    system "rustup", "default", "beta"
+    system "rustup", "set", "profile", "minimal"
 
     crate = testpath/"demo-crate"
     mkdir crate do
-      (crate/"src/main.rs").write <<~EOS
+      (crate/"src/main.rs").write <<~RUST
         fn main() {
           println!("Hello BrewTestBot!");
         }
-      EOS
-      (crate/"Cargo.toml").write <<~EOS
+      RUST
+      (crate/"Cargo.toml").write <<~TOML
         [package]
         name = "demo-crate"
         version = "0.1.0"
         license = "MIT"
-      EOS
+      TOML
 
       output = shell_output("cargo docset --all-features")
       assert_predicate crate/"target/docset/demo-crate.docset", :exist?

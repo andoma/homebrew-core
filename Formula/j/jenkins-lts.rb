@@ -1,8 +1,8 @@
 class JenkinsLts < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://www.jenkins.io/"
-  url "https://get.jenkins.io/war-stable/2.440.1/jenkins.war"
-  sha256 "0a4dee3276867329745bc9d253dad8565fab00b4c2f06e1a22d492d6d464495d"
+  url "https://get.jenkins.io/war-stable/2.479.1/jenkins.war"
+  sha256 "dbf987b3aaab16ce20e9413b3082fa323e3724cbb64562ddb64c1e4d4f58b470"
   license "MIT"
 
   livecheck do
@@ -11,16 +11,16 @@ class JenkinsLts < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "1d2080cb723a5631c3608321cad56737f67da602a6d978ece8924483fcc7a953"
+    sha256 cellar: :any_skip_relocation, all: "510a45e3edeffc6403704087fc1a49e34eb820930cd5b4b43405065e3276fbff"
   end
 
-  depends_on "openjdk"
+  depends_on "openjdk@21"
 
   def install
-    system "#{Formula["openjdk"].opt_bin}/jar", "xvf", "jenkins.war"
+    system "#{Formula["openjdk@21"].opt_bin}/jar", "xvf", "jenkins.war"
     libexec.install "jenkins.war", "WEB-INF/lib/cli-#{version}.jar"
-    bin.write_jar_script libexec/"jenkins.war", "jenkins-lts"
-    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-lts-cli"
+    bin.write_jar_script libexec/"jenkins.war", "jenkins-lts", java_version: "21"
+    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-lts-cli", java_version: "21"
   end
 
   def caveats
@@ -30,7 +30,7 @@ class JenkinsLts < Formula
   end
 
   service do
-    run [Formula["openjdk"].opt_bin/"java", "-Dmail.smtp.starttls.enable=true", "-jar", opt_libexec/"jenkins.war",
+    run [Formula["openjdk@21"].opt_bin/"java", "-Dmail.smtp.starttls.enable=true", "-jar", opt_libexec/"jenkins.war",
          "--httpListenAddress=127.0.0.1", "--httpPort=8080"]
   end
 

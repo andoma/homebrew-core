@@ -1,7 +1,7 @@
 class Synscan < Formula
   desc "Asynchronous half-open TCP portscanner"
-  homepage "http://digit-labs.org/files/tools/synscan/"
-  url "http://digit-labs.org/files/tools/synscan/releases/synscan-5.02.tar.gz"
+  homepage "https://digit-labs.org/files/tools/synscan/"
+  url "https://digit-labs.org/files/tools/synscan/releases/synscan-5.02.tar.gz"
   sha256 "c4e6bbcc6a7a9f1ea66f6d3540e605a79e38080530886a50186eaa848c26591e"
   license "GPL-2.0-or-later"
   revision 1
@@ -12,6 +12,7 @@ class Synscan < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "5c810311391581f8e9c6c8638d6e11c467198c36c9ebe08ee2f7a25da0d19636"
     sha256 cellar: :any,                 arm64_sonoma:   "42ea1012c638a378b12bd8966916393692e227186e424c06385cc32ed0f27680"
     sha256 cellar: :any,                 arm64_ventura:  "452098c37c8f4161baa099c7bdf5681453505c53a6b0cb08d2d84f4691fda6a4"
     sha256 cellar: :any,                 arm64_monterey: "a396a4340087cff3494d296c0134cb4089b02b181e6757e01c2428685d12a516"
@@ -42,6 +43,6 @@ class Synscan < Formula
   end
 
   test do
-    system "#{bin}/synscan", "-V"
+    system bin/"synscan", "-V"
   end
 end

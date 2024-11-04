@@ -1,8 +1,8 @@
 class Prestd < Formula
   desc "Simplify and accelerate development on any Postgres application, existing or new"
   homepage "https://github.com/prest/prest"
-  url "https://github.com/prest/prest/archive/refs/tags/v1.4.2.tar.gz"
-  sha256 "324996ee8ea430fdd005297b8f8c961da628d93c6ea2c2768f13f98b7c2e512d"
+  url "https://github.com/prest/prest/archive/refs/tags/v1.5.5.tar.gz"
+  sha256 "a9a94f4c00629044bf60de214b51d4defb17b30a41b369d404043adde955673f"
   license "MIT"
   head "https://github.com/prest/prest.git", branch: "main"
 
@@ -12,24 +12,25 @@ class Prestd < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0a0a86fc59a828730c148d45fc5cc94548e7b673c33c84ee612596dd33222eed"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "03f74a8b6548924de63ab3e04f0b1b29be1ad2e8f711e1c75c1488b12df5c995"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "42c68fed315e9cb78213ec2401dd0c602d72153a535e66ed91549203063db51b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "be45cd6366878325ab56ab2a8103eb5573fb1ec569caa47b0fe9642a1a62158f"
-    sha256 cellar: :any_skip_relocation, ventura:        "a15a8e4a89a1c64e17c832e5176702382e8a2ea4cf61715dcff4f5d2086ab1a0"
-    sha256 cellar: :any_skip_relocation, monterey:       "af1a682d9e0f0ee07c893bd61306cbd0ce1e3a812bdc707dd7c43ea3cae7bacd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e0ba8b70812607fdde8872a907aff0fc2a8cf2ee5d0e16610af759c092eb77e1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "90d530ba1045c0435c4302a969748ffeac089be13f9de017e0cc1bdbd2e4921c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d9e890adab9d3c25273d2da7fa712f09e9d33f0433c41e0622f8b434be37c72d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "52064a37e3a319280c38605c65a5b6dbe8fe6b91755668e3e7924b6677749912"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "04531c9856304488cae5fcdcadf6dc7fa2d59a02ac67fc41cc2381a74afcf20d"
+    sha256 cellar: :any_skip_relocation, sonoma:         "34894d39bbef0a368d84c4f7b2e8bfea3f08255c99122dd4ab777a3880ed1cb0"
+    sha256 cellar: :any_skip_relocation, ventura:        "cc85d1dd808c37aada1e38c52ae10be65929ea936beb528854e22e311c023dc6"
+    sha256 cellar: :any_skip_relocation, monterey:       "01487780b57de6f5ff37ccfd018a0d368dd7f284dc86529f587703d454229c28"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cfdd4ff2adfe8116f6a0719a4217e003cfcfe855fbf60fcfb6d4096f29185453"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X github.com/prest/prest/helpers.PrestVersionNumber=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/prestd"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/prestd"
   end
 
   test do
-    (testpath/"prest.toml").write <<~EOS
+    (testpath/"prest.toml").write <<~TOML
       [jwt]
       default = false
 
@@ -39,7 +40,7 @@ class Prestd < Formula
       pass = "prest"
       port = 5432
       database = "prest"
-    EOS
+    TOML
 
     output = shell_output("#{bin}/prestd migrate up --path .", 255)
     assert_match "connect: connection refused", output

@@ -3,48 +3,42 @@ class AivenClient < Formula
 
   desc "Official command-line client for Aiven"
   homepage "https://docs.aiven.io/docs/tools/cli"
-  url "https://files.pythonhosted.org/packages/b3/dc/869bcceb3e6f33ebd8e7518fb70e522af975e7f3d78eda23642f640c393c/aiven_client-4.0.0.tar.gz"
-  sha256 "7c3e8faaa180da457cf67bf3be76fa610986302506f99b821b529956fd61cc50"
+  url "https://files.pythonhosted.org/packages/02/e8/687f8d55bce44b8bfa33a48c508f5a575624db4b9832dfa5843e92a7c8ee/aiven_client-4.4.0.tar.gz"
+  sha256 "2cb0542643ad575a7a3135078264783faf845227c89238b0b6346f824b9a08e3"
   license "Apache-2.0"
   head "https://github.com/aiven/aiven-client.git", branch: "main"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5084ba921af02ee8bcc6aafd1f79a9e4ff8a6b6b4baa5ebb6b83163eeadacd65"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "695b185058b7d2d53d130156f417f31d0f7600c05bd38d088d02d0ac773e129c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1087da2e22c8fcc74b46ae0911752ce64f058d7c257612f6f9b26b80efa195fa"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6ba75fc3aa78667690bcf673e83c8662eb4847f6e1d808f2445c7e41dbba6266"
-    sha256 cellar: :any_skip_relocation, ventura:        "047d10bf61aa6f2282f460ec01dcc4a3a2bb3a4467e88d9513f4b30d7384d0ee"
-    sha256 cellar: :any_skip_relocation, monterey:       "e983eec93701bcb365ab02e1c468ccd14a940b32a79b365432dfd9918f786cdd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "311a8a900c7d14dac945ec404b878693917968be43fc16981f0dd5e1f5632402"
+    sha256 cellar: :any_skip_relocation, all: "a1c37513bf39b103072c6b7475a8dc6bd34f6e886a7415d752c066a0c08338db"
   end
 
-  depends_on "python-certifi"
-  depends_on "python@3.12"
+  depends_on "certifi"
+  depends_on "python@3.13"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
-    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/bf/3f/ea4b9117521a1e9c50344b909be7886dd00a519552724809bb1f486986c2/idna-3.6.tar.gz"
-    sha256 "9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
+  end
+
+  resource "requests-toolbelt" do
+    url "https://files.pythonhosted.org/packages/f3/61/d7545dafb7ac2230c70d38d31cbfe4cc64f7144dc41f6e4e4b78ecd9f5bb/requests-toolbelt-1.0.0.tar.gz"
+    sha256 "7681a0a3d047012b5bdc0ee37d7f8f07ebe76ab08caeccfc3921ce23c88d5bc6"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/7a/50/7fd50a27caa0652cd4caf224aa87741ea41d3265ad13f010886167cfcc79/urllib3-2.2.1.tar.gz"
-    sha256 "d0570876c61ab9e520d776c38acbbb5b05a776d3f9ff98a5c8fd5162a444cf19"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
-
-  # Fixes `ModuleNotFoundError: No module named 'aiven.client.__main__'`
-  # PR ref: https://github.com/aiven/aiven-client/pull/380
-  patch :DATA
 
   def install
     virtualenv_install_with_resources
@@ -55,18 +49,3 @@ class AivenClient < Formula
     assert_match "UserError: not authenticated", pipe_output("AIVEN_CONFIG_DIR=/tmp #{bin}/avn user info 2>&1")
   end
 end
-__END__
-diff --git a/pyproject.toml b/pyproject.toml
-index 21b6146..bfa358a 100644
---- a/pyproject.toml
-+++ b/pyproject.toml
-@@ -64,6 +64,9 @@ source = "vcs"
- [tool.hatch.build.hooks.vcs]
- version-file = "aiven/client/version.py"
-
-+[tool.hatch.build.targets.wheel]
-+packages = ["aiven"]
-+
- [tool.black]
- line-length = 125
- target-version = ['py38', 'py39', 'py310', 'py311']

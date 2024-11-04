@@ -2,8 +2,8 @@ class Calicoctl < Formula
   desc "Calico CLI tool"
   homepage "https://www.projectcalico.org"
   url "https://github.com/projectcalico/calico.git",
-      tag:      "v3.27.2",
-      revision: "402c0b3815dc3f2452b1427fd23a394474ee513b"
+      tag:      "v3.29.0",
+      revision: "26c4c71c76cafea610380a55ee4ae45e09a8215c"
   license "Apache-2.0"
   head "https://github.com/projectcalico/calico.git", branch: "master"
 
@@ -13,13 +13,12 @@ class Calicoctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a0323d354c5d1ccb4f44d97897e398fe0dd91acbe9b45e4ccf8b59dd46e24f66"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bbe4a2f09e7de00784a69484655e8912c03f82a0b0d273d5484733b3c5d6dbf9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4b3552dc6a556565cffaf388501cbe2814eda0a3adc5adba8db56b7e23b51f18"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b6b7d31189fe8c6400c27387bd0b86b7585e841cf0480141913bcdc593671a22"
-    sha256 cellar: :any_skip_relocation, ventura:        "c9f226780f0e87484491e4633083ca5bd507d5773f2a79808cbb7983d9aaf9e4"
-    sha256 cellar: :any_skip_relocation, monterey:       "85d1260d91f2372a40ad7fa7ba8783f47c925d3862dc8b261601b0ee17e92d5f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4806cb66d2d19aba82cc548e9496e3e89e78b78b8dfeb991c33dc484830f0ed1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d729c60fb3c90ae5ee472cd3e990054b80e9e7ecc794472b16fec460cd6f2be9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d729c60fb3c90ae5ee472cd3e990054b80e9e7ecc794472b16fec460cd6f2be9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d729c60fb3c90ae5ee472cd3e990054b80e9e7ecc794472b16fec460cd6f2be9"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b9ce0bf7785c77f67df9206e25cef31b89b2c57aaac862fe62450a3fbc3ab87a"
+    sha256 cellar: :any_skip_relocation, ventura:       "b9ce0bf7785c77f67df9206e25cef31b89b2c57aaac862fe62450a3fbc3ab87a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "26a13207bd8178994cf8e30998ec8aaf0b58b5bc71f0ceac29243b0921ad7d45"
   end
 
   depends_on "go" => :build
@@ -29,7 +28,7 @@ class Calicoctl < Formula
     ldflags = "-X #{commands}.VERSION=#{version} " \
               "-X #{commands}.GIT_REVISION=#{Utils.git_short_head} " \
               "-s -w"
-    system "go", "build", *std_go_args(ldflags: ldflags), "calicoctl/calicoctl/calicoctl.go"
+    system "go", "build", *std_go_args(ldflags:), "calicoctl/calicoctl/calicoctl.go"
   end
 
   test do

@@ -7,6 +7,7 @@ class Whatmask < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a035d42b3734e84e406d28c3bcb1bddfb63f8551c4aaec6bfe3c9e049928e45e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2e13cae4bd5bb9c3c7c907b83a0f614f39b7170f7b46c28ce9f63785585f9c7d"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "106997f1c14a81903f0c3078308437938af0fded133488f5c7de9fd90cc4cbdc"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "93e5d651f3376c9194a94a3afa5dc7860bbe55ac675339e6c2d9951f57d1b075"
@@ -19,6 +20,8 @@ class Whatmask < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "a3a5a8887d1c7d43f83bf99c2f81f8900af0d83091978f5aac28447d0f093785"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8bb2ab87b646751414698bd1bae28cbea1eecf7c147ae6a38fd02e9f3857a1c9"
   end
+
+  deprecate! date: "2024-02-29", because: :repo_removed
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

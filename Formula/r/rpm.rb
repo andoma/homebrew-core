@@ -1,8 +1,8 @@
 class Rpm < Formula
   desc "Standard unix software packaging tool"
   homepage "https://rpm.org/"
-  url "https://ftp.osuosl.org/pub/rpm/releases/rpm-4.19.x/rpm-4.19.1.tar.bz2"
-  sha256 "4de4dcd82f2a46cf48a83810fe94ebda3d4719b45d547ed908b43752a7581df1"
+  url "https://ftp.osuosl.org/pub/rpm/releases/rpm-4.19.x/rpm-4.19.1.1.tar.bz2"
+  sha256 "874091b80efe66f9de8e3242ae2337162e2d7131e3aa4ac99ac22155e9c521e5"
   license "GPL-2.0-only"
   version_scheme 1
   head "https://github.com/rpm-software-management/rpm.git", branch: "master"
@@ -15,38 +15,50 @@ class Rpm < Formula
   end
 
   bottle do
-    sha256 x86_64_linux: "84a6f8905a17d3797cd84a3d38874b951c7c00418fba684a6763022dc0119b8e"
+    rebuild 2
+    sha256 arm64_sequoia: "13c5452de71ad6162ef07c7712a9419734da128ea6c1d443abb7756a2a105551"
+    sha256 arm64_sonoma:  "dd2ff5b5bb9efbe1fff85619dd3d221291eb530f7d94558867c981a170bb54e4"
+    sha256 arm64_ventura: "64e55e92671e5947a51e69aaa7e95fad907f8b9790cc8481414e31144a6640c0"
+    sha256 sonoma:        "fda6009a2e5190fd74e8edb9cf8fe46d001d2fcacd71265eeb8c133b351cb3ae"
+    sha256 ventura:       "983e017cd82c4a2ff5b150fa9755c2a948d4e9566eccf216e407f29a568764f1"
+    sha256 x86_64_linux:  "66c98e854bc22abb034a74b2bbb44fcf3332c5a783250a971fc38f43768aa596"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
-  depends_on "python@3.12" => [:build, :test]
-  depends_on "acl"
-  depends_on "bzip2"
-  depends_on "dbus"
-  depends_on "elfutils"
+  depends_on "gawk" => :build
+  depends_on "python@3.13" => [:build, :test]
+
   depends_on "gettext"
   depends_on "libarchive"
-  depends_on "libcap"
   depends_on "libmagic"
-  depends_on :linux
   depends_on "lua"
+  # See https://github.com/rpm-software-management/rpm/issues/2222 for details.
+  depends_on macos: :ventura
   depends_on "openssl@3"
   depends_on "pkg-config"
   depends_on "popt"
+  depends_on "readline"
   depends_on "sqlite"
   depends_on "xz"
-  depends_on "zlib"
+  depends_on "zstd"
 
-  on_linux do
-    conflicts_with "rpm2cpio", because: "both install `rpm2cpio` binaries"
+  uses_from_macos "bzip2"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "libomp"
   end
 
+  conflicts_with "rpm2cpio", because: "both install `rpm2cpio` binaries"
+
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
+    ENV.append "LDFLAGS", "-lomp" if OS.mac?
+
     # only rpm should go into HOMEBREW_CELLAR, not rpms built
     inreplace ["macros.in", "platform.in"], "@prefix@", HOMEBREW_PREFIX
 
@@ -58,7 +70,9 @@ class Rpm < Formula
     inreplace "python/CMakeLists.txt", "${Python3_SITEARCH}", prefix/Language::Python.site_packages(python3)
 
     # WITH_INTERNAL_OPENPGP and WITH_OPENSSL are deprecated
+    rpaths = [rpath, rpath(source: lib/"rpm")]
     args = %W[
+      -DCMAKE_INSTALL_RPATH=#{rpaths.join(";")}
       -DCMAKE_INSTALL_SYSCONFDIR=#{etc}
       -DCMAKE_INSTALL_SHAREDSTATEDIR=#{var}/lib
       -DCMAKE_INSTALL_LOCALSTATEDIR=#{var}
@@ -70,6 +84,8 @@ class Rpm < Formula
       -DWITH_SELINUX=OFF
       -DRPM_VENDOR=#{tap.user}
       -DENABLE_TESTSUITE=OFF
+      -DWITH_ACL=OFF
+      -DWITH_CAP=OFF
     ]
     system "cmake", "-S", ".", "-B", "_build", *args, *std_cmake_args
     system "cmake", "--build", "_build"

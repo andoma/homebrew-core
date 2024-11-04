@@ -1,8 +1,8 @@
 class HaskellStack < Formula
   desc "Cross-platform program for developing Haskell projects"
   homepage "https://haskellstack.org/"
-  url "https://github.com/commercialhaskell/stack/archive/refs/tags/v2.13.1.tar.gz"
-  sha256 "00333782b1bda3bda02ca0c1bbc6becdd86e5a39f6448b0df788b634e1bde692"
+  url "https://github.com/commercialhaskell/stack/archive/refs/tags/v3.1.1.tar.gz"
+  sha256 "74ad174c55c98f56f5a5ef458f019da5903b19b4fa4857a7b2d4565d8bd0fbac"
   license "BSD-3-Clause"
   head "https://github.com/commercialhaskell/stack.git", branch: "master"
 
@@ -12,17 +12,17 @@ class HaskellStack < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0426cc31adddad813c139f9fefddce55a6e614893f2c1052b3ae56c0a9958cb7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3269aa3a8dcf82d1c8cbb8e362ed4609d99193611ece6ef0c00b1c820c9494f4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f20bef09d83372ced23f7cf80a7174a70640da5f228729b1c8b4cff39ea6fa2c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5ec70b9dbe8c49239f6058f8ad647478a063e879ddf663c49be1d9623e11fd1f"
-    sha256 cellar: :any_skip_relocation, ventura:        "ece414965294e7d82b7c073cf3607822541cec6ae171360fbcd01cc18da91ef8"
-    sha256 cellar: :any_skip_relocation, monterey:       "70b7031bd72c6c17ae139094c4471728a9d13d4e9b6141c7ac7818d39fd7fbf0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ddcddb8cc82773695f1733fb34caef081a8cb6f9a953e847ae4b7d5c1984c590"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ebe17a5457cd6aa4667986e50da4c10a2d62e8fada679a826cd9aa6681661a82"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2b6576d6d8ac9f556b439115476020b4bca320dff2d3dea510a05296073d0192"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0306a15e9eac83d5824fe35bd4ac3d56a198f0d3a4afe0149429f1e7a1863fec"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3fd846a3e9489aea4e074b2c4880a8a442b46a2a9ce1025f0d4985cdb1addf68"
+    sha256 cellar: :any_skip_relocation, ventura:       "9c56477a47316be12a676dc6c9b3b733ffa6cba2dd6335fdc8b8f5af10ae31c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5cc5821f3c34d5b38fc82a5d7a2aaef2d62082848134dd335d6fc7968736563d"
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc" => :build
+  depends_on "ghc@9.8" => :build
 
   uses_from_macos "zlib"
 
@@ -36,6 +36,13 @@ class HaskellStack < Formula
 
     system "cabal", "v2-update"
     system "cabal", "v2-install", *std_cabal_v2_args
+
+    generate_completions_from_executable(bin/"stack", "--bash-completion-script", bin/"stack",
+                                         shells: [:bash], shell_parameter_format: :none)
+    generate_completions_from_executable(bin/"stack", "--fish-completion-script", bin/"stack",
+                                         shells: [:fish], shell_parameter_format: :none)
+    generate_completions_from_executable(bin/"stack", "--zsh-completion-script", bin/"stack",
+                                         shells: [:zsh], shell_parameter_format: :none)
   end
 
   def caveats

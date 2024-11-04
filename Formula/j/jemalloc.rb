@@ -1,11 +1,12 @@
 class Jemalloc < Formula
   desc "Implementation of malloc emphasizing fragmentation avoidance"
-  homepage "http://jemalloc.net/"
+  homepage "https://jemalloc.net/"
   url "https://github.com/jemalloc/jemalloc/releases/download/5.3.0/jemalloc-5.3.0.tar.bz2"
   sha256 "2db82d1e7119df3e71b7640219b6dfe84789bc0537983c3b7ac4f7189aecfeaa"
   license "BSD-2-Clause"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "e5e0394bcc4feeb5db140387352090773761aebe3ff8ae42faf4990b2360fec6"
     sha256 cellar: :any,                 arm64_sonoma:   "f70f02aa2f1b858ed5e5cef84a271efeaaa27e79f266844997aab95daa66a7fa"
     sha256 cellar: :any,                 arm64_ventura:  "33e0c3fbe56642e081018a9674df734d34afdc35af7d03f5dd2b484a804555e3"
     sha256 cellar: :any,                 arm64_monterey: "b7ef9abad498e6eb53fb476fde4396fc9ab99a23092ea14bcf576548e198f9bd"
@@ -50,7 +51,7 @@ class Jemalloc < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdlib.h>
       #include <jemalloc/jemalloc.h>
 
@@ -64,7 +65,7 @@ class Jemalloc < Formula
         // Dump allocator statistics to stderr
         malloc_stats_print(NULL, NULL, NULL);
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-ljemalloc", "-o", "test"
     system "./test"
   end

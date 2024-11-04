@@ -1,10 +1,9 @@
 class Wal2json < Formula
   desc "Convert PostgreSQL changesets to JSON format"
   homepage "https://github.com/eulerto/wal2json"
-  url "https://github.com/eulerto/wal2json/archive/refs/tags/wal2json_2_5.tar.gz"
-  sha256 "b516653575541cf221b99cf3f8be9b6821f6dbcfc125675c85f35090f824f00e"
+  url "https://github.com/eulerto/wal2json/archive/refs/tags/wal2json_2_6.tar.gz"
+  sha256 "18b4bdec28c74a8fc98a11c72de38378a760327ef8e5e42e975b0029eb96ba0d"
   license "BSD-3-Clause"
-  revision 1
 
   livecheck do
     url :stable
@@ -13,39 +12,46 @@ class Wal2json < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c19c2e4de042773c6197fb1458fa47962f26f440e2275cab182ac1c09c3da014"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4059f538f33c6fe32b73fe86328431027cdbca20ddcd8ac6320fb6a15ac3f8a5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2db7dad2e349f9d37218ddcd6395f14ce6cb1ad7a7a9fe1412ba6926f4f79880"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ab113ad5939f77cc2abad6b459ae738d87e7a2f3c7562a50492abb11c9997387"
-    sha256 cellar: :any_skip_relocation, ventura:        "2cb542c88e913cf1240457c39f2ad1164d7556834db0588d751652fe10ebea94"
-    sha256 cellar: :any_skip_relocation, monterey:       "cdbea4c388aca50b56a4057e4b436a99f2292899444f3dadd1c84a1c23072d1a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "23770f42e994329f5ae2d1e480ce61352a156fac0fe826e341c31605142d922b"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ec43557186dc322d7e038dbc6a9d2062296a13f8830952bbdb0c72d154c8a70b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0d9b4650f924f544a650ba786967a754b29a4971868b3dbd5ba9f47abd44f6cb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "03a5c4a6e4048d088a5a23aed0251a4cf05f86d271eb23f8c681c139f6336672"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4e53de38eccaf3a9a23587ea164b8723f68648c84d3c3017d362823daaacd113"
+    sha256 cellar: :any_skip_relocation, ventura:       "1ac11a6eb237df8ffab44e8a903925e0896628a3ba78b31b919ea6a61d1b54e6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "44d6b43deefc69fbd0cb1df19957d8f827d74f49693d43ddd2df058ebb3bfb1f"
   end
 
-  depends_on "postgresql@14"
+  depends_on "postgresql@14" => [:build, :test]
+  depends_on "postgresql@17" => [:build, :test]
 
-  def postgresql
-    Formula["postgresql@14"]
+  def postgresqls
+    deps.map(&:to_formula).sort_by(&:version).filter { |f| f.name.start_with?("postgresql@") }
   end
 
   def install
-    system "make", "install", "USE_PGXS=1",
-                              "PG_CONFIG=#{postgresql.opt_bin}/pg_config",
-                              "pkglibdir=#{lib/postgresql.name}"
+    postgresqls.each do |postgresql|
+      system "make", "install", "USE_PGXS=1",
+                                "PG_CONFIG=#{postgresql.opt_bin}/pg_config",
+                                "pkglibdir=#{lib/postgresql.name}"
+      system "make", "clean"
+    end
   end
 
   test do
     ENV["LC_ALL"] = "C"
-    pg_ctl = postgresql.opt_bin/"pg_ctl"
-    port = free_port
+    postgresqls.each do |postgresql|
+      pg_ctl = postgresql.opt_bin/"pg_ctl"
+      port = free_port
 
-    system pg_ctl, "initdb", "-D", testpath/"test"
-    (testpath/"test/postgresql.conf").write <<~EOS, mode: "a+"
+      datadir = testpath/postgresql.name
+      system pg_ctl, "initdb", "-D", datadir
+      (datadir/"postgresql.conf").write <<~EOS, mode: "a+"
 
-      shared_preload_libraries = 'wal2json'
-      port = #{port}
-    EOS
-    system pg_ctl, "start", "-D", testpath/"test", "-l", testpath/"log"
-    system pg_ctl, "stop", "-D", testpath/"test"
+        shared_preload_libraries = 'wal2json'
+        port = #{port}
+      EOS
+      system pg_ctl, "start", "-D", datadir, "-l", testpath/"log-#{postgresql.name}"
+      system pg_ctl, "stop", "-D", datadir
+    end
   end
 end

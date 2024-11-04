@@ -6,7 +6,8 @@ class Lager < Formula
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "ecb454d1e0681ec7cb5be9210205b58790d161e5345a4046a6f6226f5eb81e3b"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "092b29ac8e64b817faba834b6b03d4970ce7cf939a271e812bdfcfd09dd081ff"
   end
 
   depends_on "cmake" => :build
@@ -25,7 +26,7 @@ class Lager < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       #include <lager/state.hpp>
       #include <string>
@@ -44,7 +45,7 @@ class Lager < Formula
         state2.set(2);
         std::cout << state2.get() << std::endl; // 2
       }
-    EOS
+    CPP
 
     system ENV.cxx, "-std=c++17", "-I#{include}", "test.cpp", "-o", "test"
     system "./test"

@@ -1,8 +1,8 @@
 class Katago < Formula
   desc "Neural Network Go engine with no human-provided knowledge"
   homepage "https://github.com/lightvector/KataGo"
-  url "https://github.com/lightvector/KataGo/archive/refs/tags/v1.14.0.tar.gz"
-  sha256 "d0cb8dbd89aa8c49d5477a2d7dede1981812b709dd49bfd089e1db56200c9ede"
+  url "https://github.com/lightvector/KataGo/archive/refs/tags/v1.15.3.tar.gz"
+  sha256 "96a1ef3d12eb30a950164f203b012b5f2257ef796b9bd15163d9ba3b79a32a1b"
   license "MIT"
 
   livecheck do
@@ -11,19 +11,26 @@ class Katago < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "2db17fe4a7e4faf7b848fe8be9bedb05dccafe6202d574c159f9d43de9aa2f78"
-    sha256 cellar: :any,                 arm64_ventura:  "110dd79c63c3b612b446f5dbb149301581867a4c0b8024bf4894cc2fce2cd5c5"
-    sha256 cellar: :any,                 arm64_monterey: "815c9a37762eb15788c8e7ad6b7da86a0ff63c9137967b07876d6ea313621982"
-    sha256 cellar: :any,                 sonoma:         "69351321bb32aa67da12b70e438c1bbacdc02e516f01610a07df1c89739d285a"
-    sha256 cellar: :any,                 ventura:        "64a1e1d62f824b8015843d52de8272eae02a696c10f8d2f7dac18fd815ba8244"
-    sha256 cellar: :any,                 monterey:       "28da9e121ab022105b61f776be0c002853c0e170c60f3991dc65d90b8db3eb5e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6b8ecc133a5f941cd3b84ee0d2d124d3fb628e595ccbd9a9ecfc4046adaec920"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "422d44198c78c32942ed61ff8b5aebf6ee7e70ca139d4d5d2948cdfd9da98317"
+    sha256 cellar: :any,                 arm64_sonoma:   "b8429e8dfd8e8ed55b43bcbe3303429a15d2198f766161223412a5aac9a26900"
+    sha256 cellar: :any,                 arm64_ventura:  "756948a27239a72cd8b6fa312fd4c3cb4fa9f20940c4158011a82e681938f5cd"
+    sha256 cellar: :any,                 arm64_monterey: "3c9d3dc8e2768770bd803e6ca8b557295275482df2b57f14b349980ddb7ec678"
+    sha256 cellar: :any,                 sonoma:         "ba24de18bcadf148cfc200afc681ab9297e640e2395de69ac43efbe5b4cbf313"
+    sha256 cellar: :any,                 ventura:        "ab482d1af11de5e268ad2465ee8feb5aa7436dbc7885cfefa677ab35c39462ef"
+    sha256 cellar: :any,                 monterey:       "27da9731aecb9f6f8bf0ce99d8d0719e2f833c9ba7342f784f3b6f952e45eb9b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3033bade67d18470af58d50cf498ec6a40cb9f36cccf3a1295d60faa71f7df59"
   end
 
   depends_on "cmake" => :build
-  depends_on "boost"
   depends_on "libzip"
   depends_on macos: :mojave
+
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "eigen" => :build
+  end
 
   resource "20b-network" do
     url "https://github.com/lightvector/KataGo/releases/download/v1.4.5/g170e-b20c256x2-s5303129600-d1228401921.bin.gz", using: :nounzip
@@ -41,24 +48,25 @@ class Katago < Formula
   end
 
   def install
-    cd "cpp" do
-      args = %w[-DBUILD_MCTS=1 -DNO_GIT_REVISION=1]
-      if OS.mac?
-        args << "-DUSE_BACKEND=OPENCL"
-        args << "-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}"
-      end
-      system "cmake", ".", *args, *std_cmake_args
-      system "make"
-      bin.install "katago"
-      pkgshare.install "configs"
+    args = ["-DNO_GIT_REVISION=1"]
+    args += if OS.mac?
+      ["-DUSE_BACKEND=OPENCL", "-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}"]
+    else
+      ["-DUSE_BACKEND=EIGEN"]
     end
+
+    system "cmake", "-S", "cpp", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    bin.install "build/katago"
+
+    pkgshare.install "cpp/configs"
     pkgshare.install resource("20b-network")
     pkgshare.install resource("30b-network")
     pkgshare.install resource("40b-network")
   end
 
   test do
-    system "#{bin}/katago", "version"
+    system bin/"katago", "version"
     assert_match(/All tests passed$/, shell_output("#{bin}/katago runtests").strip)
   end
 end

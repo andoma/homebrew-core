@@ -1,19 +1,19 @@
 class Ipopt < Formula
   desc "Interior point optimizer"
   homepage "https://coin-or.github.io/Ipopt/"
-  url "https://github.com/coin-or/Ipopt/archive/refs/tags/releases/3.14.14.tar.gz"
-  sha256 "264d2d3291cd1cd2d0fa0ad583e0a18199e3b1378c3cb015b6c5600083f1e036"
+  url "https://github.com/coin-or/Ipopt/archive/refs/tags/releases/3.14.16.tar.gz"
+  sha256 "cc8c217991240db7eb14189eee0dff88f20a89bac11958b48625fa512fe8d104"
   license "EPL-2.0"
   head "https://github.com/coin-or/Ipopt.git", branch: "stable/3.14"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "392a3455a4d487fc3f39633680c0924bcb287891e13dad08c9a963317472f32b"
-    sha256 cellar: :any,                 arm64_ventura:  "6f26dedbbe1406b4e2b305eca2c7785df2c6489dd14bbd3299f971006c7db963"
-    sha256 cellar: :any,                 arm64_monterey: "6ee09f1b5d0998bea471d81652fd65865f2176005acabdb3300c52b46fe4fa06"
-    sha256 cellar: :any,                 sonoma:         "606da12775b919ab5ab762a51a35a4ad1cb24f47c805930d0e0a55d260e76ffc"
-    sha256 cellar: :any,                 ventura:        "47cfb0705651d5e6d1fa1a6099f48e85053968b185cd4e146cced245b2df2faf"
-    sha256 cellar: :any,                 monterey:       "5aa16d5ef3b9417cbd1e6aff1b230c36880a90d7d62da11291df27235d25408a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db820ab3f8e5f6806c06f20cff8d161d27228420256491102185a907102cfc9c"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "f27c151e814d4c9a0caeb33bb0a584c5d885121ec6a70a0586b330b8485779fa"
+    sha256 cellar: :any,                 arm64_sonoma:  "9a7c783b3ccd11860b615afc874ead0f60700a7f97dde4d5752a4444778aa86d"
+    sha256 cellar: :any,                 arm64_ventura: "5e623167a75d4f3516f6e2b50c61578bd3222f18c63abb7d5483c95dd2a0c53b"
+    sha256 cellar: :any,                 sonoma:        "fb86b1e3c17ed6cfb6b44bf1fcaca4a989a62335b364baa36490b4f0003675b8"
+    sha256 cellar: :any,                 ventura:       "467af1d0edd4ee1beb1ef2496bf277992988c8599b3082467f5be3d6891cd85b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6e2c7ebb501bd2b73e5c847f1f5e82dcedfd3a9528de22c6848e9393cedaede6"
   end
 
   depends_on "openjdk" => :build
@@ -24,8 +24,8 @@ class Ipopt < Formula
 
   resource "mumps" do
     # follow links provided in official repo: https://github.com/coin-or-tools/ThirdParty-Mumps/blob/stable/3.0/get.Mumps
-    url "http://coin-or-tools.github.io/ThirdParty-Mumps/MUMPS_5.6.2.tar.gz"
-    mirror "http://deb.debian.org/debian/pool/main/m/mumps/mumps_5.6.2.orig.tar.gz"
+    url "https://coin-or-tools.github.io/ThirdParty-Mumps/MUMPS_5.6.2.tar.gz"
+    mirror "https://deb.debian.org/debian/pool/main/m/mumps/mumps_5.6.2.orig.tar.gz"
     sha256 "13a2c1aff2bd1aa92fe84b7b35d88f43434019963ca09ef7e8c90821a8f1d59a"
 
     patch do
@@ -43,8 +43,13 @@ class Ipopt < Formula
   end
 
   resource "test" do
-    url "https://github.com/coin-or/Ipopt/archive/refs/tags/releases/3.14.14.tar.gz"
-    sha256 "264d2d3291cd1cd2d0fa0ad583e0a18199e3b1378c3cb015b6c5600083f1e036"
+    url "https://github.com/coin-or/Ipopt/archive/refs/tags/releases/3.14.16.tar.gz"
+    sha256 "cc8c217991240db7eb14189eee0dff88f20a89bac11958b48625fa512fe8d104"
+  end
+
+  resource "miniampl" do
+    url "https://github.com/dpo/miniampl/archive/refs/tags/v1.0.tar.gz"
+    sha256 "b836dbf1208426f4bd93d6d79d632c6f5619054279ac33453825e036a915c675"
   end
 
   def install
@@ -92,9 +97,12 @@ class Ipopt < Formula
 
   test do
     testpath.install resource("test")
-    pkg_config_flags = `pkg-config --cflags --libs ipopt`.chomp.split
+    pkg_config_flags = shell_output("pkg-config --cflags --libs ipopt").chomp.split
     system ENV.cxx, "examples/hs071_cpp/hs071_main.cpp", "examples/hs071_cpp/hs071_nlp.cpp", *pkg_config_flags
     system "./a.out"
-    system "#{bin}/ipopt", "#{Formula["ampl-mp"].opt_pkgshare}/example/wb"
+
+    resource("miniampl").stage do
+      system bin/"ipopt", "examples/wb"
+    end
   end
 end

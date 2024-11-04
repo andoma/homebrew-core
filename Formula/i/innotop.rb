@@ -1,26 +1,33 @@
 class Innotop < Formula
   desc "Top clone for MySQL"
   homepage "https://github.com/innotop/innotop/"
-  # Check if mysql-client@8.0 can be update to latest with next version
-  # if DBD::mysql > 5.003 - https://github.com/perl5-dbi/DBD-mysql/issues/375
   url "https://github.com/innotop/innotop/archive/refs/tags/v1.13.0.tar.gz"
   sha256 "6ec91568e32bda3126661523d9917c7fbbd4b9f85db79224c01b2a740727a65c"
   license any_of: ["GPL-2.0-only", "Artistic-1.0-Perl"]
-  revision 7
+  revision 10
   head "https://github.com/innotop/innotop.git"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "814f824e2b94f33a9f95ede0d2860025546d0469b9d8f3873930562255320a41"
-    sha256 cellar: :any,                 arm64_monterey: "5081f056aa6067f5e17d2eeab7c5e4717c8cb98965959b053f6c407e082bfd5c"
-    sha256 cellar: :any,                 ventura:        "512d63347d335f738c9e630385c36137c6b60067ccbaf442ce98f60378bc6cce"
-    sha256 cellar: :any,                 monterey:       "f200fa923567dcad52cccff4154412d13fd93dfc1efa635393f20b8fbee82dac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8457950e00284c337b9a9dcceef6e4a980748668b6819b0824b85ac272e8e95"
+    sha256 cellar: :any,                 arm64_sequoia: "a17005507753da73e8a13a96b378233d51dd27cc395eecbbf71fd7206bc40acf"
+    sha256 cellar: :any,                 arm64_sonoma:  "49218a88a5c4b0bc005ca1dd974b408551dacad3514bf86c99635f96da787393"
+    sha256 cellar: :any,                 arm64_ventura: "cf8f414fe93aa6ab94e1b8f56abec847fce802bd9774d64eae50a1fc4dc6e1e3"
+    sha256 cellar: :any,                 sonoma:        "df181fa1cebc759da9f19b1c67977842b505195301a3a37b82f745f8b7217753"
+    sha256 cellar: :any,                 ventura:       "4ab714cc8fea0aa2936abe48a665f2e66ce0516e8dfff847be69b105402db2aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c5983d9ca80837dcc86692cb8a9a17963543cd71ad3cb599887cbc47a600840e"
   end
 
-  depends_on "mysql-client@8.0"
+  depends_on "mysql-client"
   depends_on "openssl@3"
 
   uses_from_macos "perl"
+
+  on_macos do
+    on_intel do
+      depends_on "zstd"
+    end
+
+    depends_on "zlib"
+  end
 
   resource "Devel::CheckLib" do
     url "https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.16.tar.gz"
@@ -33,13 +40,15 @@ class Innotop < Formula
   end
 
   resource "DBD::mysql" do
-    url "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-5.002.tar.gz"
-    sha256 "8dbf87c2b5b8eaf79cd16507cc07597caaf4af49bc521ec51c0ea275e8332e25"
+    url "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-5.008.tar.gz"
+    sha256 "a2324566883b6538823c263ec8d7849b326414482a108e7650edc0bed55bcd89"
   end
 
-  resource "TermReadKey" do
-    url "https://cpan.metacpan.org/authors/id/J/JS/JSTOWE/TermReadKey-2.38.tar.gz"
-    sha256 "5a645878dc570ac33661581fbb090ff24ebce17d43ea53fd22e105a856a47290"
+  resource "Term::ReadKey" do
+    on_linux do
+      url "https://cpan.metacpan.org/authors/id/J/JS/JSTOWE/TermReadKey-2.38.tar.gz"
+      sha256 "5a645878dc570ac33661581fbb090ff24ebce17d43ea53fd22e105a856a47290"
+    end
   end
 
   def install
@@ -47,11 +56,6 @@ class Innotop < Formula
     resources.each do |r|
       r.stage do
         system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-        # Work around restriction on 10.15+ where .bundle files cannot be loaded
-        # from a relative path -- while in the middle of our build we need to
-        # refer to them by their full path.  Workaround adapted from:
-        #   https://github.com/fink/fink-distributions/issues/461#issuecomment-563331868
-        inreplace "Makefile", "blib/", "$(shell pwd)/blib/" if OS.mac? && r.name == "TermReadKey"
         system "make", "install"
       end
     end

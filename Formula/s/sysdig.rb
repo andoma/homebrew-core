@@ -2,17 +2,17 @@ class Sysdig < Formula
   desc "System-level exploration and troubleshooting tool"
   homepage "https://sysdig.com/"
   license "Apache-2.0"
-  revision 1
+  revision 8
 
   stable do
-    url "https://github.com/draios/sysdig/archive/refs/tags/0.35.2.tar.gz"
-    sha256 "9a9246c428964b5ce67941c0c7055044a6e590735f78d17d89c175c319b02a9f"
+    url "https://github.com/draios/sysdig/archive/refs/tags/0.38.1.tar.gz"
+    sha256 "68085ea118a4209dbde8f1b75584f9f84610b5856e507ffb0703d8add6331132"
 
-    # Update to value of FALCOSECURITY_LIBS_VERSION found in
-    # https://github.com/draios/sysdig/blob/#{version}/cmake/modules/falcosecurity-libs.cmake
+    # Update to value of FALCOSECURITY_LIBS_VERSION with
+    # VERSION=#{version} && curl -fsSL https://raw.githubusercontent.com/draios/sysdig/$VERSION/cmake/modules/falcosecurity-libs.cmake | grep -o 'set(FALCOSECURITY_LIBS_VERSION "[0-9.]*")' | awk -F'"' '{print $2}'
     resource "falcosecurity-libs" do
-      url "https://github.com/falcosecurity/libs/archive/refs/tags/0.14.2.tar.gz"
-      sha256 "b4ae7bbf3ad031deee4a808145f9fd64b71c537406cc5a92f512823b2e52cdd5"
+      url "https://github.com/falcosecurity/libs/archive/refs/tags/0.17.2.tar.gz"
+      sha256 "5c4f0c987272b7d5236f6ab2bbe3906ffdaf76b59817b63cf90cc8c387ab5b15"
     end
   end
 
@@ -22,13 +22,12 @@ class Sysdig < Formula
   end
 
   bottle do
-    sha256                               arm64_sonoma:   "1c5577677aa68a25c6fafdadafc0917c54285e7d665747af96ee56083a8138bd"
-    sha256                               arm64_ventura:  "ac0496564af42b2183f121cc9c4c2b3ca701433758699a300c79ffd6fcec92a9"
-    sha256                               arm64_monterey: "7cd1cac8ead46c3f15e71bf570f8d765fe1d63ff21dfae2a7bb061e02bb22e4b"
-    sha256                               sonoma:         "5132a18568f15b114c024b1becae41857a049586b0a57888b374cde57742b925"
-    sha256                               ventura:        "d3b42607f14ce7b5e2b0a54f2493ef5a931d8d30370df40968d1d9ec8c61447e"
-    sha256                               monterey:       "17c3bfbd69d6d96d9c322100f23d71cf018d2704ead5b675be9efdd59dbade94"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3101ef69bcd2501412f77037480c2d20704fdd01f89d5e7d2db47c7dc7459482"
+    sha256                               arm64_sequoia: "73d8001f1501c3dbf721bb7cf6931c0b8c0ae03af9fdc8462ae38a50e3dbc139"
+    sha256                               arm64_sonoma:  "c495becf5ad90d218c6fe6ee520c7a64ee3b76a16c8c0fabd998f14ff18eab20"
+    sha256                               arm64_ventura: "9642fe14b6b62001688abaedeac9d81fb427e8b4f36695e65a94339c949484a4"
+    sha256                               sonoma:        "bb58356975a7a7adc3fa1a82a7fb1a02b0198919e7befcc4168f36c826916216"
+    sha256                               ventura:       "f2b7d2aff2a4dd129c6a47564ad7c606b2dc4bcc9b9dbc2f9f2e0a92799aaf64"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e8c690d5882a584d8dc76f5409eef1208a1dc74bea9391924cec7757f4bf6efe"
   end
 
   head do
@@ -42,16 +41,15 @@ class Sysdig < Formula
   depends_on "cmake" => :build
   depends_on "nlohmann-json" => :build
   depends_on "valijson" => :build
-  depends_on "c-ares"
   depends_on "jsoncpp"
   depends_on "luajit"
+  depends_on "ncurses" # for `newterm` function
   depends_on "re2"
   depends_on "tbb"
   depends_on "uthash"
   depends_on "yaml-cpp"
 
   uses_from_macos "curl"
-  uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
   on_linux do
@@ -84,7 +82,6 @@ class Sysdig < Formula
     args = %W[
       -DSYSDIG_VERSION=#{version}
       -DUSE_BUNDLED_DEPS=OFF
-      -DUSE_BUNDLED_TINYDIR=ON
       -DCREATE_TEST_TARGETS=OFF
       -DBUILD_LIBSCAP_EXAMPLES=OFF
       -DDIR_ETC=#{etc}
@@ -96,7 +93,7 @@ class Sysdig < Formula
       args << "-DUSE_BUNDLED_#{dep}=OFF"
     end
 
-    args << "-DBUILD_DRIVER=OFF" if OS.linux?
+    args += ["-DBUILD_DRIVER=OFF", "-DBUILD_LIBSCAP_MODERN_BPF=OFF"] if OS.linux?
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"

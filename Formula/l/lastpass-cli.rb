@@ -1,19 +1,20 @@
 class LastpassCli < Formula
   desc "LastPass command-line interface tool"
   homepage "https://github.com/lastpass/lastpass-cli"
-  url "https://github.com/lastpass/lastpass-cli/releases/download/v1.3.7/lastpass-cli-1.3.7.tar.gz"
-  sha256 "448a53960602164456bbc9156d017540a1dac989a8cab7bc6a2a9781b52d47cb"
+  url "https://github.com/lastpass/lastpass-cli/releases/download/v1.6.0/lastpass-cli-1.6.0.tar.gz"
+  sha256 "9d52616fc1065eb7122cd9b43a31c4155eed22c3ef9d2806dbb3cb49e9d38859"
   license "GPL-2.0-or-later" => { with: "openvpn-openssl-exception" }
   head "https://github.com/lastpass/lastpass-cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "177e2d87a9c1d179486a0d45e8204003239d854ecc4c23ca803dd08cc3278cce"
-    sha256 cellar: :any,                 arm64_ventura:  "1ae5e09672e1850485f83452599f7804b23d3733d24c69ae90bc58e5024f25bd"
-    sha256 cellar: :any,                 arm64_monterey: "b60409de408e4b86dbe7c4a8a0fcc7b40f5784d762967daa1f8671398882e682"
-    sha256 cellar: :any,                 sonoma:         "ac76e8a2f4c13959161f1d029cbbaad28d8916352e7fb482e29d1d0c5e66731c"
-    sha256 cellar: :any,                 ventura:        "c5af272e2b934e1525b69b6861bbe6cc0f38e39783ab3adc77fbd61c68dab2a0"
-    sha256 cellar: :any,                 monterey:       "11048aff621bc79a0912f0487b531cdbe7bd8398ccbb9e8d22bac81421a37993"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ff94855f3e97861d4e55e501220a39a23649570a274f6ada6a10d8a4e8df8b97"
+    sha256 cellar: :any,                 arm64_sequoia:  "668ecd05d52f6f783a4731f5c999d3315e85e5534982c2a66574494cb52cb39a"
+    sha256 cellar: :any,                 arm64_sonoma:   "ed7d74c933f0027faccadcbf6306381912d6f0d43898a0728619e567e8df5467"
+    sha256 cellar: :any,                 arm64_ventura:  "e7feee38ad111909c95ad5da1f3b0574755564aab688ece5f6fe7f250b9f3537"
+    sha256 cellar: :any,                 arm64_monterey: "a0fddec6c0c16bbbaf1d3afdd6accda370daebf141dea87290f89a8fba8331e8"
+    sha256 cellar: :any,                 sonoma:         "c68a69722cc6a4cb15f250c69f482d8edcfa055877fec4b092c331b398cc9535"
+    sha256 cellar: :any,                 ventura:        "75ea985edf8019726ca1fc4a4bf2f548010757d1a903335f3839dbe6b92fa83b"
+    sha256 cellar: :any,                 monterey:       "fd4dc9735a358b864591435f1a5a396327076def887f7e619d73efcad6c36934"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f18215620449def4005943a5e2708552f13d8eb16a7da57f89a3c3c178e295ae"
   end
 
   depends_on "asciidoc" => :build
@@ -24,6 +25,7 @@ class LastpassCli < Formula
   depends_on "pinentry"
 
   uses_from_macos "curl"
+  uses_from_macos "libxml2"
   uses_from_macos "libxslt"
 
   # Avoid crashes on Mojave's version of libcurl (https://github.com/lastpass/lastpass-cli/issues/427)

@@ -1,8 +1,8 @@
 class PythonGdbmAT311 < Formula
   desc "Python interface to gdbm"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.11.8/Python-3.11.8.tgz"
-  sha256 "d3019a613b9e8761d260d9ebe3bd4df63976de30464e5c0189566e1ae3f61889"
+  url "https://www.python.org/ftp/python/3.11.10/Python-3.11.10.tgz"
+  sha256 "92f2faf242681bfa406d53a51e17d42c5373affe23a130cd9697e132ef574706"
   license "Python-2.0"
 
   livecheck do
@@ -10,13 +10,14 @@ class PythonGdbmAT311 < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "f8287ffa342b92ea9ba18b206b4950c4bf5234b6f345259526295addaca8f086"
-    sha256 cellar: :any, arm64_ventura:  "c2b069932884c09a82c9964c3da8743ae177fef989ebfc073d9cc655a144b2fd"
-    sha256 cellar: :any, arm64_monterey: "94673d8cfd75ca1c184cb2ed0114eb4313f1c86012a21c21fe3a3c4b605b9f56"
-    sha256 cellar: :any, sonoma:         "b3f2964243f0e2a0bc2cb57d3083cf75e754793ab4481dc7cb8c249dead8836f"
-    sha256 cellar: :any, ventura:        "3aafc6e1fdd6ed30348cf563b2d541d83a0cc73ad592e4744f3db66d51bd55af"
-    sha256 cellar: :any, monterey:       "37f7b4aa5d78cb775e9c0b43f51cb381ebe9afabde416665cfc514e9633bacb5"
-    sha256               x86_64_linux:   "ced434dba60a180105b4a15efc3bcb67cf7d92c05839294642cb725e4b5b85c5"
+    sha256 cellar: :any, arm64_sequoia:  "69cbac9b6954ed3697c69085b74a3e2a26b19fbad299dd7f463551231fc900d6"
+    sha256 cellar: :any, arm64_sonoma:   "e702b324e1516c17437cd2fe6d71a1f882da03ad6ba3370378a44bd349a19706"
+    sha256 cellar: :any, arm64_ventura:  "44098fe25d1c31186275fe2e96f86092da83422e9e222dfdcbbbff30b368e610"
+    sha256 cellar: :any, arm64_monterey: "04cc82afa2b45711ed0d041dc9784452b1df22d808559efdaf909435f53a1184"
+    sha256 cellar: :any, sonoma:         "7cd5c4898592ef20f06d5344f33336b465bbd097baeb0b88b6deb6cebd370423"
+    sha256 cellar: :any, ventura:        "edf3dad5a2a29f7bf6469f2f7c8b81f4f4516f0bbfa8c33134ae37ba4725781d"
+    sha256 cellar: :any, monterey:       "fc3dfc63222daf8e36b266eae108ad934698c1d95200df9d80416135bfaff191"
+    sha256               x86_64_linux:   "f90f71238d9d5a0a68e5d4305ec94d2f23287e0e2634ce6bd4509ed21f96052c"
   end
 
   depends_on "gdbm"
@@ -42,9 +43,8 @@ class PythonGdbmAT311 < Formula
               ]
         )
       EOS
-      system python3, *Language::Python.setup_install_args(libexec, python3),
-                      "--install-lib=#{libexec}"
-      rm_r libexec.glob("*.egg-info")
+      system python3, "-m", "pip", "install", *std_pip_args(prefix: false), "--target=#{libexec}", "."
+      rm_r libexec.glob("*.dist-info")
     end
   end
 

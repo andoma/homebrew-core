@@ -7,6 +7,7 @@ class Pyyaml < Formula
   revision 1
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "87a238bf1e44a97f54755f0e95ba11860884b186678d3ce163db3034b7b2d7cc"
     sha256 cellar: :any,                 arm64_sonoma:   "b538bcab64b4ab3f6351c219cff42e2d163201efcaa272e4ee7e58783ffb3ce6"
     sha256 cellar: :any,                 arm64_ventura:  "eb0cb94ff9dc6ac7926c1ee71ccdc42dc844ad3ab949b9105456cf131c25027d"
     sha256 cellar: :any,                 arm64_monterey: "d87fbc05ae74fc9f2c882c5047f6f9587bd782165776a2132ab26fd3fa11dab7"
@@ -16,8 +17,8 @@ class Pyyaml < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d53f5c35de430f055c83fdbb1e857b3423cbea9c66523f929cb525876ef55fae"
   end
 
-  depends_on "cython" => :build
-  depends_on "python-setuptools" => :build
+  disable! date: "2024-10-06", because: "does not meet homebrew/core's requirements for Python library formulae"
+
   depends_on "python@3.11" => [:build, :test]
   depends_on "python@3.12" => [:build, :test]
   depends_on "libyaml"
@@ -29,11 +30,9 @@ class Pyyaml < Formula
   end
 
   def install
-    cythonize = Formula["cython"].bin/"cythonize"
-    system cythonize, "yaml/_yaml.pyx"
     pythons.each do |python|
-      python_exe = python.opt_libexec/"bin/python"
-      system python_exe, "-m", "pip", "install", *std_pip_args, "."
+      python3 = python.opt_libexec/"bin/python"
+      system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
     end
   end
 
@@ -45,6 +44,11 @@ class Pyyaml < Formula
     <<~EOS
       This formula provides the `yaml` module for Python #{python_versions}.
       If you need `yaml` for a different version of Python, use pip.
+
+      Additional details on upcoming formula removal are available at:
+      * https://github.com/Homebrew/homebrew-core/issues/157500
+      * https://docs.brew.sh/Python-for-Formula-Authors#libraries
+      * https://docs.brew.sh/Homebrew-and-Python#pep-668-python312-and-virtual-environments
     EOS
   end
 

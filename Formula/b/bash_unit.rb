@@ -1,12 +1,12 @@
 class BashUnit < Formula
   desc "Bash unit testing enterprise edition framework for professionals"
   homepage "https://github.com/pgrange/bash_unit"
-  url "https://github.com/pgrange/bash_unit/archive/refs/tags/v2.2.0.tar.gz"
-  sha256 "c601ec2bcf3465bd46c15ea32674062c991e7a53975582dba4a51c805d94b054"
+  url "https://github.com/pgrange/bash_unit/archive/refs/tags/v2.3.1.tar.gz"
+  sha256 "30aefc0a75196000680f0668b495f3f98c568eb06d9187eab1e9b2e07237802c"
   license "GPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "8a2fa11fc5dfba5570709f597c9f3fcaac5189592fee2cd88c8d0e8696de10e4"
+    sha256 cellar: :any_skip_relocation, all: "34176de04475a95302410fbb0d9deb4078f034bbef39b17b2fe16c1ce48ffa35"
   end
 
   uses_from_macos "bc" => :test

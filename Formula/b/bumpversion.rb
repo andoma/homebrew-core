@@ -1,4 +1,6 @@
 class Bumpversion < Formula
+  include Language::Python::Virtualenv
+
   desc "Increase version numbers with SemVer terms"
   homepage "https://pypi.python.org/pypi/bumpversion"
   # maintained fork for the project
@@ -9,25 +11,19 @@ class Bumpversion < Formula
   revision 1
 
   bottle do
-    rebuild 3
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8074afa174f368b16b2fd1ad69dbcb6e2638ab933a164141437c2b55a173312e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c7ac3256bed2acde218fb3b3140ff2e8b44b41c0857c74dcdacb93a5f07aa058"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4a38fec8fdbccea9fab6a2006c427b31119a0f9371f479d8bce52f31c94e7464"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6547242b034e02eb54d814c4f4a94bc77aea66fbe6c8d0c4d188d6eee7ee1fea"
-    sha256 cellar: :any_skip_relocation, ventura:        "bd90b97e2a19061e7bcf0bdfe209e68fb57dfb57f6151b5451a7c1eb74e25915"
-    sha256 cellar: :any_skip_relocation, monterey:       "79bb3d11f64263e84fb45010f7a489bcd1cebd4330c861ca8c1bf87eb5534005"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c32d99fe94c3b0433a2e2c27562fac12e9d2cf3809b329e0c285898366277acf"
+    rebuild 6
+    sha256 cellar: :any_skip_relocation, all: "166ec2e234ca2b7970dac12809f1eb9642c8647cd030169049b866c7d03f19ee"
   end
 
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.12"
+  # Original and fork are both unmaintained:
+  # https://github.com/peritus/bumpversion/commit/cc3c8cfd77380ef50eeac740efe627509a248101
+  # https://github.com/c4urself/bump2version/commit/c3a1995b35335da6fa7932e4bac089992c947bba
+  deprecate! date: "2024-09-08", because: :unmaintained
 
-  def python3
-    "python3.12"
-  end
+  depends_on "python@3.13"
 
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
   end
 
   test do

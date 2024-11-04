@@ -1,24 +1,25 @@
 class Py3cairo < Formula
   desc "Python 3 bindings for the Cairo graphics library"
   homepage "https://cairographics.org/pycairo/"
-  url "https://github.com/pygobject/pycairo/releases/download/v1.26.0/pycairo-1.26.0.tar.gz"
-  sha256 "2dddd0a874fbddb21e14acd9b955881ee1dc6e63b9c549a192d613a907f9cbeb"
+  url "https://github.com/pygobject/pycairo/releases/download/v1.27.0/pycairo-1.27.0.tar.gz"
+  sha256 "5cb21e7a00a2afcafea7f14390235be33497a2cce53a98a19389492a60628430"
   license any_of: ["LGPL-2.1-only", "MPL-1.1"]
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "38d16fa2096fb056dfbf77cbcaa283cfb640e089c069335898d41d68eb829d86"
-    sha256 cellar: :any,                 arm64_ventura:  "4b2cbfaf883d0ff081c427c594684f6451084662b37313db7142592d29375f33"
-    sha256 cellar: :any,                 arm64_monterey: "0e371f6adb6355305fb80e9e45964d15b0c5d0fb2af71ee648edf8487f7d9816"
-    sha256 cellar: :any,                 sonoma:         "5c4c36eb048b8abf0875249a087e8464341c6ee8201baf42b3566e0aea6e8f3e"
-    sha256 cellar: :any,                 ventura:        "cc8d57e4c6337816342b4f3f452decf1a3199dd94419b1da1576a5b863bdda2f"
-    sha256 cellar: :any,                 monterey:       "48856d83d62ccac512e9f9f64a8e5d38b436705cca9bc57245bc658067ca6699"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "17fff13682d9d912842c200261b0e1a58af1031e4fe5e1009d30f1adf1f99d37"
+    sha256 cellar: :any,                 arm64_sequoia: "83698156a1147d1961fa70a919496370251ab9bc57a18d813e932b13d180fc07"
+    sha256 cellar: :any,                 arm64_sonoma:  "6c550cef7d08a8051c8e33cf2882802e1636331437e401309889d78a9671d9a8"
+    sha256 cellar: :any,                 arm64_ventura: "8dfdae3387567f0970c43944f5867a7ebcf21529cf5ee7c87966166d899acd64"
+    sha256 cellar: :any,                 sonoma:        "8e74bae3953954ec52fcd20290ee8c10fb24dac1ca8d7a5a58c54fe41935fe76"
+    sha256 cellar: :any,                 ventura:       "2fcfb95901d05fc9c8726102a29eb4f280633e07fbda6bc684eb5268a7af2bfb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "284d541089d7afbb8b2270c87e51d5f2bf904ff821a4e2c503bf8692f6bad00d"
   end
 
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.11" => [:build, :test]
   depends_on "python@3.12" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
   depends_on "cairo"
 
   def pythons
@@ -27,9 +28,20 @@ class Py3cairo < Formula
         .map { |f| f.opt_libexec/"bin/python" }
   end
 
+  def site_packages(python)
+    prefix/Language::Python.site_packages(python)
+  end
+
   def install
     pythons.each do |python|
-      system python, "-m", "pip", "install", *std_pip_args, "."
+      python_version = Language::Python.major_minor_version(python)
+      builddir = "build#{python_version}"
+      system "meson", "setup", builddir, "-Dpython=#{python}",
+                                         "-Dpython.platlibdir=#{site_packages(python)}",
+                                         "-Dpython.purelibdir=#{site_packages(python)}",
+                                         *std_meson_args
+      system "meson", "compile", "-C", builddir
+      system "meson", "install", "-C", builddir
     end
   end
 

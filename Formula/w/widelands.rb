@@ -1,10 +1,10 @@
 class Widelands < Formula
   desc "Free real-time strategy game like Settlers II"
   homepage "https://www.widelands.org/"
-  url "https://github.com/widelands/widelands/archive/refs/tags/v1.1.tar.gz"
-  sha256 "6853fcf3daec9b66005691e5bcb00326634baf0985ad89a7e6511502612f6412"
+  url "https://github.com/widelands/widelands/archive/refs/tags/v1.2.tar.gz"
+  sha256 "c6bed3717c541276fbed8a33adce230a2637297588c719268fcb963e076210e2"
   license "GPL-2.0-or-later"
-  revision 1
+  revision 2
   version_scheme 1
 
   livecheck do
@@ -13,13 +13,12 @@ class Widelands < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "0ac47acf86b2646cc1f020c0a6c482481f78eb03aa5e8ef7ca1902ec245978a0"
-    sha256 arm64_ventura:  "3b0d1c2543c3c6d4529d7f44faabfb1ea2a95f173155962d3876c466e9a0a613"
-    sha256 arm64_monterey: "30ed1d2fe00dd4f45f66d101ff0be92c2c8f6306d8df50082b4fd4fc09ca222a"
-    sha256 sonoma:         "91a68cc33fece2d9213ac61e82ca72fab11873646fbe1fbe3108ce2861c16c9d"
-    sha256 ventura:        "4282349d1de5a74bb211fc363042f6e9f8ab37324b31dfb9393da19b8ac2d074"
-    sha256 monterey:       "ea2b0dcaaf82bb9c351246e6254ad28709b5a57cf0262f7464dcb5fddd659245"
-    sha256 x86_64_linux:   "676ce11d380bc21483c452409a2d8a7f9508393068a26263ef251e43d26b63e1"
+    sha256 arm64_sequoia: "ea622071da61757e744d812326cbc8b31a7a822f81090acc233ce28ba7c45684"
+    sha256 arm64_sonoma:  "2240e9f7aa02fa0d52cb15ccab35d09526b43b221d77870d96d11c2a8abdfd98"
+    sha256 arm64_ventura: "7098fe65d2ea70361f15f302bd7b2afe0307d6cc75fea5fc2eedd151eea61ce6"
+    sha256 sonoma:        "1fb275dfe64f2dedd8e92c5ae13383dab1b6b9ba9196f39a4a66833889332f60"
+    sha256 ventura:       "a3c929405dc321113ec2e9e459aa3c19b0ccc25ca61234c48c05888fca6caf78"
+    sha256 x86_64_linux:  "5188b857c4b567851bfc82ffc660662f66c925cd75a06b1442a1bdee02dfddfc"
   end
 
   depends_on "asio" => :build
@@ -27,8 +26,9 @@ class Widelands < Formula
   depends_on "doxygen" => :build
   depends_on "gettext" => :build
   depends_on "pkg-config" => :build
+
   depends_on "glew"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "libpng"
   depends_on "lua"
   depends_on "minizip"
@@ -42,6 +42,10 @@ class Widelands < Formula
 
   on_macos do
     depends_on "gettext"
+  end
+
+  on_linux do
+    depends_on "mesa"
   end
 
   def install

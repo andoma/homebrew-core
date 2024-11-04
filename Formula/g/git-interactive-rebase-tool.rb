@@ -1,8 +1,8 @@
 class GitInteractiveRebaseTool < Formula
   desc "Native sequence editor for Git interactive rebase"
   homepage "https://gitrebasetool.mitmaro.ca/"
-  url "https://github.com/MitMaro/git-interactive-rebase-tool/archive/refs/tags/2.3.0.tar.gz"
-  sha256 "4af63703b3504370ef298693abc5061fe5bf215536e6d45952afda33a92f8101"
+  url "https://github.com/MitMaro/git-interactive-rebase-tool/archive/refs/tags/2.4.1.tar.gz"
+  sha256 "0b1ba68a1ba1548f44209ce1228d17d6d5768d72ffa991909771df8e9d42d70d"
   license "GPL-3.0-or-later"
   revision 1
 
@@ -12,24 +12,34 @@ class GitInteractiveRebaseTool < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5ed399366f8adb76ce2f58488ccd962a8ef16447f6290b5f229f4c9dc3daf883"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3c2a767bc773ffcbc636fbd55af0aeaf23bd69b07111413161f2a574c5224cbb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "828c794f3ee0e7e402a83ce15a897327d9760cd78156a5cce665f1e545dd2020"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "529cdbf5aa5ddda0b1aeb19d09fc506e5d605167b12930ba24374b9543db8eab"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b6bd256d7ab001da82c749b08cbd793ed902d3ca8cb09f2e9665e27b3c619572"
-    sha256 cellar: :any_skip_relocation, ventura:        "9e609bed5b3c38e26f9b1c15f5ebd6d033f26cba28cf60462efd828ce6e27944"
-    sha256 cellar: :any_skip_relocation, monterey:       "4bae4961c755dd4995ac74a33099d9fd47b0ac24a25d0702959d6f4f953049d1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3c3252f9714a5b51fb5f7237087dd3e9a0029ab63fd03c0a1d3f6e41829356da"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "36d0dd310b6ed752543b98dc359f904606306099b719667099cfd6fe85eb84c4"
+    sha256 cellar: :any,                 arm64_sequoia:  "9db02f1036165ea5581b513a08f73988438cf04523585b2b6bba5b02568fe123"
+    sha256 cellar: :any,                 arm64_sonoma:   "fb5993c4312324326b25f1e2209b6fcbe88fc98352db69fdb07c0b5c63e42873"
+    sha256 cellar: :any,                 arm64_ventura:  "0bf45047f460751efed83d895546c79188af0933cba013160a8a0fe0cedb7b89"
+    sha256 cellar: :any,                 arm64_monterey: "72a6adb852a9d40a838a9136717148b2aaf1e70f832e5edc599d33f87fd77149"
+    sha256 cellar: :any,                 sonoma:         "fca7280d997fbac58b67ad6b55e627805353ec814fd0a23fa3883a699def7326"
+    sha256 cellar: :any,                 ventura:        "8f8ffe5ca81753b46ff1df663fe9219baa5a9e331d3abd29f91af0f97a077a95"
+    sha256 cellar: :any,                 monterey:       "8512328d56cf54e7f7c712b985b84ee6267df174eb45e514f8da300f312a0905"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f7aa1b32fbfe987e86fdd9aa2a914c14a041341b9a7ce781555b68ca325b2e31"
   end
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
+  depends_on "libgit2@1.7"
 
   uses_from_macos "zlib"
 
   def install
+    ENV["LIBGIT2_NO_VENDOR"] = "1"
+
     system "cargo", "install", *std_cargo_args
+  end
+
+  def check_binary_linkage(binary, library)
+    binary.dynamically_linked_libraries.any? do |dll|
+      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
+
+      File.realpath(dll) == File.realpath(library)
+    end
   end
 
   test do
@@ -57,5 +67,12 @@ class GitInteractiveRebaseTool < Formula
 
     assert_equal 0, $CHILD_STATUS.exitstatus
     assert_equal expected_git_rebase_todo, todo_file.read
+
+    [
+      Formula["libgit2@1.7"].opt_lib/shared_library("libgit2"),
+    ].each do |library|
+      assert check_binary_linkage(bin/"interactive-rebase-tool", library),
+             "No linkage with #{library.basename}! Cargo is likely using a vendored version."
+    end
   end
 end

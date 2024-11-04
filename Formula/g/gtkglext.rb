@@ -19,14 +19,26 @@ class Gtkglext < Formula
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "gtk+"
+  depends_on "pango"
+
+  on_macos do
+    depends_on "at-spi2-core"
+    depends_on "cairo"
+    depends_on "gdk-pixbuf"
+    depends_on "gettext"
+    depends_on "harfbuzz"
+  end
 
   on_linux do
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+
+    depends_on "libx11"
+    depends_on "mesa"
     depends_on "mesa-glu"
 
-    resource("pangox-compat") do
+    resource "pangox-compat" do
       url "https://gitlab.gnome.org/Archive/pangox-compat/-/archive/0.0.2/pangox-compat-0.0.2.tar.gz"
       sha256 "c8076b3d54d5088974dbb088a9d991686d7340f368beebaf437b78dfed6c5cd5"
 
@@ -105,7 +117,7 @@ class Gtkglext < Formula
       end
       ENV.append_path "PKG_CONFIG_PATH", libexec/"lib/pkgconfig"
 
-      system "autoreconf", "-fvi"
+      system "autoreconf", "--force", "--install", "--verbose"
     end
 
     args = *std_configure_args
@@ -121,14 +133,14 @@ class Gtkglext < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <gtk/gtkgl.h>
 
       int main(int argc, char *argv[]) {
         int version_check = GTKGLEXT_CHECK_VERSION(1, 2, 0);
         return 0;
       }
-    EOS
+    C
     atk = Formula["atk"]
     cairo = Formula["cairo"]
     fontconfig = Formula["fontconfig"]

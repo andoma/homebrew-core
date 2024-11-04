@@ -1,9 +1,10 @@
 class PopplerQt5 < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "https://poppler.freedesktop.org/"
-  url "https://poppler.freedesktop.org/poppler-24.02.0.tar.xz"
-  sha256 "19187a3fdd05f33e7d604c4799c183de5ca0118640c88b370ddcf3136343222e"
+  url "https://poppler.freedesktop.org/poppler-24.04.0.tar.xz"
+  sha256 "1e804ec565acf7126eb2e9bb3b56422ab2039f7e05863a5dfabdd1ffd1bb77a7"
   license "GPL-2.0-only"
+  revision 1
   head "https://gitlab.freedesktop.org/poppler/poppler.git", branch: "master"
 
   livecheck do
@@ -11,13 +12,14 @@ class PopplerQt5 < Formula
   end
 
   bottle do
-    sha256                               arm64_sonoma:   "79ee0758432e8e2b091ed51da0610666950ccd7e0fe08a26d20ed03d4d63ed80"
-    sha256                               arm64_ventura:  "e03edbc159f31c76dd0d0cdd44e38c671747247bb7e8f52dc4f11bb9250df8a0"
-    sha256                               arm64_monterey: "f6a64debabf7e90aa81efcfc71ca40f5f6570b3122aadfc241f16bf39e35ee4e"
-    sha256                               sonoma:         "d379b57b4396856323b456d8297f5801afe42ffabed61efd589dd6370fc2dd85"
-    sha256                               ventura:        "3cc3932d671faac18995b1821b22725d16cc8144fe087e8f81fbd95f8e4f70bb"
-    sha256                               monterey:       "4e3d1d9c0aa1656f6e93b22fe943ce26b428e1befac4613d250c9ed63d26bb62"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b0b514d2690f47cddf6ed04b1dd42c26f093d1211c58b72f688259b95067c143"
+    sha256 arm64_sequoia:  "8b5a420c83516ddfe6148a1b63b3016e1c6684a3ca7dc3599e8a639b8f2f7d09"
+    sha256 arm64_sonoma:   "68c70a13741b87792902219a6ba666354f4fdbbc7838a07f271ac77140d82fd1"
+    sha256 arm64_ventura:  "637369aae5fead971b1538a7a32d24f46fb9a44c63fb6125e97f2446e2e6f2f2"
+    sha256 arm64_monterey: "fcb94b326dd715acc439f3a152e14e50765d9a6867224f75f55c3ac2fdaf5c12"
+    sha256 sonoma:         "8787f6c0ba49344cdd34326076456192dbfc0dbd1e7644d6577a5b4cb13dd188"
+    sha256 ventura:        "ba9b7e9780e37c0c77fa370b981206c47a2d440055d065a16a0928b233fa93ec"
+    sha256 monterey:       "97e1ada0094dd0805b385f6698286f346740ae88b99cf526e6505e62c80bdb59"
+    sha256 x86_64_linux:   "1b22d0fd6dacf9bff211a3d31b265dc543be80ff8f7bd3860fed52ebaba508e9"
   end
 
   keg_only "it conflicts with poppler"
@@ -25,6 +27,7 @@ class PopplerQt5 < Formula
   depends_on "cmake" => :build
   depends_on "gobject-introspection" => :build
   depends_on "pkg-config" => :build
+
   depends_on "cairo"
   depends_on "fontconfig"
   depends_on "freetype"
@@ -35,12 +38,18 @@ class PopplerQt5 < Formula
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "little-cms2"
+  depends_on "nspr"
   depends_on "nss"
   depends_on "openjpeg"
   depends_on "qt@5"
 
   uses_from_macos "gperf" => :build
   uses_from_macos "curl"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "libassuan"
+  end
 
   fails_with gcc: "5"
 
@@ -78,6 +87,6 @@ class PopplerQt5 < Formula
   end
 
   test do
-    system "#{bin}/pdfinfo", test_fixtures("test.pdf")
+    system bin/"pdfinfo", test_fixtures("test.pdf")
   end
 end

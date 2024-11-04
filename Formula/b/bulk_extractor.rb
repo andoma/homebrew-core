@@ -1,9 +1,10 @@
 class BulkExtractor < Formula
   desc "Stream-based forensics tool"
   homepage "https://github.com/simsong/bulk_extractor/wiki"
-  url "https://github.com/simsong/bulk_extractor/releases/download/v2.1.0/bulk_extractor-2.1.0.tar.gz"
-  sha256 "2ac7911e6cec65be851a538ca2b4ba8a43c560d70449af5da6e593a865f26c9b"
+  url "https://github.com/simsong/bulk_extractor/releases/download/v2.1.1/bulk_extractor-2.1.1.tar.gz"
+  sha256 "0cd57c743581a66ea94d49edac2e89210c80a2a7cc90dd254d56940b3d41b7f7"
   license "MIT"
+  revision 1
 
   livecheck do
     url :stable
@@ -11,13 +12,14 @@ class BulkExtractor < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "3a03fe22ff79710a104941eefcb18257704bf6a9f98afea324abdefe06489ecd"
-    sha256 cellar: :any,                 arm64_ventura:  "de246efe3f4a68125092a3f4f34ad8e48ba3e6fb612cef75a595cd95dc60f8d3"
-    sha256 cellar: :any,                 arm64_monterey: "8f797364f0f97644189b9dae1b4c5d1947bad34b6d27dfc112614354d4537086"
-    sha256 cellar: :any,                 sonoma:         "dd366e75d1dedeb0e11b8f5800c6bdc4aada00fe207b0b871c9427e22d9b9250"
-    sha256 cellar: :any,                 ventura:        "18805a063897c5a2a95a48677793501c5c5a6f466cdcaeadaace5e74da4c19a5"
-    sha256 cellar: :any,                 monterey:       "605382f84f6e2e87630806347090c36650f8412334c8a096f9faf983e52f894c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "935f739de60f8b49d000e4d3336b4415430904b818da85915e36964e6963fb47"
+    sha256 cellar: :any,                 arm64_sequoia:  "1193b1587c9351fb7c3339252cc5962de2b0c7488cb03a77d16483227deafb49"
+    sha256 cellar: :any,                 arm64_sonoma:   "d076c3c6ce906ef9136700601f34b51f720d3fc50d96ad04b578dcafa041c4d9"
+    sha256 cellar: :any,                 arm64_ventura:  "90bd56b74f11074cc420af7df33a15435cd46071eabaad0c7c081b7a225b83ae"
+    sha256 cellar: :any,                 arm64_monterey: "2bc48e662bd411bdaf258a34e214b00b6ee80f60904c8d846472610b798cbe67"
+    sha256 cellar: :any,                 sonoma:         "fa9d38135e6b10cdfeec2a55a259a936ba7fb8468ec91ab952edef37d46fdec2"
+    sha256 cellar: :any,                 ventura:        "e0d758881ed2de967484c0ab5ddf5bf815af8beed5c7cb52b5d434b1e762ee18"
+    sha256 cellar: :any,                 monterey:       "c68a03087991b70830a1d0fe79fdb7886767841335aebbee7060d8faf6e7f7ce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ce9af040a2bc16c10f0752d4d78261753b076986d4b5a7ee420a8cca72b46cd1"
   end
 
   head do

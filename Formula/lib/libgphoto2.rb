@@ -11,6 +11,7 @@ class Libgphoto2 < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "3fb2e9bda06e7f94540e798c31fca1f06d8028039eb2e558e501e4e85e68402f"
     sha256 arm64_sonoma:   "a755497f42fd0a62182de3d1ba2956af248282fc6b3462e700b8f9a5713110a4"
     sha256 arm64_ventura:  "989c4ffad8b8da9e9e7748e83989601d098c124274d971871c2088f1b98f78cc"
     sha256 arm64_monterey: "f291bfec3c081315cc530beb04e7ff103f5d4fc2fcae93f5afa10da435f7402f"
@@ -31,31 +32,35 @@ class Libgphoto2 < Formula
   end
 
   depends_on "pkg-config" => :build
+
   depends_on "gd"
   depends_on "jpeg-turbo"
   depends_on "libexif"
   depends_on "libtool"
+  depends_on "libusb"
   depends_on "libusb-compat"
 
   uses_from_macos "curl"
   uses_from_macos "libxml2"
 
+  on_macos do
+    depends_on "gettext"
+  end
+
   def install
     system "autoreconf", "--force", "--install", "--verbose" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <gphoto2/gphoto2-camera.h>
       int main(void) {
         Camera *camera;
         return gp_camera_new(&camera);
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lgphoto2", "-o", "test"
     system "./test"
   end

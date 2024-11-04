@@ -1,8 +1,8 @@
 class HelmDocs < Formula
   desc "Tool for automatically generating markdown documentation for helm charts"
   homepage "https://github.com/norwoodj/helm-docs"
-  url "https://github.com/norwoodj/helm-docs/archive/refs/tags/v1.13.0.tar.gz"
-  sha256 "628f1f9dac58eebba1f960863cdbf8045c9ec8fa740e32c7c15ac5edbf9963eb"
+  url "https://github.com/norwoodj/helm-docs/archive/refs/tags/v1.14.2.tar.gz"
+  sha256 "88d1b3401220b2032cd27974264d2dc0da8f9e7b67a8a929a0848505c4e4a0ae"
   license "GPL-3.0-or-later"
 
   # This repository originally used a date-based version format like `19.0110`
@@ -15,22 +15,25 @@ class HelmDocs < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ad7301557295120b0621fe1d793b3ba614ba3e071136825f778aee2de3566c0a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "86ce0634b7771a373b13b3689e57f4773e36eff3cda2b75722f4bbe87c6fd6a6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a1885650c44ef1074f9d628c339f8576d972c221e8fe862b68ba0d7b2488b4bc"
-    sha256 cellar: :any_skip_relocation, sonoma:         "4c6fb59ce300d03cdc784a0cf93ed4818a4c094bb3a65e9a674721267a757183"
-    sha256 cellar: :any_skip_relocation, ventura:        "7d1dd0aeec2a3ce54474511c54bc42575dfedf25f9c6df7d6b1501f75640235d"
-    sha256 cellar: :any_skip_relocation, monterey:       "f75de895c5f0c027dda30dcf15f09ed21dc0fe794268588a1dffa223aae57049"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a893bb6958caad01d3b609a621a901e1da2a6e9521f70f57104eaad64856bbf8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "91c39e8d994bccf86a38142464dad370c4f90efd76f0708a44ad179a8616c192"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "83ae9a4b26f989027ccdb15b93bdf17cab1d501f1fe593f1c803399406b6be4a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cf56a0615e759c2723e4c01c05655e9c830f652cbaa0a6b97f72ede69a8d53a5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4abcec8420c006dd7ecb2e120b1784a2ba037ca11f208461dd15daeba9d4ba80"
+    sha256 cellar: :any_skip_relocation, sonoma:         "75d1650efc32f8b5539301435719ddd40d32ca7e619e497f0baa5ba374ee6b7f"
+    sha256 cellar: :any_skip_relocation, ventura:        "1f25d968c9cd5ae22a5e2cc08f5ff15361fc990b9a3aa618dfb9c3180109b2f8"
+    sha256 cellar: :any_skip_relocation, monterey:       "8967c19d3cea006bd846275c7be9e97e289dd7fff3763e763c50ec20c410ce73"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "78df0661852c388c2245a14aeeaf3442206a33ac08b1b7b74f233c72ec5d0cc5"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/helm-docs"
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}"), "./cmd/helm-docs"
   end
 
   test do
+    assert_match version.to_s, shell_output("#{bin}/helm-docs --version")
+
     (testpath/"Chart.yaml").write <<~EOS
       apiVersion: v2
       name: test-app

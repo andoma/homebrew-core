@@ -3,8 +3,8 @@
 class Mercurial < Formula
   desc "Scalable distributed version control system"
   homepage "https://mercurial-scm.org/"
-  url "https://www.mercurial-scm.org/release/mercurial-6.6.3.tar.gz"
-  sha256 "f75d6a4a75823a1b7d713a4967eca2f596f466e58fc6bc06d72642932fd7e307"
+  url "https://www.mercurial-scm.org/release/mercurial-6.8.2.tar.gz"
+  sha256 "aac618106768ad1ed976c3fe7c8659fec99e6f0b5337ea6ea554fae8490c4f4e"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -13,33 +13,19 @@ class Mercurial < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "d92c862d6b5612d078a3ef2fefcd1ecdcb9c9a100f902518bf699c6d8b033e8f"
-    sha256 arm64_ventura:  "2477e57e8fbb4d4fd0f409c31a6b80b6663dcc100888b49b7d7c5269cfbcd2c1"
-    sha256 arm64_monterey: "da31970b030c26477431980b3085c18acd42225c7a9744446bff123032e5e82d"
-    sha256 sonoma:         "a0c9620e11ccdd92da233962c90a0fef655eb80b27f687b13d97a582a9a78114"
-    sha256 ventura:        "33b88488d1e7c6fc87bc3417b8370b0b0d9926127754766ee2ebfb0bad5a4c01"
-    sha256 monterey:       "3e6efb9d181302ac99430178ef1539e0b477d99c50b6247254d60f9840c83168"
-    sha256 x86_64_linux:   "8836c9c39893f239d97fbf3b1894a4afa4a2a5622a81e9109e4e89f8fcb94ffc"
+    sha256 arm64_sequoia: "e7ab83b1fa5f9b85f8d7ab985e00e8aec959c61d19395e4e2663761a37589dca"
+    sha256 arm64_sonoma:  "c4decc0e943ab7a497d1906a985556d64e276a2b9116614e78c9dc4edd939efc"
+    sha256 arm64_ventura: "51d0aa6639c255906e37797b5a28466ee3709dc840e7e1fd06786cbdb9de7a0c"
+    sha256 sonoma:        "aaddb3929f17c083b4df9e6c1195791a49ee09ec7cd518abf675967d5bd61323"
+    sha256 ventura:       "6791ce7dcbc978b44d592c20ee722103ca8e9a9a6c8e81f4e308fd52fefc55d3"
+    sha256 x86_64_linux:  "06437df4e61c669885759009f801947886f92775b4600a70d66d7d41cb26455b"
   end
 
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   def install
-    ENV["HGPYTHON3"] = "1"
-    ENV["PYTHON"] = python3 = which("python3.12")
-
-    # Homebrew's python "prefix scheme" patch tries to install into
-    # HOMEBREW_PREFIX/{lib,bin}, which fails due to sandbox. As workaround,
-    # manually set the installation paths to behave like prior python versions.
-    setup_install_args = %W[
-      --install-lib="#{prefix/Language::Python.site_packages(python3)}"
-      --install-scripts="#{bin}"
-      --install-data="#{prefix}"
-    ]
-    inreplace "Makefile", / setup\.py .* --prefix="\$\(PREFIX\)"/, "\\0 #{setup_install_args.join(" ")}"
-
-    system "make", "install-bin", "PREFIX=#{prefix}"
+    python3 = "python3.13"
+    system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
 
     # Install chg (see https://www.mercurial-scm.org/wiki/CHg)
     system "make", "-C", "contrib/chg", "install", "PREFIX=#{prefix}", "HGPATH=#{bin}/hg", "HG=#{bin}/hg"
@@ -78,6 +64,12 @@ class Mercurial < Formula
   end
 
   test do
-    system "#{bin}/hg", "init"
+    touch "foobar"
+    system bin/"hg", "init"
+    system bin/"hg", "add", "foobar"
+    system bin/"hg", "--config", "ui.username=brew", "commit", "-m", "initial commit"
+    assert_equal "foobar\n", shell_output("#{bin}/hg locate")
+    # Check for chg
+    assert_match "initial commit", shell_output("#{bin}/chg log")
   end
 end

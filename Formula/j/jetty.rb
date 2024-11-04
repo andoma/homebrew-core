@@ -1,24 +1,25 @@
 class Jetty < Formula
   desc "Java servlet engine and webserver"
-  homepage "https://eclipse.dev/jetty/"
-  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-distribution/9.4.54.v20240208/jetty-distribution-9.4.54.v20240208.tar.gz"
-  version "9.4.54.v20240208"
-  sha256 "e20c39354a50b16ce420343be2e517dca7c0a4de6b1f411c670a9c81002c64fc"
+  homepage "https://jetty.org/"
+  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-distribution/9.4.56.v20240826/jetty-distribution-9.4.56.v20240826.tar.gz"
+  version "9.4.56.v20240826"
+  sha256 "02f5f9c4f6b4be0e5b2640d4b5a21e2838d68143ef96c540c2ba39885b60cb62"
   license any_of: ["Apache-2.0", "EPL-1.0"]
 
   livecheck do
-    url "https://eclipse.dev/jetty/download.php"
-    regex(/href=.*?jetty-distribution[._-]v?(\d+(?:\.\d+)+(?:\.v\d+)?)\.t/i)
+    url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-distribution/maven-metadata.xml"
+    regex(%r{<version>v?(\d+(?:\.\d+)+(?:[._-]v?\d+)?)</version>}i)
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "60534ac75b821582e12ab02eb5008e73c81b94d9e9ed2fc68a3a15bc0759ed15"
-    sha256 cellar: :any,                 arm64_ventura:  "af3123bf93d35bf7b104e48a296176d2d775ba9f817d370cd6420c3d1ff6c47d"
-    sha256 cellar: :any,                 arm64_monterey: "fbf393116cbc43729c0cc7a1fe6bbf116e6ce643523d17209a95e325cd81f95c"
-    sha256 cellar: :any,                 sonoma:         "0f7fb878cab950aa98ba6ab80517da3be913c84ca6a7d145be47c15b8a8b2ec5"
-    sha256 cellar: :any,                 ventura:        "0f7fb878cab950aa98ba6ab80517da3be913c84ca6a7d145be47c15b8a8b2ec5"
-    sha256 cellar: :any,                 monterey:       "0f7fb878cab950aa98ba6ab80517da3be913c84ca6a7d145be47c15b8a8b2ec5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1c1056f3b84424f43443bcb942971c45655a1dae913b869cbd16e1477574a219"
+    sha256 cellar: :any,                 arm64_sequoia:  "ee8fc6c28fc7bc7ac22aa43cedcab32819748f6310ed872f9f13fb10c2ca25ef"
+    sha256 cellar: :any,                 arm64_sonoma:   "5622e26be94cf6fbf2fa9aa661be7b61fb4f14b7155da56e4d2fe383b42a814c"
+    sha256 cellar: :any,                 arm64_ventura:  "ed58636aa91cdb805775655aed8774586501c8812bf3b1179168ede42d7a1daa"
+    sha256 cellar: :any,                 arm64_monterey: "d09f9bad8c3058f27ea082fe55c54b7fb10d1b1002736403196b2966257d683a"
+    sha256 cellar: :any,                 sonoma:         "dbe2190466ae89ba0a9f5941d97b0c55daac1f3e8d813b7058c95464d3a74608"
+    sha256 cellar: :any,                 ventura:        "dbe2190466ae89ba0a9f5941d97b0c55daac1f3e8d813b7058c95464d3a74608"
+    sha256 cellar: :any,                 monterey:       "dbe2190466ae89ba0a9f5941d97b0c55daac1f3e8d813b7058c95464d3a74608"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b083679cf60b33f9dfadb7aa8116413ea10660c726afaadaef3300269885d03b"
   end
 
   depends_on "openjdk"

@@ -1,8 +1,8 @@
 class PythonAT312 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.12.2/Python-3.12.2.tgz"
-  sha256 "a7c4f6a9dc423d8c328003254ab0c9338b83037bd787d680826a5bf84308116e"
+  url "https://www.python.org/ftp/python/3.12.7/Python-3.12.7.tgz"
+  sha256 "73ac8fe780227bf371add8373c3079f42a0dc62deff8d612cd15a618082ab623"
   license "Python-2.0"
   revision 1
 
@@ -12,13 +12,12 @@ class PythonAT312 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "4603d3f3277f2d25fec8e813543a863ceabd90066578b14d530d2f7f59e345e0"
-    sha256 arm64_ventura:  "312729d7f0c6f95b573cbab483db01aaf2ca577392405d0e0b5ea6717ebb916a"
-    sha256 arm64_monterey: "d5f921fba6c83ddda6cf887ed040106dc7647a9b2aed035a1079d58c7c7c5f62"
-    sha256 sonoma:         "99fcd3eb3dff129c97ae0e4afb8fb90e39fa8595ea61b19854020cd4561e1e92"
-    sha256 ventura:        "2b8cefc95067f3232cbf8b8c0c9df11b040923e12e0308f5102f237f82372710"
-    sha256 monterey:       "20655faca163d3ca0c567a4acb3ccb22388ca68dc3adff598a63525221eadd23"
-    sha256 x86_64_linux:   "08fc9fc751eeb9cae20a3797ff26c7baecf2001129ea590c7cefd437e0a1f1cd"
+    sha256 arm64_sequoia: "c1488710f182d429f03b04294806abe8f6557ec13fe9f2c2560d46738b050dfa"
+    sha256 arm64_sonoma:  "aee7d14e059df53e92482d3ea9068de1f62283668a793d861630fd714220364d"
+    sha256 arm64_ventura: "45b2608e22222fb0437ce940e1ac5d6d6df0c1da24090c8a8f89605be78ccf44"
+    sha256 sonoma:        "fc226c0822597d960f7163b240d850884440099e9e3851658339f7e5a01402f0"
+    sha256 ventura:       "6c8b3a2dbd1b52f009a9d5de3b654ab9d69183c9431955bace60c0151a6b00cf"
+    sha256 x86_64_linux:  "3d498209044ebc2d504c7365a04b248d242ccc567418be013b33e71e1c5cb15d"
   end
 
   # setuptools remembers the build flags python is built with and uses them to
@@ -43,29 +42,8 @@ class PythonAT312 < Formula
   on_linux do
     depends_on "berkeley-db@5"
     depends_on "libnsl"
+    depends_on "libtirpc"
   end
-
-  skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5", "bin/pip-3.6", "bin/pip-3.7", "bin/pip-3.8", "bin/pip-3.9",
-              "bin/pip-3.10", "bin/pip-3.11"
-  skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5", "bin/easy_install-3.6",
-              "bin/easy_install-3.7", "bin/easy_install-3.8", "bin/easy_install-3.9", "bin/easy_install-3.10",
-              "bin/easy_install-3.11"
-
-  link_overwrite "bin/2to3"
-  link_overwrite "bin/idle3"
-  link_overwrite "bin/pip3"
-  link_overwrite "bin/pydoc3"
-  link_overwrite "bin/python3"
-  link_overwrite "bin/python3-config"
-  link_overwrite "bin/wheel3"
-  link_overwrite "share/man/man1/python3.1"
-  link_overwrite "lib/libpython3.so"
-  link_overwrite "lib/pkgconfig/python3.pc"
-  link_overwrite "lib/pkgconfig/python3-embed.pc"
-  link_overwrite "Frameworks/Python.framework/Headers"
-  link_overwrite "Frameworks/Python.framework/Python"
-  link_overwrite "Frameworks/Python.framework/Resources"
-  link_overwrite "Frameworks/Python.framework/Versions/Current"
 
   # Always update to latest release
   resource "flit-core" do
@@ -74,18 +52,18 @@ class PythonAT312 < Formula
   end
 
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/94/59/6638090c25e9bc4ce0c42817b5a234e183872a1129735a9330c472cc2056/pip-24.0.tar.gz"
-    sha256 "ea9bd1a847e8c5774a5777bb398c19e80bcd4e2aa16a4b301b718fe6f593aba2"
+    url "https://files.pythonhosted.org/packages/4d/87/fb90046e096a03aeab235e139436b3fe804cdd447ed2093b0d70eba3f7f8/pip-24.2.tar.gz"
+    sha256 "5b5e490b5e9cb275c879595064adce9ebd31b854e3e803740b72f9ccf34a45b8"
   end
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/fc/c9/b146ca195403e0182a374e0ea4dbc69136bad3cd55bc293df496d625d0f7/setuptools-69.0.3.tar.gz"
-    sha256 "be1af57fc409f93647f2e8e4573a142ed38724b8cdd389706a867bb4efcf1e78"
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/b0/b4/bc2baae3970c282fae6c2cb8e0f179923dceb7eaffb0e76170628f9af97b/wheel-0.42.0.tar.gz"
-    sha256 "c45be39f7882c9d34243236f2d63cbd58039e360f85d0913425fbd7ceea617a8"
+    url "https://files.pythonhosted.org/packages/b7/a0/95e9e962c5fd9da11c1e28aa4c0d8210ab277b1ada951d2aee336b505813/wheel-0.44.0.tar.gz"
+    sha256 "a29c3f2817e95ab89aa4660681ad547c0e9547f20e75b0562fe7723c9a2a9d49"
   end
 
   # Modify default sysconfig to match the brew install layout.
@@ -170,7 +148,7 @@ class PythonAT312 < Formula
       end
 
       # Enabling LTO on Linux makes libpython3.*.a unusable for anyone whose GCC
-      # install does not match the one in CI _exactly_ (major and minßor version).
+      # install does not match the one in CI _exactly_ (major and minor version).
       # https://github.com/orgs/Homebrew/discussions/3734
       args << "--with-lto"
       args << "--enable-framework=#{frameworks}"
@@ -183,9 +161,6 @@ class PythonAT312 < Formula
       args << "--enable-shared"
       args << "--with-dbmliborder=bdb"
     end
-
-    # Resolve HOMEBREW_PREFIX in our sysconfig modification.
-    inreplace "Lib/sysconfig.py", "@@HOMEBREW_PREFIX@@", HOMEBREW_PREFIX
 
     if OS.linux?
       # Python's configure adds the system ncurses include entry to CPPFLAGS
@@ -221,8 +196,12 @@ class PythonAT312 < Formula
     system "make"
 
     ENV.deparallelize do
+      # The `altinstall` target prevents the installation of files with only Python's major
+      # version in its name. This allows us to link multiple versioned Python formulae.
+      #   https://github.com/python/cpython#installing-multiple-versions
+      #
       # Tell Python not to install into /Applications (default for framework builds)
-      system "make", "install", "PYTHONAPPSDIR=#{prefix}"
+      system "make", "altinstall", "PYTHONAPPSDIR=#{prefix}"
       system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{pkgshare}" if OS.mac?
     end
 
@@ -255,6 +234,9 @@ class PythonAT312 < Formula
       inreplace lib_cellar/"_sysconfigdata__darwin_darwin.py",
                 %r{('LINKFORSHARED': .*?)'(Python.framework/Versions/3.\d+/Python)'}m,
                 "\\1'#{opt_prefix}/Frameworks/\\2'"
+
+      # Remove symlinks that conflict with the main Python formula.
+      rm %w[Headers Python Resources Versions/Current].map { |subdir| frameworks/"Python.framework"/subdir }
     else
       # Prevent third-party packages from building against fragile Cellar paths
       inreplace Dir[lib_cellar/"**/_sysconfigdata_*linux_x86_64-*.py",
@@ -266,10 +248,13 @@ class PythonAT312 < Formula
       inreplace bin/"python#{version.major_minor}-config",
                 'prefix_real=$(installed_prefix "$0")',
                 "prefix_real=#{opt_prefix}"
+
+      # Remove symlinks that conflict with the main Python formula.
+      rm lib/"libpython3.so"
     end
 
     # Remove the site-packages that Python created in its Cellar.
-    site_packages_cellar.rmtree
+    rm_r(site_packages_cellar)
 
     # Prepare a wheel of wheel to install later.
     common_pip_args = %w[
@@ -310,12 +295,16 @@ class PythonAT312 < Formula
     # Write out sitecustomize.py
     (lib_cellar/"sitecustomize.py").atomic_write(sitecustomize)
 
-    # Install unversioned symlinks in libexec/bin.
+    # Install unversioned and major-versioned symlinks in libexec/bin.
     {
-      "idle"          => "idle#{version.major_minor}",
-      "pydoc"         => "pydoc#{version.major_minor}",
-      "python"        => "python#{version.major_minor}",
-      "python-config" => "python#{version.major_minor}-config",
+      "idle"           => "idle#{version.major_minor}",
+      "idle3"          => "idle#{version.major_minor}",
+      "pydoc"          => "pydoc#{version.major_minor}",
+      "pydoc3"         => "pydoc#{version.major_minor}",
+      "python"         => "python#{version.major_minor}",
+      "python3"        => "python#{version.major_minor}",
+      "python-config"  => "python#{version.major_minor}-config",
+      "python3-config" => "python#{version.major_minor}-config",
     }.each do |short_name, long_name|
       (libexec/"bin").install_symlink (bin/long_name).realpath => short_name
     end
@@ -335,15 +324,15 @@ class PythonAT312 < Formula
     site_packages_cellar.parent.install_symlink site_packages
 
     # Remove old sitecustomize.py. Now stored in the cellar.
-    rm_rf Dir["#{site_packages}/sitecustomize.py[co]"]
+    rm_r(Dir["#{site_packages}/sitecustomize.py[co]"])
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir["#{site_packages}/distribute[-_.][0-9]*", "#{site_packages}/distribute"]
-    rm_rf Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"]
-    rm_rf Dir["#{site_packages}/wheel[-_.][0-9]*", "#{site_packages}/wheel"]
+    rm_r(Dir["#{site_packages}/distribute[-_.][0-9]*", "#{site_packages}/distribute"])
+    rm_r(Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"])
+    rm_r(Dir["#{site_packages}/wheel[-_.][0-9]*", "#{site_packages}/wheel"])
 
     (lib_cellar/"EXTERNALLY-MANAGED").unlink if (lib_cellar/"EXTERNALLY-MANAGED").exist?
     system python3, "-Im", "ensurepip"
@@ -368,20 +357,21 @@ class PythonAT312 < Formula
     mv (site_packages/"bin").children, bin
     rmdir site_packages/"bin"
 
-    rm_rf bin/"pip"
+    rm_r(bin.glob("pip{,3}"))
     mv bin/"wheel", bin/"wheel#{version.major_minor}"
-    bin.install_symlink "wheel#{version.major_minor}" => "wheel3"
 
-    # Install unversioned symlinks in libexec/bin.
+    # Install unversioned and major-versioned symlinks in libexec/bin.
     {
-      "pip"   => "pip#{version.major_minor}",
-      "wheel" => "wheel#{version.major_minor}",
+      "pip"    => "pip#{version.major_minor}",
+      "pip3"   => "pip#{version.major_minor}",
+      "wheel"  => "wheel#{version.major_minor}",
+      "wheel3" => "wheel#{version.major_minor}",
     }.each do |short_name, long_name|
       (libexec/"bin").install_symlink (bin/long_name).realpath => short_name
     end
 
     # post_install happens after link
-    %W[wheel3 pip3 wheel#{version.major_minor} pip#{version.major_minor}].each do |e|
+    %W[wheel#{version.major_minor} pip#{version.major_minor}].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
@@ -394,13 +384,29 @@ class PythonAT312 < Formula
        xyz, where xyz is the package you are trying to
        install.
 
-       If you wish to install a non-brew-packaged Python package,
-       create a virtual environment using python3 -m venv path/to/venv.
-       Then use path/to/venv/bin/python and path/to/venv/bin/pip.
+       If you wish to install a Python library that isn't in Homebrew,
+       use a virtual environment:
 
-       If you wish to install a non-brew packaged Python application,
-       it may be easiest to use pipx install xyz, which will manage a
-       virtual environment for you. Make sure you have pipx installed.
+         python3 -m venv path/to/venv
+         source path/to/venv/bin/activate
+         python3 -m pip install xyz
+
+       If you wish to install a Python application that isn't in Homebrew,
+       it may be easiest to use 'pipx install xyz', which will manage a
+       virtual environment for you. You can install pipx with
+
+         brew install pipx
+
+       You may restore the old behavior of pip by passing
+       the '--break-system-packages' flag to pip, or by adding
+       'break-system-packages = true' to your pip.conf file. The latter
+       will permanently disable this error.
+
+       If you disable this error, we STRONGLY recommend that you additionally
+       pass the '--user' flag to pip, or set 'user = true' in your pip.conf
+       file. Failure to do this can result in a broken Homebrew installation.
+
+       Read more about this behavior here: <https://peps.python.org/pep-0668/>
     EOS
   end
 
@@ -463,12 +469,15 @@ class PythonAT312 < Formula
 
   def caveats
     <<~EOS
-      Python has been installed as
-        #{HOMEBREW_PREFIX}/bin/python3
+      Python is installed as
+        #{HOMEBREW_PREFIX}/bin/python#{version.major_minor}
 
-      Unversioned symlinks `python`, `python-config`, `pip` etc. pointing to
-      `python3`, `python3-config`, `pip3` etc., respectively, have been installed into
+      Unversioned and major-versioned symlinks `python`, `python3`, `python-config`, `python3-config`, `pip`, `pip3`, etc. pointing to
+      `python#{version.major_minor}`, `python#{version.major_minor}-config`, `pip#{version.major_minor}` etc., respectively, are installed into
         #{opt_libexec}/bin
+
+      If you do not need a specific version of Python, and always want Homebrew's `python3` in your PATH:
+        brew install python3
 
       See: https://docs.brew.sh/Homebrew-and-Python
     EOS
@@ -515,7 +524,7 @@ class PythonAT312 < Formula
     system bin/"pip#{version.major_minor}", "list", "--format=columns"
 
     # Check our externally managed marker
-    assert_match "If you wish to install a non-brew-packaged",
+    assert_match "If you wish to install a Python library",
                  shell_output("#{python3} -m pip install pip 2>&1", 1)
   end
 end

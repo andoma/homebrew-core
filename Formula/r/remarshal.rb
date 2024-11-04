@@ -2,71 +2,69 @@ class Remarshal < Formula
   include Language::Python::Virtualenv
 
   desc "Convert between TOML, YAML and JSON"
-  homepage "https://github.com/dbohdan/remarshal"
-  url "https://files.pythonhosted.org/packages/55/39/d638b7d8012468fe13c072bfb283cd917b12dbcb8e7a10b414d5109b0852/remarshal-0.17.1.tar.gz"
-  sha256 "826a41d3e3ed9d45422811488d7b28cc146a8d5b2583b18db36302f87091a86d"
+  homepage "https://github.com/remarshal-project/remarshal"
+  url "https://files.pythonhosted.org/packages/1d/86/ce916a9bfab4de5e5158d99d6441dae7605419b04e56647354c777b8dcc9/remarshal-0.20.0.tar.gz"
+  sha256 "5b73eaa5b0d8ed7d7b2eab3718e532059f7af1586990a17b65413ff926d2e5bf"
   license "MIT"
-  head "https://github.com/dbohdan/remarshal.git", branch: "master"
+  head "https://github.com/remarshal-project/remarshal.git", branch: "master"
 
   bottle do
-    rebuild 4
-    sha256 cellar: :any,                 arm64_sonoma:   "03597df9a743a7b57d3538131397a5298c4a0373f0141320968af5e1e6237f7e"
-    sha256 cellar: :any,                 arm64_ventura:  "afeec08e7e94d61f582bf6d58a131ee3266117bbd1ccda59ff50825049a359a0"
-    sha256 cellar: :any,                 arm64_monterey: "287f72bb3f851b4e3f31a67a9ee2829d084fae1b5e42986977d8cfb63dfc7a7b"
-    sha256 cellar: :any,                 sonoma:         "73f5076b51cd42711f5fb4a5f02112244a64a236375d1cee86383b031cd99e72"
-    sha256 cellar: :any,                 ventura:        "75ea6b3611ededd7e0749acce767b9d0fa90b8d8692288729d486a3a386d9ec8"
-    sha256 cellar: :any,                 monterey:       "c648307e0b41ac4d6aa05c0e7c3e0c31cd2d953260eb42bc940fb9faffc48e39"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "65d5827d54aed098a7f90486d4f79204490307854c3a44f49d114deb88222600"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b5210d8cd03a65d2de31d13f4f6fbcb45a8de5d46ecc24acb29dcc8612af7297"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4f93163b8945300da02e74230a55c7f03de416a61beac625d4205fed76ef4f45"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "81aceb65012dbcf83a1cfbfff3e51381acdaa36e0a127faa02541d20240c640a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "81085cb768f033ea99338c16d4bd705d6b126885079766371d712fbc7179d90f"
+    sha256 cellar: :any_skip_relocation, ventura:       "4ea3ef06611a40eaf7835263d6572eb88561121cadb95ee14e632216e62b02ea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9605c3fdf3be441ca4103ebb8972dada0982bf4265a202824e58c6e9ab596b3f"
   end
 
   depends_on "libyaml"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   conflicts_with "msgpack-tools", because: "both install 'json2msgpack' binary"
 
   resource "cbor2" do
-    url "https://files.pythonhosted.org/packages/ca/39/0d0a29671be102bd0c717c60f9c805b46042ff98d4a63282cfaff3704b45/cbor2-5.6.2.tar.gz"
-    sha256 "b7513c2dea8868991fad7ef8899890ebcf8b199b9b4461c3c11d7ad3aef4820d"
+    url "https://files.pythonhosted.org/packages/e4/aa/ba55b47d51d27911981a18743b4d3cebfabccbb0598c09801b734cec4184/cbor2-5.6.5.tar.gz"
+    sha256 "b682820677ee1dbba45f7da11898d2720f92e06be36acec290867d5ebf3d7e09"
   end
 
-  resource "iniconfig" do
-    url "https://files.pythonhosted.org/packages/d7/4b/cbd8e699e64a6f16ca3a8220661b5f83792b3017d0f79807cb8708d33913/iniconfig-2.0.0.tar.gz"
-    sha256 "2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3"
+  resource "colorama" do
+    url "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz"
+    sha256 "08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"
   end
 
-  resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+  resource "markdown-it-py" do
+    url "https://files.pythonhosted.org/packages/38/71/3b932df36c1a044d397a1f92d1cf91ee0a503d91e470cbd670aa66b07ed0/markdown-it-py-3.0.0.tar.gz"
+    sha256 "e3f60a94fa066dc52ec76661e37c851cb232d92f9886b15cb560aaada2df8feb"
   end
 
-  resource "pluggy" do
-    url "https://files.pythonhosted.org/packages/54/c6/43f9d44d92aed815e781ca25ba8c174257e27253a94630d21be8725a2b59/pluggy-1.4.0.tar.gz"
-    sha256 "8c85c2876142a764e5b7548e7d9a0e0ddb46f5185161049a79b7e974454223be"
+  resource "mdurl" do
+    url "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz"
+    sha256 "bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"
   end
 
-  resource "pytest" do
-    url "https://files.pythonhosted.org/packages/80/1f/9d8e98e4133ffb16c90f3b405c43e38d3abb715bb5d7a63a5a684f7e46a3/pytest-7.4.4.tar.gz"
-    sha256 "2cf0005922c6ace4a3e2ec8b4080eb0d9753fdc93107415332f50ce9e7994280"
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
   end
 
-  resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+  resource "rich" do
+    url "https://files.pythonhosted.org/packages/aa/9e/1784d15b057b0075e5136445aaea92d23955aad2c93eaede673718a40d95/rich-13.9.2.tar.gz"
+    sha256 "51a2c62057461aaf7152b4d611168f93a9fc73068f8ded2790f29fe2b5366d0c"
   end
 
-  resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
+  resource "rich-argparse" do
+    url "https://files.pythonhosted.org/packages/26/f1/0a5ba24d684012e2f25deec88d9a9a1199d8e26e3bb595b812c8b0218cff/rich_argparse-1.5.2.tar.gz"
+    sha256 "84d348d5b6dafe99fffe2c7ea1ca0afe14096c921693445b9eee65ee4fcbfd2c"
   end
 
-  resource "six" do
-    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
-    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+  resource "ruamel-yaml" do
+    url "https://files.pythonhosted.org/packages/29/81/4dfc17eb6ebb1aac314a3eb863c1325b907863a1b8b1382cdffcb6ac0ed9/ruamel.yaml-0.18.6.tar.gz"
+    sha256 "8b27e6a217e786c6fbe5634d8f3f11bc63e0f80f6a5890f28863d9c45aac311b"
   end
 
   resource "tomlkit" do
-    url "https://files.pythonhosted.org/packages/df/fc/1201a374b9484f034da4ec84215b7b9f80ed1d1ea989d4c02167afaa4400/tomlkit-0.12.3.tar.gz"
-    sha256 "75baf5012d06501f07bee5bf8e801b9f343e7aac5a92581f20f80ce632e6b5a4"
+    url "https://files.pythonhosted.org/packages/b1/09/a439bec5888f00a54b8b9f05fa94d7f901d6735ef4e55dcec9bc37b5d8fa/tomlkit-0.13.2.tar.gz"
+    sha256 "fff5fe59a87295b278abd31bec92c15d9bc4a06885ab12bcea52c71119392e79"
   end
 
   resource "u-msgpack-python" do

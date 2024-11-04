@@ -2,24 +2,23 @@ class Ponyc < Formula
   desc "Object-oriented, actor-model, capabilities-secure programming language"
   homepage "https://www.ponylang.io/"
   url "https://github.com/ponylang/ponyc.git",
-      tag:      "0.58.2",
-      revision: "d65cf342588fe4adbacf77e77efbc40cfd9bd5af"
+      tag:      "0.58.6",
+      revision: "41be76e6a9a04fbded3dcdcbc4ecad329c50b383"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "42c75200a706da9185691874b00beb741c2b91d2cf7c08d7a4974b589f091018"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c91573027416b85e002a7c954dca10103f0cdfef98ac9a8e746109d45ea24bfd"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "029f6e448d96d757a296ad68beeadca21c9ed97b1df0f3b66b38f4d31e4d3fa8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b20e15651dd369d278d5b0df40c8eda44cc001966a8f64a7758082269efb9ebd"
-    sha256 cellar: :any_skip_relocation, ventura:        "7189a74dde1f74c3b1c32f6c6940eff09eefc3520109b0d995a316eae91d91ef"
-    sha256 cellar: :any_skip_relocation, monterey:       "c1e59a9cf600e369ca5482ba1f21d5e165fff564924840e41272095fb7484b92"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1f6868aac1abf1c285f459299ab736bbe18602cf6b901b7cfb74cad82602e012"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c98438616492c5fbcbdf8e909975f2632b3187eecd6f75064f372249757b4734"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b2636ce85f414bf4b3cae31d52319a601afeeec7c5230a51b7cb1697c952a095"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e58162e39f7915d9207122821bc1c891514931ca62fe8120a76b1b8f598b6d46"
+    sha256 cellar: :any_skip_relocation, sonoma:        "47170d0364e39d66d157e900899ac3f11ae4b5894fac7b316fe384b90ead3ea7"
+    sha256 cellar: :any_skip_relocation, ventura:       "d9be64ca274eb039c36cb2b7932b0a8f58dc6e1111af2eb191eb96407880209e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f8eb0d99c5f2dd944761817f36f348ba6199dbe293646203095bb12fba1dbafa"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.12" => :build
 
   uses_from_macos "llvm" => [:build, :test]
+  uses_from_macos "python" => :build
   uses_from_macos "zlib"
 
   # We use LLVM to work around an error while building bundled `google-benchmark` with GCC
@@ -47,14 +46,14 @@ class Ponyc < Formula
     # ENV["CC"] returns llvm_clang, which does not work in a test block.
     ENV.clang
 
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/stdlib"
+    system bin/"ponyc", "-rexpr", "#{prefix}/packages/stdlib"
 
     (testpath/"test/main.pony").write <<~EOS
       actor Main
         new create(env: Env) =>
           env.out.print("Hello World!")
     EOS
-    system "#{bin}/ponyc", "test"
+    system bin/"ponyc", "test"
     assert_equal "Hello World!", shell_output("./test1").strip
   end
 end

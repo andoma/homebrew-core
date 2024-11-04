@@ -3,17 +3,18 @@ class Mapcrafter < Formula
   homepage "https://mapcrafter.org"
   url "https://github.com/mapcrafter/mapcrafter/archive/refs/tags/v.2.4.tar.gz"
   sha256 "f3b698d34c02c2da0c4d2b7f4e251bcba058d0d1e4479c0418eeba264d1c8dae"
-  license "GPL-3.0"
-  revision 10
+  license "GPL-3.0-or-later"
+  revision 12
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "e2f94fcaa7b91042cb6ab1252f58bcd9edc1e46e07ffc08c792a35af72c15acb"
-    sha256 cellar: :any,                 arm64_ventura:  "9d707ef1c4a74e52d82215e9efeb1f1a09c1965957c757b8e8b82052eed9c9e8"
-    sha256 cellar: :any,                 arm64_monterey: "fe6d50dbd9cc83ba9cfb13c096f9b41caf17c9f2be8782ae594ce5121413d649"
-    sha256 cellar: :any,                 sonoma:         "e5bd9ce74f32e318e75081ff765886535989734d35fa8b955a54a06f4aea55cf"
-    sha256 cellar: :any,                 ventura:        "19c03724a9d64a9447cef9117145e8790975cb7889873146c1e1d8efc8c19ffb"
-    sha256 cellar: :any,                 monterey:       "2b27c6005892c49ae36bf09470787a96203e193be537be62e7e52f69d20afe4f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "56521c291750a553f8cfe637ad8399d598443de08a0ac98081ad798dd127eb12"
+    sha256 cellar: :any,                 arm64_sequoia:  "60fca734c298eb1039dc344ade09695af622b5f95dc7e11c79be16a9fbcf068e"
+    sha256 cellar: :any,                 arm64_sonoma:   "0ac68289b87661674d36a17db3f8d5e2b7d62157b498f8f61303ba9cc03d2bb1"
+    sha256 cellar: :any,                 arm64_ventura:  "adc4706a3918b77f0e24d5be8368bc541ab17aa4b54f1f37c0cb1381ab0826a9"
+    sha256 cellar: :any,                 arm64_monterey: "3d9064ce98db9b600d973ac52b2f7f7cb5c54e86cbd64b306f80672380a55c95"
+    sha256 cellar: :any,                 sonoma:         "a505e7b1c29277a49fa93fb323ef245bf51375f8e912d36c433ea717de78d650"
+    sha256 cellar: :any,                 ventura:        "f202f39f3ba25cf97451252e430467bf2433529fb5a39c494589900fcc214e2e"
+    sha256 cellar: :any,                 monterey:       "cb1448294bbf586aad34ec1943a34faba19a973e0ac4f415daafe46f7a234f0f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6e3a10dac4592c2582e0fe73ed16f0e9234a39c69f9115584a01b157440681d4"
   end
 
   depends_on "cmake" => :build
@@ -21,19 +22,24 @@ class Mapcrafter < Formula
   depends_on "jpeg-turbo"
   depends_on "libpng"
 
+  # Fix build with `boost` 1.85.0 using open PR.
+  # PR ref: https://github.com/mapcrafter/mapcrafter/pull/394
+  patch do
+    url "https://github.com/mapcrafter/mapcrafter/commit/28dbc86803650eb487782e937cbb4513dbd0a650.patch?full_index=1"
+    sha256 "55edc91aee2fbe0727282d8b3e967ac654455e7fb4ca424c490caf7556eca179"
+  end
+
   def install
-    ENV.cxx11
-
-    args = std_cmake_args
-    args << "-DJPEG_INCLUDE_DIR=#{Formula["jpeg-turbo"].opt_include}"
-    args << "-DJPEG_LIBRARY=#{Formula["jpeg-turbo"].opt_lib/shared_library("libjpeg")}"
-
-    system "cmake", ".", *args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DOPT_SKIP_TESTS=ON",
+                    "-DJPEG_INCLUDE_DIR=#{Formula["jpeg-turbo"].opt_include}",
+                    "-DJPEG_LIBRARY=#{Formula["jpeg-turbo"].opt_lib/shared_library("libjpeg")}",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    assert_match(/Mapcrafter/,
-      shell_output("#{bin}/mapcrafter --version"))
+    assert_match(/Mapcrafter/, shell_output("#{bin}/mapcrafter --version"))
   end
 end

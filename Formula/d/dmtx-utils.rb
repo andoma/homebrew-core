@@ -3,10 +3,11 @@ class DmtxUtils < Formula
   homepage "https://github.com/dmtx/dmtx-utils"
   url "https://github.com/dmtx/dmtx-utils/archive/refs/tags/v0.7.6.tar.gz"
   sha256 "0d396ec14f32a8cf9e08369a4122a16aa2e5fa1675e02218f16f1ab777ea2a28"
-  license "LGPL-2.1"
+  license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
   revision 6
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "4132090992b9abc13dc2f70a34d745240e4d82fe9731f97e3329fb9d3e9627d9"
     sha256 cellar: :any,                 arm64_sonoma:   "152c08bbdef851937b9b330243318d4d49a3d7563c9e85b703753d44b2e005b4"
     sha256 cellar: :any,                 arm64_ventura:  "c147ab73dac9c03562cf06d561a923ba70e30ecb4607d755622d0156805a7892"
     sha256 cellar: :any,                 arm64_monterey: "81be259b08bd67f4dab389bb326b4adbdd01cd201d5b98c77f4cc72e0f5c669a"
@@ -21,23 +22,34 @@ class DmtxUtils < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
+
   depends_on "imagemagick"
   depends_on "libdmtx"
   depends_on "libtool"
 
-  resource "test_image12" do
-    url "https://raw.githubusercontent.com/dmtx/libdmtx/ca9313f/test/rotate_test/images/test_image12.png"
-    sha256 "683777f43ce2747c8a6c7a3d294f64bdbfee600d719aac60a18fcb36f7fc7242"
+  on_macos do
+    depends_on "fontconfig"
+    depends_on "freetype"
+    depends_on "gettext"
+    depends_on "glib"
+    depends_on "liblqr"
+    depends_on "libomp"
+    depends_on "little-cms2"
   end
 
   def install
-    system "autoreconf", "-fiv"
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"
   end
 
   test do
-    testpath.install resource("test_image12")
+    resource "homebrew-test_image12" do
+      url "https://raw.githubusercontent.com/dmtx/libdmtx/ca9313f/test/rotate_test/images/test_image12.png"
+      sha256 "683777f43ce2747c8a6c7a3d294f64bdbfee600d719aac60a18fcb36f7fc7242"
+    end
+
+    testpath.install resource("homebrew-test_image12")
     image = File.read("test_image12.png")
     assert_equal "9411300724000003", pipe_output("#{bin}/dmtxread", image, 0)
     system "/bin/dd", "if=/dev/random", "of=in.bin", "bs=512", "count=3"

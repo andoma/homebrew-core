@@ -6,11 +6,6 @@ class MysqlAT57 < Formula
   license "GPL-2.0-only"
   revision 1
 
-  livecheck do
-    url "https://dev.mysql.com/downloads/mysql/5.7.html?tpl=files&os=src&version=5.7"
-    regex(/href=.*?mysql[._-](?:boost[._-])?v?(5\.7(?:\.\d+)*)\.t/i)
-  end
-
   bottle do
     sha256 arm64_sonoma:   "ca2e5c8b98bd92843578ffeae0e6280d3066afc33c814cb1ba49299fe9285f50"
     sha256 arm64_ventura:  "c0ff4905882e49d8baf0446652ee9fa6158b00bcd0d17ef2c1a017d0875c5ae5"
@@ -24,7 +19,7 @@ class MysqlAT57 < Formula
   keg_only :versioned_formula
 
   # https://www.oracle.com/us/support/library/lifetime-support-technology-069183.pdf
-  deprecate! date: "2023-10-01", because: :unsupported
+  disable! date: "2024-08-01", because: :unsupported
 
   depends_on "cmake" => :build
   depends_on "libevent"
@@ -95,11 +90,11 @@ class MysqlAT57 < Formula
     end
 
     # Remove the tests directory
-    rm_rf prefix/"mysql-test"
+    rm_r(prefix/"mysql-test")
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix/"data"
+    rm_r(prefix/"data")
 
     # Fix up the control script and link into bin.
     inreplace "#{prefix}/support-files/mysql.server",
@@ -164,13 +159,13 @@ class MysqlAT57 < Formula
       "--basedir=#{prefix}", "--datadir=#{testpath}/mysql", "--tmpdir=#{testpath}/tmp"
     port = free_port
     fork do
-      system "#{bin}/mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
+      system bin/"mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
         "--datadir=#{testpath}/mysql", "--port=#{port}", "--tmpdir=#{testpath}/tmp"
     end
     sleep 5
     assert_match "information_schema",
       shell_output("#{bin}/mysql --port=#{port} --user=root --password= --execute='show databases;'")
-    system "#{bin}/mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
+    system bin/"mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
   end
 end
 

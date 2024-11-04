@@ -1,8 +1,8 @@
 class Libtrng < Formula
   desc "Tina's Random Number Generator Library"
   homepage "https://www.numbercrunch.de/trng/"
-  url "https://github.com/rabauke/trng4/archive/refs/tags/v4.25.tar.gz"
-  sha256 "2727ce04e726a0b214e7bc8066793489b1ddce2fdf932d63313f4fd2823c9beb"
+  url "https://github.com/rabauke/trng4/archive/refs/tags/v4.27.tar.gz"
+  sha256 "5d04cc66b7163c869c061c1155e47fe6d54d9a7f1c1fcc0fddecb9269b66a3de"
   license "BSD-3-Clause"
   head "https://github.com/rabauke/trng4.git", branch: "master"
 
@@ -12,13 +12,14 @@ class Libtrng < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d8257549668db1ad3e6cce3a09eb86bc19625d293ab1d79a9c3f9b64a7602114"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f1196fcff705fdf7c4de517d463fd69727e09432d8e9a7c433678337193cd29a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bb53432989d3d92094ac9946fc9ec710ed62bf74632307c2033eb041a5d69c98"
-    sha256 cellar: :any_skip_relocation, sonoma:         "82030b459f055448cc48fb9a5c0018b58b27816ca03816efcf2441887dbfe2ee"
-    sha256 cellar: :any_skip_relocation, ventura:        "60ffdd162492855567c734df2944d83064bc29eaafeda09f85360a087f313e34"
-    sha256 cellar: :any_skip_relocation, monterey:       "6f4567d5234247880921ed3755bb9941d9aa6f0b79d6805b19b6154505888dfb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2ebdbe801578fef0d327a7b181c142d1602e347a3779ce18398140c662c0349c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "11b03794419841493fa21c0c665500001430158450404de1e9ef092e62305869"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4a1bfdc55b371cb19aca7ea1febdc675ba72fb60a6bfe316fdbabca2d6a230df"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "aa8dd27d28cee66e6e8b9b1b3e2776301c11c2785125e7a2d830d61338f841b8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6f9d4aba3f1650ba79184a3d2c959156a90f8b83f545cf53e9264d8e0c623645"
+    sha256 cellar: :any_skip_relocation, sonoma:         "f94814bf56e5b761119f7a33904dd3c4895691018be79c8934ab145622f93b8a"
+    sha256 cellar: :any_skip_relocation, ventura:        "c1a58202bea8f27b2536caa21b8deb2e8262cb79bdea6dd7c59c016793c8c14f"
+    sha256 cellar: :any_skip_relocation, monterey:       "a92a32f26d5aa37518d5833705493fbee25149ed6a80be7f743422cdca9d8316"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6280ea4740a8de759219fe78f9a2610b02065c2c16e63c892a60017395b3d1c6"
   end
 
   depends_on "cmake" => :build
@@ -34,7 +35,7 @@ class Libtrng < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <trng/yarn2.hpp>
       #include <trng/normal_dist.hpp>
       int main()
@@ -44,7 +45,7 @@ class Libtrng < Formula
         (void)normal(R);
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", "-I#{include}", "-L#{lib}", "-ltrng4"
     system "./test"
   end

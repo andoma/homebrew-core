@@ -1,19 +1,18 @@
 class ContainerStructureTest < Formula
   desc "Validate the structure of your container images"
   homepage "https://github.com/GoogleContainerTools/container-structure-test"
-  url "https://github.com/GoogleContainerTools/container-structure-test/archive/refs/tags/v1.16.1.tar.gz"
-  sha256 "704c8e2768ae560c41025a8bf31a3969b6db2a7c83375ad1aa69267322d41bbf"
+  url "https://github.com/GoogleContainerTools/container-structure-test/archive/refs/tags/v1.19.3.tar.gz"
+  sha256 "c91a76f7b4949775941f8308ee7676285555ae4756ec1ec990c609c975a55f93"
   license "Apache-2.0"
   head "https://github.com/GoogleContainerTools/container-structure-test.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f038adce4df86137afbd1bdbd1f9585eb7fa218db412ca6693b4342f746387b1"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2a79c88d9269069353c7af8e28b53722cb66eb26818f4479112a905f24f17f39"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9d3f86a5340feae9a44bcb0102b262bc31c83fd61d439a5a1430314f4f08cd4d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ec77c7ab594a7bfbf27a687094cf159c36fd196c507551a122bfa85d30db4f96"
-    sha256 cellar: :any_skip_relocation, ventura:        "512b962c9a6ab3c5d9accd00f6ce4dd3b595779f77aa521beb1b194246485abc"
-    sha256 cellar: :any_skip_relocation, monterey:       "f299f6e84c802461b0e1eb98ec500fa86e6d0bf017be86cb1d26ad2ffde6c3a2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3078aa1886902cdd8656382b7fed27b151e9257d0a0d5eaf61bd1a68bd9d5ec1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "48ab6f7e67e0ccb7f9b1ad136fdd0a20d2d211991eddd6e2a172380790d7d699"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "48ab6f7e67e0ccb7f9b1ad136fdd0a20d2d211991eddd6e2a172380790d7d699"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "48ab6f7e67e0ccb7f9b1ad136fdd0a20d2d211991eddd6e2a172380790d7d699"
+    sha256 cellar: :any_skip_relocation, sonoma:        "16ed431b05fd07b2f803a517bb8665eddf9c047a3ecac0888c1343e1dc277add"
+    sha256 cellar: :any_skip_relocation, ventura:       "16ed431b05fd07b2f803a517bb8665eddf9c047a3ecac0888c1343e1dc277add"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e5d7d0f9047eb0a3e0bc8b94d46e32581096d1fd3018591025d07d71bd186958"
   end
 
   depends_on "go" => :build
@@ -25,7 +24,7 @@ class ContainerStructureTest < Formula
       -X #{project}/pkg/version.version=#{version}
       -X #{project}/pkg/version.buildDate=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/container-structure-test"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/container-structure-test"
   end
 
   test do

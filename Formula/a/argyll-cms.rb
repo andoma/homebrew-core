@@ -1,8 +1,8 @@
 class ArgyllCms < Formula
   desc "ICC compatible color management system"
   homepage "https://www.argyllcms.com/"
-  url "https://www.argyllcms.com/Argyll_V3.1.0_src.zip"
-  sha256 "4fdd5a1d7bc6dde79a54e350ec9374f6ef00b53903ee0d184cdfa4a11f0ecdcb"
+  url "https://www.argyllcms.com/Argyll_V3.3.0_src.zip"
+  sha256 "69db1c9ef66f8cacbbbab4ed9910147de6100c3afd17a0a8c12e6525b778e8ce"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -11,13 +11,13 @@ class ArgyllCms < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "4c387a6551506759bc97e05f1a8210c9daa6067766a928aec40f6f53f98cece4"
-    sha256 cellar: :any,                 arm64_ventura:  "f278516489fd047cf57e844c11b865d174dbca8d0fd3f8933d043a4ec8fcc9b5"
-    sha256 cellar: :any,                 arm64_monterey: "5291dc8cc86cead75c15e6911d38953c384bea72b2f73ef3ebc910b8f262bdfe"
-    sha256 cellar: :any,                 sonoma:         "a882ec21e0a632a75ff2ba7de2599811c18bf8418db0838c45c820392f999e51"
-    sha256 cellar: :any,                 ventura:        "1a8e2ff8c685c60e4bcadcc221453fe3d5dfdf7fc0394afcf99d628035139a5a"
-    sha256 cellar: :any,                 monterey:       "4b467bb519a71f349989b2ad225704703a6dd4ae8525624ac4f562f3ed2c4262"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c071c90cae813ef853d2b3d17fa25b4f846b2a6079392b0f7270e194d135c51e"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "c6eaa8f9f20129203c4ad4f8e536c0f8046a8c1f8376ecc2eb3e5ac4cd230b21"
+    sha256 cellar: :any,                 arm64_sonoma:  "6144869b77d490945df7d2e207baa71dbb7034a3dc914f00a71733f00956e58d"
+    sha256 cellar: :any,                 arm64_ventura: "c2a6ef0092b8b2ace04571ded3efee5e4fd39bdef7aaa2762deb1651de3389c0"
+    sha256 cellar: :any,                 sonoma:        "6836561552f12daecbe3f808ac50e58588d402036c242d0b5b21ac7620773118"
+    sha256 cellar: :any,                 ventura:       "e85f428eeb690ac25daf20b991f3b9c3fbeb3f53cc276fb2b7a031cff835c5ac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "76bf52c81646502007e8bb73fb1d247c0789d2d2aad4ffff41023f060f000fb1"
   end
 
   depends_on "jpeg-turbo"
@@ -29,6 +29,7 @@ class ArgyllCms < Formula
 
   on_linux do
     depends_on "libx11"
+    depends_on "libxext"
     depends_on "libxinerama"
     depends_on "libxrandr"
     depends_on "libxscrnsaver"
@@ -57,25 +58,19 @@ class ArgyllCms < Formula
     # * Fix a typo that leads to an undeclared function error:
     #   `parse.c:102:20: error: call to undeclared function 'yylineno'`
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/42252ab3d438f7ada66e83b92bb51a9178d3df10/jam/2.6.1-undeclared_functions.diff"
-      sha256 "d567cbaf3914f38bb8c5017ff01cc40fe85970c34d3ad84dbeda8c893518ffae"
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/cf70f015e7398796660da57212ff0ab90c609acf/jam/2.6.1.patch"
+      sha256 "1850cf53c4db0e05978d52b90763b519c00fa4f2fbd6fc2753200e49943821ec"
     end
-  end
-
-  # Fixes a missing header, which is an error by default on arm64 but not x86_64
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/f6ede0dff06c2d9e3383416dc57c5157704b6f3a/argyll-cms/unistd_import.diff"
-    sha256 "5ce1e66daf86bcd43a0d2a14181b5e04574757bcbf21c5f27b1f1d22f82a8a6e"
   end
 
   def install
     resource("jam").stage do
       system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}", "LOCATE_TARGET=bin"
-      libexec.install "bin/jam"
+      (buildpath/"bin").install "bin/jam"
     end
 
     # Remove bundled libraries to prevent fallback
-    %w[jpeg png tiff zlib].each { |l| (buildpath/l).rmtree }
+    %w[jpeg png tiff zlib].each { |l| rm_r(buildpath/l) }
 
     inreplace "Jamtop" do |s|
       openssl = Formula["openssl@3"]
@@ -102,19 +97,19 @@ class ArgyllCms < Formula
     end
 
     ENV["NUMBER_OF_PROCESSORS"] = ENV.make_jobs.to_s
-    inreplace "makeall.sh", "jam", libexec/"jam"
-    inreplace "makeinstall.sh", "jam", libexec/"jam"
+
+    inreplace "makeall.sh", "jam", buildpath/"bin/jam"
+    inreplace "makeinstall.sh", "jam", buildpath/"bin/jam"
     system "sh", "makeall.sh"
     system "./makeinstall.sh"
     rm "bin/License.txt"
     prefix.install "bin", "ref", "doc"
-
-    rm libexec/"jam"
   end
 
   test do
     system bin/"targen", "-d", "0", "test.ti1"
     system bin/"printtarg", testpath/"test.ti1"
+
     %w[test.ti1.ps test.ti1.ti1 test.ti1.ti2].each do |f|
       assert_predicate testpath/f, :exist?
     end

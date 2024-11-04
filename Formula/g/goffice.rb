@@ -6,6 +6,7 @@ class Goffice < Formula
   license any_of: ["GPL-3.0-only", "GPL-2.0-only"]
 
   bottle do
+    sha256 arm64_sequoia:  "d4ca91bb298e7dc0444609b9a09ceb404b81743329d462f1eb62a2a2046d525d"
     sha256 arm64_sonoma:   "a946184d2ad6fc95b59fb4c68a598aefebd8df3633d49a9b53decebea9eee6c9"
     sha256 arm64_ventura:  "c50b18823cc2a8efc038b7487dc1f229425709be9398e29b558d5747b2454006"
     sha256 arm64_monterey: "d28569db16793e715714a51758ab7429f8be117d964d8035e7062550c03b3a4d"
@@ -26,6 +27,7 @@ class Goffice < Formula
   depends_on "gettext" => :build
   depends_on "intltool" => :build
   depends_on "pkg-config" => :build
+
   depends_on "at-spi2-core"
   depends_on "cairo"
   depends_on "gdk-pixbuf"
@@ -42,6 +44,7 @@ class Goffice < Formula
 
   on_macos do
     depends_on "gettext"
+    depends_on "harfbuzz"
   end
 
   on_linux do
@@ -60,7 +63,7 @@ class Goffice < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <goffice/goffice.h>
       int main()
       {
@@ -70,7 +73,7 @@ class Goffice < Formula
           libgoffice_shutdown (void);
           return 0;
       }
-    EOS
+    C
     libxml2 = if OS.mac?
       "#{MacOS.sdk_path}/usr/include/libxml2"
     else

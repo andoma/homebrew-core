@@ -6,6 +6,7 @@ class Aria2 < Formula
   license "GPL-2.0-or-later"
 
   bottle do
+    sha256 arm64_sequoia:  "fa42d58d43ca08575c6df1b9c8b6141edc97fdeec4c60fc3e39c50fffc7a301e"
     sha256 arm64_sonoma:   "89117256b91a5a87d4e31fb4054f7a0b45681a97627547b4db7498930486ff05"
     sha256 arm64_ventura:  "fd06b5b187243559c5f286767ab8f7f7d5f16d361bbd3ff9faf0909643920849"
     sha256 arm64_monterey: "515cf8d197ec78753fa6b7462f775a3e625340e04f02207ae6dd1b6135afecdd"
@@ -16,7 +17,6 @@ class Aria2 < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "gettext"
   depends_on "libssh2"
   depends_on "openssl@3"
   depends_on "sqlite"
@@ -24,12 +24,15 @@ class Aria2 < Formula
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "gettext"
+  end
+
   def install
     ENV.cxx11
 
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
+    args = %w[
+      --disable-silent-rules
       --with-libssh2
       --without-gnutls
       --without-libgmp
@@ -44,14 +47,14 @@ class Aria2 < Formula
       args << "--with-openssl"
     end
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
 
     bash_completion.install "doc/bash_completion/aria2c"
   end
 
   test do
-    system "#{bin}/aria2c", "https://brew.sh/"
+    system bin/"aria2c", "https://brew.sh/"
     assert_predicate testpath/"index.html", :exist?, "Failed to create index.html!"
   end
 end

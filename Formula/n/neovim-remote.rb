@@ -6,36 +6,35 @@ class NeovimRemote < Formula
   url "https://files.pythonhosted.org/packages/69/50/4fe9ef6fd794929ceae73e476ac8a4ddbf3b0913fa248d834c9bb72978b7/neovim-remote-2.5.1.tar.gz"
   sha256 "4b3cc35463544c5747c895c52a0343cfdbba15d307647d7f57f1cce0c6a27d02"
   license "MIT"
-  revision 1
+  revision 2
   head "https://github.com/mhinz/neovim-remote.git", branch: "master"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b0ffdc95e7cebdea67c3b7c76eccb632421a62fe2973ea2c63673f23ce3b1eca"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ed26f80c996be6c16958ca2c57a3f3acfe5ef28a247707a6a0c041146ef2b417"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f949d8811fffc0098685241d5dc5a2b839eb233d9a2ea9b9cd1ad754b4379424"
-    sha256 cellar: :any_skip_relocation, sonoma:         "aa7a5c8443505049ffcd3cb3a85667e8c12ec810f1064fc96cc2b293ba7df79d"
-    sha256 cellar: :any_skip_relocation, ventura:        "96ae9384c223792bf0a3d595aaa088871b8fdce54f4896c289b933d72545cba3"
-    sha256 cellar: :any_skip_relocation, monterey:       "8722a4b9987c6662dd5bb5007797b9a56099e1e9f52534d999a5c2d96696766e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "90497fa2baead9fa8b8e8c74a7dae31362130095fe7490b02597661a0884c03f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "969080e39441d8db18d446ebae92c9a95d1d4738d64ac3528d7be2787fcef349"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4a92d145e3bfd46ebca31454bef1d0089cc2eb3f34991e73ccdfe7e83eb38165"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2c90e4d80be180455c9922bcca4c7d9da06c52fa5a229c84c287f1bd3e93b0d3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "005a3b436ae67a59fb9c41e20117e9fb8236ab8c255db39e511a51c31d918958"
+    sha256 cellar: :any_skip_relocation, ventura:       "4867e1eb46ec92e136a1500a70b5675bd26a37b374cf89a47adba12c64045bcb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7b914c93bc339131a9eafe74dd7b8ec2123a954934b29433aff5d6694644339e"
   end
 
   depends_on "neovim"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "greenlet" do
-    url "https://files.pythonhosted.org/packages/17/14/3bddb1298b9a6786539ac609ba4b7c9c0842e12aa73aaa4d8d73ec8f8185/greenlet-3.0.3.tar.gz"
-    sha256 "43374442353259554ce33599da8b692d5aa96f8976d567d4badf263371fbe491"
+    url "https://files.pythonhosted.org/packages/2f/ff/df5fede753cc10f6a5be0931204ea30c35fa2f2ea7a35b25bdaf4fe40e46/greenlet-3.1.1.tar.gz"
+    sha256 "4ce3ac6cdb6adf7946475d7ef31777c26d94bccc377e070a7986bd2d5c515467"
   end
 
   resource "msgpack" do
-    url "https://files.pythonhosted.org/packages/c2/d5/5662032db1571110b5b51647aed4b56dfbd01bfae789fa566a2be1f385d1/msgpack-1.0.7.tar.gz"
-    sha256 "572efc93db7a4d27e404501975ca6d2d9775705c2d922390d878fcf768d92c87"
+    url "https://files.pythonhosted.org/packages/cb/d0/7555686ae7ff5731205df1012ede15dd9d927f6227ea151e901c7406af4f/msgpack-1.1.0.tar.gz"
+    sha256 "dd432ccc2c72b914e4cb77afce64aab761c1137cc698be3984eee260bcb2896e"
   end
 
   resource "psutil" do
-    url "https://files.pythonhosted.org/packages/90/c7/6dc0a455d111f68ee43f27793971cf03fe29b6ef972042549db29eec39a2/psutil-5.9.8.tar.gz"
-    sha256 "6be126e3225486dff286a8fb9a06246a5253f4c7c53b475ea5f5ac934e64194c"
+    url "https://files.pythonhosted.org/packages/18/c7/8c6872f7372eb6a6b2e4708b88419fb46b857f7a2e1892966b851cc79fc9/psutil-6.0.0.tar.gz"
+    sha256 "8faae4f310b6d969fa26ca0545338b21f73c6b15db7c4a8d934a5482faa818f2"
   end
 
   resource "pynvim" do
@@ -44,8 +43,8 @@ class NeovimRemote < Formula
   end
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/c9/3d/74c56f1c9efd7353807f8f5fa22adccdba99dc72f34311c30a69627a0fad/setuptools-69.1.0.tar.gz"
-    sha256 "850894c4195f09c4ed30dba56213bf7c3f21d86ed6bdaafb5df5972593bfc401"
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
   end
 
   def install

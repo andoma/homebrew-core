@@ -1,19 +1,28 @@
 class Citus < Formula
   desc "PostgreSQL-based distributed RDBMS"
   homepage "https://www.citusdata.com"
-  url "https://github.com/citusdata/citus/archive/refs/tags/v12.1.2.tar.gz"
-  sha256 "61d959e8129df4613186841550ea29afb9348a7e6f871d5b5df4866777b82e24"
+  url "https://github.com/citusdata/citus/archive/refs/tags/v12.1.4.tar.gz"
+  sha256 "6f8e55bbcae75309192c48cdb7238e8c895fd63e5b785ff798023c8b8b799e61"
   license "AGPL-3.0-only"
   head "https://github.com/citusdata/citus.git", branch: "main"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f5543af7bc996b1cbf67aa5cec35d6946e6d2c775ec6a12e9f2acbf8e8578959"
-    sha256 cellar: :any,                 arm64_ventura:  "baffacb7246943cfe87f1c970d53cf4e99ae3bbb577769acceb6108ffa6909b5"
-    sha256 cellar: :any,                 arm64_monterey: "0fe37a14ff92c081286f7839ae98173e9105f58170432d6db526a8fdd2e1c520"
-    sha256 cellar: :any,                 sonoma:         "d964c3510ccfd8d6f9981009f6fe40d6fec1d636c1d1af52953a25702ef942ab"
-    sha256 cellar: :any,                 ventura:        "743aa322fbc40eab84ccdaf28bf61ff9d8b472bb5682421048d396bc6c8e0dfe"
-    sha256 cellar: :any,                 monterey:       "6f2aa7ac65821de64306329b75c3f8444b64c7681f0459c884e7ab22eff8a63a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "350dd049a60f29a9c462721789b00e544b464522ad161a5468263689cf5196b6"
+    sha256 cellar: :any,                 arm64_sequoia:  "f32f83baf5052b4564c889b703206d260016b3f7e69b2693dab22338dda8d598"
+    sha256 cellar: :any,                 arm64_sonoma:   "786b219283e84207a8cf2820c7c74e9e61b3f2bf0ba06a10bc32d9e781c1bdfc"
+    sha256 cellar: :any,                 arm64_ventura:  "5bb67885ce15fa7298da6923126b7130310053504edc84d2aec88630af21e831"
+    sha256 cellar: :any,                 arm64_monterey: "0422a4a7e7891f5102c12c289bea85c9f69f59fd3f36dae47bc297760c470ef0"
+    sha256 cellar: :any,                 sonoma:         "362100c937c43c33190c04eef85b17fc1a697649634500d8ed7457bf7668e9be"
+    sha256 cellar: :any,                 ventura:        "0e17325da26d62c2cb2a0e60b5adfee79676271c1a93814791bbce6918e8c5de"
+    sha256 cellar: :any,                 monterey:       "1584b2586f0a566ab65e88edc40bcd848b67870e0581affbb55ff23a6f5ed277"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4363b7e3f120d35f0fa024c82f9903619e0414185fdc9ad466853fd37c30a86d"
   end
 
   depends_on "lz4"

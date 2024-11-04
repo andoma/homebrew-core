@@ -1,11 +1,12 @@
 class Clipper < Formula
   desc "Share macOS clipboard with tmux and other local and remote apps"
-  homepage "https://wincent.com/products/clipper"
+  homepage "https://github.com/wincent/clipper"
   url "https://github.com/wincent/clipper/archive/refs/tags/2.1.0.tar.gz"
   sha256 "9c13254e418a45c2577bd8a0b61d9736d474eec81947c615f48f53dacf3df756"
   license "BSD-2-Clause"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5ba6f81698c0137f48012644d531c866531753698d1401afbf4812ac6afac002"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b4430a2ed4f0c3c46fbfbbe3b439ec13693f5d9b4d644a93a58abcda5ee22463"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "786decdda1515fb47e7defc2d5b4b8f8663ae3bc5af905a8333394404f5bac4e"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "b590d188d9161d5bb518cd7459350e26884a94d0a6b34a28d88ff8a8bd7a6e26"

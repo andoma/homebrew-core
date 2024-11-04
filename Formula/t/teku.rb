@@ -2,19 +2,18 @@ class Teku < Formula
   desc "Java Implementation of the Ethereum 2.0 Beacon Chain"
   homepage "https://docs.teku.consensys.net/"
   url "https://github.com/ConsenSys/teku.git",
-      tag:      "24.2.0",
-      revision: "b544b9ebe589e78fa2f075ae389b041dc2871ea2"
+      tag:      "24.10.3",
+      revision: "56440a82e920d81915a4c9b831a4873eff721b13"
   license "Apache-2.0"
   head "https://github.com/ConsenSys/teku.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "12559627075763aae102636f3750cfcc6d6e5dc3ce0020514f8777f0e4eeb531"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "12559627075763aae102636f3750cfcc6d6e5dc3ce0020514f8777f0e4eeb531"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "12559627075763aae102636f3750cfcc6d6e5dc3ce0020514f8777f0e4eeb531"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c1a3267a2aa42ccd8ec775d29863b8199dc50c8021199313a0178eaca4195f4c"
-    sha256 cellar: :any_skip_relocation, ventura:        "c1a3267a2aa42ccd8ec775d29863b8199dc50c8021199313a0178eaca4195f4c"
-    sha256 cellar: :any_skip_relocation, monterey:       "c1a3267a2aa42ccd8ec775d29863b8199dc50c8021199313a0178eaca4195f4c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "12559627075763aae102636f3750cfcc6d6e5dc3ce0020514f8777f0e4eeb531"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "972094785a0359a67d81a0e9f8e28b601df104b89f4a9c661e207426045e4004"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "972094785a0359a67d81a0e9f8e28b601df104b89f4a9c661e207426045e4004"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "972094785a0359a67d81a0e9f8e28b601df104b89f4a9c661e207426045e4004"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9fcee62886dc26440e681755a40fa17d5982ba531d33da024ceda3a6613940a9"
+    sha256 cellar: :any_skip_relocation, ventura:       "9fcee62886dc26440e681755a40fa17d5982ba531d33da024ceda3a6613940a9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "972094785a0359a67d81a0e9f8e28b601df104b89f4a9c661e207426045e4004"
   end
 
   depends_on "gradle" => :build

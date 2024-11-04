@@ -4,7 +4,7 @@ class Ncmpcpp < Formula
   url "https://rybczak.net/ncmpcpp/stable/ncmpcpp-0.9.2.tar.bz2"
   sha256 "faabf6157c8cb1b24a059af276e162fa9f9a3b9cd3810c43b9128860c9383a1b"
   license "GPL-2.0-or-later"
-  revision 14
+  revision 19
 
   livecheck do
     url "https://rybczak.net/ncmpcpp/installation/"
@@ -12,13 +12,12 @@ class Ncmpcpp < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "ea3916369852777ebcf702726d96c2680aebe785ec4ce7194e0189bf37d63110"
-    sha256 cellar: :any,                 arm64_ventura:  "d7a6d1c099af8e2b2ca77cdd6989b776ca0ed94286da01c4b8e0f328981f8e88"
-    sha256 cellar: :any,                 arm64_monterey: "9b6508ed32d49f365f741d9d9bbc7d54dd1c8cdad2acee15b7f9ce7826517a74"
-    sha256 cellar: :any,                 sonoma:         "f356219b0a86ac55ee3c6706aac0a9383b430f6de98af7e1fe55d24e8bf04e69"
-    sha256 cellar: :any,                 ventura:        "bea0118bf1b94b69696e2b4d068b922a1485e9995a14a168ee18043267989b4e"
-    sha256 cellar: :any,                 monterey:       "19ce924d62932e60bbd9d10b8d3d2ad8620802742fdf5a178b99e3b6e4a32d1c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c81e1846564d12174b2a9d428d8cc58ce88ef910050e88f20ae859d851dc70e"
+    sha256 cellar: :any,                 arm64_sequoia: "3e9fd5119dc58fef9d8d0fa4f5e26ad68d777df16c19fb47674b7e7f0e910b00"
+    sha256 cellar: :any,                 arm64_sonoma:  "6fd604cd6d2094ab0b6a8b904a6d5b9c2b409c52c24ca7ab090bcc3abfbad2e8"
+    sha256 cellar: :any,                 arm64_ventura: "05e9b88fb40c43f54fa994c3d953c4a85010f2ffe1fc3be63713af7c39934700"
+    sha256 cellar: :any,                 sonoma:        "495e51045de2902f8ac3d13845e4c210576328aae67c8dedecb81b09bd83377a"
+    sha256 cellar: :any,                 ventura:       "ab52d5fd05a6587ea18eb84ff0860df33cb66c30405fc70f683c28182bc6f78b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "35f0ea3a8ebe207c8581f45a7cf18a407b7ab07e28e5dadc608d619c5ed8c505"
   end
 
   head do
@@ -32,7 +31,7 @@ class Ncmpcpp < Formula
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "fftw"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "libmpdclient"
   depends_on "ncurses"
   depends_on "readline"
@@ -41,16 +40,17 @@ class Ncmpcpp < Formula
   uses_from_macos "curl"
 
   def install
-    ENV.cxx11
+    # Work around to build with icu4c 75 in stable release. Fixed in HEAD.
+    # Ref: https://github.com/ncmpcpp/ncmpcpp/commit/ba484cff1e4ac3225b6eb87dc94272daca88e613
+    inreplace "configure", /\$std_cpp14\b/, "-std=c++17" if build.stable?
 
     ENV.append "LDFLAGS", "-liconv" if OS.mac?
 
     ENV.append "BOOST_LIB_SUFFIX", "-mt"
     ENV.append "CXXFLAGS", "-D_XOPEN_SOURCE_EXTENDED"
 
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
+    args = %w[
+      --disable-silent-rules
       --enable-clock
       --enable-outputs
       --enable-unicode
@@ -60,7 +60,7 @@ class Ncmpcpp < Formula
     ]
 
     system "./autogen.sh" if build.head?
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

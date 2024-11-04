@@ -1,23 +1,22 @@
 class I2p < Formula
   desc "Anonymous overlay network - a network within a network"
   homepage "https://geti2p.net"
-  url "https://files.i2p-projekt.de/2.4.0/i2psource_2.4.0.tar.bz2"
-  sha256 "30ef8afcad0fffafd94d30ac307f86b5a6b318e2c1f44a023005841a1fcd077c"
+  url "https://github.com/i2p/i2p.i2p/releases/download/i2p-2.7.0/i2psource_2.7.0.tar.bz2"
+  sha256 "54eebdb1cfdbe6aeb1f60e897c68c6b2921c36ce921350d45d21773256c99874"
   license :cannot_represent
 
   livecheck do
-    url "https://geti2p.net/en/download"
-    regex(/href=.*?i2pinstall[._-]v?(\d+(?:\.\d+)+)\.jar/i)
+    url :stable
+    regex(/^i2p[._-]v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "06d55ee23440f5fce841cb0ece2a041bba3858bdfa62a8944c007d097274d52c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7d7b0aec492f18eec2de4b26a235e0906df0dd0075e06e09e6e1c9607dcc7caa"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3df8db0f7b82b3a4493d2f8ce4312777644404b0728718a3a90d170abb8f5e8a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "d3ccdf5be45e4295d4d01e1b597e2f4d07a26a67f46546b5300793527f583654"
-    sha256 cellar: :any_skip_relocation, ventura:        "33252491ae19ea4661abccb98080213ffa914c04e7ebecc0c598fea3e9028cc3"
-    sha256 cellar: :any_skip_relocation, monterey:       "155bde3cc2ec71aa7d9a1716f17766e1054de821cee2acbf761b53f22cbb252e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "731b92c3400edc19ddcb971f82bac8305309dddc6d0481e4f63de48ab0b7986f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "343b650514b2a3256bcbaeda5a89f4e869d201460cb62daf724d76b173e345b3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "57db7082ff0f054a016877f123ee9bca2a2f1351e51e98979f23875b5bb767ea"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a394ee6a32b5bb05261f0ee7a41b61e12a5eeeb34fcc033b650df197bffca15d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a85e7c921aa09030fd3058a358d67b591183fa3616a985255a7f3f7015bbf882"
+    sha256 cellar: :any_skip_relocation, ventura:       "4561da032d1b0fb02e77434304a6accd15db7946698e30700e2638e545135ae7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6c3f813ed31c1ca74d9936d39c62ef573c1c96e6802ee8bae3c6292eab8ef7ea"
   end
 
   depends_on "ant" => :build
@@ -34,7 +33,7 @@ class I2p < Formula
 
     # Replace vendored copy of java-service-wrapper with brewed version.
     rm libexec/"lib/wrapper.jar"
-    rm_rf libexec/"lib/wrapper"
+    rm_r(libexec/"lib/wrapper")
     jsw_libexec = Formula["java-service-wrapper"].opt_libexec
     ln_s jsw_libexec/"lib/wrapper.jar", libexec/"lib"
     ln_s jsw_libexec/"lib/#{shared_library("libwrapper")}", libexec/"lib"
@@ -56,6 +55,10 @@ class I2p < Formula
     end
 
     inreplace libexec/"wrapper.config", "$INSTALL_PATH", libexec
+
+    inreplace libexec/"i2prouter", "%USER_HOME", "$HOME"
+    inreplace libexec/"i2prouter", "%SYSTEM_java_io_tmpdir", "$TMPDIR"
+    inreplace libexec/"runplain.sh", "%SYSTEM_java_io_tmpdir", "$TMPDIR"
 
     # Wrap eepget and i2prouter in env scripts so they can find OpenJDK
     (bin/"eepget").write_env_script libexec/"eepget", JAVA_HOME: Formula["openjdk"].opt_prefix

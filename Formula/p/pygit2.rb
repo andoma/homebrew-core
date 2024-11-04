@@ -1,50 +1,46 @@
 class Pygit2 < Formula
   desc "Bindings to the libgit2 shared library"
   homepage "https://github.com/libgit2/pygit2"
-  url "https://files.pythonhosted.org/packages/f0/5e/6e05213a9163bad15489beda5f958500881d45889b0df01d7b8964f031bf/pygit2-1.14.1.tar.gz"
-  sha256 "ec5958571b82a6351785ca645e5394c31ae45eec5384b2fa9c4e05dde3597ad6"
+  url "https://files.pythonhosted.org/packages/a4/85/c848cdf44214bf541c4a725a0a6e271f8db9f18cfccef702d53f83f1e19a/pygit2-1.16.0.tar.gz"
+  sha256 "7b29a6796baa15fc89d443ac8d51775411d9b1e5b06dc40d458c56c8576b48a2"
   license "GPL-2.0-only" => { with: "GCC-exception-2.0" }
   head "https://github.com/libgit2/pygit2.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "54563311867d16e731a50966bacea00fadf9eb0bafc9b49826d3e4f07b6c6300"
-    sha256 cellar: :any,                 arm64_ventura:  "c507e5bd1a2aa191f3b313191de95057fc2298965fdfa255f368c89e45077cd2"
-    sha256 cellar: :any,                 arm64_monterey: "0875766eac458047e8022d5ed28fb7faf7f0e3b739571d0f191959ba9b6d9009"
-    sha256 cellar: :any,                 sonoma:         "a37b6b540ecf77b1fa6d9a406bcd7e34a6f723a83fb61df1e6cdd9aabb7e5be5"
-    sha256 cellar: :any,                 ventura:        "0d02be9979b8a3c75c641a714af62c26e78b2726f84557e821bbd7ce459c77fd"
-    sha256 cellar: :any,                 monterey:       "cba983c98e9099a1c677de6ac63c861c3b7c8421a57c448954dff0e92b6b39dc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fe2b16dccff436557353ca888557f6a652e7eff3f70d0e430a54ee757fa06b1b"
+    sha256 cellar: :any,                 arm64_sequoia: "2bdefe79cffeb8fef4504b49bb6e10da8f8f6a1ad4f06de0cd14bcde65e0da06"
+    sha256 cellar: :any,                 arm64_sonoma:  "fd5ecbab353e4990cb4d11972191dbc0a8c29c0768c152a5aab39f29e4de0937"
+    sha256 cellar: :any,                 arm64_ventura: "e6c0cf19f7093ae9addfed9f596bb221c6a7695a6ed8ce971e270e61f64d1a6d"
+    sha256 cellar: :any,                 sonoma:        "0f200d9cfba5fac088a8036163afb1bad97a0c3e51b3595603ce28aca42a29d8"
+    sha256 cellar: :any,                 ventura:       "571795c815fe4588579e6912a0fea4b7e0054cea9f9f9ed89da2f9e56dd24217"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2a94b5d02dc781e9bc927c850b599b34b6915b02f03341c1c744e434a1ae1a25"
   end
 
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.11" => [:build, :test]
   depends_on "python@3.12" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
   depends_on "cffi"
   depends_on "libgit2"
 
   def pythons
-    deps.select { |dep| dep.name.start_with?("python@") }
-        .map(&:to_formula)
-        .sort_by(&:version)
+    deps.map(&:to_formula)
+        .select { |f| f.name.start_with?("python@") }
+        .map { |f| f.opt_libexec/"bin/python" }
   end
 
   def install
-    pythons.each do |python|
-      python_exe = python.opt_libexec/"bin/python"
-      system python_exe, "-m", "pip", "install", *std_pip_args, "."
+    pythons.each do |python3|
+      system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
     end
   end
 
   test do
     assert_empty resources, "This formula should not have any resources!"
 
-    pythons.each do |python|
-      python_exe = python.opt_libexec/"bin/python"
-      pyversion = Language::Python.major_minor_version(python_exe)
+    pythons.each do |python3|
+      pyversion = Language::Python.major_minor_version(python3)
 
       (testpath/"#{pyversion}/hello.txt").write "Hello, pygit2."
       mkdir pyversion do
-        system python_exe, "-c", <<~PYTHON
+        system python3, "-c", <<~PYTHON
           import pygit2
           repo = pygit2.init_repository('#{testpath}/#{pyversion}', False) # git init
 

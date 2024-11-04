@@ -6,21 +6,20 @@ class CfnFlip < Formula
   url "https://files.pythonhosted.org/packages/ca/75/8eba0bb52a6c58e347bc4c839b249d9f42380de93ed12a14eba4355387b4/cfn_flip-1.3.0.tar.gz"
   sha256 "003e02a089c35e1230ffd0e1bcfbbc4b12cc7d2deb2fcc6c4228ac9819307362"
   license "Apache-2.0"
-  revision 1
+  revision 2
 
   bottle do
-    rebuild 6
-    sha256 cellar: :any,                 arm64_sonoma:   "0c33c1b5656b50bf90c99951eed5ee382af177d5632d2f03209c11ca4d686882"
-    sha256 cellar: :any,                 arm64_ventura:  "289effc7b26137d6a94abc5ebdfd51e544c128d3e13c268c9c5202ec31b7a2d6"
-    sha256 cellar: :any,                 arm64_monterey: "8fe7485220c3e64d5cfa6eaf9a63fbc6ec0e5e8383867c2cdaa704173e2c17e6"
-    sha256 cellar: :any,                 sonoma:         "fe168805ac857d97c45dc33a4ddd09943e9f70f3a80c38e9a8c2581892d84db7"
-    sha256 cellar: :any,                 ventura:        "0ec749160a01b0287c4a7749f7ff52c9843e98f41c8bd1e5ba63485aaf39a5df"
-    sha256 cellar: :any,                 monterey:       "d8ee2e1a6d1602eb6ef4c7ccff05bc5ebde3ef85f542cbb9037acef4b7c9b0b0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "366bbe67359faaabc8549898143985362e1aac613e5c1536512f3868ce8c2505"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "56fe9fe6185019ce53a85c5ddc71abbd373c24c27bb26a4ba6e73463b89b1df4"
+    sha256 cellar: :any,                 arm64_sonoma:  "6adc448d4253f808ffc13a4d4191acd29608047c62f573916567bd5dee5cd37c"
+    sha256 cellar: :any,                 arm64_ventura: "e7a1d40f2eedb27478defd049e6779b5f8717c583f3ea3b1c8b293f3ef3bbea7"
+    sha256 cellar: :any,                 sonoma:        "fb306034d555f7d8bef38114f949c89c0af36747814cb7fe91d7c59367614c96"
+    sha256 cellar: :any,                 ventura:       "29d0c987000711a22b22cf4035132104e7e3decaae3980f7ef347139c6c0d30e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4f53b22e1f37ddd7932bc70841da5bf64cff519693b166098a0309642a539406"
   end
 
   depends_on "libyaml"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "click" do
     url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
@@ -28,13 +27,8 @@ class CfnFlip < Formula
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/cd/e5/af35f7ea75cf72f2cd079c95ee16797de7cd71f29ea7c68ae5ce7be1eda0/PyYAML-6.0.1.tar.gz"
-    sha256 "bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"
-  end
-
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/c9/3d/74c56f1c9efd7353807f8f5fa22adccdba99dc72f34311c30a69627a0fad/setuptools-69.1.0.tar.gz"
-    sha256 "850894c4195f09c4ed30dba56213bf7c3f21d86ed6bdaafb5df5972593bfc401"
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "six" do

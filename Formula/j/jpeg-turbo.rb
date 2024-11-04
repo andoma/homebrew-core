@@ -1,26 +1,27 @@
 class JpegTurbo < Formula
   desc "JPEG image codec that aids compression and decompression"
   homepage "https://www.libjpeg-turbo.org/"
-  url "https://downloads.sourceforge.net/project/libjpeg-turbo/3.0.1/libjpeg-turbo-3.0.1.tar.gz"
-  sha256 "22429507714ae147b3acacd299e82099fce5d9f456882fc28e252e4579ba2a75"
-  license "IJG"
+  url "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.0.4/libjpeg-turbo-3.0.4.tar.gz"
+  sha256 "99130559e7d62e8d695f2c0eaeef912c5828d5b84a0537dcb24c9678c9d5b76b"
+  license all_of: [
+    "IJG", # libjpeg API library and programs
+    "Zlib", # libjpeg-turbo SIMD source code
+    "BSD-3-Clause", # TurboJPEG API library and programs
+  ]
   head "https://github.com/libjpeg-turbo/libjpeg-turbo.git", branch: "main"
 
-  # Versions with a 90+ patch are unstable (e.g., 2.1.90 corresponds to
-  # 3.0 beta1) and this regex should only match the stable versions.
   livecheck do
     url :stable
-    regex(%r{url=.*?/libjpeg-turbo[._-]v?(\d+\.\d+\.(?:\d|[1-8]\d+)(?:\.\d+)*)\.t}i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "89b1342d1dd69be94c1e293c8fc0ec5d324cd62f42bc8c3e9049bf5452957e01"
-    sha256 cellar: :any,                 arm64_ventura:  "0673df94b246dd4e63e8d80e942fd32e6bbd662eba0134b262e9eb6c5e1e2d88"
-    sha256 cellar: :any,                 arm64_monterey: "1ae417c7b858c45796f21a17159f21bde07a0e575318dca1757b92fb3b3e515c"
-    sha256 cellar: :any,                 sonoma:         "7794d8c394ab444645e86b87a47a868fe82f16b0dcc13d596f684b62a2661c57"
-    sha256 cellar: :any,                 ventura:        "01cea0389ed701926bb4141b810a244f9ac57dc43512855019fdf6f0586018a7"
-    sha256 cellar: :any,                 monterey:       "acef2e25ab9ab0d53599d43b9f9043006fc0d071c24f3e7e4ef0128ff16319ec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8bcf694df57925d1e267cf9fec76c8495662950fd6008b9e29f9f754c8371320"
+    sha256 cellar: :any,                 arm64_sequoia: "f85cd191b0fce773ae3d3502395ee2d56eec5be7607a95834a13d63d22181d78"
+    sha256 cellar: :any,                 arm64_sonoma:  "e936777455b6cb66819a7db9f4396dfd4d0b8c7b0d700ea28213780b16c2dac1"
+    sha256 cellar: :any,                 arm64_ventura: "95a0c93dc8f316a7235471cf16203aa1efb595c4568294ef854510d3c0050699"
+    sha256 cellar: :any,                 sonoma:        "54fe1e9ac8988d4461fcca02ac0f85b3d534acc0b9b42f6115a0ce423732d877"
+    sha256 cellar: :any,                 ventura:       "0e7ef21719a1106c59fab1f82cbbd20144898fa29c0e74407b9d55ed14feb951"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7eb799fd7e23195d2cb8ef8bf5282518a26f06864cc2d5a9d134a520916291e2"
   end
 
   depends_on "cmake" => :build
@@ -39,13 +40,16 @@ class JpegTurbo < Formula
 
   def install
     args = ["-DWITH_JPEG8=1", "-DCMAKE_EXE_LINKER_FLAGS=-Wl,-rpath,#{rpath}"]
-    # https://github.com/libjpeg-turbo/libjpeg-turbo/issues/709
-    if Hardware::CPU.arm? && MacOS.version >= :ventura
-      args += ["-DFLOATTEST8=fp-contract",
-               "-DFLOATTEST12=fp-contract"]
+    if Hardware::CPU.arm? && OS.mac?
+      if MacOS.version >= :ventura
+        # https://github.com/libjpeg-turbo/libjpeg-turbo/issues/709
+        args += ["-DFLOATTEST8=fp-contract",
+                 "-DFLOATTEST12=fp-contract"]
+      elsif MacOS.version == :monterey
+        # https://github.com/libjpeg-turbo/libjpeg-turbo/issues/734
+        args << "-DFLOATTEST12=no-fp-contract"
+      end
     end
-    # https://github.com/libjpeg-turbo/libjpeg-turbo/issues/734
-    args << "-DFLOATTEST12=no-fp-contract" if Hardware::CPU.arm? && MacOS.version == :monterey
     args += std_cmake_args.reject { |arg| arg["CMAKE_INSTALL_LIBDIR"].present? }
 
     system "cmake", "-S", ".", "-B", "build", *args

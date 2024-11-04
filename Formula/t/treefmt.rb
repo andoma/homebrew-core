@@ -1,30 +1,31 @@
 class Treefmt < Formula
   desc "One CLI to format the code tree"
   homepage "https://github.com/numtide/treefmt"
-  url "https://github.com/numtide/treefmt/archive/refs/tags/v0.6.1.tar.gz"
-  sha256 "5bb67936c5e1dfdb0f260e0f1795e1624697e266c6c1b9e47914df4aa17c5107"
+  url "https://github.com/numtide/treefmt/archive/refs/tags/v2.0.5.tar.gz"
+  sha256 "40ced3eec35522405208b73b3999e8975c1eec51e215321d2448d1cb8052887a"
   license "MIT"
-
-  head "https://github.com/numtide/treefmt.git", branch: "master"
+  head "https://github.com/numtide/treefmt.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bba21b0bdd6ae7fd7569524b658681208c89672cb0eb92629c758f21e488e16c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ded3e211ab31c99263044c87cab977a4b614834acf31c14e699918b6c8bad104"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "44ae0868f85b77fb10d3cba220448f6e1cf8e5b8e877cb841028b39aad203f4e"
-    sha256 cellar: :any_skip_relocation, sonoma:         "80c344cc850282f3a0dfb58b01900069b94e07c9a6495842caca856dc2a183bc"
-    sha256 cellar: :any_skip_relocation, ventura:        "64e5fd37315933d10520ebe86a8c30aa721338c62a2f1eaa924f28f5b885fc66"
-    sha256 cellar: :any_skip_relocation, monterey:       "0896efaa39e5d6f9ec65076c930427de27b0ed3b7daf8178eb3380a2c0306ddc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "00f0145abdd2b5c97fae57564e6f3db8349c712f6f935f33e3d941d27e1bf124"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2da9a33f81027f40724c3d9bd9b1c7f77207f4f04a568681d82d6e1319faa729"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "adb1fb8c96c398ca1540fff818c06b41ccb48df46b95166d6986bffa0fb35fe8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "adb1fb8c96c398ca1540fff818c06b41ccb48df46b95166d6986bffa0fb35fe8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "adb1fb8c96c398ca1540fff818c06b41ccb48df46b95166d6986bffa0fb35fe8"
+    sha256 cellar: :any_skip_relocation, sonoma:         "a736210d2908c46ccbc8ebde30392819950481ebe364f034cd596f3289eb841b"
+    sha256 cellar: :any_skip_relocation, ventura:        "a736210d2908c46ccbc8ebde30392819950481ebe364f034cd596f3289eb841b"
+    sha256 cellar: :any_skip_relocation, monterey:       "a736210d2908c46ccbc8ebde30392819950481ebe364f034cd596f3289eb841b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "24f03a26fe2ce747d4fd17e2846c008e7d61464a580db43c3f8df0887d2a10f4"
   end
 
-  depends_on "rust" => :build
+  depends_on "go" => :build
 
   def install
-    system "cargo", "install", *std_cargo_args
+    ldflags = "-s -w -X git.numtide.com/numtide/treefmt/build.Version=#{version}"
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do
-    # Test that treefmt responds as expected when run without treefmt.toml config
-    assert_match "treefmt.toml could not be found", shell_output("#{bin}/treefmt 2>&1", 1)
+    assert_match "error: could not find [treefmt.toml .treefmt.toml]", shell_output("#{bin}/treefmt 2>&1", 1)
+    assert_match version.to_s, shell_output("#{bin}/treefmt --version")
   end
 end

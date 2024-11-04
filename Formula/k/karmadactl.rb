@@ -1,19 +1,18 @@
 class Karmadactl < Formula
   desc "CLI for Karmada control plane"
   homepage "https://karmada.io/"
-  url "https://github.com/karmada-io/karmada/archive/refs/tags/v1.8.1.tar.gz"
-  sha256 "3d06aa71f043490991e1f76d9768ffa131e7f7ad4c088e07feafb2f587de04cb"
+  url "https://github.com/karmada-io/karmada/archive/refs/tags/v1.11.2.tar.gz"
+  sha256 "4ad6e30941fb4c9a37bcea039f1e3eabea245cb6536f0e79cfddc24efd4b8a0b"
   license "Apache-2.0"
   head "https://github.com/karmada-io/karmada.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dfda2bd92f3165e22b02495dd0f67d114574c9e3f326797fea0f6db92abc0ae3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b883c4c131b9bbca52aff7e54f58fb8f096b6261c4e25da7f6684b5bd1e9e8a3"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "be3eef892781df0e6cd074b05346a0e99175aed82e47e2a418fadca319a41dab"
-    sha256 cellar: :any_skip_relocation, sonoma:         "abef04362bfb3d36a7ab66a855e7e2058b7909e3fac53ac023693af8e7aafe80"
-    sha256 cellar: :any_skip_relocation, ventura:        "74345481a611d7d86ebe209706ba4fa5054c792b6b5925748e2631aee93fb72e"
-    sha256 cellar: :any_skip_relocation, monterey:       "e4264cecde693a60e193caae711c483a9c45604c005fa73c7646241a81728a79"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a1a175b6e39703f20bb4169759ca0b9c13c64747be97c2cb645ea159f4478927"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5db378e650373d6c958adbf7bc3619d33b9af7ab2556cd3093348878c74df534"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1f51e982c63b5cd50107fdcc91071e61a5a962fc7555c1a985c568d23c997dd0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "232ccd229244fb89790bfebcaa59566f942795179d9abdb82dc22a386ed84b1a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "92914daa6253323fe912fa897b974e15a5cfe5a31757c94dc7e50adfaa32867e"
+    sha256 cellar: :any_skip_relocation, ventura:       "f9d7877b8e0b985fb4fc66d8c112482cbe4e2d0c3ea29c832ac41d2fe91c7fdd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c2d376dd64afd27137105e58f31dd6225c4e3381611309a77b3d2e948e630d48"
   end
 
   depends_on "go" => :build
@@ -26,7 +25,7 @@ class Karmadactl < Formula
       -X github.com/karmada-io/karmada/pkg/version.gitTreeState=clean
       -X github.com/karmada-io/karmada/pkg/version.buildDate=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/karmadactl"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/karmadactl"
 
     generate_completions_from_executable(bin/"karmadactl", "completion")
   end

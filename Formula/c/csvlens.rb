@@ -1,19 +1,18 @@
 class Csvlens < Formula
   desc "Command-line csv viewer"
   homepage "https://github.com/YS-L/csvlens"
-  url "https://github.com/YS-L/csvlens/archive/refs/tags/v0.7.0.tar.gz"
-  sha256 "3ddfa1229bb9f59da30c0567f723adbfde931dff36305639069657bcec1dde9b"
+  url "https://github.com/YS-L/csvlens/archive/refs/tags/v0.10.1.tar.gz"
+  sha256 "7d9062fa94a67fec121062bd45efb00a40bf26236f3cc635ec0945793344e097"
   license "MIT"
   head "https://github.com/YS-L/csvlens.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "aa633b7eb513eb1b46607fc9ae2df72279db648e63f4daf2a7bb429f76048943"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b24d0f138b4e7ceac21815116dc970ffbb7bf28aa4917b75b29da6de20ca39fa"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d59d43d0720c78067f6a0a8ece7e2e7c356848cc64e5513646a192948f016c0e"
-    sha256 cellar: :any_skip_relocation, sonoma:         "3ca202cadb88dc057ac9f573705c577b2c5042789bde428d74e6513383fee0f3"
-    sha256 cellar: :any_skip_relocation, ventura:        "9e599d0128dfcba1a8d67a90371debcc6252ffa4d97ad1a8ca98c734740be79c"
-    sha256 cellar: :any_skip_relocation, monterey:       "e18baab1d62218f32b06afa8019bb0442556e976e69e9121a2c1d7d415434506"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "969f326d810c5dad6d6cfe9170a6680998ea2d906bf6586a1743fa881c257e43"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e15ca33c987cfa9e2649aa3a374b3f323c6de6cf000a6e8960fed4e7b743672c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b124b4af51bd667998443544ccd19e53a9ce7a8f371b8b50dab154d45f00bc58"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "140f8a7589e47ffb645d660e728287809e7be34241b6c4d5eb24edd8c156aee2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "54306a793ddaba7cc4c44857d22ad274b2c5fb405f114327211f0fd81a76c3f9"
+    sha256 cellar: :any_skip_relocation, ventura:       "44ad684fc850eac40a85de7da11d6e00f68513ff302d84b6975f05357ef0aa5a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "74cc0a74db62274d21f53a9c10d01bb459ef266f138eb49e0d86f2c2db612f99"
   end
 
   depends_on "rust" => :build
@@ -28,7 +27,7 @@ class Csvlens < Formula
     (testpath/"test.csv").write("A,B,C\n100,42,300")
     PTY.spawn(bin/"csvlens", "#{testpath}/test.csv", "--echo-column", "B") do |r, w, _pid|
       r.winsize = [10, 10]
-      sleep 1
+      sleep 5
       # Select the column B by pressing enter. The answer 42 should be printed out.
       w.write "\r"
       assert r.read.end_with?("42\r\n")

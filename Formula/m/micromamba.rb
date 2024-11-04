@@ -1,8 +1,8 @@
 class Micromamba < Formula
   desc "Fast Cross-Platform Package Manager"
   homepage "https://github.com/mamba-org/mamba"
-  url "https://github.com/mamba-org/mamba/archive/refs/tags/micromamba-1.5.6.tar.gz"
-  sha256 "aabff23746d634255681d4bb249740214e8405c12caee9682e0ee0c22e423e4a"
+  url "https://github.com/mamba-org/mamba/archive/refs/tags/micromamba-1.5.10.tar.gz"
+  sha256 "38ee4658f66c5e4bf2c33cd3c9c0ebd01fe2e3a6da6ac619cc4702a9072dcc3c"
   license "BSD-3-Clause"
   head "https://github.com/mamba-org/mamba.git", branch: "main"
 
@@ -14,13 +14,12 @@ class Micromamba < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "6ff4f479222f1e02281a48438a1787b69617af6c607f903c9b46f0543c9d433b"
-    sha256 cellar: :any,                 arm64_ventura:  "d7c6fd68fee5afca0eb952005a1f8f5d65069bd9568b02dd7232c4c79485059d"
-    sha256 cellar: :any,                 arm64_monterey: "0295c9176e857a65b5d735c51b7be7566207926dcbe096823eee21ce074c6734"
-    sha256 cellar: :any,                 sonoma:         "3187c0844681716b03641b01a12addf9a4578cf95479e058dd9dd91884c3fa26"
-    sha256 cellar: :any,                 ventura:        "3fd1e0e76073c3da06ecbee4a22bd11a82afdc504e0f66b1c5a62eb72c0ce74d"
-    sha256 cellar: :any,                 monterey:       "93afbdcdc4d69fc166c3bcfe0079406e273f8783b1a65f80634c29fe1a296d87"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ffcf84f41a80201fa0ec3e451ea78fde2acfbfc02d8d3ff2fffc1736638f74b"
+    sha256 cellar: :any,                 arm64_sequoia: "3bf5ba3e4fa863d6072c78c4229e533efaeda27137e78191c3c5d852470f46b2"
+    sha256 cellar: :any,                 arm64_sonoma:  "01eed43203215173119a8280a7ed2f97417f09c236ac279d95ad94fe57af8fd1"
+    sha256 cellar: :any,                 arm64_ventura: "273313c71f6212077cff10f6ee2ba00fe2d50056d356088935d38204bcf3ab71"
+    sha256 cellar: :any,                 sonoma:        "e0d5863f983f062ea6e108d8258d755ad0fd28d9d5fd764d559b8ec46199aa57"
+    sha256 cellar: :any,                 ventura:       "45a20d1caddf34134b10cd45b6af40a5db46787b44a5a358ba0cf306871a2076"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e3af94e30de7979583d176e00f31195eaebeb24fef85f3919923c7de5ead80fc"
   end
 
   depends_on "cli11" => :build
@@ -28,7 +27,9 @@ class Micromamba < Formula
   depends_on "nlohmann-json" => :build
   depends_on "spdlog" => :build
   depends_on "tl-expected" => :build
+
   depends_on "fmt"
+  depends_on "libarchive"
   depends_on "libsolv"
   depends_on "lz4"
   depends_on "openssl@3"
@@ -38,17 +39,10 @@ class Micromamba < Formula
   depends_on "zstd"
 
   uses_from_macos "python" => :build
+  uses_from_macos "bzip2"
   uses_from_macos "curl", since: :ventura # uses curl_url_strerror, available since curl 7.80.0
   uses_from_macos "krb5"
-  uses_from_macos "libarchive", since: :monterey
   uses_from_macos "zlib"
-
-  resource "libarchive-headers" do
-    on_monterey :or_newer do
-      url "https://github.com/apple-oss-distributions/libarchive/archive/refs/tags/libarchive-121.40.3.tar.gz"
-      sha256 "bb972360581fe5326ef5d313ec51579b1c1a4c8a6f20a5068851032a0fa74f33"
-    end
-  end
 
   def install
     args = %W[
@@ -58,16 +52,6 @@ class Micromamba < Formula
       -DMICROMAMBA_LINKAGE=DYNAMIC
       -DCMAKE_INSTALL_RPATH=#{rpath}
     ]
-
-    if OS.mac? && MacOS.version >= :monterey
-      resource("libarchive-headers").stage do
-        cd "libarchive/libarchive" do
-          (buildpath/"homebrew/include").install "archive.h", "archive_entry.h"
-        end
-      end
-      args << "-DLibArchive_INCLUDE_DIR=#{buildpath}/homebrew/include"
-      ENV.append_to_cflags "-I#{buildpath}/homebrew/include"
-    end
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
@@ -86,7 +70,7 @@ class Micromamba < Formula
     assert_match version.to_s, shell_output("#{bin}/micromamba --version").strip
 
     python_version = "3.9.13"
-    system "#{bin}/micromamba", "create", "-n", "test", "python=#{python_version}", "-y", "-c", "conda-forge"
+    system bin/"micromamba", "create", "-n", "test", "python=#{python_version}", "-y", "-c", "conda-forge"
     assert_match "Python #{python_version}", shell_output("#{bin}/micromamba run -n test python --version").strip
   end
 end

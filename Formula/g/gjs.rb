@@ -1,24 +1,35 @@
 class Gjs < Formula
   desc "JavaScript Bindings for GNOME"
   homepage "https://gitlab.gnome.org/GNOME/gjs/wikis/Home"
-  url "https://download.gnome.org/sources/gjs/1.78/gjs-1.78.4.tar.xz"
-  sha256 "9aec7ab872c2050404907ae94f0ae7abec8a54bd9c894ddb5c2d0f51e932b9a1"
+  url "https://download.gnome.org/sources/gjs/1.82/gjs-1.82.1.tar.xz"
+  sha256 "fb39aa5636576de0e5a1171f56a1a5825e2bd1a69972fb120ba78bd109b5693c"
   license all_of: ["LGPL-2.0-or-later", "MIT"]
   head "https://gitlab.gnome.org/GNOME/gjs.git", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:  "d88350bddb9aaef1bcf23ab0d4a5fd11c13b288bf73995c6a4003e77ad54b099"
-    sha256 arm64_ventura: "32b5fca08042983e588453ad345605b115f1d14e18df036c142e2be85dabc933"
-    sha256 sonoma:        "1261efe742c5b8ce009258801afe02070e98a0d9206c8a29349330d542468372"
-    sha256 ventura:       "d4ed1e823844542318ea23757d4d6274027dd23b57425fc08727d0b003ae8f49"
-    sha256 x86_64_linux:  "8ac3b5db9e0133953f2b0f80e89835bf5247dec6a81f95f421076d5e376debba"
+    sha256 arm64_sequoia: "41ff4303b958dc47da84f02e9beb26862bdff17a0a19bc7db4ca9277950ae08c"
+    sha256 arm64_sonoma:  "3c8aeb3f5754c79adf62ab2b2b5060e954b5b7fed7480a1cf63980769dfd1a49"
+    sha256 arm64_ventura: "1bf97f04a7c89a514d87dc4e3af9e5313a9d8d5d845cd9280847f3796a0dddcd"
+    sha256 sonoma:        "3aaacc7af5be7d09fd22f818a3305edc5a8396d101980e2abaecc50c48bfb28c"
+    sha256 ventura:       "2620575c227e4b02d8e6ba9beea1670e7ea9775e379ca8ea64600abd02fae50a"
+    sha256 x86_64_linux:  "2d3994ac90659902a716b45f0661e48542708703827580c5c06361459ce23970"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
+
+  depends_on "cairo"
+  depends_on "glib"
   depends_on "gobject-introspection"
+  depends_on "libx11"
   depends_on "readline"
   depends_on "spidermonkey"
+
+  uses_from_macos "libffi"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   fails_with gcc: "5" # meson ERROR: SpiderMonkey sanity check: DID NOT COMPILE
 

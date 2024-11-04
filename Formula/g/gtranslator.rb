@@ -1,25 +1,28 @@
 class Gtranslator < Formula
   desc "GNOME gettext PO file editor"
   homepage "https://wiki.gnome.org/Design/Apps/Translator"
-  url "https://download.gnome.org/sources/gtranslator/45/gtranslator-45.3.tar.xz"
-  sha256 "3010204df5c7a5ae027f5a30b1544d6977d417f0e4bb9de297f0ad1a80331873"
+  url "https://download.gnome.org/sources/gtranslator/47/gtranslator-47.0.tar.xz"
+  sha256 "76e1041c5efb0a88ba18764ea4588b4e1965fa50314e01a173fa3ea0150e1cd5"
   license "GPL-3.0-or-later"
+  revision 1
 
   bottle do
-    sha256 arm64_sonoma:   "f7a83667fb2c292b47e3c25dc570f8da7b1893cb8f0525632b7557f9c3007392"
-    sha256 arm64_ventura:  "457582c7749a84d92150f62ca6c7481b4a420f6646f5d14ec4d99d180da18a05"
-    sha256 arm64_monterey: "13ccfd1b17f9a2d5f07f9f7504d3ab0b97d7babb8b7180f1fe4c4f83216ba81d"
-    sha256 sonoma:         "7665a0a187f9662ed1619d140be24e3c15d6980042c84063fd3383830475e3f8"
-    sha256 ventura:        "0bc812a9b65210fda7feb92935858ccd7dc3e8f38197829d2950a1939e524cda"
-    sha256 monterey:       "1a3a191c9aa125dbed54f69f626134729bb1ad184ceef84b9e00b1d467420312"
-    sha256 x86_64_linux:   "33aa9ebdf847d1d93cdf8aa456ae7966ee0d4e9e0f839ea11f567da153aced64"
+    sha256 arm64_sequoia: "2e437ceeced7d637bf27767134cf2a2bc4450d8a4bbbe1f2c4e2d1366f132c5f"
+    sha256 arm64_sonoma:  "7189d694adb46dcbb4d29903aa213ac3411954b3636d6e9b66734018457a837f"
+    sha256 arm64_ventura: "4f1a1106b78f94f0ff7868db11fbce660706094e8516dd542ff0db74c04d86ec"
+    sha256 sonoma:        "3e3325618a0b76ae70458fd864d466a95ea8847ad9c2da0c88948aa9574390ad"
+    sha256 ventura:       "87be245fa245123cdf9e310b45da667f04ccf3e45404013918774bdfc8242b6f"
+    sha256 x86_64_linux:  "6b63dcc4ddcaaa9e7fd4cc2e1edb3e7b82f5dd9edd704d5859bf9849ae088199"
   end
 
+  depends_on "desktop-file-utils" => :build # for update-desktop-database
   depends_on "itstool" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+
   depends_on "adwaita-icon-theme"
+  depends_on "cairo"
   depends_on "gettext"
   depends_on "glib"
   depends_on "gspell"
@@ -28,8 +31,9 @@ class Gtranslator < Formula
   depends_on "json-glib"
   depends_on "libadwaita"
   depends_on "libgda"
-  depends_on "libhandy"
   depends_on "libsoup"
+  depends_on "libspelling"
+  depends_on "pango"
 
   uses_from_macos "libxml2"
 
@@ -48,6 +52,6 @@ class Gtranslator < Formula
   end
 
   test do
-    system "#{bin}/gtranslator", "-h"
+    system bin/"gtranslator", "-h"
   end
 end

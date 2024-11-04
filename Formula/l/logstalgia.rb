@@ -4,16 +4,17 @@ class Logstalgia < Formula
   url "https://github.com/acaudwell/Logstalgia/releases/download/logstalgia-1.1.4/logstalgia-1.1.4.tar.gz"
   sha256 "c049eff405e924035222edb26bcc6c7b5f00a08926abdb7b467e2449242790a9"
   license "GPL-3.0-or-later"
-  revision 3
+  revision 5
 
   bottle do
-    sha256 arm64_sonoma:   "ebcc366bc89707b9162c908f9ca976c662e6fe4bbc0bcbd7c8ced4d481efacd4"
-    sha256 arm64_ventura:  "af8ca708d5d4cc686dbc42ec2f5260be152d7823f3779e4e0c31f1c48be34085"
-    sha256 arm64_monterey: "993e38fc86fdf9c5ba13fbaecb5f9bedfa2f49cb5587898b261a67d3e19b6650"
-    sha256 sonoma:         "6fb15c1f5cc4a1a0a15d115f2fcf3b642f439f04a1cd465cac88e9d03f10f363"
-    sha256 ventura:        "c60401be9305eeb994adaac41c4d96a9adbf1366fd315d29ed80507cee3976bf"
-    sha256 monterey:       "7d4fa50e176d7c50f2935b9153adeb4cf2af2a3487ff195d9e5382659f7c3c0e"
-    sha256 x86_64_linux:   "8f1966921df697fec54ec26fe73cc2ceba9a3e3801c651269134ed88aebb8c1a"
+    sha256 arm64_sequoia:  "9e8b7be5a60940996e39a2290dadf2fe4b07ee78b2cac15d504bcffe0de099da"
+    sha256 arm64_sonoma:   "63b8d1d033d12bfb0d5a8dadbf8e25d8c7735f31b634cc51ad76551c10f79e91"
+    sha256 arm64_ventura:  "827d02ce978922120cdb8dc135defbe0465060ee8c7d3c778def40fde470701b"
+    sha256 arm64_monterey: "8a3e25918187a5b2dafb7f6e243d4c5a4e02aa7912b35f6e056f2a0717356118"
+    sha256 sonoma:         "c3150ab07306875bb647bda016781a47e903921e3904d121bbe175a285e42d53"
+    sha256 ventura:        "81f66ea19acbcb1def8d9069fcb8562ff2d50518e9bee5197eb10fddcaedce39"
+    sha256 monterey:       "5255bb5cc6b4dc2b80d6b09666d16753856cb50fbe92b88cf5673013ad38161f"
+    sha256 x86_64_linux:   "d92c190f521278e03b0a848bbb481092dcda2f68ffb85692f0c355da856faf75"
   end
 
   head do
@@ -26,6 +27,7 @@ class Logstalgia < Formula
 
   depends_on "glm" => :build
   depends_on "pkg-config" => :build
+
   depends_on "boost"
   depends_on "freetype"
   depends_on "glew"
@@ -34,20 +36,19 @@ class Logstalgia < Formula
   depends_on "sdl2"
   depends_on "sdl2_image"
 
+  on_linux do
+    depends_on "mesa"
+    depends_on "mesa-glu"
+  end
+
   def install
-    # clang on Mt. Lion will try to build against libstdc++,
-    # despite -std=gnu++0x
-    ENV.libcxx
+    ENV.cxx11 # to build with boost>=1.85
 
-    # For non-/usr/local installs
-    ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
-
-    # Handle building head.
-    system "autoreconf", "-f", "-i" if build.head?
-
-    system "./configure", *std_configure_args,
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", "--disable-silent-rules",
                           "--with-boost-libdir=#{Formula["boost"].opt_lib}",
-                          "--without-x"
+                          "--without-x",
+                          *std_configure_args
     system "make"
     system "make", "install"
   end

@@ -1,26 +1,27 @@
 class Hoverfly < Formula
   desc "API simulations for development and testing"
   homepage "https://hoverfly.io/"
-  url "https://github.com/SpectoLabs/hoverfly/archive/refs/tags/v1.6.3.tar.gz"
-  sha256 "b239c8207dd2f1c3c55b35bbcc2f85106c7dfd87f6eb1398b7db5d203dd6a839"
+  url "https://github.com/SpectoLabs/hoverfly/archive/refs/tags/v1.10.4.tar.gz"
+  sha256 "7d88ad51fd268bed01078b5fa154a2003df7ad130d6438f3b3c299d73695568d"
   license "Apache-2.0"
   head "https://github.com/SpectoLabs/hoverfly.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7c3cfaa8ee1ee098912de541fe65871adf6e813d3001d4a7eeeffb0c757daa58"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b904858c77df9fd9d252e3b001aeb9ef07f073ca2a99202abfa70886718f4226"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "926506854cb0949dc917966e2222fb7ea92d2de9d913da3822b7134d36b4ad43"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c520db531148b3280619030669c5f2dc7b8a3adfdc69ab348b25fb26efd0e51f"
-    sha256 cellar: :any_skip_relocation, ventura:        "ab4dcf53e31cb6f5af5f20f0c900427dd095666321bcfbbca01e6742ecd78a6c"
-    sha256 cellar: :any_skip_relocation, monterey:       "c93b3ffd1b02efecb83d319b3edff0d38584d85d873fb038efdbe517d2d90d71"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6766838b2ffa2fb89076abc3d6950f2f48e6b3a550eb7690a5eefc80af808658"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c4a58e524e76b21ffbf6f7cec7c511d369683066080dca97e05428038a172025"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5c3af4256bb0bebe0674fe50df4c445352bb0cd4cdcf35a4946c675cbdf69173"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5c3af4256bb0bebe0674fe50df4c445352bb0cd4cdcf35a4946c675cbdf69173"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5c3af4256bb0bebe0674fe50df4c445352bb0cd4cdcf35a4946c675cbdf69173"
+    sha256 cellar: :any_skip_relocation, sonoma:         "351cd9832c0a22d47f746bf1628eef8460f615b054d6c19f5367e4ea7fcc4b9c"
+    sha256 cellar: :any_skip_relocation, ventura:        "351cd9832c0a22d47f746bf1628eef8460f615b054d6c19f5367e4ea7fcc4b9c"
+    sha256 cellar: :any_skip_relocation, monterey:       "351cd9832c0a22d47f746bf1628eef8460f615b054d6c19f5367e4ea7fcc4b9c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "387092bd2d2d8aa68f8c8b556d1cbec0bf3d7265c1625c9bf8f8c77bf42d378c"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X main.hoverctlVersion=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./core/cmd/hoverfly"
+    system "go", "build", *std_go_args(ldflags:), "./core/cmd/hoverfly"
   end
 
   test do

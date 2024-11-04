@@ -1,8 +1,8 @@
 class Kyverno < Formula
   desc "Kubernetes Native Policy Management"
   homepage "https://kyverno.io/"
-  url "https://github.com/kyverno/kyverno/archive/refs/tags/v1.11.4.tar.gz"
-  sha256 "a578453e654c16a871ed2923dbc31d7ca3f84083a62106201d89664ba8072133"
+  url "https://github.com/kyverno/kyverno/archive/refs/tags/v1.13.0.tar.gz"
+  sha256 "c52f137191c918b4d9566c85da542aa581e4b8169f823cfd38039a44f897bd35"
   license "Apache-2.0"
   head "https://github.com/kyverno/kyverno.git", branch: "main"
 
@@ -14,13 +14,12 @@ class Kyverno < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "05b7add5f9d11bad95e37b38274d77e9b3e48f9b96666d0bfbc63be82f3118d6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ee69d99802c6581c29afb98ff61855dd84c4e2975ff2f7e71cfdc7c9a08a8ba8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "19ce8939c7ed7b9fe3877adacd564616df628d9e6a59625f563f4fbe76a78bc9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a7daf4418bb4acdadfe9c24187caffcd265dc3b6719fe81302d4eee5b5cf37db"
-    sha256 cellar: :any_skip_relocation, ventura:        "922b504e0c3ec1dcbbc75f6e1b9465aced152fad1ecb0a4c2864f9a407043a5f"
-    sha256 cellar: :any_skip_relocation, monterey:       "39f7cdc6803ea9850970c51af601b0182dcccb88c52c3e61e5e0a164887b3257"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5ba43d38970ea0318ec98ef7628fea6819af34c458ee33ce59062dbeea3ca3b1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ca47483418e3651539a5b279ce3f0a258d0674920e6174c3538ec2b58f89cbf5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e0a4d6d49984ef1692f4d3234471a26c011b3632ca2eca54913cc80a633099c9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d72d772a835c7a693bbafa98ada776f121ab062a44466c25885a6890a723f27e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1c11d8c109534299b937a3046896a201e02c55a426eecc1c99e7eba1202e1912"
+    sha256 cellar: :any_skip_relocation, ventura:       "e1660936a3994af321ad767a1dd619937df7cf2ab3ab90553633e92939a5d0d9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3993c6efd2759b4f61c5a0d357a3c9d3372071c81e83b5c8d3e59c079a6f7f21"
   end
 
   depends_on "go" => :build
@@ -33,7 +32,7 @@ class Kyverno < Formula
       -X #{project}/pkg/version.BuildHash=
       -X #{project}/pkg/version.BuildTime=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/cli/kubectl-kyverno"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/cli/kubectl-kyverno"
 
     generate_completions_from_executable(bin/"kyverno", "completion")
   end

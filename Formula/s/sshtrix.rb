@@ -1,9 +1,9 @@
 class Sshtrix < Formula
   desc "SSH login cracker"
   homepage "https://nullsecurity.net/tools/cracker.html"
-  url "https://github.com/nullsecuritynet/tools/raw/master/cracker/sshtrix/release/sshtrix-0.0.3.tar.gz"
+  url "https://github.com/nullsecuritynet/tools/raw/main/cracker/sshtrix/release/sshtrix-0.0.3.tar.gz"
   sha256 "30d1d69c1cac92836e74b8f7d0dc9d839665b4994201306c72e9929bee32e2e0"
-  license "GPL-3.0"
+  license "GPL-3.0-or-later"
 
   livecheck do
     url :homepage
@@ -11,6 +11,7 @@ class Sshtrix < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "a605f08172c039a927c317f64789c3168e610ed42ba321974e587db76906d546"
     sha256 cellar: :any,                 arm64_sonoma:   "6a48bc01574c09df7ade28b2cd6da48ab5df9966e670cdce99061a5231a832a8"
     sha256 cellar: :any,                 arm64_ventura:  "edd4114cab1117d380eb8614882bfd85fb00dd2c6a7b9ae2106a69774070147d"
     sha256 cellar: :any,                 arm64_monterey: "4ba3dc97f884fc7b76408c2f1686dfe6700dd7ccd742fb0dc7212aa8248a557b"
@@ -35,7 +36,7 @@ class Sshtrix < Formula
   end
 
   test do
-    system "#{bin}/sshtrix", "-V"
-    system "#{bin}/sshtrix", "-O"
+    system bin/"sshtrix", "-V"
+    system bin/"sshtrix", "-O"
   end
 end

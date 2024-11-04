@@ -7,11 +7,12 @@ class MonoLibgdiplus < Formula
   revision 2
 
   livecheck do
-    url "https://download.mono-project.com/sources/libgdiplus/"
+    url "https://download.mono-project.com/sources/libgdiplus/index.html"
     regex(/href=.*?libgdiplus[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "730e4aadee862473e9256273d98a9bf3560a202ed9998a8a44f30bdf3f47284b"
     sha256 cellar: :any,                 arm64_sonoma:   "17bb690baf4c81a255f8aaa4dd26a3fe213107d435a09056edf75fbe20a96f86"
     sha256 cellar: :any,                 arm64_ventura:  "baa165d73925f5841420b2fc30e940f6e9e41feae17276008e9c9749a5aedc43"
     sha256 cellar: :any,                 arm64_monterey: "c6aa23ec4f0567c5fbc66d2f337154d027c445ce5e185e9add426abe2421b2b2"
@@ -24,12 +25,14 @@ class MonoLibgdiplus < Formula
   end
 
   depends_on "pkg-config" => :build
+
   depends_on "cairo"
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "gettext"
   depends_on "giflib"
   depends_on "glib"
+  depends_on "harfbuzz"
   depends_on "jpeg-turbo"
   depends_on "libexif"
   depends_on "libpng"
@@ -43,10 +46,10 @@ class MonoLibgdiplus < Formula
   end
 
   def install
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules",
+    system "./configure", "--disable-silent-rules",
                           "--disable-tests",
-                          "--without-x11"
+                          "--without-x11",
+                          *std_configure_args
     system "make"
     cd "tests" do
       system "make", "testbits"
@@ -58,11 +61,11 @@ class MonoLibgdiplus < Formula
   test do
     # Since no headers are installed, we just test that we can link with
     # libgdiplus
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       int main() {
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lgdiplus", "-o", "test"
   end
 end

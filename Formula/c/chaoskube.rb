@@ -1,26 +1,27 @@
 class Chaoskube < Formula
   desc "Periodically kills random pods in your Kubernetes cluster"
   homepage "https://github.com/linki/chaoskube"
-  url "https://github.com/linki/chaoskube/archive/refs/tags/v0.31.0.tar.gz"
-  sha256 "a50d67d18deb1bc33c6988b79bc550c0207efae0ef588c3825d77ccf6d4c78bc"
+  url "https://github.com/linki/chaoskube/archive/refs/tags/v0.33.0.tar.gz"
+  sha256 "d41321fc6987a7f514ed7dda26e673de7ee2bebc67e9b5e2bddfbfbd8cc0065a"
   license "MIT"
   head "https://github.com/linki/chaoskube.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0a11b671429a452d3ac417749d0048af77f63d6a8b8efb6a6d2431c0da77564c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "408797ab648d83510971d1a909b9a98cc05d1b828b47f7d149271e0089582728"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ca122c4a2728f7c74e4e4c537d95e64ff264f8711858082ad8c148bf69cb2c32"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2061a393b5d7cd49295da47d1247e858febe6370dceed370094afb0e60fc6314"
-    sha256 cellar: :any_skip_relocation, ventura:        "0f8c9214f5b3cb15036cadc712eb6575d5af9665c3cb7890c47aa386f0065fe5"
-    sha256 cellar: :any_skip_relocation, monterey:       "21f153d9aa487fb719000858ac8c968314900ac7bdf685ad4b3f72fe0560b8cc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f47d4bc68b0423962f0e116ac11693a2c46722e2759111fa3417d04ce5090a3f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e92683b4f12431a550bdc4fd1299ef39c04b8463421e24200fd91985d3c56be7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5bde91f9966a68b60d943663727e754b4f8d2c4d3fa6870b1bd2187b4c1e3152"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "acd027bcd3b8c0491a71a6302acf621a10e256d5dabc56784cccc4b6306b9dc3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bd33586e2a57198e2ab3878b2a199457eb0fcd594488b7fd8fba58000afd46f8"
+    sha256 cellar: :any_skip_relocation, sonoma:         "d8dd1af39fca69a2f5742ecf2b4493e239f3cb4cefd5009d222a39aaf0110dc0"
+    sha256 cellar: :any_skip_relocation, ventura:        "0d0faa2d5c1c39701d996c9f9120294b777b3a6b880fed27fde651ce8b801bbd"
+    sha256 cellar: :any_skip_relocation, monterey:       "d86a512128cc9d89a884f8c0ec91f8e0edc695794f7ab2fdda493ecc914b5790"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "34b30206a384aca016c045209255ae8073e6f45b33081768eb1b43a17dd4890d"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X main.version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

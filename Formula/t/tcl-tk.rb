@@ -1,11 +1,10 @@
 class TclTk < Formula
   desc "Tool Command Language"
   homepage "https://www.tcl-lang.org"
-  url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.13/tcl8.6.13-src.tar.gz"
-  mirror "https://fossies.org/linux/misc/tcl8.6.13-src.tar.gz"
-  sha256 "43a1fae7412f61ff11de2cfd05d28cfc3a73762f354a417c62370a54e2caf066"
+  url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.15/tcl8.6.15-src.tar.gz"
+  mirror "https://fossies.org/linux/misc/tcl8.6.15-src.tar.gz"
+  sha256 "861e159753f2e2fbd6ec1484103715b0be56be3357522b858d3cbb5f893ffef1"
   license "TCL"
-  revision 5
 
   livecheck do
     url :stable
@@ -13,15 +12,12 @@ class TclTk < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "74132c29be2e0b94b8677f8675c271e4b3157a348c40836b975a5c2bb42a5cc7"
-    sha256 arm64_ventura:  "9954fa13ce6b951279337ceac95df1f0a95514e984811e3870e67e96d5be991b"
-    sha256 arm64_monterey: "69995b0bb1f27f326f26da7feb252faa90c0a81b84f9fc31fa97ac5c7f85d346"
-    sha256 arm64_big_sur:  "66810835803c886015176b754e2d03ca619d5171e7ce7b206bfab6050dbbaafb"
-    sha256 sonoma:         "15a86180e3f339dffb1fad34a8800e3dda404084749c5374778e5f87d73e020c"
-    sha256 ventura:        "5c42d94815be17612d95eb4e62e88f546a2093386819c9ef857886373df641d9"
-    sha256 monterey:       "72212f6d3cd1874634f6c320f02b50f34f296bd30a26d4db3063bd354d9b15a0"
-    sha256 big_sur:        "2e645e825dfc8d6fcbd664e5c66b042f5a8784cb33305864867ca9ee6479dbd1"
-    sha256 x86_64_linux:   "99f5e8a2effac888f1538a1225af6e8ce70f39dd143adf8d03a35b040089a9b2"
+    sha256 arm64_sequoia: "5c86b0e5af8d90d098b67726a67dcc2c6a526c8aac2cea25e8fce43e6f57839f"
+    sha256 arm64_sonoma:  "2a456668a99adffe53485ceb07961201aac42e582434530ac9e32870a3ac3190"
+    sha256 arm64_ventura: "c27c4de6f2e0059d9f8faa87d3f0dbffc5e86d93f4aa472fc2a032596f7e732e"
+    sha256 sonoma:        "f72b0c08a6e75d91441f827dde205c772cf0777b9ed9be1a5217e662c40051d5"
+    sha256 ventura:       "b7981ed65c43e615854eb40afda733fffa641d2f9d65d26f27cc6bfa90387de5"
+    sha256 x86_64_linux:  "f3d4fa58e986a465068f64d36c0a98dd37c3ed74da79b796b9fc90b467ce5bce"
   end
 
   depends_on "openssl@3"
@@ -36,6 +32,7 @@ class TclTk < Formula
   end
 
   conflicts_with "page", because: "both install `page` binaries"
+  conflicts_with "the_platinum_searcher", because: "both install `pt` binaries"
 
   resource "critcl" do
     url "https://github.com/andreas-kupries/critcl/archive/refs/tags/3.2.tar.gz"
@@ -53,32 +50,22 @@ class TclTk < Formula
   end
 
   resource "tk" do
-    url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.13/tk8.6.13-src.tar.gz"
-    mirror "https://fossies.org/linux/misc/tk8.6.13-src.tar.gz"
-    sha256 "2e65fa069a23365440a3c56c556b8673b5e32a283800d8d9b257e3f584ce0675"
-
-    # Bugfix for ttk::ThemeChanged errors; will be in Tk 8.6.14
-    # See https://core.tcl-lang.org/tk/info/310c74ecf4
-    patch :p0 do
-      url "https://raw.githubusercontent.com/macports/macports-ports/db4f8f774193/x11/tk/files/fix-themechanged-error.patch"
-      sha256 "2a75496dc597dec9d25401ab002f290be74d4acd5566793c5114e75a154c280a"
-    end
-
-    # Bugfix for KVO crash; will be in Tk 8.6.14
-    # See https://core.tcl-lang.org/tk/info/ef5d3e29a4
-    patch :p0 do
-      url "https://raw.githubusercontent.com/macports/macports-ports/6a93695d61d3/x11/tk/files/fix-kvo-crash.diff"
-      sha256 "ec9a9234b4a326e5621fe78e078c29aa4784b6dc88c59a43d828639ebae0af41"
-    end
+    url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.15/tk8.6.15-src.tar.gz"
+    mirror "https://fossies.org/linux/misc/tk8.6.15-src.tar.gz"
+    sha256 "550969f35379f952b3020f3ab7b9dd5bfd11c1ef7c9b7c6a75f5c49aca793fec"
   end
 
+  # "https://downloads.sourceforge.net/project/incrtcl/%5Bincr%20Tcl_Tk%5D-4-source/itk%204.1.0/itk4.1.0.tar.gz"
+  # would cause `bad URI(is not URI?)` error on 12/13 builds
   resource "itk4" do
-    url "https://downloads.sourceforge.net/project/incrtcl/%5Bincr%20Tcl_Tk%5D-4-source/itk%204.1.0/itk4.1.0.tar.gz"
+    url "https://deb.debian.org/debian/pool/main/i/itk4/itk4_4.1.0.orig.tar.gz"
     mirror "https://src.fedoraproject.org/lookaside/extras/itk/itk4.1.0.tar.gz/sha512/1deed09daf66ae1d0cc88550be13814edff650f3ef2ecb5ae8d28daf92e37550b0e46921eb161da8ccc3886aaf62a4a3087df0f13610839b7c2d6f4b39c9f07e/itk4.1.0.tar.gz"
     sha256 "da646199222efdc4d8c99593863c8d287442ea5a8687f95460d6e9e72431c9c7"
   end
 
   def install
+    odie "tk resource needs to be updated" if version != resource("tk").version
+
     args = %W[
       --prefix=#{prefix}
       --includedir=#{include}/tcl-tk

@@ -1,5 +1,3 @@
-require "language/node"
-
 class WebtorrentCli < Formula
   desc "Command-line streaming torrent client"
   homepage "https://webtorrent.io/"
@@ -8,6 +6,7 @@ class WebtorrentCli < Formula
   license "MIT"
 
   bottle do
+    sha256                               arm64_sequoia:  "ecd646330d6ddbc709a443847e787cf35abc23b43865aa5ba3de186971b5118f"
     sha256                               arm64_sonoma:   "15ab8aafa171323e2e057633f8cfff9f23347cdf7f79777082a5b059d26eb19f"
     sha256                               arm64_ventura:  "be8479b3f65c2a5c11794f53d04ee02357a76bf3c65f5bc410ffc09e805906f8"
     sha256                               arm64_monterey: "0e582b5e95bd7ae1462caca1b66e796fa83553b75dcf9c1b98b7e4e36f2f57bf"
@@ -23,14 +22,14 @@ class WebtorrentCli < Formula
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
 
     # Remove incompatible pre-built binaries
     os = OS.kernel_name.downcase
     arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
     libexec.glob("lib/node_modules/webtorrent-cli/node_modules/{bufferutil,utp-native,utf-8-validate}/prebuilds/*")
-           .each { |dir| dir.rmtree if dir.basename.to_s != "#{os}-#{arch}" }
+           .each { |dir| rm_r(dir) if dir.basename.to_s != "#{os}-#{arch}" }
 
     # Replace universal binaries with their native slices
     deuniversalize_machos

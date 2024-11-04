@@ -1,19 +1,20 @@
 class Cidr < Formula
   desc "CLI to perform various actions on CIDR ranges"
   homepage "https://github.com/bschaatsbergen/cidr"
-  url "https://github.com/bschaatsbergen/cidr/archive/refs/tags/v1.4.0.tar.gz"
-  sha256 "e1b7859bebcd88f9f67844973188766da48d73f8c1c0d47c4b66f34daf12e9e8"
+  url "https://github.com/bschaatsbergen/cidr/archive/refs/tags/v2.2.0.tar.gz"
+  sha256 "caee614f119ec7383bc9a9dc04a688b4b058d15106f70f523d04c8773d2fa086"
   license "MIT"
   head "https://github.com/bschaatsbergen/cidr.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "954a4ae2bea00e60565f5cd70b756c488ebbcb7440b375742a26cf968d6334cd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f7c74e841555e1dd7a2a11361e81378cf4e8274084f48445094cdbe0a1fda2aa"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ce93979795e63d01c0f5b1f0bb7fcbdcecbd3b41483a461d18692790875f0dbf"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a601025529ac9cd8e1e010b8cd4ead7c963b4e9ad503c0260f9c048534cc063f"
-    sha256 cellar: :any_skip_relocation, ventura:        "6c104cd86c3294b7a82c3fec3a304c7fed44de0c93a90825126bbff9fecedc1d"
-    sha256 cellar: :any_skip_relocation, monterey:       "2e110a2578bcfdd8749259dfba64250e55d39750c01ad5a985e4d4dc20a17224"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "490147e7760138e8c66e4575acda724d22f7f75ab22fdfde31f8c5f577613aa9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f92c6bdc12d20451f4b3d33a119c6d446945034759e752fa265594b92b8a3c0e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "eab28e7e3430c08a756a465845307c350e54665c082faef4d0cfcc9d1718537c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "09b43bb3087a8b2967efeb81e55e589054bf9d72b9418816db0491399d1baf5a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8a052f10efcf19df9e0a41c035a0c9af03a908d515ba713f3c978da1e9c5daf9"
+    sha256 cellar: :any_skip_relocation, sonoma:         "3f2df01b413b882817f5b975553fd0043f7fd6e48167ea2ae680ebb905562006"
+    sha256 cellar: :any_skip_relocation, ventura:        "58cc2209eb5323798a67011f41433ce5f4641b2b4f2cdb2013b5ec1eb7d873f8"
+    sha256 cellar: :any_skip_relocation, monterey:       "63c22da52ab9c5b7e7ffc35821ad1cb76596e071f1e412971a4efa60a0f9e9ff"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bebb8b71e94081655b343967ec6d56e78daeee550a60dd75bbcbc50d45a3f9ee"
   end
 
   depends_on "go" => :build
@@ -23,12 +24,12 @@ class Cidr < Formula
       -s -w
       -X github.com/bschaatsbergen/cidr/cmd.version=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/cidr --version")
-    assert_equal "65534\n", shell_output("#{bin}/cidr count 10.0.0.0/16")
+    assert_equal "65536\n", shell_output("#{bin}/cidr count 10.0.0.0/16")
     assert_equal "1\n", shell_output("#{bin}/cidr count 10.0.0.0/32")
     assert_equal "false\n", shell_output("#{bin}/cidr overlaps 10.106.147.0/24 10.106.149.0/23")
   end

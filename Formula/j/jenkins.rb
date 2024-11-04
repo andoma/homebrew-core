@@ -1,8 +1,8 @@
 class Jenkins < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://www.jenkins.io/"
-  url "https://get.jenkins.io/war/2.446/jenkins.war"
-  sha256 "ce0aee7be11cc5af961c1eceac6c6db24055fc53ff67a27e8572a65a9c377ded"
+  url "https://get.jenkins.io/war/2.483/jenkins.war"
+  sha256 "94ed0b3be285b5216bdb104d0be6d91938ab26f09110cbbd970bc0dba9c8d1b4"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,7 @@ class Jenkins < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "3d1149100ef8215ccf121cb37bcc623eb8783f8bec789eb992d0c6b1f44a9482"
+    sha256 cellar: :any_skip_relocation, all: "dccc48898675bf60eabf6369ad48b942a41ab497e559eb33b404b1a5ba568435"
   end
 
   head do
@@ -19,17 +19,17 @@ class Jenkins < Formula
     depends_on "maven" => :build
   end
 
-  depends_on "openjdk"
+  depends_on "openjdk@21"
 
   def install
     if build.head?
       system "mvn", "clean", "install", "-pl", "war", "-am", "-DskipTests"
     else
-      system "#{Formula["openjdk"].opt_bin}/jar", "xvf", "jenkins.war"
+      system "#{Formula["openjdk@21"].opt_bin}/jar", "xvf", "jenkins.war"
     end
     libexec.install Dir["**/jenkins.war", "**/cli-#{version}.jar"]
-    bin.write_jar_script libexec/"jenkins.war", "jenkins"
-    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-cli"
+    bin.write_jar_script libexec/"jenkins.war", "jenkins", java_version: "21"
+    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-cli", java_version: "21"
 
     (var/"log/jenkins").mkpath
   end

@@ -1,9 +1,9 @@
 class Nauty < Formula
   desc "Automorphism groups of graphs and digraphs"
   homepage "https://pallini.di.uniroma1.it/"
-  url "https://pallini.di.uniroma1.it/nauty2_8_8.tar.gz"
-  mirror "https://users.cecs.anu.edu.au/~bdm/nauty/nauty2_8_8.tar.gz"
-  sha256 "159d2156810a6bb240410cd61eb641add85088d9f15c888cdaa37b8681f929ce"
+  url "https://pallini.di.uniroma1.it/nauty2_8_9.tar.gz"
+  mirror "https://users.cecs.anu.edu.au/~bdm/nauty/nauty2_8_9.tar.gz"
+  sha256 "c97ab42bf48796a86a598bce3e9269047ca2b32c14fc23e07208a244fe52c4ee"
   license "Apache-2.0"
   version_scheme 1
 
@@ -16,22 +16,24 @@ class Nauty < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2998663bc5f33dc6ec3aafc7484c3dcecba0ff1d4276408b384179b82cef2433"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b5ac9c4a7c6bc9c2092b24aa1f08122a5ee54c72869a1a2dc6fed71348f8b3f3"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2a4688fe963d913e35b14ad3078c1cf2d1dd054976b432acbc32e4badac51448"
-    sha256 cellar: :any_skip_relocation, sonoma:         "46690024133ff0fab6226a4d1473d9f7f987475fa65f6835272600e718f1a4d5"
-    sha256 cellar: :any_skip_relocation, ventura:        "6722de8d71b05629eb75ea96c79aa1e169bc2d0f6dac8a93b37219b41dfd682d"
-    sha256 cellar: :any_skip_relocation, monterey:       "fa21ab2f8e0df03513b17a7e0ecc1961ea1efc8a36fc44a050e462fed8d8e1d6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee528b994774bc9a28632f211973cd65078b06aee0d63726fb356867587c6d31"
+    sha256 cellar: :any,                 arm64_sequoia:  "578e9a6a33dacc5574586019c8a22244879573c241e7a1be9ad7183cd4c91aa4"
+    sha256 cellar: :any,                 arm64_sonoma:   "022ba063976e84dd4e0712d6931a0958db497c4f2f4e561ec518172ff26d2eeb"
+    sha256 cellar: :any,                 arm64_ventura:  "fa1634a9e589d67b2df80daca50f4417d46a26f9c03fe0ac3a9acbe59dacfdd0"
+    sha256 cellar: :any,                 arm64_monterey: "3d521857063e06e2e1bbd12a7fc139b4402288ba388a37606c5df19c885942e5"
+    sha256 cellar: :any,                 sonoma:         "f44e77ba13875fdfd450ca378080aa6be8a7e48d6082623846b18a3f525d7d1a"
+    sha256 cellar: :any,                 ventura:        "4a288706331ed1966319cbe0aced25c694e426c587ed56167a2905cfbf2ba584"
+    sha256 cellar: :any,                 monterey:       "129084aaac09aac1e749cf4ed1eb0c716afc2c6c9d7689a877b96bdf12e5c837"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6858f23478175ad58d2aa59eaa599ab3610476043c9b8062e6ef4d897051d412"
   end
 
-  # patch to correct the location of nauty*.pc files
-  # upstream informed and responded that it will be worked on
-  patch :DATA
+  # Fix -flat_namespace being used on Big Sur and later.
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
+    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+  end
 
   def install
-    system "./configure", "--includedir=#{include}/nauty", *std_configure_args
+    system "./configure", "--enable-tls", "--includedir=#{include}/nauty", *std_configure_args
     system "make", "all", "TLSlibs"
     system "make", "install", "TLSinstall"
 
@@ -50,7 +52,7 @@ class Nauty < Formula
     assert_match "100 graphs : n=114; e=171; mindeg=3; maxdeg=3; regular", out2
 
     # test that the library is installed and linkable-against
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #define MAXN 1000
       #include <nauty/nauty.h>
 
@@ -61,23 +63,8 @@ class Nauty < Formula
         nauty_check(WORDSIZE, m, n, NAUTYVERSIONID);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}/nauty", "-L#{lib}", "-lnauty", "-o", "test"
     system "./test"
   end
 end
-
-__END__
-diff --git a/makefile.in b/makefile.in
-index 422ff69..572448f 100644
---- a/makefile.in
-+++ b/makefile.in
-@@ -17,7 +17,7 @@ exec_prefix=@exec_prefix@
- bindir=@bindir@
- libdir=@libdir@
- includedir=@includedir@
--pkgconfigexecdir=${prefix}/libdata/pkgconfig
-+pkgconfigexecdir=${libdir}/pkgconfig
-
- INSTALL=@INSTALL@
- INSTALL_DATA=@INSTALL_DATA@

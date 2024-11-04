@@ -17,7 +17,7 @@ class Clash < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "edb29d947930fd06526bd829940a3acd5cad459d9f4005dee6233e35b010f4bc"
   end
 
-  deprecate! date: "2023-11-04", because: :repo_removed
+  disable! date: "2024-09-09", because: :repo_removed
 
   depends_on "go" => :build
   depends_on "shadowsocks-libev" => :test
@@ -28,7 +28,7 @@ class Clash < Formula
       -X "github.com/Dreamacro/clash/constant.Version=#{version}"
       -X "github.com/Dreamacro/clash/constant.BuildTime=#{time.iso8601}"
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   service do
@@ -65,8 +65,8 @@ class Clash < Formula
           password: "test"
           cipher: chacha20-ietf-poly1305
     EOS
-    system "#{bin}/clash", "-t", "-d", testpath # test config && download Country.mmdb
-    client = fork { exec "#{bin}/clash", "-d", testpath }
+    system bin/"clash", "-t", "-d", testpath # test config && download Country.mmdb
+    client = fork { exec bin/"clash", "-d", testpath }
 
     sleep 3
     begin

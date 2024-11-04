@@ -2,13 +2,13 @@ class Liburing < Formula
   desc "Helpers to setup and teardown io_uring instances"
   homepage "https://github.com/axboe/liburing"
   # not need to check github releases, as tags are sufficient, see https://github.com/axboe/liburing/issues/1008
-  url "https://github.com/axboe/liburing/archive/refs/tags/liburing-2.5.tar.gz"
-  sha256 "456f5f882165630f0dc7b75e8fd53bd01a955d5d4720729b4323097e6e9f2a98"
+  url "https://github.com/axboe/liburing/archive/refs/tags/liburing-2.6.tar.gz"
+  sha256 "682f06733e6db6402c1f904cbbe12b94942a49effc872c9e01db3d7b180917cc"
   license any_of: ["MIT", "LGPL-2.1-only"]
   head "https://github.com/axboe/liburing.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "0b8fa321912483a645666cdf0232dd9c3ca61abeebcb274b1ab6bd4c9bb75c39"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "a369928abdce516f5cbaedc983900a24b3e22d345f5942e0d62f464578095fbc"
   end
 
   depends_on :linux
@@ -21,7 +21,7 @@ class Liburing < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <assert.h>
       #include <liburing.h>
       int main() {
@@ -29,7 +29,7 @@ class Liburing < Formula
         assert(io_uring_queue_init(1, &ring, 0) == 0);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{opt_lib}", "-luring", "-o", "test"
     system "./test"
   end

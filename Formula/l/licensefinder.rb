@@ -4,19 +4,19 @@ class Licensefinder < Formula
   # pull from git tag as gemspec uses `git ls-files`
   # For versions following v7.1.0, may be able to remove 4cac18e5 patch.
   url "https://github.com/pivotal/LicenseFinder.git",
-      tag:      "v7.1.0",
-      revision: "81092404aeaf1cb39dbf2551f50f007ed049c26c"
+      tag:      "v7.2.1",
+      revision: "00b04cb91e8ec9021c939ccfceb69d4047f4c8ca"
   license "MIT"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2dd84e133cb82c6ed665cc0eaf65255c2c9dabd20c87a4c8d3163c758c3363c7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2dd84e133cb82c6ed665cc0eaf65255c2c9dabd20c87a4c8d3163c758c3363c7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2dd84e133cb82c6ed665cc0eaf65255c2c9dabd20c87a4c8d3163c758c3363c7"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b3ee729550f311358fbd9eda1f7608db191e2b29548637f6b951d75b84c9230b"
-    sha256 cellar: :any_skip_relocation, ventura:        "b3ee729550f311358fbd9eda1f7608db191e2b29548637f6b951d75b84c9230b"
-    sha256 cellar: :any_skip_relocation, monterey:       "b3ee729550f311358fbd9eda1f7608db191e2b29548637f6b951d75b84c9230b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a202d220452af880ab1a2cb0c756d44cca45eef6f71953b243baadc78b777191"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "79f4e016ce9a7863fb1a8af0b6d05fbddda4d7bd73e0eb88e5fcdc167c0576be"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f393a73ba947c00a0a5c85d6ad643711f88b8432a8b02240e95fbc6897ae7b0c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d67039d8af9f8d4cb432b87d702b63596c32a3df5ee9873c827a2d65c73c387c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "94181e5784a74c2ce1c6ef53ca3036abfdacaf79a44c4cc0a36bacd316e57f67"
+    sha256 cellar: :any_skip_relocation, sonoma:         "77ac7350b5c910ef956d6fac8ffe98232bce930476f6b462e8fcf31379e2254d"
+    sha256 cellar: :any_skip_relocation, ventura:        "1c03235aa33eb51bee7344de88c4e16808a8f6283a0845c873784d37ec14a406"
+    sha256 cellar: :any_skip_relocation, monterey:       "076664ad53828cc598b55fa5dc0177bc57fd2a808d0c0ab20d85fac4e98dd3f0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f8093e28fbd29078317ad298dd33971cd32950e5c56204eb2bff5de074b6ed9"
   end
 
   depends_on "ruby"

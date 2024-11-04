@@ -1,37 +1,31 @@
 class Cfv < Formula
+  include Language::Python::Virtualenv
+
   desc "Test and create various files (e.g., .sfv, .csv, .crc., .torrent)"
   homepage "https://github.com/cfv-project/cfv"
-  url "https://files.pythonhosted.org/packages/db/54/c5926a7846a895b1e096854f32473bcbdcb2aaff320995f3209f0a159be4/cfv-3.0.0.tar.gz"
-  sha256 "2530f08b889c92118658ff4c447ccf83ac9d2973af8dae4d33cf5bed1865b376"
+  url "https://files.pythonhosted.org/packages/29/ca/91cca3d1799d0e74b672e30c41f82a8135fe8d5baf7e6a8af2fdea282449/cfv-3.1.0.tar.gz"
+  sha256 "8f352fe4e99837720face2a339ac793f348dd967bacf2a0ff0f5e771340261e3"
   license "GPL-2.0-or-later"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b6d455648ea1ee84968c57bd0218341c5acee3e594e97d24e53b6ea1dfedc666"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "42b4b04b3a9cd67ec440afaa45db5115d06d1019cbe21c987b53e680a173415a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7e32838b7338414d95863daea12afa2085d38e577f2320feaa2b7bc64eeae425"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b676890c309cbe870ddfbaef65bd4540236fe4f4b8a6cceeb0291be95d317f06"
-    sha256 cellar: :any_skip_relocation, ventura:        "2078439fda829127a701e088d395df2ee279cea6052c72ea38b4efec41ca5e67"
-    sha256 cellar: :any_skip_relocation, monterey:       "4b56673702488afba8ecbc1a524bc580f5dbff0ce1601636f454c05393295f12"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "398b65a6b3495ccc1cff405108a5db678ca99b6b7c3d355fcf450c8ec2ea3ea9"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4364889501244abb0dec42000034cbb135f74ed15f6bdd7ac2ad21e580297997"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4364889501244abb0dec42000034cbb135f74ed15f6bdd7ac2ad21e580297997"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4364889501244abb0dec42000034cbb135f74ed15f6bdd7ac2ad21e580297997"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b166757b27f5ba3c246536507dee3c460909e17a5329a897c9280ee81f424d66"
+    sha256 cellar: :any_skip_relocation, ventura:       "b166757b27f5ba3c246536507dee3c460909e17a5329a897c9280ee81f424d66"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4364889501244abb0dec42000034cbb135f74ed15f6bdd7ac2ad21e580297997"
   end
 
-  depends_on "python-setuptools" => :build
-  depends_on "python@3.12"
-
-  def python3
-    "python3.12"
-  end
+  depends_on "python@3.13"
 
   def install
-    # fix man folder location issue
-    inreplace "setup.py", "'man/man1'", "'share/man/man1'"
-
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
   end
 
   test do
     (testpath/"test/test.txt").write "Homebrew!"
+
     cd "test" do
       system bin/"cfv", "-t", "sha1", "-C", "test.txt"
       assert_predicate Pathname.pwd/"test.sha1", :exist?

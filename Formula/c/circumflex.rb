@@ -1,18 +1,19 @@
 class Circumflex < Formula
   desc "Hacker News in your terminal"
   homepage "https://github.com/bensadeh/circumflex"
-  url "https://github.com/bensadeh/circumflex/archive/refs/tags/3.5.tar.gz"
-  sha256 "3235f97e51a7bf228b31f1379c4a51e3d837193060a766a443f272f8434bfabf"
+  url "https://github.com/bensadeh/circumflex/archive/refs/tags/3.7.tar.gz"
+  sha256 "421cb4757fe15b7d403a7ae5ef70c0fa283ee445b957f1689d68eaece1947dcc"
   license "AGPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "cbc2af822ea36db0ccd4d3558917aa8181f7fa50bde955525e0feaf945dbb956"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a191af7749b700fd6e6c005410a52d6aac38012acc3c8a12c8414ae0f0980a1e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c67741ab4de1c00bcb83bc1531b4c5898e9b5aa35cfbc568643032719c181b72"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a2b73df956b323eaad6c8a4a4403570608f9a31fb4f394011369834ca53af15f"
-    sha256 cellar: :any_skip_relocation, ventura:        "acf2d7cfa8ec8f3e9ad6b199496857db33983644519511a496a7a7f238f5eaf0"
-    sha256 cellar: :any_skip_relocation, monterey:       "367e9b6107f7d1f2857a3607d6dcfe582669fb9dfb219f7197fc1f5023406393"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0a81b1d1469b7a6de175d3514248b1da2d4aa1e0f7f8ab201f33c68c5a7908f2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "62b89511568577c435bc481c50917d1ce6be38fe9783686269f209ff732150ae"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "cb7300a1adcecca4c7f342b5b2b80fd77f4738ee8ba837898cc9371a29f175bd"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7a8c39cad6212319001b92f719cd052aa61296e2d979391430d5dcdaeaeddad0"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9f533af5000f818611a7934c749f7171e7e317bcdf216f18508c38c8973920c3"
+    sha256 cellar: :any_skip_relocation, sonoma:         "b0d39d9faccabd8fed803f3c69ed479672e15c28b61ef2e5af12349ae070a408"
+    sha256 cellar: :any_skip_relocation, ventura:        "4f9f2bf56d39d6e5e9478c051b07fdf686da2a688746dc1b2f0a4e496db49d2b"
+    sha256 cellar: :any_skip_relocation, monterey:       "6e28a94198ffb94ed0cf2c4bdd9f8187d7c77297b7d25e08857d85157dbb29a8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b25b51f2bbf9a19b8df483220000d0244b6dbbafc9b1908f02982b549aac625"
   end
 
   depends_on "go" => :build

@@ -1,8 +1,8 @@
 class PythonAT311 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.11.8/Python-3.11.8.tgz"
-  sha256 "d3019a613b9e8761d260d9ebe3bd4df63976de30464e5c0189566e1ae3f61889"
+  url "https://www.python.org/ftp/python/3.11.10/Python-3.11.10.tgz"
+  sha256 "92f2faf242681bfa406d53a51e17d42c5373affe23a130cd9697e132ef574706"
   license "Python-2.0"
 
   livecheck do
@@ -11,13 +11,14 @@ class PythonAT311 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "b3b205d08f8ff9e7d26226a4d4e54feffb15cd58ce45a4d8852cd48fcd9fa54d"
-    sha256 arm64_ventura:  "6032108cdbcfd0b3d17d1220ce862b1b9557747bca5ba42717d337e7d057f2f7"
-    sha256 arm64_monterey: "cee761dc51de5e7f265655fd4199eec1b724f4a3d2244d6ee788f7bfd1d45082"
-    sha256 sonoma:         "4ef81eae2485a89c0c403e3974389d1c228232b2369b45ea4c6d9543358e055f"
-    sha256 ventura:        "c0062822ceb061233f1f2eecae1c4a24aa6cebc8ca2f5488a57552a91575f02a"
-    sha256 monterey:       "9daffef3dfe7b88f69a4e946e9470bebe8dfe52d10d2348dfa0bd7e68e1ff72b"
-    sha256 x86_64_linux:   "f7f6cb5a9dad18d598a825002717f81b44caf8bcffa73314590ed95e70436855"
+    sha256 arm64_sequoia:  "7714868c49f6a308654e858e704d432bda9da45abb44cd6e99784b22cd59db25"
+    sha256 arm64_sonoma:   "a8668bf5daafd02b7f1a3859add54d621ab4468354158634895c6f1e1fb81188"
+    sha256 arm64_ventura:  "b92fbac6f81ce0c2348a006ea67fb49444cfd926b438d2c052076be8590e16d3"
+    sha256 arm64_monterey: "83ff46a5ab6f3008bef20946081b47b83b4c940da9fc0e1550db6f42544af5cf"
+    sha256 sonoma:         "a2641083596b73cb413ce1d8ce2d3234fc6faabc144807512183d3ac8f4936d9"
+    sha256 ventura:        "ff3cf5f599f67ec9dae7170f3ad71b0b16df663f11f0e1594d2a9cd5c33cf399"
+    sha256 monterey:       "c95617108b38fff9f848850e444db651888b59e422d6ea3f2642cc61b5e7b430"
+    sha256 x86_64_linux:   "4dfda12b510c56e5f2f9ce16c56d4288a0523d2d3c3de202b5de36d9b6786928"
   end
 
   # setuptools remembers the build flags python is built with and uses them to
@@ -44,11 +45,6 @@ class PythonAT311 < Formula
     depends_on "libnsl"
   end
 
-  skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5", "bin/pip-3.6", "bin/pip-3.7", "bin/pip-3.8", "bin/pip-3.9",
-              "bin/pip-3.10"
-  skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5", "bin/easy_install-3.6",
-              "bin/easy_install-3.7", "bin/easy_install-3.8", "bin/easy_install-3.9", "bin/easy_install-3.10"
-
   # Always update to latest release
   resource "flit-core" do
     url "https://files.pythonhosted.org/packages/c4/e6/c1ac50fe3eebb38a155155711e6e864e254ce4b6e17fe2429b4c4d5b9e80/flit_core-3.9.0.tar.gz"
@@ -56,18 +52,18 @@ class PythonAT311 < Formula
   end
 
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/94/59/6638090c25e9bc4ce0c42817b5a234e183872a1129735a9330c472cc2056/pip-24.0.tar.gz"
-    sha256 "ea9bd1a847e8c5774a5777bb398c19e80bcd4e2aa16a4b301b718fe6f593aba2"
+    url "https://files.pythonhosted.org/packages/4d/87/fb90046e096a03aeab235e139436b3fe804cdd447ed2093b0d70eba3f7f8/pip-24.2.tar.gz"
+    sha256 "5b5e490b5e9cb275c879595064adce9ebd31b854e3e803740b72f9ccf34a45b8"
   end
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/c9/3d/74c56f1c9efd7353807f8f5fa22adccdba99dc72f34311c30a69627a0fad/setuptools-69.1.0.tar.gz"
-    sha256 "850894c4195f09c4ed30dba56213bf7c3f21d86ed6bdaafb5df5972593bfc401"
+    url "https://files.pythonhosted.org/packages/3e/2c/f0a538a2f91ce633a78daaeb34cbfb93a54bd2132a6de1f6cec028eee6ef/setuptools-74.1.2.tar.gz"
+    sha256 "95b40ed940a1c67eb70fc099094bd6e99c6ee7c23aa2306f4d2697ba7916f9c6"
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/b0/b4/bc2baae3970c282fae6c2cb8e0f179923dceb7eaffb0e76170628f9af97b/wheel-0.42.0.tar.gz"
-    sha256 "c45be39f7882c9d34243236f2d63cbd58039e360f85d0913425fbd7ceea617a8"
+    url "https://files.pythonhosted.org/packages/b7/a0/95e9e962c5fd9da11c1e28aa4c0d8210ab277b1ada951d2aee336b505813/wheel-0.44.0.tar.gz"
+    sha256 "a29c3f2817e95ab89aa4660681ad547c0e9547f20e75b0562fe7723c9a2a9d49"
   end
 
   # Modify default sysconfig to match the brew install layout.
@@ -172,9 +168,6 @@ class PythonAT311 < Formula
       args << "--with-dbmliborder=bdb"
     end
 
-    # Resolve HOMEBREW_PREFIX in our sysconfig modification.
-    inreplace "Lib/sysconfig.py", "@@HOMEBREW_PREFIX@@", HOMEBREW_PREFIX
-
     # We want our readline! This is just to outsmart the detection code,
     # superenv makes cc always find includes/libs!
     if OS.linux?
@@ -275,7 +268,7 @@ class PythonAT311 < Formula
     end
 
     # Remove the site-packages that Python created in its Cellar.
-    site_packages_cellar.rmtree
+    rm_r(site_packages_cellar)
 
     # Prepare a wheel of wheel to install later.
     common_pip_args = %w[
@@ -345,16 +338,16 @@ class PythonAT311 < Formula
     site_packages_cellar.parent.install_symlink site_packages
 
     # Remove old sitecustomize.py. Now stored in the cellar.
-    rm_rf Dir["#{site_packages}/sitecustomize.py[co]"]
+    rm_r(Dir["#{site_packages}/sitecustomize.py[co]"])
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir["#{site_packages}/setuptools[-_.][0-9]*", "#{site_packages}/setuptools"]
-    rm_rf Dir["#{site_packages}/distribute[-_.][0-9]*", "#{site_packages}/distribute"]
-    rm_rf Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"]
-    rm_rf Dir["#{site_packages}/wheel[-_.][0-9]*", "#{site_packages}/wheel"]
+    rm_r(Dir["#{site_packages}/setuptools[-_.][0-9]*", "#{site_packages}/setuptools"])
+    rm_r(Dir["#{site_packages}/distribute[-_.][0-9]*", "#{site_packages}/distribute"])
+    rm_r(Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"])
+    rm_r(Dir["#{site_packages}/wheel[-_.][0-9]*", "#{site_packages}/wheel"])
 
     system python3, "-Im", "ensurepip"
 
@@ -379,7 +372,7 @@ class PythonAT311 < Formula
     mv (site_packages/"bin").children, bin
     rmdir site_packages/"bin"
 
-    rm_rf bin.glob("pip{,3}")
+    rm_r(bin.glob("pip{,3}"))
     mv bin/"wheel", bin/"wheel#{version.major_minor}"
 
     # Install unversioned and major-versioned symlinks in libexec/bin.
@@ -457,11 +450,11 @@ class PythonAT311 < Formula
 
   def caveats
     <<~EOS
-      Python has been installed as
+      Python is installed as
         #{HOMEBREW_PREFIX}/bin/python#{version.major_minor}
 
       Unversioned and major-versioned symlinks `python`, `python3`, `python-config`, `python3-config`, `pip`, `pip3`, etc. pointing to
-      `python#{version.major_minor}`, `python#{version.major_minor}-config`, `pip#{version.major_minor}` etc., respectively, have been installed into
+      `python#{version.major_minor}`, `python#{version.major_minor}-config`, `pip#{version.major_minor}` etc., respectively, are installed into
         #{opt_libexec}/bin
 
       You can install Python packages with

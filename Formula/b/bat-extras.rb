@@ -1,8 +1,8 @@
 class BatExtras < Formula
   desc "Bash scripts that integrate bat with various command-line tools"
   homepage "https://github.com/eth-p/bat-extras"
-  url "https://github.com/eth-p/bat-extras/archive/refs/tags/v2024.02.12.tar.gz"
-  sha256 "53e1c43a0ab660a8f7b2176a9c89de17616d42011ad63f30e2793ceb0f8c6688"
+  url "https://github.com/eth-p/bat-extras/archive/refs/tags/v2024.08.24.tar.gz"
+  sha256 "2ff1b9104134f10721ef36580150365e94546e5b41b9a2a6eaa4851c5959b487"
   license "MIT"
 
   livecheck do
@@ -11,13 +11,14 @@ class BatExtras < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "28c25f890fcb7ac8a5005e2978a22b323a8576d260bfdcf8840dc66d636a29a7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d80f2e74b58984dea7db6d10755fc056ec2e78b72826f533feda4fcb68d7f2e2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5d9fb45e615645b1961a60d109629fd49760d11bff64e4341e1517ebc3a9a91f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e16448c1541536e670eec467d86f9e8ec0e928baed5ce4adf91e3d66e844c360"
-    sha256 cellar: :any_skip_relocation, ventura:        "692c1f6c21b1303b42700d8fe017d5daccdc404faf80b48582e1c39a49d85837"
-    sha256 cellar: :any_skip_relocation, monterey:       "7079d6ef58054dc6bc984ade2c43cfcb99666c922aab1f1f24269e32d613c527"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5992573102b28616d8ee2b6042c1021cbe020cbf6a25394ca3504747ec5eda2f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "88a1916fda3f274a6572ab61bc490a502d219ebfc0d8c6a876be3508f2512250"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3f77d56bf671e40f980d54be6fe95db9b75b4846544d1551366a7c952972d864"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6ffbc0b06365560c945e7ba27da1e9416e2b28ee1dbc719d63672f797293668c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2887dfd67a998d9fc5e9631463074f2361dea63e878bb1b8f6cafda07c1cada4"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ad0c1049cd4c49a98517ab67a2bf6f9e5b4304ff26e2b930216e3badb069a054"
+    sha256 cellar: :any_skip_relocation, ventura:        "eba7f97907ba5dc853dcbbcaa038d5e6f77e1929e50088c715ba51476de51855"
+    sha256 cellar: :any_skip_relocation, monterey:       "cb838dc35e747b7510d75e919449059858f676d31265acaa5445d234e759902f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "493e6115711432e8e2cc3527b3660bb47762a7e609d16dbdc19cbe8d6fb61307"
   end
 
   depends_on "bat" => [:build, :test]
@@ -29,7 +30,7 @@ class BatExtras < Formula
   end
 
   test do
-    system "#{bin}/prettybat < /dev/null"
+    system bin/"prettybat < /dev/null"
     system bin/"batgrep", "/usr/bin/env", bin
   end
 end

@@ -4,7 +4,7 @@ class Libsigrok < Formula
   # libserialport is LGPL3+
   # fw-fx2lafw is GPL-2.0-or-later and LGPL-2.1-or-later"
   license all_of: ["GPL-3.0-or-later", "LGPL-3.0-or-later", "GPL-2.0-or-later", "LGPL-2.1-or-later"]
-  revision 2
+  revision 5
 
   stable do
     url "https://sigrok.org/download/source/libsigrok/libsigrok-0.5.2.tar.gz"
@@ -41,14 +41,14 @@ class Libsigrok < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256                               arm64_sonoma:   "2efc7ea3acaab115a0a3a6095e613de9cba78625a68a572466811f3e03efeb11"
-    sha256                               arm64_ventura:  "0e286d0c88d19a200e698918a3c18075513a66ff7c13ecdd9521c15f716c1ee7"
-    sha256                               arm64_monterey: "2ba8537cd9d4071c0d23a68e1ef7a9c4feb1efceaa61f6238983edad5d9d295e"
-    sha256                               sonoma:         "8edd38c058edb8adcc385282488249220fa9ab5c6ee0dcf784c1c3e153aa33b3"
-    sha256                               ventura:        "8cbfa9edf3d3f9ed3e60eb2b533d17a308a500486f0e020eb977de5a000a83eb"
-    sha256                               monterey:       "9c572ca4eb57ce6d9f84e350f660244aab5376e4d22dd4c49809f17485c14823"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5e24c05f693e16bdbdbebebc1b60616b821f7f2a510ee2860edb668f56f5fa2e"
+    sha256                               arm64_sequoia:  "ce3817f9869539b5e7f9c19c9178211484b99ace89dd9ff7a26233013649acb6"
+    sha256                               arm64_sonoma:   "531edfde4ad0fde8bc06d1380d62b85bed86415f2ea63f76706b2369f2fa70d1"
+    sha256                               arm64_ventura:  "632dc0050579c516cadca7127de3b89104b0b16088735934a0857412c31a5b3e"
+    sha256                               arm64_monterey: "09286cd2262fc0cfbfa1a29abfab61e92b88c0a031acee695b0eac837aaa44c1"
+    sha256                               sonoma:         "927be3d20407cfd3c9371f54eadc63c55036cff36f8c931d29337cb1c2d4aa05"
+    sha256                               ventura:        "ce4c862b9e10a258a23f47dba9633095abd548b5b6513aa8f14d155d9c5c0a68"
+    sha256                               monterey:       "62967ec4b00854d14da39764d6b325da4a29fd20d7ba2bc55d726ff7be6c8876"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7df2b9d29a225cdf6e78ade8aa14629773c4ddc2ccbaf0d894f864580912b7f8"
   end
 
   head do
@@ -70,6 +70,7 @@ class Libsigrok < Formula
   depends_on "graphviz" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => [:build, :test]
+  depends_on "python-setuptools" => :build
   depends_on "sdcc" => :build
   depends_on "swig" => :build
   depends_on "glib"
@@ -82,6 +83,11 @@ class Libsigrok < Formula
   depends_on "numpy"
   depends_on "pygobject3"
   depends_on "python@3.12"
+
+  on_macos do
+    depends_on "gettext"
+    depends_on "libsigc++@2"
+  end
 
   resource "fw-fx2lafw" do
     url "https://sigrok.org/download/binary/sigrok-firmware-fx2lafw/sigrok-firmware-fx2lafw-bin-0.1.7.tar.gz"
@@ -151,7 +157,7 @@ class Libsigrok < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <libsigrok/libsigrok.h>
 
       int main() {
@@ -164,14 +170,14 @@ class Libsigrok < Formula
         }
         return 0;
       }
-    EOS
+    C
     flags = shell_output("#{Formula["pkg-config"].opt_bin}/pkg-config --cflags --libs libsigrok").strip.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
 
-    system python3, "-c", <<~EOS
+    system python3, "-c", <<~C
       import sigrok.core as sr
       sr.Context.create()
-    EOS
+    C
   end
 end

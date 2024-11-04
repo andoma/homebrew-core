@@ -1,10 +1,9 @@
 class Vips < Formula
   desc "Image processing library"
   homepage "https://github.com/libvips/libvips"
-  url "https://github.com/libvips/libvips/releases/download/v8.15.1/vips-8.15.1.tar.xz"
-  sha256 "06811f5aed3e7bc03e63d05537ff4b501de5283108c8ee79396c60601a00830c"
+  url "https://github.com/libvips/libvips/releases/download/v8.16.0/vips-8.16.0.tar.xz"
+  sha256 "6eca46c6ba5fac86224fd69007741012b0ea1f9aa1fcb9256b0cbc2faf768563"
   license "LGPL-2.1-or-later"
-  revision 2
 
   livecheck do
     url :stable
@@ -12,13 +11,12 @@ class Vips < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "a0749997ff5816cb91fde6245faefeeb779406a6e01eed5066dab7d0c04f78a8"
-    sha256 arm64_ventura:  "14c821b0e22ed0ac696439ff56c107c559d19d9ae68ed18cbd63097ed5810e91"
-    sha256 arm64_monterey: "e00796685e92788ed10bfc19ffdf60e6175be80c19e61229d97f3953fd55c2ee"
-    sha256 sonoma:         "54758e656cb4d1ebd0e93315db4c180d2b66a937ceb979636b640f7f830f9ffa"
-    sha256 ventura:        "4e0e2d7844dc730536652d3bad4e040aeab7a62e03c961191e30774da02222d7"
-    sha256 monterey:       "e79c6b7c557a4b6e477680cd56055389fd233d1cd59a553314bbadaed5a56323"
-    sha256 x86_64_linux:   "08fbcf6c9e2ed7348d1034080f4aac8b018a0f257e646aa6af7ce15e691929b0"
+    sha256 arm64_sequoia: "3b90ba29d5d55d92ba0edd25b8090b8ee32bb3445c4ba80ef18a1639d1d68d1e"
+    sha256 arm64_sonoma:  "e532c9d87946242e7f5aa2478232521020a64887187a070d8da7ad5d9a7f1852"
+    sha256 arm64_ventura: "8b3455bdcd2487585a1af0e4aec46f1aab504fbffffc5a7c381666bbb1e17b11"
+    sha256 sonoma:        "210f56748403e9ae47a8972322272c8718c0a4baabfc38ce1e021b5d29187bf9"
+    sha256 ventura:       "9e8f38efa15c093fb2b861ec7696d0b8a244b30ce1a1a327fedff5bffe707034"
+    sha256 x86_64_linux:  "faa60367d98711a92e578569cb34323946fe6a40cdb258a6aaa41b39fe8314dd"
   end
 
   depends_on "gobject-introspection" => :build
@@ -32,6 +30,7 @@ class Vips < Formula
   depends_on "fontconfig"
   depends_on "gettext"
   depends_on "glib"
+  depends_on "highway"
   depends_on "imagemagick"
   depends_on "jpeg-xl"
   depends_on "libarchive"
@@ -47,7 +46,6 @@ class Vips < Formula
   depends_on "openexr"
   depends_on "openjpeg"
   depends_on "openslide"
-  depends_on "orc"
   depends_on "pango"
   depends_on "poppler"
   depends_on "webp"
@@ -79,7 +77,7 @@ class Vips < Formula
   end
 
   test do
-    system "#{bin}/vips", "-l"
+    system bin/"vips", "-l"
     cmd = "#{bin}/vipsheader -f width #{test_fixtures("test.png")}"
     assert_equal "8", shell_output(cmd).chomp
 

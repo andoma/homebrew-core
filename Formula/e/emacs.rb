@@ -1,19 +1,19 @@
 class Emacs < Formula
   desc "GNU Emacs text editor"
   homepage "https://www.gnu.org/software/emacs/"
-  url "https://ftp.gnu.org/gnu/emacs/emacs-29.2.tar.xz"
-  mirror "https://ftpmirror.gnu.org/emacs/emacs-29.2.tar.xz"
-  sha256 "7d3d2448988720bf4bf57ad77a5a08bf22df26160f90507a841ba986be2670dc"
+  url "https://ftp.gnu.org/gnu/emacs/emacs-29.4.tar.xz"
+  mirror "https://ftpmirror.gnu.org/emacs/emacs-29.4.tar.xz"
+  sha256 "ba897946f94c36600a7e7bb3501d27aa4112d791bfe1445c61ed28550daca235"
   license "GPL-3.0-or-later"
+  revision 1
 
   bottle do
-    sha256 arm64_sonoma:   "53ec8e721b0a8c4c8736f61914a434b0c507fd58f2e266d830401db506f96195"
-    sha256 arm64_ventura:  "9ac86c78a160bb6133eab4edbd4f3bfcf9c9b560b64a4fb5dac5a5d2188cc8b5"
-    sha256 arm64_monterey: "53641263144a1207bed238e9c9aafe96a7c62b0201edbd80369f3860dfdd2266"
-    sha256 sonoma:         "0aca3f2c6f4fd52fb25d045ca67cdc61c2c2ffaa1697c408f86295928a16d97f"
-    sha256 ventura:        "baf07e2ef477b45c69e77808b48e3b7eb7faebff0793c7de60a931cc730dd3e2"
-    sha256 monterey:       "a8f0deb61b4cef1180672641b49114f3d19e99a827faf497cb1f5e4ebb47a327"
-    sha256 x86_64_linux:   "f979fd64cd148b53fb735d37cdca3e5fc8daa186bebc74b260a5b158f82e1ae7"
+    sha256 arm64_sequoia: "5376b954c6c3fd35f02da9b1ed23aac0913cd8bd9d6bf110cd1fd3a816b39d55"
+    sha256 arm64_sonoma:  "09ccb2eee64880983ba6a72a701595a9e726e3b41c57a59133ced426623c815e"
+    sha256 arm64_ventura: "6eee1db5e350003fbeb7bd62db6c7e61f391d1a9484b3fb04ce89dacc6d9b526"
+    sha256 sonoma:        "a668788fa630fc8e8dcb1b086556575a217a37d9e7c4607cf8e7d0abcaf8e65f"
+    sha256 ventura:       "341f78dbf3e0e995659556bd29ee732e042b670d603bd092a205d6bf1f731a32"
+    sha256 x86_64_linux:  "48de655711d958db670aadf3caa604bcd492e41de351523581d03bb6ce51884c"
   end
 
   head do
@@ -21,16 +21,18 @@ class Emacs < Formula
 
     depends_on "autoconf" => :build
     depends_on "gnu-sed" => :build
-    depends_on "texinfo" => :build
   end
 
   depends_on "pkg-config" => :build
+  depends_on "texinfo" => :build
+  depends_on "gmp"
   depends_on "gnutls"
   depends_on "jansson"
   depends_on "tree-sitter"
 
   uses_from_macos "libxml2"
   uses_from_macos "ncurses"
+  uses_from_macos "zlib"
 
   on_linux do
     depends_on "jpeg-turbo"

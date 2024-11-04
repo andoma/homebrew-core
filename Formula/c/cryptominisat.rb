@@ -13,23 +13,22 @@ class Cryptominisat < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "bb7e79264dd32cf4ede2c7ab2b028598526879498f8bb711585153a39858891a"
-    sha256 cellar: :any,                 arm64_ventura:  "e76cd1dd1b8f1ac3f4a0aaca595004fe811eb2fd0b7dfb540f0ee60d169a9d82"
-    sha256 cellar: :any,                 arm64_monterey: "e093d179602de0af96280d852b1fabd5851da4dc490103b47ce36d2ec18cf2a8"
-    sha256 cellar: :any,                 sonoma:         "bb280fb33d3a7bc5bfeb4ad89695fbed98032db10796dc15b6a9e44c3c4a29e2"
-    sha256 cellar: :any,                 ventura:        "147d03b3922cbe238fa0a6370cd3baa045342aa42c016b09c231eb3b8d111e10"
-    sha256 cellar: :any,                 monterey:       "4d69c369c2f570bab9e8b2b1e3f381608aae15611d1f44f715ac271abb19f3a2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ed67ac7f32718fef9dc000c2e926db165ab4d32d89996dcf18c63c2582652b56"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sequoia: "48e71ad8b236eb736317e8b39f1a1fac2334e345b315aa9cd04bc843fe706580"
+    sha256 cellar: :any,                 arm64_sonoma:  "bbeb9f9fe45dd2c144870ffa0a77c3b332c694cc7fa4e4c17cf219f4f3ab16c2"
+    sha256 cellar: :any,                 arm64_ventura: "5ffbbf9b609d5a8e0e5dc2bce7237b0a6a7ed184bae66fa4a3a68c9f650b80c2"
+    sha256 cellar: :any,                 sonoma:        "15d86b66627d95536445093c9702b5fcf439e6a6ad67037cc192b5bdec5f5e8b"
+    sha256 cellar: :any,                 ventura:       "ed2723cfbf766a67cfea9a20aba7be51b4b05e0a6f723da3b1133e4260561828"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4291fd6c5691c5de3eeaadb1f6bee8dd83ec80e3ae9dd23baf2a48069b741ef8"
   end
 
   depends_on "cmake" => :build
-  depends_on "python-setuptools" => :build
-  depends_on "python-toml" => :build
-  depends_on "python@3.12" => [:build, :test]
-  depends_on "boost"
+  depends_on "python@3.13" => [:build, :test]
+
+  uses_from_macos "zlib"
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
@@ -41,7 +40,7 @@ class Cryptominisat < Formula
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
   end
 
   test do

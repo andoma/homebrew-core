@@ -1,8 +1,8 @@
 class Convox < Formula
   desc "Command-line interface for the Convox PaaS"
   homepage "https://convox.com/"
-  url "https://github.com/convox/convox/archive/refs/tags/3.16.0.tar.gz"
-  sha256 "c2ba3292d89b0c8ebf5dca0caafc753f7e5ff8eb404fc0e1032bd189c58b4208"
+  url "https://github.com/convox/convox/archive/refs/tags/3.19.2.tar.gz"
+  sha256 "36d3885b5fcf2b26401288aa4bd9d1eee045f993b747e79648ef59967d52c6ec"
   license "Apache-2.0"
   version_scheme 1
 
@@ -12,24 +12,24 @@ class Convox < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a4df860786988bc77241f639ec6729a618e25c31e47191f8449671941fc47f65"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "df678cd596af9b5d74b97e6e872c0c067c0fb010fc4d7fbb193ac71b6830a1b8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e7b6fdab20136a2e6d97b5a49adb87bb2b7fcfefaa9c781e64a24a25eb9c5b54"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1253b85177edf671c74a372d28b815bd46e411eca11bfad3e75cec9468308fd5"
-    sha256 cellar: :any_skip_relocation, ventura:        "fafa648f7237c0d7381930fb1c12ce22add9d63d8130c0f62a06a239ae91d812"
-    sha256 cellar: :any_skip_relocation, monterey:       "cd04e2ae410f0b4bc1efe7088ca88d0a4288ddf9f5a3a1b302baaf8f16062555"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6ae18964607e351c1a3644f81ad9d7c2822f1cf4cb310158038501f6ed0d7bf"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2f87df5f67f13af01a979a58e45f9b6f3d7ee6eb67ad8200be6b9af14edefbb0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2af4d6f82f557fe485d087b6ac7190b541b7e6c6bf5c0d58f4b3402359b3e973"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "6d0f461106d58ed101816fda5c84e1b9d2f163b3156e795828a925dd3c284dbd"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c4c2125e368510657c5c047c45e2fd8ea241c688a91b36911488d74a64af24f2"
+    sha256 cellar: :any_skip_relocation, ventura:       "ab5ec5b5fb759bc903e424eb0a746dc1b47e3342d0f9fa28bc9d49a76010d2dc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d1fc415db6ff906fa0c11863122cb57e32ef27b4efa8e91806be25272c1e0f0b"
   end
 
   depends_on "go" => :build
+  depends_on "pkg-config" => :build
+
+  on_linux do
+    depends_on "systemd" # for libudev
+  end
 
   def install
-    ldflags = %W[
-      -s -w
-      -X main.version=#{version}
-    ]
-
-    system "go", "build", "-mod=readonly", *std_go_args(ldflags: ldflags), "./cmd/convox"
+    ldflags = "-s -w -X main.version=#{version}"
+    system "go", "build", "-mod=readonly", *std_go_args(ldflags:), "./cmd/convox"
   end
 
   test do

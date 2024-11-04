@@ -1,23 +1,22 @@
 class Knot < Formula
   desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-3.3.4.tar.xz"
-  sha256 "2a771b43ce96b6b48d53b29f2086528732e6ac067bc71a3be934f859d1302fc0"
+  url "https://knot-dns.nic.cz/release/knot-3.4.2.tar.xz"
+  sha256 "d835285c1057d45effa1479cfe1f107a50e83d11c1c6d36f270deda88799883e"
   license all_of: ["GPL-3.0-or-later", "0BSD", "BSD-3-Clause", "LGPL-2.0-or-later", "MIT"]
 
   livecheck do
-    url "https://secure.nic.cz/files/knot-dns/"
+    url "https://www.knot-dns.cz/download/"
     regex(/href=.*?knot[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 arm64_sonoma:   "5c18450cf27eaededafaf349e992814953861f0708c08ba5cb4c03cf692ca6f8"
-    sha256 arm64_ventura:  "dcf889d6ca478764a75f953213a363cf8204720e97bc891b7ffaf077929ee013"
-    sha256 arm64_monterey: "b93c942815e16207f20b0e837bfd3d767a98ababd185fa9123aab2427504d9b4"
-    sha256 sonoma:         "a664ba409830e32c50de2b0deeaa7caa5a0f87ad28c413201e2c93faa25d6207"
-    sha256 ventura:        "ee673f53851736f2c9c042589e9f272fcdf91fab65567d727268fb6964c5ac10"
-    sha256 monterey:       "0b5951d61c0b613b00c44636c7288bed7ee37c64713c5a3b56ddf6980bd01ea8"
-    sha256 x86_64_linux:   "b95aa8cd50487b7b87035680f33c8034805262fe22a927b28b50fcd8b9dc31b7"
+    sha256 arm64_sequoia: "c99d652c3e0778927339e1a581ed85e1267dd47f53f0ae46901af2bd1a21b941"
+    sha256 arm64_sonoma:  "b1375b982f90f121a3465b67f4520ace7b1be0a689d95d519f877458875232f0"
+    sha256 arm64_ventura: "63d2d784d8abfad6ae8506a0519207c1cc56c2fc29747f07f1ed5b5d42cd0521"
+    sha256 sonoma:        "1bb0a2c6fd6f0f8dc76a6beb695621b5b43819c5811175999ec5e84a239da1d2"
+    sha256 ventura:       "173e37d84d4a91c5f39b84b82ba7fbfd90d75c4b28380f287d714663876c3b55"
+    sha256 x86_64_linux:  "327db5594c0d0d87cfadc3d5b9fcde83a617262a7cb963a858eb276549cd2e9a"
   end
 
   head do
@@ -41,16 +40,18 @@ class Knot < Formula
   uses_from_macos "libedit"
 
   def install
-    system "autoreconf", "-fvi" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
+    # https://gitlab.nic.cz/knot/knot-dns/-/blob/master/src/knot/modules/rrl/kru-avx2.c
+    ENV.runtime_cpu_detection if Hardware::CPU.intel?
+
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", "--disable-silent-rules",
                           "--with-configdir=#{etc}",
                           "--with-storage=#{var}/knot",
                           "--with-rundir=#{var}/run/knot",
-                          "--prefix=#{prefix}",
                           "--with-module-dnstap",
                           "--enable-dnstap",
-                          "--enable-quic"
+                          "--enable-quic",
+                          *std_configure_args
 
     inreplace "samples/Makefile", "install-data-local:", "disable-install-data-local:"
 

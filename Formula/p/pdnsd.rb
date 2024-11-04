@@ -10,6 +10,7 @@ class Pdnsd < Formula
 
   bottle do
     rebuild 2
+    sha256 arm64_sequoia:  "9ddb9a075c4ca211351979db780d89982bdaaad387b43055c96082cd50a6ed20"
     sha256 arm64_sonoma:   "1ff9eec76617f6a8f60821ff67791c419a44954098c6b5b4f9a41b73f5cca583"
     sha256 arm64_ventura:  "3319b3306f0a2561742e6f9cf3fe9fc826586ac3d9f2cb039df3f173bde01348"
     sha256 arm64_monterey: "3ea74a916606066431810d0b959ca508cb0fd6cb27c2902495db6e9cf6e1e30d"
@@ -25,6 +26,10 @@ class Pdnsd < Formula
     sha256 el_capitan:     "1fa2f1f6ba9fc4fe710c1dc1d5bfb2b9663c557f5cdddf3a2fff8394f138a08f"
     sha256 x86_64_linux:   "4402ca761308936338a2c45fd5642eb8d19c80ec6700b1bcb79203f4396d76c4"
   end
+
+  # The upstream urls have been dead since at least 2021.
+  # Last release on 2012-03-17
+  deprecate! date: "2024-03-31", because: :unmaintained
 
   def install
     system "./configure", "--disable-debug",

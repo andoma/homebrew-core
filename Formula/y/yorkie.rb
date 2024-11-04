@@ -1,9 +1,8 @@
 class Yorkie < Formula
   desc "Document store for collaborative applications"
   homepage "https://yorkie.dev/"
-  url "https://github.com/yorkie-team/yorkie.git",
-    tag:      "v0.4.14",
-    revision: "898eba6fc4ca7cb986b53597443cc08fdbb1631a"
+  url "https://github.com/yorkie-team/yorkie/archive/refs/tags/v0.5.4.tar.gz"
+  sha256 "1d7fab9134ad5fade6c9480ae7830b30f0c523d5d5e8e45200c61845965f3eaa"
   license "Apache-2.0"
   head "https://github.com/yorkie-team/yorkie.git", branch: "main"
 
@@ -13,20 +12,24 @@ class Yorkie < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0753829640d7d40020c218be7f411ffcb3c4b0f1587c8c5a3499eeb2033edabb"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "837b91eae9a1e40f5b4103b74411c07da2c43c9dc0635cd0eb48226359ca08bb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "df138e40455367b849faaa711bc29070f1283fcee6fc53c0844e4f25900d5efe"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9c4476bb965251dd9bb54f8ddc32a814798a2b9e17cc53e4e1cd14e7463b8e73"
-    sha256 cellar: :any_skip_relocation, ventura:        "fd8e8a88607ab089f76c05ecdc50f00b7dfaeb9669d0f7a55cbc5da34215b155"
-    sha256 cellar: :any_skip_relocation, monterey:       "9487ecd172fd7df7549d9a76f400fe161e63bcc8ecdc5de7d46735c3cde58400"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "96982e91f246374a9542d739622861d1afc4397750d261b01fe0e4c596e2be1d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0fd66faed4ec2e2190e3eca41c70a060993d736224b610666fefec5a044cfcc7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0fd66faed4ec2e2190e3eca41c70a060993d736224b610666fefec5a044cfcc7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0fd66faed4ec2e2190e3eca41c70a060993d736224b610666fefec5a044cfcc7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "233a751476536a5a7ad0719f5de36b7b32ad788cd8ecebfaa19b869cdd457f10"
+    sha256 cellar: :any_skip_relocation, ventura:       "233a751476536a5a7ad0719f5de36b7b32ad788cd8ecebfaa19b869cdd457f10"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "27d07ce6bae22a4dd608f84671b81f150881dde0333923b18a211e9fde35063e"
   end
 
   depends_on "go" => :build
 
   def install
-    system "make", "build"
-    prefix.install "bin"
+    ldflags = %W[
+      -s -w
+      -X github.com/yorkie-team/yorkie/internal/version.Version=#{version}
+      -X github.com/yorkie-team/yorkie/internal/version.BuildDate=#{time.iso8601}
+    ]
+
+    system "go", "build", *std_go_args(ldflags:), "./cmd/yorkie"
 
     generate_completions_from_executable(bin/"yorkie", "completion")
   end

@@ -1,40 +1,48 @@
-require "language/node"
-
 class ProtocGenGrpcWeb < Formula
   desc "Protoc plugin that generates code for gRPC-Web clients"
   homepage "https://github.com/grpc/grpc-web"
   url "https://github.com/grpc/grpc-web/archive/refs/tags/1.5.0.tar.gz"
   sha256 "d3043633f1c284288e98e44c802860ca7203c7376b89572b5f5a9e376c2392d5"
   license "Apache-2.0"
+  revision 4
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "5ab0ae27b604ea0dbec2c4b3148a4fca8d53f0010ce9f1dd566bb22fcafc24f0"
-    sha256 cellar: :any,                 arm64_ventura:  "ba446addb28734a91b4236a52dd8b17e9be933d90bd0bd6a1eac37368f64e023"
-    sha256 cellar: :any,                 arm64_monterey: "57a3d2185dc31f48a53ef3ce0f3ec32fc3fcc22d72774a2cb1f1cbb4ba38e278"
-    sha256 cellar: :any,                 sonoma:         "b4d8f1ba3299e952a09e5822df7dcf1571a731899e74198bad7810afdd9b8ab4"
-    sha256 cellar: :any,                 ventura:        "7afe339c30a097798f4863d24e5dbac7452ea85c918651478ba3bfc7fe2680b3"
-    sha256 cellar: :any,                 monterey:       "50076fd59b916ccc38cec5b4b7f0b1c43bc902aa47a2e12175b6efec80217984"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2cb5155debaa31e15a2f385298a09aca0f6041d7da2bc2612c73ad7deb33e80"
+    sha256 cellar: :any,                 arm64_sequoia: "a4f85c1ccce6031b8feaf732dd20abd5a206bfce8c675516b9de2af7a7576ce4"
+    sha256 cellar: :any,                 arm64_sonoma:  "b37092b2149c0b051eae27d61fb1e84453d6ee4f6df33b32ebf280e6ff0a5e15"
+    sha256 cellar: :any,                 arm64_ventura: "78fc9b91c8f9dc7f982f8d79bd0ad73fd7c5317f711370796d2eb1dc93a50b0c"
+    sha256 cellar: :any,                 sonoma:        "35bf03d35f48fbe38dc3382ef0ffb7b99eb73f485839457e7d9780881d5b1a47"
+    sha256 cellar: :any,                 ventura:       "e5ca115e787006f8dcd8e656c4be77036881b08e239eddaa10d1ef47ab41a797"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bab988382a520ff8b0d05dff610be8275f3c40083c953347f092b1d46829a16d"
   end
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "node" => :test
   depends_on "typescript" => :test
-  depends_on "protobuf@3"
+  depends_on "abseil"
+  depends_on "protobuf"
+  depends_on "protoc-gen-js"
+
+  # Backport of https://github.com/grpc/grpc-web/commit/2c39859be8e5bcf55eef129e5a5330149ce460ab
+  patch :DATA
 
   def install
-    bin.mkpath
-    system "make", "install-plugin", "PREFIX=#{prefix}"
+    # Workarounds to build with latest `protobuf` which needs Abseil link flags and C++17
+    ENV.append "LDFLAGS", Utils.safe_popen_read("pkg-config", "--libs", "protobuf").chomp
+    inreplace "javascript/net/grpc/web/generator/Makefile", "-std=c++11", "-std=c++17"
 
-    # Remove these two lines when this formula depends on unversioned `protobuf`.
-    libexec.install bin/"protoc-gen-grpc-web"
-    (bin/"protoc-gen-grpc-web").write_env_script libexec/"protoc-gen-grpc-web",
-                                                 PATH: "#{Formula["protobuf@3"].opt_bin}:${PATH}"
+    args = ["PREFIX=#{prefix}", "STATIC=no"]
+    args << "MIN_MACOS_VERSION=#{MacOS.version}" if OS.mac?
+
+    system "make", "install-plugin", *args
   end
 
   test do
-    ENV.prepend_path "PATH", Formula["protobuf@3"].opt_bin
-
     # First use the plugin to generate the files.
     testdata = <<~EOS
       syntax = "proto3";
@@ -64,8 +72,62 @@ class ProtocGenGrpcWeb < Formula
       import {Test, TestResult} from './test_pb';
     EOS
     (testpath/"test.ts").write testts
-    system "npm", "install", *Language::Node.local_npm_install_args, "grpc-web", "@types/google-protobuf"
+    system "npm", "install", *std_npm_args(prefix: false), "grpc-web", "@types/google-protobuf"
     # Specify including lib for `tsc` since `es6` is required for `@types/google-protobuf`.
     system "tsc", "--lib", "es6", "test.ts"
   end
 end
+
+__END__
+diff --git a/javascript/net/grpc/web/generator/grpc_generator.cc b/javascript/net/grpc/web/generator/grpc_generator.cc
+index 158a335bb..1eb97b35d 100644
+--- a/javascript/net/grpc/web/generator/grpc_generator.cc
++++ b/javascript/net/grpc/web/generator/grpc_generator.cc
+@@ -841,13 +841,11 @@ void PrintProtoDtsMessage(Printer* printer, const Descriptor* desc,
+                      "set$js_field_name$(value?: $js_field_type$): "
+                      "$class_name$;\n");
+     }
+-    if (field->has_optional_keyword() ||
+-        (field->type() == FieldDescriptor::TYPE_MESSAGE &&
+-            !field->is_repeated() && !field->is_map())) {
++    if (field->has_presence()) {
+       printer->Print(vars, "has$js_field_name$(): boolean;\n");
+     }
+-    if (field->type() == FieldDescriptor::TYPE_MESSAGE || field->has_optional_keyword() ||
+-        field->is_repeated() || field->is_map()) {
++    if (field->type() == FieldDescriptor::TYPE_MESSAGE ||
++        field->has_presence() || field->is_repeated() || field->is_map()) {
+       printer->Print(vars, "clear$js_field_name$(): $class_name$;\n");
+     }
+     if (field->is_repeated() && !field->is_map()) {
+@@ -867,14 +865,12 @@ void PrintProtoDtsMessage(Printer* printer, const Descriptor* desc,
+     printer->Print("\n");
+   }
+
+-  for (int i = 0; i < desc->oneof_decl_count(); i++) {
+-    const OneofDescriptor* oneof = desc->oneof_decl(i);
+-    if (!oneof->is_synthetic()) {
+-      vars["js_oneof_name"] = ToUpperCamel(ParseLowerUnderscore(oneof->name()));
+-      printer->Print(
+-          vars, "get$js_oneof_name$Case(): $class_name$.$js_oneof_name$Case;\n");
+-      printer->Print("\n");
+-    }
++  for (int i = 0; i < desc->real_oneof_decl_count(); i++) {
++    const OneofDescriptor *oneof = desc->real_oneof_decl(i);
++    vars["js_oneof_name"] = ToUpperCamel(ParseLowerUnderscore(oneof->name()));
++    printer->Print(
++        vars, "get$js_oneof_name$Case(): $class_name$.$js_oneof_name$Case;\n");
++    printer->Print("\n");
+   }
+
+   printer->Print(
+@@ -904,8 +900,7 @@ void PrintProtoDtsMessage(Printer* printer, const Descriptor* desc,
+     }
+     vars["js_field_name"] = js_field_name;
+     vars["js_field_type"] = AsObjectFieldType(field, file);
+-    if ((field->type() != FieldDescriptor::TYPE_MESSAGE && !field->has_optional_keyword()) ||
+-        field->is_repeated()) {
++    if (!field->has_presence()) {
+       printer->Print(vars, "$js_field_name$: $js_field_type$,\n");
+     } else {
+       printer->Print(vars, "$js_field_name$?: $js_field_type$,\n");

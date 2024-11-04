@@ -1,10 +1,8 @@
-require "language/node"
-
 class BalenaCli < Formula
   desc "Command-line tool for interacting with the balenaCloud and balena API"
   homepage "https://www.balena.io/docs/reference/cli/"
-  url "https://registry.npmjs.org/balena-cli/-/balena-cli-18.0.0.tgz"
-  sha256 "93cadd7df13799307740d7dfc2ea3c3d65a95f6138e139328f2bafc15fffe745"
+  url "https://registry.npmjs.org/balena-cli/-/balena-cli-20.0.2.tgz"
+  sha256 "49548dbf4edec9aa33da12f93d073445b2dee50af18500c2684efcdc835c72ba"
   license "Apache-2.0"
 
   livecheck do
@@ -13,21 +11,16 @@ class BalenaCli < Formula
   end
 
   bottle do
-    sha256                               arm64_sonoma:   "fb5dcb02c339cfa5c9e6bf22c76b0e73c819703dbb56d0e39c77e6b2660065b4"
-    sha256                               arm64_ventura:  "5798f8dabbcdc2a991a4f03c70624677b7cdc4de506b58830602e2450cb2cfb0"
-    sha256                               arm64_monterey: "6770412cbb1704d50724b1080b4b51ab048d7515191f459f439280952e3e9e37"
-    sha256                               sonoma:         "7e56c6a7fca88ddb191485ee3b575ea176cb3945ddcf0fb6a031760f8dda69f6"
-    sha256                               ventura:        "86c156e4ffef0dcf1d586d6ccffa31c61b51f2ffb6d3f865884e6b89aac24218"
-    sha256                               monterey:       "1b1973ec1898fdac78d9320628aacdcd914811953647a04d5626db63a5810bf7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b36c78552b8461b2dceea0bfa9160ae6a01358a436220100f4a7fdd06d55008c"
+    sha256                               arm64_sequoia: "026b248af0c0764e1688153c890f97a4f886789763f69fb0123268b077feaf15"
+    sha256                               arm64_sonoma:  "33e6b361935feef602d3166c5b1c99c9b540d9c5cfce066246abed9eac19c756"
+    sha256                               arm64_ventura: "771b9f116501c86194732d84a65eb3c9528e81da247d72499cf363ae285c3423"
+    sha256                               sonoma:        "0e997b3228da4ffe36645ef358b4c7f89b6ec94737f361ba1aecf1cd860777db"
+    sha256                               ventura:       "0596b11b6ae2e8766ddec7de8ca9f6fc95a33a64ca96698ed6234fa201a5daad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c9daec20534ab76f406aabd539a0c92939ae53b800fe4f058a260de505a703bd"
   end
 
-  # need node@18, and also align with upstream, https://github.com/balena-io/balena-cli/blob/master/.github/actions/publish/action.yml#L21
-  depends_on "node@18"
-
-  on_macos do
-    depends_on "macos-term-size"
-  end
+  # need node@20, and also align with upstream, https://github.com/balena-io/balena-cli/blob/master/.github/actions/publish/action.yml#L21
+  depends_on "node@20"
 
   on_linux do
     depends_on "libusb"
@@ -38,44 +31,24 @@ class BalenaCli < Formula
   def install
     ENV.deparallelize
 
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    system "npm", "install", *std_npm_args
+    bin.install_symlink libexec.glob("bin/*")
 
     # Remove incompatible pre-built binaries
     os = OS.kernel_name.downcase
     arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
     node_modules = libexec/"lib/node_modules/balena-cli/node_modules"
     node_modules.glob("{ffi-napi,ref-napi}/prebuilds/*")
-                .each { |dir| dir.rmtree if dir.basename.to_s != "#{os}-#{arch}" }
+                .each { |dir| rm_r(dir) if dir.basename.to_s != "#{os}-#{arch}" }
 
-    (node_modules/"lzma-native/build").rmtree
-    (node_modules/"usb").rmtree if OS.linux?
+    rm_r(node_modules/"lzma-native/build")
+    rm_r(node_modules/"usb") if OS.linux?
 
-    term_size_vendor_dir = node_modules/"term-size/vendor"
-    term_size_vendor_dir.rmtree # remove pre-built binaries
-
-    if OS.mac?
-      macos_dir = term_size_vendor_dir/"macos"
-      macos_dir.mkpath
-      # Replace the vendored pre-built term-size with one we build ourselves
-      ln_sf (Formula["macos-term-size"].opt_bin/"term-size").relative_path_from(macos_dir), macos_dir
-
-      unless Hardware::CPU.intel?
-        # Replace pre-built x86_64 binaries with native binaries
-        %w[denymount macmount].each do |mod|
-          (node_modules/mod/"bin"/mod).unlink
-          system "make", "-C", node_modules/mod
-        end
-      end
-    end
-
-    # Replace universal binaries with their native slices.
+    # Replace universal binaries with native slices
     deuniversalize_machos
   end
 
   test do
-    ENV.prepend_path "PATH", Formula["node@18"].bin
-
     assert_match "Logging in to balena-cloud.com",
       shell_output("#{bin}/balena login --credentials --email johndoe@gmail.com --password secret 2>/dev/null", 1)
   end

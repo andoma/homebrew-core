@@ -1,10 +1,11 @@
 class Opencv < Formula
   desc "Open source computer vision library"
   homepage "https://opencv.org/"
-  url "https://github.com/opencv/opencv/archive/refs/tags/4.9.0.tar.gz"
-  sha256 "ddf76f9dffd322c7c3cb1f721d0887f62d747b82059342213138dc190f28bc6c"
+  url "https://github.com/opencv/opencv/archive/refs/tags/4.10.0.tar.gz"
+  sha256 "b2171af5be6b26f7a06b1229948bbb2bdaa74fcf5cd097e0af6378fce50a6eb9"
   license "Apache-2.0"
-  revision 3
+  revision 12
+  head "https://github.com/opencv/opencv.git", branch: "4.x"
 
   livecheck do
     url :stable
@@ -12,25 +13,26 @@ class Opencv < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "23b52b7eae72e228f4ceae31780ede90ac49084a51d36d5475f8b92597a1a895"
-    sha256 arm64_ventura:  "28e92ebdcbda5293d3838c566fa7cade2f473836cd216ab7d3afbd3922aeae25"
-    sha256 arm64_monterey: "f2ddde5f2ddff6aded6ab03c0a2bad19b57ce68f199a5ecb063c7560db7477f0"
-    sha256 sonoma:         "d0e3b64bcd085462c6e07bc4ff0795e38950adc7fc49d5c25f5ad0ee66591f1a"
-    sha256 ventura:        "eafc62749e42fc9e26ced73e2bfc19d5ee8ab528a3b4c8e0aa45669dd8bbb3f3"
-    sha256 monterey:       "728274319d4babb4b75c3891d87e84e2f7057f0faba2300014b59a43ea2c6dbf"
-    sha256 x86_64_linux:   "19443b8d5cabd9d7e722fc35cbe051c35e21d4a7b67162af065cb9b1504ca7b0"
+    sha256 arm64_sonoma:  "de25a8e698f799ef0ec18f6a10e68ced4662cbe434b15190bb1ae77a58e082cf"
+    sha256 arm64_ventura: "dd6e20b2ffd3f7d59ca63986c1ebd401a218cf60584f5b06b2633b6ad1183765"
+    sha256 sonoma:        "a1a65f508c0ff07d95b2d14719917bf70a28b39e1224c677dfb6bcfa76c6ff31"
+    sha256 ventura:       "1cfcea05855bb12f02327b073e2ff100a1aa2a09226260d362653ed580bb4009"
+    sha256 x86_64_linux:  "6372c078b4664d54f3b20c7dd89d1acad8c335f31dbd48f895c42c0312223c5d"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "python-setuptools" => :build
+  depends_on "abseil"
   depends_on "ceres-solver"
   depends_on "eigen"
   depends_on "ffmpeg"
+  depends_on "freetype"
+  depends_on "gflags"
   depends_on "glog"
   depends_on "harfbuzz"
   depends_on "jpeg-turbo"
+  depends_on "jsoncpp"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "numpy"
@@ -41,22 +43,30 @@ class Opencv < Formula
   depends_on "protobuf"
   depends_on "python@3.12"
   depends_on "tbb"
+  depends_on "tesseract"
   depends_on "vtk"
   depends_on "webp"
 
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "glew"
+    depends_on "imath"
+    depends_on "libarchive"
+  end
+
+  on_linux do
+    depends_on "cairo"
+    depends_on "gdk-pixbuf"
+    depends_on "glib"
+    depends_on "gtk+3"
+  end
+
   fails_with gcc: "5" # ffmpeg is compiled with GCC
 
   resource "contrib" do
-    url "https://github.com/opencv/opencv_contrib/archive/refs/tags/4.9.0.tar.gz"
-    sha256 "8952c45a73b75676c522dd574229f563e43c271ae1d5bbbd26f8e2b6bc1a4dae"
-
-    # TODO: remove with next OpenCV release. Fix https://github.com/opencv/opencv_contrib/pull/3624
-    patch do
-      url "https://github.com/opencv/opencv_contrib/commit/46fb893f9a632012990713c4003d7d3cab4f2f25.patch?full_index=1"
-      sha256 "8f89f3db9fd022ffbb30dd1992df6d20603980fadfe090384e12c57731a9e062"
-    end
+    url "https://github.com/opencv/opencv_contrib/archive/refs/tags/4.10.0.tar.gz"
+    sha256 "65597f8fb8dc2b876c1b45b928bbcc5f772ddbaf97539bf1b737623d0604cba1"
   end
 
   def python3
@@ -74,7 +84,7 @@ class Opencv < Formula
 
     # Remove bundled libraries to make sure formula dependencies are used
     libdirs = %w[ffmpeg libjasper libjpeg libjpeg-turbo libpng libtiff libwebp openexr openjpeg protobuf tbb zlib]
-    libdirs.each { |l| (buildpath/"3rdparty"/l).rmtree }
+    libdirs.each { |l| rm_r(buildpath/"3rdparty"/l) }
 
     args = %W[
       -DCMAKE_CXX_STANDARD=17
@@ -160,17 +170,20 @@ class Opencv < Formula
 
     # Prevent dependents from using fragile Cellar paths
     inreplace lib/"pkgconfig/opencv#{version.major}.pc", prefix, opt_prefix
+
+    # Replace universal binaries with their native slices
+    deuniversalize_machos
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <opencv2/opencv.hpp>
       #include <iostream>
       int main() {
         std::cout << CV_VERSION << std::endl;
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++17", "test.cpp", "-I#{include}/opencv4", "-o", "test"
     assert_equal shell_output("./test").strip, version.to_s
 

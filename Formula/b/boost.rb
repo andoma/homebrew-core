@@ -1,11 +1,26 @@
 class Boost < Formula
   desc "Collection of portable C++ source libraries"
   homepage "https://www.boost.org/"
-  url "https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.xz"
-  sha256 "2e64e5d79a738d0fa6fb546c6e5c2bd28f88d268a2a080546f74e5ff98f29d0e"
   license "BSL-1.0"
-  revision 1
+  revision 2
   head "https://github.com/boostorg/boost.git", branch: "master"
+
+  stable do
+    # TODO: Drop single-threaded libraries at version bump.
+    #   https://github.com/Homebrew/homebrew-core/pull/182995
+    url "https://github.com/boostorg/boost/releases/download/boost-1.86.0/boost-1.86.0-b2-nodocs.tar.xz"
+    sha256 "a4d99d032ab74c9c5e76eddcecc4489134282245fffa7e079c5804b92b45f51d"
+
+    # Backport Boost.Compute support for latest Boost.Uuid
+    patch :p2 do
+      url "https://github.com/boostorg/compute/commit/79452d5279831ee59a650c17b71259a821f1a554.patch?full_index=1"
+      sha256 "ed4b9740c1f300ed0413498f0cba6f05389b570bec6a4b456d53314a2561d061"
+    end
+    patch :p2 do
+      url "https://github.com/boostorg/compute/commit/54915acaafa003b7aab6f24c74e7fdeaae297ad6.patch?full_index=1"
+      sha256 "1d1e83f4cb371003bad84a3789b2fecf215768f4a6f933444eaa4c26905f1e9f"
+    end
+  end
 
   livecheck do
     url "https://www.boost.org/users/download/"
@@ -16,16 +31,15 @@ class Boost < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "5249ac98f677fe76ad9cd7b050ad8b6800c48669282ce3391117784d9d16b70b"
-    sha256 cellar: :any,                 arm64_ventura:  "cd1351b1a32bd51ce1b81f71f9b26aa557ff7b9972215460b694118ac18489ea"
-    sha256 cellar: :any,                 arm64_monterey: "7a46214d966c97e1188c42a10d9dfe3f44d16af52c0e6e2ab4c4bbd42f7d3818"
-    sha256 cellar: :any,                 sonoma:         "e81f1b27ef614f0979c499ab0b0d1129150fa3ce7be844bc42a6a9469583df42"
-    sha256 cellar: :any,                 ventura:        "29380bb5fbe649ae53b19bb075f9754623f08760a57c97762d8739e1b04cf184"
-    sha256 cellar: :any,                 monterey:       "cc51f35cffe64b92f6e83562c428b11b96a27891e5a69a70c43214dc2c8eb0df"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ada9f58bd0b7de7e2559c636f6339b0f4c3c1bc6629734f91adba9274a55beb1"
+    sha256 cellar: :any,                 arm64_sequoia: "9cbf3c05fdd327dd0e0f1a9419e63e10c2351ec7cd51904e054e37d11751a21d"
+    sha256 cellar: :any,                 arm64_sonoma:  "9c969ba39918df9f26ac5d283081bd263009747db450095888697c0c83e3a8d2"
+    sha256 cellar: :any,                 arm64_ventura: "d49dc78ee528470d8ca0f9762a96d1eba1f80fd4a8d70dea010c7d524cec7133"
+    sha256 cellar: :any,                 sonoma:        "14ea0ee012bdb555dcc20fb5b6429ea34bd7aab7b16db606de04074fdf37ddcd"
+    sha256 cellar: :any,                 ventura:       "b2ffcb38ea2326444acc8b95c6ccd4fa8d8edbab95270108ecfb85a25b89aeaa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2a9279f11fcd81f48f47d0b86389cddd27dc077f0ca6948f2ff83f720267119d"
   end
 
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "xz"
   depends_on "zstd"
 
@@ -43,11 +57,11 @@ class Boost < Formula
     end
 
     # libdir should be set by --prefix but isn't
-    icu4c_prefix = Formula["icu4c"].opt_prefix
+    icu4c = deps.map(&:to_formula).find { |f| f.name.match?(/^icu4c@\d+$/) }
     bootstrap_args = %W[
       --prefix=#{prefix}
       --libdir=#{lib}
-      --with-icu=#{icu4c_prefix}
+      --with-icu=#{icu4c.opt_prefix}
     ]
 
     # Handle libraries that will not be built.
@@ -72,9 +86,10 @@ class Boost < Formula
       link=shared,static
     ]
 
-    # Boost is using "clang++ -x c" to select C compiler which breaks C++14
-    # handling using ENV.cxx14. Using "cxxflags" and "linkflags" still works.
-    args << "cxxflags=-std=c++14"
+    # Boost is using "clang++ -x c" to select C compiler which breaks C++
+    # handling in superenv. Using "cxxflags" and "linkflags" still works.
+    # C++17 is due to `icu4c`.
+    args << "cxxflags=-std=c++17"
     args << "cxxflags=-stdlib=libc++" << "linkflags=-stdlib=libc++" if ENV.compiler == :clang
 
     system "./bootstrap.sh", *bootstrap_args
@@ -83,7 +98,7 @@ class Boost < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <boost/algorithm/string.hpp>
       #include <boost/iostreams/device/array.hpp>
       #include <boost/iostreams/device/back_inserter.hpp>
@@ -129,7 +144,7 @@ class Boost < Formula
 
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-std=c++14", "-o", "test", "-L#{lib}", "-lboost_iostreams",
                     "-L#{Formula["zstd"].opt_lib}", "-lzstd"
     system "./test"

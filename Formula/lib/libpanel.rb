@@ -1,18 +1,17 @@
 class Libpanel < Formula
   desc "Dock/panel library for GTK 4"
   homepage "https://gitlab.gnome.org/GNOME/libpanel"
-  url "https://download.gnome.org/sources/libpanel/1.4/libpanel-1.4.1.tar.xz"
-  sha256 "98410d00e734857ecdf33b9a20dd7b0fb38d8b6d31d4369bafc1c67392abb9de"
+  url "https://download.gnome.org/sources/libpanel/1.8/libpanel-1.8.1.tar.xz"
+  sha256 "b87b8fa9b79768cc704243793f0158a040a1e46d37b9889188545a7f7dcaa6fb"
   license "LGPL-3.0-or-later"
 
   bottle do
-    sha256 arm64_sonoma:   "120b4c621c892fde5c6ca6982f110dd132183bbef076eefe6d526ec0024d1ee3"
-    sha256 arm64_ventura:  "9ec9352b07954b6f0eec5d93edb45c5d75843e48740cb45ecf2899da27029ccb"
-    sha256 arm64_monterey: "d13b7481537236142611a235349c53896b496615ddbe4f167aef28139274ff84"
-    sha256 sonoma:         "c375c1347d3f9eda58a35c04b8ed30044131a45902b237a0a775040757666a37"
-    sha256 ventura:        "a89e901c96af5e75b8a8459add6255fecb172c60ef9014b722b6170c8d280cb0"
-    sha256 monterey:       "f444f4da57f81ad818157adc7c5b5b4f8e06fff8dbeccbc73c4425502c222b0a"
-    sha256 x86_64_linux:   "d12b946e63caaef9c24b81b07e74e0a5b612337241aceba3511681b2aeb580a1"
+    sha256 arm64_sequoia: "7a09e359ed1ef3c48218bd445177d2305c76bb265e51ffbed0d82bef3f16eb74"
+    sha256 arm64_sonoma:  "a1ad121a497fe726f704c0bb2d7545a39ff4b98fb86a34265b7e41048e236526"
+    sha256 arm64_ventura: "728291f360407ba8d12656e8e68b70f6efb1e1194ffb2895450169c5903c7912"
+    sha256 sonoma:        "f1abe0c09638d991f4b345eca5bc1f8f10b1d49007419a5b19881c18298b9351"
+    sha256 ventura:       "b70a3ef9d1251533a353c1ef8b065d489ab0e7e0bf788e2f65a81ec93d5063a1"
+    sha256 x86_64_linux:  "3801d73802a9192ead0368ec17bc5ce7f90381c1e686de59a262889eefbf82fe"
   end
 
   depends_on "gettext" => :build
@@ -21,9 +20,17 @@ class Libpanel < Formula
   depends_on "ninja" => :build
   depends_on "pkg-config" => [:build, :test]
   depends_on "vala" => :build
+
+  depends_on "cairo"
   depends_on "gi-docgen"
+  depends_on "glib"
+  depends_on "graphene"
   depends_on "gtk4"
   depends_on "libadwaita"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     system "meson", "setup", "build", "-Ddocs=disabled", *std_meson_args
@@ -32,14 +39,14 @@ class Libpanel < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <libpanel.h>
 
       int main(int argc, char *argv[]) {
         uint major = panel_get_major_version();
         return 0;
       }
-    EOS
+    C
     flags = shell_output("#{Formula["pkg-config"].opt_bin}/pkg-config --cflags --libs libpanel-1").strip.split
     flags += shell_output("#{Formula["pkg-config"].opt_bin}/pkg-config --cflags --libs libadwaita-1").strip.split
     system ENV.cc, "test.c", "-o", "test", *flags

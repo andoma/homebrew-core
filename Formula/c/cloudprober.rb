@@ -1,18 +1,19 @@
 class Cloudprober < Formula
   desc "Active monitoring software to detect failures before your customers do"
   homepage "https://cloudprober.org"
-  url "https://github.com/cloudprober/cloudprober/archive/refs/tags/v0.13.2.tar.gz"
-  sha256 "017d49f33a5047016a2a821dc128ff83df4e4215922657b35a600cd6e5ad2897"
+  url "https://github.com/cloudprober/cloudprober/archive/refs/tags/v0.13.7.tar.gz"
+  sha256 "e5ee8db5b0f571ab08eb3879d31b5fe301c1f17d49245962974544f823b63576"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bd348333219f96140b4a20bfb9b4ea8741409c0799741f9c457e8e80fa042a0b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "313ed270af5f57deb84459da16e2edfa5206858a7863eec2e003b9fd79cf79a5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e6df8976311752db2577e4fa1640548a28530b4f5f28b4f9d6c89f1b6c75bd6e"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6c5c114f97fdc424ba1fe01c09f9e7c86a75ad9ea1629bbe2a4de26c8994288b"
-    sha256 cellar: :any_skip_relocation, ventura:        "df29bcef78d20f741c04754497ae5c6ecc5f3018567fb3d3aca01ef5c350fbbd"
-    sha256 cellar: :any_skip_relocation, monterey:       "e5f4e11f29cb3987fb7f5813bdc5caf3c34b4b5fb28717bd8631cc8426916eac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0890c43b071df5f6ba39f7dfdf8958b5f6e9d48dff28b4e7cd7cae16ddf1b6be"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b256f494cfb86241fb43e692330fc1464106d631f9b8dbd4577dd0ea0e972284"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "be2ae4477185c3a005f4bc08c4e73c294fcb39f8176ca86cff1aa23d6ef3c2e6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a63d8862c8d0c153c4e0ea6434d94c3f56f4dde81b239466ccb90fb1066b09f7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "fd5eb24a3fdde82d73fb237713ab724db25b31c44f906b58ade89d7591c96fa4"
+    sha256 cellar: :any_skip_relocation, sonoma:         "e18164a537158db17d3bb58c71bdaea31d326175fba7ae253d46c4696273a430"
+    sha256 cellar: :any_skip_relocation, ventura:        "09ba04d2b4ae6575edeaafaeb3bd727b51fd4caa9f54a5742a594f10496ef0ca"
+    sha256 cellar: :any_skip_relocation, monterey:       "ed9cc86a7122059b488f0e42d9e18aa1e1dbcdf1fdeaeec159a5b6825483ca43"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6e81dc62e9ec39bd2745237dd191d486e8454160a6f3938b71ebd9c45163d6b3"
   end
 
   depends_on "go" => :build

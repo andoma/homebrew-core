@@ -1,33 +1,36 @@
 class JavaServiceWrapper < Formula
   desc "Simplify the deployment, launch and monitoring of Java applications"
   homepage "https://wrapper.tanukisoftware.com/"
-  url "https://downloads.sourceforge.net/project/wrapper/wrapper_src/Wrapper_3.5.54_20230512/wrapper_3.5.54_src.tar.gz"
-  sha256 "b75ea2d56aaf0eaaf8279b0395d79493af8303237fea858657a78c139ca3fa2e"
-  license "GPL-2.0-only"
+  url "https://downloads.sourceforge.net/project/wrapper/wrapper_src/Wrapper_3.5.59_20240723/wrapper_3.5.59_src.tar.gz"
+  sha256 "3b47e7facdd1208ae2570eac301da748a006b551744f3e8db3825bf4ea5c6e06"
+  license any_of: ["GPL-2.0-only", "GPL-3.0-only"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8b2cf45b66d03fe19863a1f9497cca8ff979864389624b83f9d3c6833f95b82f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "963631c202195828963a0e4f51084c653932146cc4f7a07df6d71c3093385a24"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "978679a0359ccff57bd4c390ca3b177769d6ad7a0696e318456d467166dce13d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8bbc33e86bc1420382447510fc97ed045646cfdd0e9926aa9671a2ddcdb1a78c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ab12f140966eeeeba6a39e1c7df802782bf43ac5ada2962a94d157faedd490ed"
-    sha256 cellar: :any_skip_relocation, ventura:        "c6dbfbdfb09a5403b653648ece2f749d074b22b1d45168801f209469c74f1d9e"
-    sha256 cellar: :any_skip_relocation, monterey:       "364d3b98e673d49034f8cef5ef18392d22e9053c064a54906cba8f3549f6b481"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d6e62d97d66dcd8fc9a6fc48ea07b15cc0f049f160760dff6363959f3839dbfa"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "36f48798bf4a7f995c03626fd3ed94267fb3847c112d804da52a1fd45403aab6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "024094de8513e469be859a01d18aeff8d0ba0adfc531d24db7e42bc1253d1485"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f3686c79400a6d08357b9732a90552c682e79d20e0452a7f3fa5ed9a0a9b306c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "afec02b0f155c2b525aae172c8a4769e8b6083dae7ec542d08c762422c21a8f9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d59c6dbb00c3831526d7a2c3d06d559c242ec36c27f527b29d2a7e49e6ded3a3"
+    sha256 cellar: :any_skip_relocation, sonoma:         "77f657d48b8c15e8902bb346d2f3081b5b705cd74f7965bcfe626a7ca0f69e4a"
+    sha256 cellar: :any_skip_relocation, ventura:        "b13c9d5321c9239ad342dc4375203df491e1ec89ff072a9214d6aee1ec131c6f"
+    sha256 cellar: :any_skip_relocation, monterey:       "52d7a21a1b0a06e1b4311718b4926f58a446dc125f761edade0e1898888243f6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "187b9c59b2589c36223445d0b0fd9d4985dccaeca299ed046ffca2c1b2565f6d"
   end
 
   depends_on "ant" => :build
   depends_on "openjdk@11" => :build
+
   on_linux do
     depends_on "cunit" => :build
   end
 
   def install
     ENV["JAVA_HOME"] = Formula["openjdk@11"].opt_prefix
+
     # Default javac target version is 1.4, use 1.6 which is the minimum available on openjdk@11
     system "ant", "-Dbits=64", "-Djavac.target.version=1.6"
+
     libexec.install "lib", "bin", "src/bin" => "scripts"
+
     if OS.mac?
       if Hardware::CPU.arm?
         ln_s "libwrapper.dylib", libexec/"lib/libwrapper.jnilib"
@@ -39,6 +42,7 @@ class JavaServiceWrapper < Formula
 
   test do
     ENV["JAVA_HOME"] = Formula["openjdk@11"].opt_prefix
+
     output = shell_output("#{libexec}/bin/testwrapper status", 1)
     assert_match("Test Wrapper Sample Application", output)
   end

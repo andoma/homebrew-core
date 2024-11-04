@@ -6,22 +6,23 @@ class Snakeviz < Formula
   url "https://files.pythonhosted.org/packages/64/9b/3983c41e913676d55e4b3de869aa0561e053ad3505f1fd35181670244b70/snakeviz-2.2.0.tar.gz"
   sha256 "7bfd00be7ae147eb4a170a471578e1cd3f41f803238958b6b8efcf2c698a6aa9"
   license "BSD-3-Clause"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f1e8c5454e204c47519daa78a0f81ee26142b3b55461ab1ac0a54a700c5ddaeb"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b92423ff12040f8bb58932da3e85de8ccc9f4a0d03062e38011e50fa58ba4648"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b720d5d592f63fd467d4ce86e3423ea9ce5866548de519db11f39fc768f28ab7"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c8408abc7756e010d8cd9c4a4d7872b4e9a35f9c80c17ae94d5877e4dbccfdc1"
-    sha256 cellar: :any_skip_relocation, ventura:        "e976d6136f4a25ee8f9db7bb7df42c2882381ac88500bbb77ecb3dc695218d25"
-    sha256 cellar: :any_skip_relocation, monterey:       "4b76ec91b173fa652dcc1efbcffd14cd9c5c6dcc661c362dae45fc4f5ce4adee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "16e8caa4e320d0ce6a05b0a8af600efe4a23d11b18d09e932dd94497eb5c0fef"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "188ce42a3ec12499676c82b4eddf04d412f9a7493f50598ce1ef6ddefdcb8a5c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fb6ff65e7ddd81e4b4da2ce4d2f1c4d71d66bf7afd244cb06704463655e39987"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "eebb8d59c3b7484eb42f3d6f4823bb76e60e8a07f30b040f42f57c557a0c1c12"
+    sha256 cellar: :any_skip_relocation, sonoma:        "684df7298ea85611dab2fd8019e643ec554f8ec85cf0c9eef16954d8ed87b1dc"
+    sha256 cellar: :any_skip_relocation, ventura:       "4b9c89717342f4189849008929288963b28e26736c2d35777b8827903a288d76"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8a8b886c75c192f230dfdb4b0b820e353cc24e8272cc66dcfc1d0deba90455b8"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "tornado" do
-    url "https://files.pythonhosted.org/packages/48/64/679260ca0c3742e2236c693dc6c34fb8b153c14c21d2aa2077c5a01924d6/tornado-6.3.3.tar.gz"
-    sha256 "e7d8db41c0181c80d76c982aacc442c0783a2c54d6400fe028954201a2e032fe"
+    url "https://files.pythonhosted.org/packages/ee/66/398ac7167f1c7835406888a386f6d0d26ee5dbf197d8a571300be57662d3/tornado-6.4.1.tar.gz"
+    sha256 "92d3ab53183d8c50f8204a51e6f91d18a15d5ef261e84d452800d4ff6fc504e9"
   end
 
   def install
@@ -30,15 +31,15 @@ class Snakeviz < Formula
 
   test do
     require "cgi"
-    system "#{bin}/snakeviz", "--version"
-    system "python3.12", "-m", "cProfile", "-o", "output.prof", "-m", "cProfile"
+    system bin/"snakeviz", "--version"
+    system "python3.13", "-m", "cProfile", "-o", "output.prof", "-m", "cProfile"
 
     port = free_port
 
     output_file = testpath/"output.prof"
 
     pid = fork do
-      exec "#{bin}/snakeviz", "--port", port.to_s, "--server", output_file
+      exec bin/"snakeviz", "--port", port.to_s, "--server", output_file
     end
     sleep 3
     output = shell_output("curl -s http://localhost:#{port}/snakeviz/#{CGI.escape output_file}")

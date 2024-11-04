@@ -1,9 +1,9 @@
 class Riscv64ElfGdb < Formula
   desc "GNU debugger for riscv64-elf cross development"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-14.1.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-14.1.tar.xz"
-  sha256 "d66df51276143451fcbff464cc8723d68f1e9df45a6a2d5635a54e71643edb80"
+  url "https://ftp.gnu.org/gnu/gdb/gdb-15.2.tar.xz"
+  mirror "https://ftpmirror.gnu.org/gdb/gdb-15.2.tar.xz"
+  sha256 "83350ccd35b5b5a0cba6b334c41294ea968158c573940904f00b92f76345314d"
   license "GPL-3.0-or-later"
   head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Riscv64ElfGdb < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "4eaf81306cb8cbb0452e58088f8e94447df0140e8b845bd0820e2285dc8f021d"
-    sha256 arm64_ventura:  "d860aab7c506cd19b4dcce105f7192e5bae9c35a1518ef1db94f60b01c70ce94"
-    sha256 arm64_monterey: "f474a8b2c8ed6a995bcff8d5c945c395797daff554c4119c4edafb7433380502"
-    sha256 sonoma:         "5d2fc92bc2886eb967f35fdd7e8af836ad56edb7ceaae07594075d5222cabf1d"
-    sha256 ventura:        "ce2f80bf63d6761f26bdb734972c339d48547ce594cec3df90a61c9854456cd4"
-    sha256 monterey:       "1a6fc514de450cb8b5eb25636255c0ca1c1ed6ab979ac35b92dfda9625f5c57d"
-    sha256 x86_64_linux:   "203aaf3dbe9f4508285205325f2077f5d22010d58a083f386ac13c7a616ac0f8"
+    sha256 arm64_sequoia: "5f7aba797e29ac7a43b5e16bbd6681bf2f58579861177aea7c300daa16c11b66"
+    sha256 arm64_sonoma:  "ebfe7a157b16b5a2c6e88e45c02763892320fae8b320c33a044a239086e2c84b"
+    sha256 arm64_ventura: "74e7d45007b562aae45502f466309d751243941d92aba2a6499427d1acaa1685"
+    sha256 sonoma:        "54b820d8f942cc61441e84d0ee5ce3a2a471922ba098687a0f5278197b87f7e6"
+    sha256 ventura:       "a7f888e84f77af88871f0855a9c6a1d2210af7a15336fac06f9826a0fdeb95f8"
+    sha256 x86_64_linux:  "d9151e9effe890130f9d9d5114f36ce261aeddad7c27b17f831be109436c804d"
   end
 
   depends_on "riscv64-elf-gcc" => :test
@@ -27,6 +26,8 @@ class Riscv64ElfGdb < Formula
   depends_on "python@3.12"
   depends_on "xz" # required for lzma support
 
+  uses_from_macos "expat"
+  uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
   on_system :linux, macos: :ventura_or_newer do
@@ -37,13 +38,10 @@ class Riscv64ElfGdb < Formula
     target = "riscv64-elf"
     args = %W[
       --target=#{target}
-      --prefix=#{prefix}
       --datarootdir=#{share}/#{target}
       --includedir=#{include}/#{target}
       --infodir=#{info}/#{target}
       --mandir=#{man}
-      --disable-debug
-      --disable-dependency-tracking
       --with-lzma
       --with-python=#{which("python3.12")}
       --with-system-zlib
@@ -51,7 +49,7 @@ class Riscv64ElfGdb < Formula
     ]
 
     mkdir "build" do
-      system "../configure", *args
+      system "../configure", *args, *std_configure_args
       ENV.deparallelize # Error: common/version.c-stamp.tmp: No such file or directory
       system "make"
 

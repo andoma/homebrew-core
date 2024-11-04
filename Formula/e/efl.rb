@@ -11,6 +11,7 @@ class Efl < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "aeac256a77af8f1445ac750fffbc05ec0248ed81a4cdff7c98baba1a54d7ff95"
     sha256 arm64_sonoma:   "6d15f7f09291ed56ba192bd80c7fda195154865485893579db152e113999bf4e"
     sha256 arm64_ventura:  "6bc9494f01ea7397644b6c77085e634dc48c5f557ef82d3fb598671cd66a9984"
     sha256 arm64_monterey: "7c5a8ca44000ef1f51c60d165baaaee3d12ffe75fc6eb317e8f7be590a46e5a7"
@@ -24,6 +25,7 @@ class Efl < Formula
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "bullet"
+  depends_on "cairo"
   depends_on "dbus"
   depends_on "fontconfig"
   depends_on "freetype"
@@ -32,6 +34,7 @@ class Efl < Formula
   depends_on "giflib"
   depends_on "glib"
   depends_on "gstreamer"
+  depends_on "harfbuzz"
   depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libraw"
@@ -41,6 +44,7 @@ class Efl < Formula
   depends_on "libtiff"
   depends_on "luajit"
   depends_on "lz4"
+  depends_on "openjpeg"
   depends_on "openssl@3"
   depends_on "poppler"
   depends_on "pulseaudio"
@@ -48,6 +52,15 @@ class Efl < Formula
   depends_on "webp"
 
   uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "gdk-pixbuf"
+    depends_on "little-cms2"
+  end
+
+  on_linux do
+    depends_on "mesa"
+  end
 
   # Remove LuaJIT 2.0 linker args -pagezero_size and -image_base
   # to fix ARM build using LuaJIT 2.1+

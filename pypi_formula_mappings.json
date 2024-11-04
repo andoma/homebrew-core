@@ -1,6 +1,12 @@
 {
+  "aider": {
+    "exclude_packages": ["certifi", "cffi", "numpy", "pillow", "scipy"]
+  },
   "aiven-client": {
     "exclude_packages": ["certifi"]
+  },
+  "alot": {
+    "exclude_packages": ["notmuch2"]
   },
   "animdl": {
     "exclude_packages": ["certifi"]
@@ -9,21 +15,16 @@
     "exclude_packages": ["certifi"]
   },
   "ansible": {
-    "exclude_packages": [
-      "certifi", "cffi", "cryptography", "jinja2", "lxml", "markupsafe", "pycparser",
-      "pyparsing", "python-dateutil", "pytz", "pyyaml", "six", "packaging"
-    ],
+    "exclude_packages": ["certifi", "cryptography"],
     "extra_packages": [
-      "apache-libcloud", "boto3", "dnspython", "docker",
+      "ansible-pylibssh", "apache-libcloud", "boto3", "dnspython", "docker",
       "junos-eznc", "jxmlease", "kerberos", "ntc-templates", "openshift",
       "passlib", "pexpect", "proxmoxer", "pysphere3", "python-consul",
       "python-neutronclient", "pywinrm", "requests-credssp", "shade", "zabbix-api"
     ]
   },
   "ansible-lint": {
-    "exclude_packages": [
-      "ansible-core", "black", "certifi", "pygments", "pyyaml", "yamllint"
-    ]
+    "exclude_packages": ["cryptography"]
   },
   "ansible@7": {
     "extra_packages": [
@@ -31,12 +32,20 @@
       "zabbix-api", "junos-eznc", "jxmlease", "dnspython", "pysphere3", "python-consul", "requests-credssp",
       "openshift", "pexpect", "ntc-templates", "proxmoxer"
     ],
-    "exclude_packages": ["certifi", "cffi", "pycparser", "PyYAML", "six"]
+    "exclude_packages": ["certifi", "cffi", "pycparser", "pyyaml", "six"]
   },
   "ansible@8": {
-    "exclude_packages": ["certifi", "cryptography"],
     "extra_packages": [
       "apache-libcloud", "boto3", "dnspython", "docker",
+      "junos-eznc", "jxmlease", "kerberos", "ntc-templates", "openshift",
+      "passlib", "pexpect", "proxmoxer", "pysphere3", "python-consul",
+      "python-neutronclient", "pywinrm", "requests-credssp", "shade", "zabbix-api"
+    ]
+  },
+  "ansible@9": {
+    "exclude_packages": ["certifi", "cryptography"],
+    "extra_packages": [
+      "ansible-pylibssh", "apache-libcloud", "boto3", "dnspython", "docker",
       "junos-eznc", "jxmlease", "kerberos", "ntc-templates", "openshift",
       "passlib", "pexpect", "proxmoxer", "pysphere3", "python-consul",
       "python-neutronclient", "pywinrm", "requests-credssp", "shade", "zabbix-api"
@@ -59,7 +68,7 @@
     "exclude_packages": ["certifi"]
   },
   "aws-google-auth": {
-    "exclude_packages": ["certifi", "keyring", "lxml", "pillow", "six", "tabulate"]
+    "exclude_packages": ["certifi", "pillow"]
   },
   "aws-sam-cli": {
     "exclude_packages": ["certifi", "cryptography"]
@@ -67,23 +76,25 @@
   "aws-sso-util": {
     "exclude_packages": ["certifi"]
   },
-  "awscli@1": {
-    "exclude_packages": ["six", "PyYAML", "docutils"]
-  },
-  "awscli-local": {
-    "exclude_packages": ["six"]
+  "awscli": {
+    "exclude_packages": ["cryptography"],
+    "extra_packages": ["flit-core"]
   },
   "awscurl": {
-    "exclude_packages": ["certifi", "cffi", "cryptography", "pycparser"]
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "b2-tools": {
     "exclude_packages": ["certifi"]
   },
   "badkeys": {
-    "exclude_packages": ["cffi", "cryptography", "pycparser"]
+    "exclude_packages": ["cryptography"]
   },
   "bandcamp-dl": {
     "exclude_packages": ["certifi"]
+  },
+  "bazarr": {
+    "package_name": "",
+    "extra_packages": ["lxml", "setuptools", "webrtcvad-wheels"]
   },
   "bbot": {
     "exclude_packages": ["certifi", "cryptography"]
@@ -98,11 +109,12 @@
     "exclude_packages": ["numpy", "pillow"],
     "extra_packages": ["capstone", "gnupg", "matplotlib", "pycryptodome"]
   },
-  "black": {
-    "package_name": "black[d]"
+  "black": "black[d]",
+  "borgbackup": {
+    "package_name": "",
+    "extra_packages": ["msgpack", "packaging"]
   },
   "borgmatic": {
-    "extra_packages": ["ruamel.yaml.clib"],
     "exclude_packages": ["certifi"]
   },
   "bpython": {
@@ -110,10 +122,26 @@
   },
   "buku": {
     "package_name": "buku[server]",
-    "exclude_packages": ["certifi", "cffi", "click", "cryptography", "Jinja2", "MarkupSafe", "pycparser", "python-dateutil", "six", "urllib3"]
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "bzt": {
-    "exclude_packages": ["certifi", "lxml", "numpy", "six", "Cython", "PyYAML", "psutil", "pytz"]
+    "exclude_packages": ["certifi", "numpy"],
+    "extra_packages": ["setuptools"]
+  },
+  "c7n": {
+    "package_name": "",
+    "extra_packages": [
+      "argcomplete", "boto3", "docutils", "importlib-metadata", "jsonschema",
+      "python-dateutil", "pyyaml", "referencing", "tabulate", "urllib3"
+    ]
+  },
+  "cassandra": {
+    "package_name": "",
+    "extra_packages": ["cassandra-driver", "wcwidth"]
+  },
+  "cahute": {
+    "package_name": "",
+    "extra_packages": ["toml"]
   },
   "ccm": {
     "extra_packages": ["cassandra-driver", "setuptools"]
@@ -126,6 +154,7 @@
     "exclude_packages": ["certifi", "cryptography"]
   },
   "certsync": {
+    "extra_packages": ["pycryptodomex"],
     "exclude_packages": ["certifi", "cryptography"]
   },
   "cf2tf": {
@@ -136,14 +165,11 @@
   },
   "charm-tools": {
     "exclude_packages": ["certifi", "cryptography"],
-    "extra_packages": ["pip==22.3.1", "wheel"]
+    "extra_packages": ["pip==22.3.1"]
   },
   "charmcraft": {
-    "extra_packages": ["appdirs", "pydantic"],
-    "exclude_packages": [
-      "certifi", "cffi", "cryptography", "keyring", "pycparser", "PyYAML",
-      "pytz", "six", "tabulate", "typing-extensions", "packaging"
-    ]
+    "extra_packages": ["jeepney", "secretstorage"],
+    "exclude_packages": ["certifi", "cryptography", "pygit2"]
   },
   "chatblade": {
     "exclude_packages": ["certifi"]
@@ -152,11 +178,11 @@
     "exclude_packages": ["certifi"],
     "extra_packages": [
       "fqdn", "isoduration", "jsonpointer", "rfc3339-validator",
-      "rfc3987", "uri_template", "webcolors"
+      "rfc3987", "uri-template", "webcolors"
     ]
   },
   "checkdmarc": {
-    "exclude_packages": ["certifi", "cffi", "cryptography", "pycparser"]
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "checkov": {
     "exclude_packages": ["certifi", "numpy"]
@@ -166,10 +192,10 @@
     "exclude_packages": ["certifi"]
   },
   "cloudsplaining": {
-    "exclude_packages": ["certifi", "click", "markdown", "markupsafe", "pyyaml", "six"]
+    "exclude_packages": ["certifi"]
   },
   "codelimit": {
-    "exclude_packages": ["certifi", "click", "Pygments", "typing-extensions", "six"]
+    "exclude_packages": ["certifi"]
   },
   "conan": {
     "exclude_packages": ["certifi"],
@@ -180,27 +206,27 @@
     "extra_packages": ["distro"]
   },
   "conda-lock": {
-    "exclude_packages": [
-      "certifi", "keyring", "packaging", "pycparser", "pyyaml", "six", "typing-extensions", "virtualenv"
-    ]
+    "exclude_packages": ["certifi", "cryptography"],
+    "extra_packages": ["jeepney", "secretstorage"]
   },
   "cookiecutter": {
     "exclude_packages": ["certifi"]
   },
   "credstash": {
-    "exclude_packages": ["cffi", "cryptography", "pycparser", "six"]
+    "exclude_packages": ["cryptography"]
   },
   "cruft": {
     "exclude_packages": ["certifi"]
   },
-  "crytic-compile": {
-    "exclude_packages": ["solc-select", "toml"]
+  "cryptography": {
+    "exclude_packages": ["cffi", "pycparser"]
   },
-  "cyclonedx-python": "cyclonedx-bom",
   "cycode": {
     "exclude_packages": ["certifi"]
   },
   "datalad": {
+    "package_name": "datalad[misc]",
+    "extra_packages": ["jeepney", "secretstorage"],
     "exclude_packages": ["certifi", "cryptography"]
   },
   "datasette": {
@@ -209,21 +235,19 @@
   "detect-secrets": {
     "exclude_packages": ["certifi"]
   },
-  "diffoscope": {
-    "package_name": "diffoscope[cmdline]"
+  "diffoscope": "diffoscope[cmdline]",
+  "dnsgen": {
+    "exclude_packages": ["certifi"]
   },
   "dnsrobocert": {
-    "exclude_packages": [
-      "certbot", "certifi", "cffi", "click", "cryptography", "dns-lexicon", "lxml",
-      "pycparser", "pygments", "pyyaml", "six"
-    ]
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "dnstwist": {
     "package_name": "dnstwist[full]",
     "exclude_packages": ["certifi"]
   },
   "dnsviz": {
-    "extra_packages": ["dnspython", "m2crypto", "pygraphviz"]
+    "extra_packages": ["dnspython", "pygraphviz"]
   },
   "docker-squash": {
     "exclude_packages": ["certifi"]
@@ -231,49 +255,35 @@
   "dolphie": {
     "exclude_packages": ["certifi", "cryptography"]
   },
-  "dotbot": {
-    "exclude_packages": ["PyYAML"]
-  },
   "dotdrop": {
     "exclude_packages": ["certifi"]
   },
   "dstack": {
     "package_name": "dstack[aws,azure,gcp,lambda]",
-    "exclude_packages": ["certifi", "cryptography", "protobuf"]
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "duplicity": {
-    "extra_packages": [
-      "atom", "azure-storage-blob", "b2sdk", "boto3", "botocore", "boxsdk[jwt]",
-      "dropbox", "fasteners", "gdata-python3", "google-api-python-client",
-      "google-auth-oauthlib", "httplib2", "jottalib", "megatools",
-      "paramiko", "pexpect", "pydrive2",
-      "python-swiftclient[keystone]", "requests[security]", "requests-oauthlib"
-    ],
-    "exclude_packages": [
-      "certifi", "cffi", "cryptography", "keyring", "lxml", "packaging", "ply",
-      "protobuf", "psutil", "pycparser", "pyparsing", "python-dateutil", "pytz", "PyYAML",
-      "six", "typing-extensions"
-    ]
+    "exclude_packages": ["certifi", "cryptography"],
+    "extra_packages": ["python-novaclient>18", "stone==3.2.1"]
   },
   "dvc": {
     "package_name": "dvc[all]",
-    "exclude_packages": [
-      "argcomplete", "certifi", "cffi", "click", "cryptography", "numpy", "packaging",
-      "protobuf", "psutil", "pyarrow", "pycparser", "pygit2", "Pygments", "pyparsing",
-      "PyYAML", "six", "tabulate", "typing-extensions"
-    ]
+    "exclude_packages": ["certifi", "cryptography", "numpy"]
   },
   "dxpy": {
     "exclude_packages": ["cryptography", "certifi"]
   },
+  "ecs-deploy": {
+    "exclude_packages": ["certifi"]
+  },
   "enex2notion": {
-    "exclude_packages": ["certifi", "lxml", "PyMuPDF", "six"]
+    "exclude_packages": ["certifi", "pymupdf"]
+  },
+  "eralchemy": {
+    "package_name": "eralchemy[pygraphviz]"
   },
   "esphome": {
-    "exclude_packages": [
-      "argcomplete", "certifi", "cffi", "cryptography", "platformio", "protobuf", "pycparser",
-      "pyparsing", "PyYAML", "six", "tabulate"
-    ]
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "esptool": {
     "exclude_packages": ["cryptography"]
@@ -284,24 +294,33 @@
   },
   "fabric": {
     "extra_packages": ["decorator"],
-    "exclude_packages": ["cffi", "cryptography", "invoke", "pycparser"]
+    "exclude_packages": ["cryptography"]
   },
   "fava": {
     "exclude_packages": ["certifi"]
   },
+  "fastapi": {
+    "package_name": "fastapi[standard]",
+    "exclude_packages": ["certifi"]
+  },
   "fdroidserver": {
-    "exclude_packages": [
-      "certifi", "cffi", "click", "cryptography", "fonttools", "ipython", "lxml", "matplotlib", "networkx", "numpy",
-      "packaging", "pillow", "pygments", "pyparsing", "pyyaml", "six", "typing-extensions", "yamllint"
-    ]
+    "exclude_packages": ["certifi", "cryptography", "numpy", "pillow"],
+    "extra_packages": ["androguard==3.3.5", "setuptools"]
   },
   "flintrock": {
     "exclude_packages": ["cryptography"]
   },
   "flit": {
-    "exclude_packages": ["certifi", "docutils", "flit-core"]
+    "exclude_packages": ["certifi"]
   },
-  "fobis": "fobis-py",
+  "fonttools": "fonttools[woff]",
+  "forbidden": {
+    "exclude_packages": ["certifi"]
+  },
+  "fwupd": {
+    "package_name": "",
+    "extra_packages": ["jinja2", "markupsafe"]
+  },
   "gallery-dl": {
     "exclude_packages": ["certifi"]
   },
@@ -312,19 +331,18 @@
     "exclude_packages": ["certifi", "cryptography"]
   },
   "gimmecert": {
-    "exclude_packages": ["certifi", "cryptography"],
-    "extra_packages": ["setuptools"]
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "gimme-aws-creds": {
-    "package_name": "gimme-aws-creds",
-    "exclude_packages": ["certifi", "cffi", "cryptography", "keyring", "six"],
+    "exclude_packages": ["certifi", "cryptography"],
     "extra_packages": ["pyobjc-framework-localauthentication"]
   },
   "git-review": {
     "exclude_packages": ["certifi"]
   },
-  "gitless": {
-    "exclude_packages": ["pygit2"]
+  "glib": {
+    "package_name": "",
+    "extra_packages": ["packaging"]
   },
   "gnuradio": {
     "extra_packages": [
@@ -332,14 +350,29 @@
       "packaging", "pygccxml", "pyyaml", "setuptools"
     ]
   },
+  "gobject-introspection": {
+    "package_name": "",
+    "extra_packages": ["mako", "markdown", "setuptools"]
+  },
   "goolabs": {
+    "exclude_packages": ["certifi"]
+  },
+  "gorilla-cli": {
     "exclude_packages": ["certifi"]
   },
   "gptline": {
     "exclude_packages": ["certifi", "pillow"]
   },
+  "gptme": {
+    "exclude_packages": ["certifi"]
+  },
+  "graph-tool": {
+    "package_name": "",
+    "exclude_packages": ["numpy", "pillow"],
+    "extra_packages": ["matplotlib", "setuptools", "zstandard"]
+  },
   "grayskull": {
-    "extra_packages": ["setuptools"]
+    "exclude_packages": ["certifi"]
   },
   "grip": {
     "exclude_packages": ["certifi"]
@@ -348,10 +381,14 @@
     "exclude_packages": ["certifi"]
   },
   "gyb": {
-    "exclude_packages": ["certifi", "pyinstaller", "pyparsing"]
+    "package_name": "",
+    "exclude_packages": ["certifi"],
+    "extra_packages": [
+      "google-api-python-client", "google-auth", "google-auth-httplib2", "google-auth-oauthlib", "httplib2"
+    ]
   },
   "hatch": {
-    "exclude_packages": ["certifi", "cryptography"]
+    "exclude_packages": ["certifi", "cryptography", "uv"]
   },
   "howdoi": {
     "exclude_packages": ["certifi", "cryptography"]
@@ -364,8 +401,11 @@
     "exclude_packages": ["certifi"]
   },
   "huggingface-cli": {
-    "package_name": "huggingface-hub",
     "exclude_packages": ["certifi"]
+  },
+  "iconsur": {
+    "package_name": "",
+    "extra_packages": ["pyobjc-core", "pyobjc-framework-cocoa"]
   },
   "img2pdf": {
     "exclude_packages": ["pillow"]
@@ -383,12 +423,6 @@
     "exclude_packages": ["certifi"],
     "extra_packages": ["requests"]
   },
-  "jc": {
-    "exclude_packages": ["Pygments"]
-  },
-  "jello": {
-    "exclude_packages": ["Pygments"]
-  },
   "jenkins-job-builder": {
     "exclude_packages": ["certifi"],
     "extra_packages": ["setuptools"]
@@ -401,19 +435,20 @@
     "extra_packages": ["setuptools"]
   },
   "jupyterlab": {
-    "extra_packages": ["hatch-jupyter-builder", "hatch-nodejs-version", "jupyter-console", "notebook"],
-    "exclude_packages": [
-      "certifi", "cffi", "hatchling", "ipython", "jinja2", "markupsafe", "packaging",
-      "psutil", "pycparser", "pygments", "python-dateutil", "pyyaml", "requests",
-      "six"
-    ]
+    "extra_packages": ["appnope", "hatch-jupyter-builder", "hatch-nodejs-version", "jupyter-console", "notebook"],
+    "exclude_packages": ["certifi"]
+  },
+  "kaskade": {
+    "exclude_packages": ["certifi"]
   },
   "keepkey-agent": {
-    "exclude_packages": ["cffi", "cryptography", "docutils", "pycparser", "six"]
+    "exclude_packages": ["cryptography"],
+    "extra_packages": ["protobuf==3.20.3"]
   },
   "keyring": {
     "package_name": "keyring[completion]",
-    "exclude_packages": ["cffi", "cryptography", "pycparser"]
+    "exclude_packages": ["cryptography"],
+    "extra_packages": ["jeepney", "secretstorage"]
   },
   "ldeep": {
     "exclude_packages": ["cryptography"]
@@ -438,27 +473,28 @@
     "exclude_packages": ["certifi"]
   },
   "magic-wormhole": {
-    "exclude_packages": ["cryptography"],
-    "extra_packages": ["wheel"]
+    "exclude_packages": ["cryptography"]
+  },
+  "manim": {
+    "exclude_packages": ["pillow", "numpy", "scipy"]
   },
   "mapproxy": {
     "exclude_packages": ["certifi", "pillow"],
     "extra_packages": ["pyproj"]
   },
-  "mathlibtools": {
-    "exclude_packages": ["certifi", "cffi", "cryptography", "pycparser", "PyYAML"]
+  "mat2": {
+    "exclude_packages": ["pygobject"]
   },
-  "maturin": {
-    "exclude_packages": ["typing-extensions"],
-    "extra_packages": ["semantic-version", "setuptools-rust", "tomli"]
+  "mathlibtools": {
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "mdv": "mdv[yaml]",
   "mentat": {
     "exclude_packages": ["certifi", "numpy", "pillow"]
   },
-  "meson-python": {
-    "exclude_packages": ["meson", "packaging"],
-    "extra_packages": ["tomli"]
+  "mesa": {
+    "package_name": "",
+    "extra_packages": ["mako", "packaging", "ply", "pyyaml"]
   },
   "meta-package-manager": {
     "exclude_packages": ["certifi"]
@@ -480,24 +516,25 @@
   "mycli": {
     "exclude_packages": ["cryptography"]
   },
-  "nbdime": {
-    "exclude_packages": ["certifi", "jupyter-server", "nbconvert", "pyyaml", "six"]
-  },
-  "nicotine-plus": {
-    "exclude_packages": ["pycairo", "PyGObject"]
-  },
-  "notifiers": {
-    "exclude_packages": ["certifi"],
+  "nanopb": {
+    "package_name": "nanopb",
     "extra_packages": ["setuptools"]
   },
-  "nvchecker": {
-    "package_name": "nvchecker[pypi]"
+  "nbdime": {
+    "exclude_packages": ["certifi", "jupyter-server", "nbconvert"]
   },
+  "nicotine-plus": {
+    "exclude_packages": ["pycairo", "pygobject"]
+  },
+  "notifiers": {
+    "exclude_packages": ["certifi"]
+  },
+  "nvchecker": "nvchecker[pypi]",
   "oci-cli": {
     "exclude_packages": ["certifi", "cryptography"]
   },
   "ocrmypdf": {
-    "exclude_packages": ["cffi", "cryptography", "img2pdf", "lxml", "pycparser", "pillow", "packaging", "pygments"]
+    "exclude_packages": ["cryptography", "pillow"]
   },
   "offlineimap": {
     "exclude_packages": ["certifi"]
@@ -509,16 +546,19 @@
     "exclude_packages": ["certifi", "cryptography"]
   },
   "onlykey-agent": {
-    "exclude_packages": ["certifi", "cffi", "cryptography", "Cython", "docutils", "pycparser", "six"]
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "openai-whisper": {
-    "exclude_packages": [
-      "certifi", "huggingface_hub", "markupsafe", "numpy", "PyYAML",
-      "torch", "typing-extensions"
-    ]
+    "exclude_packages": ["certifi", "numpy", "torch"]
   },
   "openstackclient": {
-    "extra_packages": ["python-designateclient", "python-heatclient", "python-octaviaclient"],
+    "extra_packages": [
+      "keystoneauth-websso", "osc-placement", "python-barbicanclient",
+      "python-cloudkittyclient", "python-designateclient",
+      "python-glanceclient", "python-heatclient", "python-ironicclient",
+      "python-magnumclient", "python-manilaclient", "python-mistralclient",
+      "python-octaviaclient", "setuptools"
+    ],
     "exclude_packages": ["certifi", "cryptography"]
   },
   "organize-tool": {
@@ -533,9 +573,18 @@
   "parliament": {
     "extra_packages": ["setuptools"]
   },
+  "parsedmarc": {
+    "exclude_packages": ["certifi", "cryptography"]
+  },
+  "pass-git-helper": {
+    "package_name": "",
+    "extra_packages": ["pyxdg"]
+  },
+  "pass-import": {
+    "exclude_packages": ["certifi"]
+  },
   "pdm": {
-    "exclude_packages": ["certifi"],
-    "extra_packages": ["wheel"]
+    "exclude_packages": ["certifi"]
   },
   "pferd": {
     "exclude_packages": ["certifi"]
@@ -546,9 +595,6 @@
   "pipenv": {
     "exclude_packages": ["certifi"]
   },
-  "pipgrip": {
-    "extra_packages": ["wheel"]
-  },
   "platformio": {
     "exclude_packages": ["certifi"]
   },
@@ -557,77 +603,89 @@
     "exclude_packages": ["certifi", "cryptography"]
   },
   "poetry": {
+    "exclude_packages": ["certifi", "cryptography"],
+    "extra_packages": ["cffi", "jeepney", "secretstorage", "xattr"]
+  },
+  "policy_sentry": {
     "exclude_packages": ["certifi"]
   },
   "prowler": {
-    "exclude_packages": ["certifi", "cryptography"]
+    "exclude_packages": ["certifi", "cryptography", "numpy"]
   },
-  "psutils": "pspdfutils",
   "pwntools": {
-    "exclude_packages": ["certifi", "cryptography"]
+    "exclude_packages": ["capstone", "certifi", "cryptography"]
   },
   "pydocstyle": "pydocstyle[toml]",
   "pygit2": {
-    "exclude_packages": ["cffi", "pycparser", "setuptools"]
+    "exclude_packages": ["cffi", "pycparser"]
   },
   "pyinstaller": {
     "extra_packages": ["macholib"]
   },
+  "pypy3.9": {
+    "package_name": "",
+    "extra_packages": ["pip", "setuptools"]
+  },
   "pyqt": {
     "exclude_packages": [
-      "PyQt6-3D-Qt6", "PyQt6-Charts-Qt6", "PyQt6-DataVisualization-Qt6",
-      "PyQt6-NetworkAuth-Qt6", "PyQt6-WebEngine-Qt6", "PyQt6-Qt6"
+      "pyqt6-3d-qt6", "pyqt6-charts-qt6", "pyqt6-datavisualization-qt6",
+      "pyqt6-networkauth-qt6", "pyqt6-webengine-qt6", "pyqt6-qt6"
     ],
     "extra_packages": [
-      "PyQt6-3D", "PyQt6-Charts", "PyQt6-DataVisualization",
-      "PyQt6-NetworkAuth", "PyQt6-WebEngine"
+      "pyqt6-3d", "pyqt6-charts", "pyqt6-datavisualization",
+      "pyqt6-networkauth", "pyqt6-webengine"
     ]
   },
-  "pyqt-builder": {
-    "exclude_packages": ["packaging", "pyparsing", "sip", "toml"]
+  "pyqt@5": {
+    "exclude_packages": [
+      "pyqt5-qt5", "pyqt3d-qt5", "pyqtchart-qt5", "pyqtdatavisualization-qt5",
+      "pyqtnetworkauth-qt5", "pyqtpurchasing-qt5", "pyqtwebengine-qt5"
+    ],
+    "extra_packages": [
+      "pyqt3d", "pyqtchart", "pyqtdatavisualization",
+      "pyqtnetworkauth", "pyqtpurchasing", "pyqtwebengine"
+    ]
   },
   "python@3.8": {
+    "package_name": "",
     "extra_packages": ["setuptools", "pip", "wheel"]
   },
   "python@3.9": {
+    "package_name": "",
     "extra_packages": ["flit-core", "setuptools", "pip", "wheel"]
   },
   "python@3.10": {
+    "package_name": "",
     "extra_packages": ["flit-core", "setuptools", "pip", "wheel"]
   },
   "python@3.11": {
+    "package_name": "",
     "extra_packages": ["flit-core", "setuptools", "pip", "wheel"]
   },
   "python@3.12": {
+    "package_name": "",
     "extra_packages": ["flit-core", "setuptools", "pip", "wheel"]
   },
-  "python-build": {
-    "exclude_packages": ["packaging", "pyproject-hooks"]
-  },
-  "python-cryptography": {
-    "exclude_packages": ["cffi", "pycparser"],
-    "extra_packages": ["setuptools-rust"]
-  },
-  "python-jinja": {
-    "package_name": "jinja2",
-    "exclude_packages": ["markupsafe"]
+  "python@3.13": {
+    "package_name": "",
+    "extra_packages": ["flit-core", "setuptools", "pip", "wheel"]
   },
   "python-lsp-server": {
     "package_name": "python-lsp-server[websockets]",
-    "extra_packages": ["python-lsp-black", "pylsp-mypy", "python-lsp-ruff", "pylsp-rope"],
-    "exclude_packages": ["black", "mypy", "ruff"]
+    "extra_packages": ["python-lsp-black", "pylsp-mypy", "python-lsp-ruff", "pylsp-rope"]
   },
-  "python-mako": {
-    "exclude_packages": ["markupsafe"]
-  },
-  "python-requests": {
-    "exclude_packages": ["certifi", "charset-normalizer", "idna", "urllib3"]
+  "python-matplotlib": {
+    "exclude_packages": ["numpy", "pillow"]
   },
   "pythran": {
-    "exclude_packages": ["numpy", "ply", "setuptools"]
+    "exclude_packages": ["numpy"]
+  },
+  "pytorch": {
+    "package_name": "torch[opt-einsum]",
+    "extra_packages": ["pyyaml"],
+    "exclude_packages": ["numpy"]
   },
   "raven": {
-    "package_name": "raven-cycode",
     "exclude_packages": ["certifi"]
   },
   "rawdog": {
@@ -637,10 +695,11 @@
     "exclude_packages": ["certifi"]
   },
   "recon-ng": {
+    "package_name": "",
     "exclude_packages": ["certifi"],
     "extra_packages": [
       "pyyaml", "dnspython", "lxml", "mechanize", "requests",
-      "flask", "flask-restful", "flasgger", "dicttoxml", "XlsxWriter", "unicodecsv", "rq"
+      "flask", "flask-restful", "flasgger", "dicttoxml", "xlsxwriter", "unicodecsv", "rq"
     ]
   },
   "regipy": "regipy[cli]",
@@ -651,14 +710,13 @@
     "extra_packages": ["robotframework-archivelibrary", "robotframework-selenium2library", "robotframework-sshlibrary"],
     "exclude_packages": ["certifi", "cryptography"]
   },
-  "rst-lint": {
-    "exclude_packages": ["docutils"]
-  },
   "ruff-lsp": {
-    "exclude_packages": ["ruff", "packaging", "typing-extensions"]
+    "exclude_packages": ["ruff"]
+  },
+  "safety": {
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "sail": {
-    "package_name": "sailed-io",
     "exclude_packages": ["certifi", "cryptography"]
   },
   "sceptre": {
@@ -668,22 +726,19 @@
     "exclude_packages": ["certifi"]
   },
   "scikit-image": {
-    "exclude_packages": ["networkx", "numpy", "packaging", "pillow", "scipy"]
+    "exclude_packages": ["numpy", "pillow", "scipy"]
   },
   "scipy": {
     "exclude_packages": ["numpy"]
   },
   "scoutsuite": {
-    "exclude_packages": ["certifi", "cryptography", "pyparsing", "pytz", "pyyaml", "six", "typing-extensions"]
+    "exclude_packages": ["certifi", "cryptography"]
   },
   "scrapy": {
     "exclude_packages": ["certifi", "cryptography"]
   },
   "search-that-hash": {
-    "exclude_packages": [
-      "certifi", "click", "commonmark", "name-that-hash", "Pygments",
-      "pyparsing", "rich", "toml", "typing-extensions"
-    ]
+    "exclude_packages": ["certifi"]
   },
   "semgrep": {
     "package_name": "semgrep",
@@ -692,6 +747,9 @@
   "sgr": {
     "exclude_packages": ["certifi", "cryptography"]
   },
+  "sherlock": {
+    "exclude_packages": ["certifi", "numpy"]
+  },
   "shodan": {
     "exclude_packages": ["certifi"]
   },
@@ -699,7 +757,8 @@
     "exclude_packages": ["certifi"]
   },
   "sickchill": {
-    "exclude_packages": ["certifi", "cryptography"]
+    "exclude_packages": ["certifi", "cryptography"],
+    "extra_packages": ["setuptools"]
   },
   "sigma-cli": {
     "exclude_packages": ["certifi"],
@@ -708,18 +767,14 @@
   "sigstore": {
     "exclude_packages": ["certifi", "cryptography"]
   },
-  "sip": {
-    "exclude_packages": ["packaging", "setuptools"]
-  },
   "slither-analyzer": {
     "exclude_packages": ["certifi"]
   },
   "snakemake": {
-    "exclude_packages": ["certifi"],
-    "extra_packages": ["setuptools"]
+    "exclude_packages": ["certifi"]
   },
   "snapcraft": {
-    "extra_packages": ["catkin_pkg"]
+    "extra_packages": ["catkin-pkg"]
   },
   "sphinx-doc": {
     "exclude_packages": ["certifi"],
@@ -734,23 +789,31 @@
   "streamlink": {
     "exclude_packages": ["certifi"]
   },
+  "subliminal": {
+    "exclude_packages": ["certifi"]
+  },
   "svtplay-dl": {
     "exclude_packages": ["certifi", "cryptography"]
   },
-  "terminator": {
-    "exclude_packages": ["psutil"]
+  "sysaidmin": {
+    "exclude_packages": ["certifi"]
   },
-  "texttest": {
-    "exclude_packages": ["psutil"]
+  "systemd": {
+    "package_name": "",
+    "extra_packages": ["jinja2", "lxml"]
+  },
+  "tartufo": {
+    "exclude_packages": ["pygit2"]
   },
   "theharvester": {
     "exclude_packages": ["certifi"]
   },
   "toot": {
-    "exclude_packages": ["certifi"]
+    "package_name": "toot[images,richtext]",
+    "exclude_packages": ["certifi", "pillow"]
   },
   "torchvision": {
-    "exclude_packages": ["certifi"]
+    "exclude_packages": ["certifi", "numpy", "pillow", "torch"]
   },
   "touca": {
     "exclude_packages": ["certifi"]
@@ -763,11 +826,12 @@
   },
   "trezor-agent": {
     "exclude_packages": ["certifi", "cryptography", "pillow"],
-    "extra_packages": ["ledger-agent", "keepkey-agent"]
+    "extra_packages": [
+      "dbus-fast", "ledger-agent", "pyobjc-core", "pyobjc-framework-CoreBluetooth", "pyobjc-framework-libdispatch"
+    ]
   },
   "trzsz": {
-    "extra_packages": ["trzsz-iterm2"],
-    "exclude_packages": ["protobuf"]
+    "extra_packages": ["trzsz-iterm2"]
   },
   "tvnamer": {
     "exclude_packages": ["certifi"]
@@ -776,9 +840,9 @@
     "exclude_packages": ["certifi"]
   },
   "twine": {
-    "exclude_packages": ["certifi"]
+    "exclude_packages": ["certifi", "cryptography"]
   },
-  "twtxt": {
+  "unoconv":{
     "extra_packages": ["setuptools"]
   },
   "urlwatch": {
@@ -789,20 +853,9 @@
     "package_name": "vdirsyncer[google]",
     "exclude_packages": ["certifi"]
   },
-  "vint": {
-    "extra_packages": ["setuptools"]
-  },
   "virt-manager": {
-    "exclude_packages": ["certifi"]
-  },
-  "virtualenvwrapper": {
-    "exclude_packages": ["virtualenv"]
-  },
-  "virtualfish": {
-    "extra_packages": ["setuptools"]
-  },
-  "volatility": {
-    "extra_packages": ["capstone", "pycryptodome", "yara-python", "jsonschema"]
+    "exclude_packages": ["certifi"],
+    "extra_packages": ["requests"]
   },
   "vunnel": {
     "exclude_packages": ["certifi"]
@@ -817,8 +870,7 @@
     "exclude_packages": ["pillow"]
   },
   "woob": {
-    "exclude_packages": ["certifi", "pillow"],
-    "extra_packages": ["setuptools"]
+    "exclude_packages": ["certifi", "pillow"]
   },
   "wtfis": {
     "exclude_packages": ["certifi"]
@@ -827,13 +879,16 @@
     "exclude_packages": ["numpy", "pillow", "six"]
   },
   "xdot": {
+    "exclude_packages": ["numpy", "pygobject"],
     "extra_packages": ["graphviz"]
   },
-  "xonsh": {
-    "package_name": "xonsh[ptk,pygments,proctitle]"
+  "xonsh": "xonsh[ptk,pygments,proctitle]",
+  "yewtube": {
+    "exclude_packages": ["certifi"]
   },
   "ykman": {
-    "exclude_packages": ["cffi", "click", "cryptography", "keyring", "pycparser"]
+    "exclude_packages": ["cryptography"],
+    "extra_packages": ["jeepney", "secretstorage"]
   },
   "yle-dl": {
     "exclude_packages": ["certifi"]
@@ -843,5 +898,8 @@
   },
   "zabbix-cli": {
     "exclude_packages": ["certifi"]
+  },
+  "zim": {
+    "extra_packages": ["pyxdg", "setuptools"]
   }
 }

@@ -1,8 +1,8 @@
 class Got < Formula
   desc "Version control system"
   homepage "https://gameoftrees.org/"
-  url "https://gameoftrees.org/releases/portable/got-portable-0.96.tar.gz"
-  sha256 "fd1eebe8826d824b8d430a0bc72b3fd477175be9773d59239cf5e9845a40153b"
+  url "https://gameoftrees.org/releases/portable/got-portable-0.104.tar.gz"
+  sha256 "b32d787920bc497521395a06beb07d7f4f92b693795863224b6049d3d669c8c9"
   license "ISC"
 
   livecheck do
@@ -11,20 +11,21 @@ class Got < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "e1b6ee4e3c8ace090083787a0b9d63ce83d79fc994e1d290c22e38cc9079655a"
-    sha256 arm64_ventura:  "21a61b14a11fd395c8db4229e6e1a117021f74f9d15d3bd6a2d9ab85800bd905"
-    sha256 arm64_monterey: "ff5da7fbd8d850ede0edb9f9af7872b5a6979370341dba1b4d6545e427f0fa67"
-    sha256 sonoma:         "39ed0c187c1b77300a7feb26ca139558cefdf9b02d658a8d032e88f924f924a1"
-    sha256 ventura:        "2665572d5bcc96d623a419a0dc1d41cda5ed6e399ba097a2fed8b0c61194e47a"
-    sha256 monterey:       "7d8c86c32f7c749f51a5f1f60c59ba9475e310c1682e38add8567c81e8db8ab8"
-    sha256 x86_64_linux:   "73e0a22678a8570fe813f006f20f8fb86b135279207487e0fe9c072677b2223e"
+    sha256 arm64_sequoia: "7818e57f951bdd67cd26a4b21c7a22ba0edfa492a69263e456dfb5fe05660970"
+    sha256 arm64_sonoma:  "dc2ec80cb143e0909bb35b8bfbb3c8792b43dbb36bad841425843ce9270039fa"
+    sha256 arm64_ventura: "b39177c3e8ece5df54dd6d0bf43bcb2fc9af0bbf534b878d1585da4a3e4cb16d"
+    sha256 sonoma:        "8c7c0ace814d901b696cb03f491b5e3370fb73e8e07b4c8b8cbd5bc89566d9a8"
+    sha256 ventura:       "b076d16a85ec85fd5313faa58c0c78e10260bcd7bbdbafdf025b875b01792eb2"
+    sha256 x86_64_linux:  "6301ef138d880df53e9f559e37bf6b525dd51b8e88e0d5cbb599f2ca8ef05e41"
   end
 
   depends_on "bison" => :build
   depends_on "pkg-config" => :build
   depends_on "libevent"
+  depends_on "libretls"
   depends_on "ncurses"
   depends_on "openssl@3"
+
   uses_from_macos "zlib"
 
   on_linux do
@@ -34,8 +35,9 @@ class Got < Formula
   end
 
   def install
-    inreplace "configure", %r{\$\{HOMEBREW_PREFIX?\}/opt/openssl@\d+(\.\d+)?}, Formula["openssl@3"].opt_prefix
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    ENV["LIBTLS_CFLAGS"] = "-I#{Formula["libretls"].opt_include}"
+    ENV["LIBTLS_LIBS"] = "-L#{Formula["libretls"].opt_lib} -ltls"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

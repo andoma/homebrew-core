@@ -1,19 +1,18 @@
 class DockerBuildx < Formula
   desc "Docker CLI plugin for extended build capabilities with BuildKit"
   homepage "https://docs.docker.com/buildx/working-with-buildx/"
-  url "https://github.com/docker/buildx/archive/refs/tags/v0.12.1.tar.gz"
-  sha256 "9cc176ed55e7c423c23de35bd31df3b449261f1b90765c17f003bd4de86a6aa4"
+  url "https://github.com/docker/buildx/archive/refs/tags/v0.18.0.tar.gz"
+  sha256 "a935cb2715a5054d918d40ef07cdd4a6465b20a755d466248718ab59fd41c334"
   license "Apache-2.0"
   head "https://github.com/docker/buildx.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a6abbcb1fdf69b1bda1b4d4bddfb3c5774ca5214f5834b112285b6c91d925e5e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7ff063ad2ded0882713a52fb5ada72026874140c53ece771744fa9f120fdad7c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ce19013244887dfe3ebb202adb007e9c02c146fe83a8fdec42a4015d140166db"
-    sha256 cellar: :any_skip_relocation, sonoma:         "be7748b244d1a6a6c624cc5628703c81a1a722f67e80e90e2b051ed7c6b2fff0"
-    sha256 cellar: :any_skip_relocation, ventura:        "445a345e2e5657c0abf87a8da5247f7b2e3215e5a760e32507bb13edac7922db"
-    sha256 cellar: :any_skip_relocation, monterey:       "c3dcd72e2609dcf56bb057dcf9583bae82dec934303a7aa48cce55adeb0dcdc2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7b1798be0b31d54c97c5ede749f626a218989fe7e032155b84971a381e8f57c2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ad07f34068d46566f8a8b6e037e315f286d3e0264c5f0547808a9df3aa6de199"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ad07f34068d46566f8a8b6e037e315f286d3e0264c5f0547808a9df3aa6de199"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ad07f34068d46566f8a8b6e037e315f286d3e0264c5f0547808a9df3aa6de199"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2414b0b80b0da1281c6be0900cc06dfd8b4f88df64ae7780680a17175b02fabd"
+    sha256 cellar: :any_skip_relocation, ventura:       "2414b0b80b0da1281c6be0900cc06dfd8b4f88df64ae7780680a17175b02fabd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "402365f690880d8702b078c2a767d04f1846d65bee0cfafeea3cdbc83ef1d3e3"
   end
 
   depends_on "go" => :build
@@ -25,7 +24,9 @@ class DockerBuildx < Formula
       -X github.com/docker/buildx/version.Revision=#{tap.user}
     ]
 
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/buildx"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/buildx"
+
+    (lib/"docker/cli-plugins").install_symlink bin/"docker-buildx"
 
     doc.install Dir["docs/reference/*.md"]
 
@@ -34,9 +35,10 @@ class DockerBuildx < Formula
 
   def caveats
     <<~EOS
-      docker-buildx is a Docker plugin. For Docker to find this plugin, symlink it:
-        mkdir -p ~/.docker/cli-plugins
-        ln -sfn #{opt_bin}/docker-buildx ~/.docker/cli-plugins/docker-buildx
+      docker-buildx is a Docker plugin. For Docker to find the plugin, add "cliPluginsExtraDirs" to ~/.docker/config.json:
+        "cliPluginsExtraDirs": [
+            "#{HOMEBREW_PREFIX}/lib/docker/cli-plugins"
+        ]
     EOS
   end
 
